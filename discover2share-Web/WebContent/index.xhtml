@@ -21,8 +21,10 @@
 		</h:dataTable>
 		 -->
 		<select>
-			<option ng-repeat="person in persons">{{person.name}}</option>
+			<option ng-repeat="person in persons">{{person.name}} ({{person.age}})</option>
 		</select>
+		
+		{{persons.length}}
 		
 		<input type="text" ng-model="larifari" /> {{larifari}}
 		 
