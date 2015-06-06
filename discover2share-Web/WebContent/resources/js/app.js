@@ -12,7 +12,8 @@ d2sApp.controller('indexCtrl', function ($scope, $http) {
   
   $scope.larifari = "Hihihi";
   console.log("heyyy");
-  $http.get('http://localhost:8080/discover2share-Web/api/ind')
+  //call to relative path
+  $http.get('api/ind')
   	.success(function(data, status, headers, config) {
   		$scope.persons = data;
   	});
