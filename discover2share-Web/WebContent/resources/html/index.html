@@ -1,5 +1,5 @@
 <h1>Hello Wooorld!!</h1>
 	Hello:
-	<div ng-repeat="phone in phones">
-		{{phone.name}},
+	<div ng-repeat="person in persons | orderBy: '-name'">
+		{{person.name}},
 	</div>

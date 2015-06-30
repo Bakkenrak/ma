@@ -1,17 +1,22 @@
-var d2sApp = angular.module('d2sApp', ['ngRoute']);
+(function(){
+	'use strict';
 
-d2sApp.config(function($routeProvider, $locationProvider){
+	var d2sApp = angular.module('d2sApp', ['ngRoute']);
 	
-	$routeProvider.when('/', {
-		controller: 'indexCtrl',
-		templateUrl: 'resources/html/index.html'
-	}).when('/add', {
-		controller: 'indexCtrl',
-		templateUrl: 'resources/html/add.html'
-	}).otherwise({ 
-		templateUrl: 'resources/html/404.html'
+	d2sApp.config(function($routeProvider, $locationProvider){
+		
+		$routeProvider.when('/', {
+			controller: 'indexCtrl',
+			templateUrl: 'resources/html/index.html'
+		}).when('/add', {
+			controller: 'indexCtrl',
+			templateUrl: 'resources/html/add.html'
+		}).otherwise({ 
+			templateUrl: 'resources/html/404.html'
+		});
+		
+		$locationProvider.html5Mode({enabled: true});
+		
 	});
-	
-	$locationProvider.html5mode(true);
-	
-});
+
+})();
