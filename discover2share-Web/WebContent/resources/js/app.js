@@ -1,20 +1,17 @@
-var d2sApp = angular.module('d2sApp', []);
+var d2sApp = angular.module('d2sApp', ['ngRoute']);
 
-d2sApp.controller('indexCtrl', function ($scope, $http) {
-  $scope.phones = [
-    {'name': 'Nexus S',
-     'snippet': 'Fast just got faster with Nexus S.'},
-    {'name': 'Motorola XOOM™ with Wi-Fi',
-     'snippet': 'The Next, Next Generation tablet.'},
-    {'name': 'MOTOROLA XOOM™',
-     'snippet': 'The Next, Next Generation tablet.'}
-  ];
-  
-  $scope.larifari = "Hihihi";
-  console.log("heyyy");
-  //call to relative path
-  $http.get('api/ind')
-  	.success(function(data, status, headers, config) {
-  		$scope.persons = data;
-  	});
+d2sApp.config(function($routeProvider, $locationProvider){
+	
+	$routeProvider.when('/', {
+		controller: 'indexCtrl',
+		templateUrl: 'resources/html/index.html'
+	}).when('/add', {
+		controller: 'indexCtrl',
+		templateUrl: 'resources/html/add.html'
+	}).otherwise({ 
+		templateUrl: 'resources/html/404.html'
+	});
+	
+	$locationProvider.html5mode(true);
+	
 });
