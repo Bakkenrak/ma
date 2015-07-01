@@ -4,7 +4,7 @@
 		<jta-data-source>java:/DefaultDS</jta-data-source>
 	   	<properties>
 	    	<property name="hibernate.hbm2ddl.auto"
-	       value="update"/>
+	       value="create-drop"/>
 		</properties>
 	</persistence-unit>
 </persistence>
