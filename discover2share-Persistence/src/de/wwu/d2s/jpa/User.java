@@ -1,5 +1,8 @@
 package de.wwu.d2s.jpa;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,7 +15,7 @@ public class User implements java.io.Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
-	
+
 	private String username;
 	private String password;
 	private String authToken;
@@ -21,11 +24,33 @@ public class User implements java.io.Serializable {
 	public User() {
 	}
 	
-	public int getId(){
-		return id;
+	public void hashOwnPassword(){
+		password = hashPassword(password);
+	}
+
+	public String hashPassword(String password) {
+		MessageDigest messageDigest;
+		try {
+			messageDigest = MessageDigest.getInstance("SHA-256");
+			messageDigest.update(password.getBytes());
+			return new String(messageDigest.digest());
+		} catch (NoSuchAlgorithmException e) {
+			return "";
+		}
 	}
 	
-	public void setId(int id){
+	public boolean comparePassword(String pw) {
+		String hashed = hashPassword(pw);
+		if(password.equals(hashed))
+			return true;
+		return false;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
 		this.id = id;
 	}
 

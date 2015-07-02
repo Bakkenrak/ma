@@ -5,30 +5,31 @@
 	
 	d2sApp.factory('authFactory', function ($rootScope, $http, $cookieStore) {
 		
-	        var authFactory = {
-	            authData: $cookieStore.get('authData')
-	        };
+	        var authFactory = {};
 	 
 	        authFactory.login = function (user) {
 	            return $http.post('api/auth/login', user);
 	        };
 	        
 	        authFactory.setAuthData = function (authData) {
-	            this.authData = {
+	            $cookieStore.put('authData', {
 	                authId: authData.authId,
 	                authToken: authData.authToken,
 	                authPermission: authData.authPermission
-	            };
-	            $cookieStore.put('authData', this.authData);
+	            });
 	            $rootScope.$broadcast('authChanged');
 	        };
 	 
 	        authFactory.getAuthData = function () {
-	            return this.authData;
+	            return $cookieStore.get("authData");
 	        };
 	 
 	        authFactory.isAuthenticated = function () {
 	            return !angular.isUndefined(this.getAuthData());
+	        };
+	        
+	        authFactory.logout = function(){
+	        	$cookieStore.remove("authData");
 	        };
 	 
 	    return authFactory;

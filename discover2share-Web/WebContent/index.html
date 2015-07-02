@@ -18,6 +18,8 @@
 					<ul class="nav navbar-nav">
 						<li ng-class="{'active' : currentTab=='add'}"><a href="add">Add a platform</a></li>
 						<li ng-class="{'active' : currentTab=='search'}"><a	href="search">Search for a platform</a></li>
+						<li ng-if="!loggedIn" ng-class="{'active' : currentTab=='login'}"><a href="login">Login</a></li>
+						<li ng-if="loggedIn"><a href="logout" ng-click="logout()">Logout</a></li>
 					</ul>
 				</nav>
 			</div>

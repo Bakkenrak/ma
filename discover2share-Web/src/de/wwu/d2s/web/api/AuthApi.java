@@ -2,6 +2,7 @@ package de.wwu.d2s.web.api;
 
 import javax.annotation.security.PermitAll;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -20,7 +21,7 @@ public interface AuthApi {
     @POST
     @Path("login")
     @PermitAll
-    public AuthAccessElement login(@Context HttpServletRequest request, AuthLoginElement loginElement);
+    public AuthAccessElement login(AuthLoginElement loginElement);
     
     @POST
     @Path("register")
