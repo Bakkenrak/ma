@@ -1,6 +1,5 @@
 package de.wwu.d2s.ejb;
 
-import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -27,10 +26,7 @@ public class UserServiceBean implements UserService {
 
 	@Override
 	public User findByUsernameAndPassword(String username, String password) {
-		User user = em.find(User.class, username);
-		if(user != null && user.getPassword().equals(password))
-			return user;
-		return null;
+		return em.createQuery("SELECT u FROM User u WHERE u.username = '" + username + "' AND u.password = '" + password + "'", User.class).getSingleResult();
 	}
 
 	@Override
@@ -40,6 +36,6 @@ public class UserServiceBean implements UserService {
 
 	@Override
 	public void update(User user) {
-		
+		em.merge(user);
 	}
 }
