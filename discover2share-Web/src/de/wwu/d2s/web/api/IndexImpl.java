@@ -19,4 +19,9 @@ public class IndexImpl implements IndexApi {
 		return ejb.getTests();
 	}
 
+	@Override
+	public String vip() {
+		return "du bist ein admin!";
+	}
+
 }

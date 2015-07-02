@@ -13,15 +13,10 @@ public class UserServiceBean implements UserService {
 	
 	@PersistenceContext
 	EntityManager em;
-	
-	//Session session = em.unwrap(org.hibernate.Session.class);
 
 	@Override
 	public User findByUsernameAndAuthToken(String username, String authToken) {
-		User user = em.find(User.class, username);
-		if(user != null && user.getAuthToken().equals(authToken))
-			return user;
-		return null;
+		return em.createQuery("SELECT u FROM User u WHERE u.username = '" + username + "' AND u.authToken = '" + authToken + "'", User.class).getSingleResult();
 	}
 
 	@Override

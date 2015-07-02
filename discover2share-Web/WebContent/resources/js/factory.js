@@ -3,10 +3,10 @@
 	
 	var d2sApp = angular.module('d2sApp');
 	
-	d2sApp.factory('authFactory', ['$rootScope', '$http', function ($rootScope, $http) {
-	 
+	d2sApp.factory('authFactory', function ($rootScope, $http, $cookieStore) {
+		
 	        var authFactory = {
-	            authData: undefined
+	            authData: $cookieStore.get('authData')
 	        };
 	 
 	        authFactory.login = function (user) {
@@ -19,6 +19,7 @@
 	                authToken: authData.authToken,
 	                authPermission: authData.authPermission
 	            };
+	            $cookieStore.put('authData', this.authData);
 	            $rootScope.$broadcast('authChanged');
 	        };
 	 
@@ -31,7 +32,7 @@
 	        };
 	 
 	    return authFactory;
-	}]);
+	});
 	
 	d2sApp.factory('authHttpRequestInterceptor', ['$rootScope', '$injector', function ($rootScope, $injector) {
 	    var authHttpRequestInterceptor = {

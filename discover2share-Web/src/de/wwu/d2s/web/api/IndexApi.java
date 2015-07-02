@@ -15,4 +15,10 @@ public interface IndexApi {
 	@GET
 	@Produces("application/json")
 	public List<Person> getTests();
+	
+	@Path("vip")
+	@GET
+	@Produces("appication/json")
+	@RolesAllowed(value = {"admin"})
+	public String vip();
 }

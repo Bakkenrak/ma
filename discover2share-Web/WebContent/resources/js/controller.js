@@ -21,6 +21,13 @@
 			'name' : 'MOTOROLA XOOM™',
 			'snippet' : 'The Next, Next Generation tablet.'
 		} ];
+		
+		$http.get('api/ind/vip').success(function(data, status, headers, config) {
+			$scope.vipMessage = data + " " + status;
+		})
+		.error(function(data, status, headers, config){
+			$scope.vipMessage = data + " " + status;
+		});
 
 		$scope.larifari = "Hihihi";
 		console.log("heyyy");
@@ -31,8 +38,13 @@
 	});
 	
 	d2sApp.controller('LoginCtrl', ['$scope', 'authFactory', function LoginCtrl($scope, authFactory) {
-	    $scope.login = function (user) {
-	        authFactory.login(user).success(function (data) {
+		$scope.user = {
+				username: "",
+				password: ""
+		};
+		
+	    $scope.login = function () {
+	        authFactory.login($scope.user).success(function (data) {
 	            authFactory.setAuthData(data);
 	            // Redirect etc.
 	        }).error(function () {

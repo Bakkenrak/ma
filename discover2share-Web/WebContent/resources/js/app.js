@@ -1,7 +1,7 @@
 (function(){
 	'use strict';
 
-	var d2sApp = angular.module('d2sApp', ['ngRoute']);
+	var d2sApp = angular.module('d2sApp', ['ngRoute', 'ngCookies']);
 	
 	d2sApp.config(function($routeProvider, $locationProvider){
 		
@@ -9,7 +9,7 @@
 			controller: 'indexCtrl',
 			templateUrl: 'resources/html/index.html'
 		}).when('/add', {
-			controller: 'indexCtrl',
+			controller: 'LoginCtrl',
 			templateUrl: 'resources/html/add.html'
 		}).otherwise({ 
 			templateUrl: 'resources/html/404.html'
