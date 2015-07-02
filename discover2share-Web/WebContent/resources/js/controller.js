@@ -29,5 +29,18 @@
 			$scope.persons = data;
 		});
 	});
+	
+	d2sApp.controller('LoginCtrl', ['$scope', 'authFactory', function LoginCtrl($scope, authFactory) {
+	    $scope.login = function (user) {
+	        authFactory.login(user).success(function (data) {
+	            authFactory.setAuthData(data);
+	            // Redirect etc.
+	        }).error(function () {
+	            // Error handling
+	        });
+	    };
+	}]);
+	
+	
 
 })();

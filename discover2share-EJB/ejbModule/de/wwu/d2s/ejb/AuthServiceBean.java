@@ -18,6 +18,9 @@ public class AuthServiceBean implements AuthService {
  
     @Override
     public boolean isAuthorized(String authId, String authToken, Set<String> rolesAllowed) {
+    	if(authId == null || authToken == null)
+    		return false;
+    				
     	User user = userService.findByUsernameAndAuthToken(authId, authToken);
         if (user != null) {
             return rolesAllowed.contains(user.getAuthRole());
