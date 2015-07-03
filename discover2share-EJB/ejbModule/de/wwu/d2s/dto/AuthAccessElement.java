@@ -3,29 +3,38 @@ package de.wwu.d2s.dto;
 import java.io.Serializable;
 
 public class AuthAccessElement implements Serializable {
-	 
-    public static final String PARAM_AUTH_ID = "auth-id";
+	private static final long serialVersionUID = -3707972521817063145L;
+	
+	public static final String PARAM_AUTH_ID = "auth-id";
     public static final String PARAM_AUTH_TOKEN = "auth-token";
  
-    private String authId;
+    private String username;
     private String authToken;
-    private String authPermission;
+    private String authRole;
  
     public AuthAccessElement() {
     }
  
-    public AuthAccessElement(String authId, String authToken, String authPermission) {
-        this.authId = authId;
+    public AuthAccessElement(String username, String authToken, String authRole) {
+        this.username = username;
         this.authToken = authToken;
-        this.authPermission = authPermission;
+        this.authRole = authRole;
     }
 
-	public String getAuthId() {
-		return authId;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setAuthId(String authId) {
-		this.authId = authId;
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getAuthRole() {
+		return authRole;
+	}
+
+	public void setAuthRole(String authRole) {
+		this.authRole = authRole;
 	}
 
 	public String getAuthToken() {
@@ -34,14 +43,6 @@ public class AuthAccessElement implements Serializable {
 
 	public void setAuthToken(String authToken) {
 		this.authToken = authToken;
-	}
-
-	public String getAuthPermission() {
-		return authPermission;
-	}
-
-	public void setAuthPermission(String authPermission) {
-		this.authPermission = authPermission;
 	}
 
 	public static String getParamAuthId() {

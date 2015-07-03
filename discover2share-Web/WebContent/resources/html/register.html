@@ -2,6 +2,10 @@
 	<strong>Registration failed!</strong> Please try again.
 </div>
 
+<div ng-if="registerSuccess" class="alert alert-success" role="alert">
+	<strong>Success!</strong> The new user was successfully created.
+</div>
+
 <form>
 	<div class="form-group">
 		<label for="usernameInput">Username</label> <input type="text"

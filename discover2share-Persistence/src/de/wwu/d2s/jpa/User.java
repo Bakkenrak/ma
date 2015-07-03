@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 @Entity
 public class User implements java.io.Serializable {
@@ -23,6 +24,11 @@ public class User implements java.io.Serializable {
 	private String authToken;
 	private String authRole;
 	private Date authDate;
+	
+	@Transient
+	public final static String ROLE_ADMIN = "admin";
+	@Transient
+	public final static String ROLE_MODERATOR = "moderator";
 
 	public User() {
 	}

@@ -17,9 +17,9 @@
 	        
 	        authFactory.setAuthData = function (authData) {
 	            $cookieStore.put('authData', {
-	                authId: authData.authId,
+	                username: authData.username,
 	                authToken: authData.authToken,
-	                authPermission: authData.authPermission
+	                authRole: authData.authRole
 	            });
 	            $rootScope.$broadcast('authChanged');
 	        };
@@ -29,7 +29,7 @@
 	        };
 	 
 	        authFactory.isAuthenticated = function () {
-	            return !angular.isUndefined(this.getAuthData());
+	            return (!angular.isUndefined(this.getAuthData()) && !angular.isUndefined(this.getAuthData().username));
 	        };
 	        
 	        authFactory.logout = function(){
@@ -44,7 +44,7 @@
 	        request: function ($request) {
 	            var authFactory = $injector.get('authFactory');
 	            if (authFactory.isAuthenticated()) {
-	                $request.headers['auth-id'] = authFactory.getAuthData().authId;
+	                $request.headers['auth-id'] = authFactory.getAuthData().username;
 	                $request.headers['auth-token'] = authFactory.getAuthData().authToken;
 	            }
 	            return $request;

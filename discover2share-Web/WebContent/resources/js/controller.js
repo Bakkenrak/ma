@@ -9,6 +9,10 @@
 	        $scope.currentTab = $location.path().substr(1); // set scope variable to current route
 	        //determine if logged in from cookie
 	        $scope.loggedIn = authFactory.isAuthenticated();
+	        if($scope.loggedIn)
+	        	$scope.authRole = authFactory.getAuthData().authRole;
+	        else
+	        	$scope.authRole = undefined;
 		});
 		
 		$scope.logout = function(){
@@ -59,22 +63,22 @@
 	});
 	
 	d2sApp.controller('registrationCtrl', function LoginCtrl($scope, $location, authFactory) {
-		
-		$scope.user = {
-				username: "",
-				password: ""
-		};
-		$scope.passwordConfirm = "";
-		
 		$scope.registerFailed = false;
+		$scope.registerSuccess = false;
 		
 	    $scope.register = function () {
 	    	if($scope.user.password === $scope.passwordConfirm){
-		        authFactory.register($scope.user).success(function (data) {
-		            $scope.registerFailed = false;
-		            $location.path("login/");
+		        authFactory.register($scope.user).success(function (data, status) {
+		            $scope.registerFailed = !(status === 200);
+		            $scope.registerSuccess = (status === 200);
+		            $scope.user = {
+		    				username: "",
+		    				password: ""
+		    		};
+		            $scope.passwordConfirm = "";
 		        }).error(function () {
 		            $scope.registerFailed = true;
+		            $scope.registerSuccess = false;
 		        });
 	    	}
 	    };

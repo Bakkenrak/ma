@@ -27,7 +27,7 @@ public class AuthImpl implements AuthApi {
 	public AuthAccessElement login(AuthLoginElement loginElement) {
         AuthAccessElement accessElement = authService.login(loginElement);
         if (accessElement != null) {
-            request.getSession().setAttribute(AuthAccessElement.PARAM_AUTH_ID, accessElement.getAuthId());
+            request.getSession().setAttribute(AuthAccessElement.PARAM_AUTH_ID, accessElement.getUsername());
             request.getSession().setAttribute(AuthAccessElement.PARAM_AUTH_TOKEN, accessElement.getAuthToken());
         }else{
         	response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); //return 401 on failed login
