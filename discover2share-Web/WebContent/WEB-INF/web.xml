@@ -17,14 +17,9 @@
 	<servlet-mapping>
 		<servlet-name>Route Servlet</servlet-name>
 		<url-pattern>/add</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>Route Servlet</servlet-name>
 		<url-pattern>/search</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>Route Servlet</servlet-name>
 		<url-pattern>/login</url-pattern>
+		<url-pattern>/register</url-pattern>
 	</servlet-mapping>
 
 	<!-- API route config -->
