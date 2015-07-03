@@ -2,7 +2,6 @@ package de.wwu.d2s.web.api;
 
 import java.util.List;
 
-import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -19,6 +18,6 @@ public interface IndexApi {
 	@Path("vip")
 	@GET
 	@Produces("appication/json")
-	@RolesAllowed(value = {"admin"})
+	@RolesAllowed(value = {"admin", "mod"})
 	public String vip();
 }

@@ -1,23 +1,44 @@
-<div ng-if="registerFailed" class="alert alert-danger" role="alert">
-	<strong>Registration failed!</strong> Please try again.
-</div>
+<div class=row>
+	<div ng-show="registerFailed" class="alert alert-danger" role="alert">
+		<strong>Registration failed!</strong> Please try again.
+	</div>
 
-<div ng-if="registerSuccess" class="alert alert-success" role="alert">
-	<strong>Success!</strong> The new user was successfully created.
-</div>
+	<div ng-show="registerSuccess" class="alert alert-success" role="alert">
+		<strong>Success!</strong> The new user was successfully created.
+	</div>
 
-<form>
-	<div class="form-group">
-		<label for="usernameInput">Username</label> <input type="text"
-			class="form-control" id="usernameInput" ng-model="user.username" />
+	<div ng-if="isAdmin" class="col-md-4">
+		<form name="registerForm" ng-submit="registerForm.$valid && register()">
+			<div class="form-group" ng-class="{'has-error' : registerForm.usernameInput.$invalid && !registerForm.usernameInput.$pristine }">
+				<label for="usernameInput">Username</label> <input type="text"
+					class="form-control" id="usernameInput" name="usernameInput" ng-model="user.username" required />
+				<p ng-show="registerForm.usernameInput.$invalid && !registerForm.usernameInput.$pristine" class="help-block">Enter a username.</p>
+			</div>
+			<div class="form-group" ng-class="{'has-error' : registerForm.passwordInput.$invalid && !registerForm.passwordInput.$pristine }">
+				<label for="passwordInput">Password</label> <input type="password"
+					class="form-control" id="passwordInput" name="passwordInput" ng-model="user.password" required ng-minlength=6 />
+				<p ng-show="registerForm.passwordInput.$invalid && !registerForm.passwordInput.$pristine" class="help-block">Enter a password of at least six characters.</p>
+			</div>
+			<div class="form-group" ng-class="{'has-error' : !registerForm.passwordInput.$pristine && user.password!==user.passwordConfirm }">
+				<label for="passwordInput2">Confirm password</label> <input
+					type="password" class="form-control" id="passwordInput2" name="passwordInput2"
+					ng-model="user.passwordConfirm" required />
+				<p ng-show="!registerForm.passwordInput.$pristine && user.password!==user.passwordConfirm" class="help-block">The entered passwords do not match.</p>
+			</div>
+			<div class="form-group" ng-class="{'has-error' : registerForm.authRoleInput.$invalid && !registerForm.authRoleInput.$pristine }">
+				<label for="authRole">Authentication role</label> <select name="authRoleInput"
+					ng-model="user.authRole" class="form-control" required>
+					<option value="mod">Moderator</option>
+					<option value="admin">Administrator</option>
+				</select>
+				<p ng-show="registerForm.authRoleInput.$invalid && !registerForm.authRoleInput.$pristine" class="help-block">Choose an authentication role.</p>
+			</div>
+			<button type="submit" class="btn btn-default" ng-disabled="!registerForm.$valid">Submit</button>
+		</form>
 	</div>
-	<div class="form-group">
-		<label for="passwordInput">Password</label> <input type="password"
-			class="form-control" id="passwordInput" ng-model="user.password" />
+	
+	<div ng-if="!isAdmin" class="alert alert-danger" role="alert">
+		<strong>Unauthorized!</strong> Only administrators can create new user
+		accounts. If you are one, please <a href="login">login</a>.
 	</div>
-	<div class="form-group">
-		<label for="passwordInput2">Confirm password</label> <input type="password"
-			class="form-control" id="passwordInput2" ng-model="passwordConfirm" />
-	</div>
-	<button type="submit" class="btn btn-default" ng-click="register()">Submit</button>
-</form>
+</div>

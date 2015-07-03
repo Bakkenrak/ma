@@ -3,6 +3,7 @@
 <html ng-app="d2sApp">
 	<head>
 		<link rel="stylesheet" href="resources/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="resources/css/custom.css" />
 		
 		<title>Discover2Share Web Directory</title>
 		
@@ -15,7 +16,7 @@
 					<div class="navbar-header">
 						<a class="navbar-brand" href="./">Discover2Share</a>
 					</div>
-					<ul class="nav navbar-nav">
+					<ul class="nav navbar-nav" ng-cloak="true">
 						<li ng-class="{'active' : currentTab=='add'}"><a href="add">Add a platform</a></li>
 						<li ng-class="{'active' : currentTab=='search'}"><a	href="search">Search for a platform</a></li>
 						<li ng-if="authRole=='admin'" ng-class="{'active' : currentTab=='register'}"><a href="register">Create user</a></li>
