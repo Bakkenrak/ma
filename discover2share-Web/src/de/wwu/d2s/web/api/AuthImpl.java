@@ -1,10 +1,13 @@
 package de.wwu.d2s.web.api;
 
+import java.io.IOException;
+
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.Context;
+
 import de.wwu.d2s.dto.AuthAccessElement;
 import de.wwu.d2s.dto.AuthLoginElement;
 import de.wwu.d2s.ejb.AuthService;
@@ -27,7 +30,10 @@ public class AuthImpl implements AuthApi {
             request.getSession().setAttribute(AuthAccessElement.PARAM_AUTH_ID, accessElement.getAuthId());
             request.getSession().setAttribute(AuthAccessElement.PARAM_AUTH_TOKEN, accessElement.getAuthToken());
         }else{
-        	response.setStatus(401); //does not work
+        	response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); //return 401 on failed login
+        	try{
+        		response.flushBuffer();
+        	}catch(IOException e){}
         }
         return accessElement;
     }
