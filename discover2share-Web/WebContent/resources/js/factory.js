@@ -11,6 +11,10 @@
 	            return $http.post('api/auth/login', user);
 	        };
 	        
+	        authFactory.register = function (user) {
+	            return $http.post('api/auth/register', user);
+	        };
+	        
 	        authFactory.setAuthData = function (authData) {
 	            $cookieStore.put('authData', {
 	                authId: authData.authId,
@@ -35,8 +39,8 @@
 	    return authFactory;
 	});
 	
-	d2sApp.factory('authHttpRequestInterceptor', ['$rootScope', '$injector', function ($rootScope, $injector) {
-	    var authHttpRequestInterceptor = {
+	d2sApp.factory('authHttpInterceptor', function ($rootScope, $injector, $cookieStore) {
+	    var authHttpInterceptor = {
 	        request: function ($request) {
 	            var authFactory = $injector.get('authFactory');
 	            if (authFactory.isAuthenticated()) {
@@ -44,14 +48,22 @@
 	                $request.headers['auth-token'] = authFactory.getAuthData().authToken;
 	            }
 	            return $request;
+	        },
+		    responseError: function (res) {
+	            if(res.status === 401 && !angular.isUndefined(res.data.authCode)){
+	            	var authCode = res.data.authCode;
+	            	if(authCode !== "-1")
+	            		$cookieStore.remove("authData");
+	            }
+	            return res;
 	        }
 	    };
 	 
-	    return authHttpRequestInterceptor;
-	}]);
+	    return authHttpInterceptor;
+	});
 	//Add interceptor to chain:
 	d2sApp.config(function ($httpProvider) {
-		$httpProvider.interceptors.push('authHttpRequestInterceptor');
+		$httpProvider.interceptors.push('authHttpInterceptor');
 	});
 	
 })();

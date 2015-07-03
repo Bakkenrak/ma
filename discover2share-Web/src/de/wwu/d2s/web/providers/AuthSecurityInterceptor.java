@@ -1,6 +1,7 @@
 package de.wwu.d2s.web.providers;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -21,10 +22,7 @@ import de.wwu.d2s.ejb.AuthService;
 
 @Provider
 public class AuthSecurityInterceptor implements ContainerRequestFilter {
-	 
-    // 401 - Access denied
-    private static final Response ACCESS_UNAUTHORIZED = Response.status(Response.Status.UNAUTHORIZED).entity("Not authorized.").build();
- 
+	  
     @EJB
     AuthService authService;
  
@@ -47,9 +45,27 @@ public class AuthSecurityInterceptor implements ContainerRequestFilter {
             RolesAllowed rolesAllowedAnnotation = methodInvoked.getAnnotation(RolesAllowed.class);
             Set<String> rolesAllowed = new HashSet<>(Arrays.asList(rolesAllowedAnnotation.value()));
 
-            if (!authService.isAuthorized(authId, authToken, rolesAllowed)) {
-                requestContext.abortWith(ACCESS_UNAUTHORIZED);
+            int authResult = authService.isAuthorized(authId, authToken, rolesAllowed);
+            if (authResult<1) {
+                requestContext.abortWith(buildResponse(authResult));
             }
         }
+    }
+    
+    private Response buildResponse(int authCode){
+    	String message = "Not authorized.";
+    	
+		if(authCode == authService.NO_SESSION){
+			message = message + " No session found.";
+		}else if(authCode == authService.EXPIRED){
+			message = message + " The session has expired.";
+		}else if(authCode == authService.WRONG_ROLE){
+			message = message + " Improper user role to access this endpoint.";
+		}
+    	
+		String response = "{ \"authCode\" : \"" + authCode + "\", \"message\": \""
+							+ message + "\"}";
+		
+    	return Response.status(Response.Status.UNAUTHORIZED).entity(response).build();
     }
 }

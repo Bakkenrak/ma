@@ -2,6 +2,8 @@ package de.wwu.d2s.jpa;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,8 +22,22 @@ public class User implements java.io.Serializable {
 	private String password;
 	private String authToken;
 	private String authRole;
+	private Date authDate;
 
 	public User() {
+	}
+	
+	public boolean hasValidAuth(){
+		if(!authToken.isEmpty() && !(authDate == null)){
+			//Add 1 Day to the authDate to determine the expiration date
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(authDate);
+			cal.add(Calendar.DATE, 1);
+			Date expiryTime = cal.getTime();
+			if(expiryTime.after(new Date()))
+				return true;
+		}
+		return false;
 	}
 	
 	public void hashOwnPassword(){
@@ -84,5 +100,13 @@ public class User implements java.io.Serializable {
 
 	public void setAuthRole(String authRole) {
 		this.authRole = authRole;
+	}
+
+	public Date getAuthDate() {
+		return authDate;
+	}
+
+	public void setAuthDate(Date authDate) {
+		this.authDate = authDate;
 	}
 }

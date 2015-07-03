@@ -1,0 +1,19 @@
+<div ng-if="registerFailed" class="alert alert-danger" role="alert">
+	<strong>Registration failed!</strong> Please try again.
+</div>
+
+<form>
+	<div class="form-group">
+		<label for="usernameInput">Username</label> <input type="text"
+			class="form-control" id="usernameInput" ng-model="user.username" />
+	</div>
+	<div class="form-group">
+		<label for="passwordInput">Password</label> <input type="password"
+			class="form-control" id="passwordInput" ng-model="user.password" />
+	</div>
+	<div class="form-group">
+		<label for="passwordInput2">Confirm password</label> <input type="password"
+			class="form-control" id="passwordInput2" ng-model="passwordConfirm" />
+	</div>
+	<button type="submit" class="btn btn-default" ng-click="register()">Submit</button>
+</form>

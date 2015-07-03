@@ -8,8 +8,11 @@
 		$routeProvider.when('/', {
 			controller: 'indexCtrl',
 			templateUrl: 'resources/html/index.html'
+		}).when('/register', {
+			controller: 'registrationCtrl',
+			templateUrl: 'resources/html/register.html'
 		}).when('/login', {
-			controller: 'LoginCtrl',
+			controller: 'loginCtrl',
 			templateUrl: 'resources/html/login.html'
 		}).when('/logout', {
 			templateUrl: 'resources/html/logout.html'

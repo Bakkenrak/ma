@@ -30,7 +30,7 @@
 		});
 	});
 	
-	d2sApp.controller('LoginCtrl', function LoginCtrl($scope, $location, authFactory) {
+	d2sApp.controller('loginCtrl', function LoginCtrl($scope, $location, authFactory) {
 		
 		$scope.loggedOut = false;
 		
@@ -55,6 +55,28 @@
 	            $scope.loginFailed = true;
 	            $scope.loggedOut = false;
 	        });
+	    };
+	});
+	
+	d2sApp.controller('registrationCtrl', function LoginCtrl($scope, $location, authFactory) {
+		
+		$scope.user = {
+				username: "",
+				password: ""
+		};
+		$scope.passwordConfirm = "";
+		
+		$scope.registerFailed = false;
+		
+	    $scope.register = function () {
+	    	if($scope.user.password === $scope.passwordConfirm){
+		        authFactory.register($scope.user).success(function (data) {
+		            $scope.registerFailed = false;
+		            $location.path("login/");
+		        }).error(function () {
+		            $scope.registerFailed = true;
+		        });
+	    	}
 	    };
 	});
 

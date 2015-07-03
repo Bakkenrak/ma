@@ -1,5 +1,6 @@
 package de.wwu.d2s.ejb;
 
+import java.util.Date;
 import java.util.Set;
 import java.util.UUID;
 
@@ -15,18 +16,21 @@ public class AuthServiceBean implements AuthService {
 	 
 	@EJB
     UserService userService;
- 
-    @Override
-    public boolean isAuthorized(String authId, String authToken, Set<String> rolesAllowed) {
-    	if(authId == null || authToken == null)
-    		return false;
+	
+	@Override
+    public int isAuthorized(String username, String authToken, Set<String> rolesAllowed) {
+    	if(username == null || authToken == null)
+    		return NO_SESSION; //no token provided
     				
-    	User user = userService.findByUsernameAndAuthToken(authId, authToken);
-        if (user != null) {
-            return rolesAllowed.contains(user.getAuthRole());
-        } else {
-            return false;
-        }
+    	User user = userService.findByUsernameAndAuthToken(username, authToken);
+        if (user == null)
+        	return NO_SESSION; //no session with the given user and token at all
+        if(!rolesAllowed.contains(user.getAuthRole()))
+        	return WRONG_ROLE; //session exists but user has insufficient role
+        if(!user.hasValidAuth())
+        	return EXPIRED; //the session has expired
+        
+        return AUTHORIZED; //user is fully authorized
     }
 	
     @Override
@@ -34,6 +38,7 @@ public class AuthServiceBean implements AuthService {
     	User user = userService.findByUsernameAndPassword(loginElement.getUsername(), loginElement.getPassword());
         if (user != null) {
             user.setAuthToken(UUID.randomUUID().toString());
+            user.setAuthDate(new Date());
             userService.update(user);
             return new AuthAccessElement(loginElement.getUsername(), user.getAuthToken(), user.getAuthRole());
         }
