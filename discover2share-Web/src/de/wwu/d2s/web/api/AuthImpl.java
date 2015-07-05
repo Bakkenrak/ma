@@ -24,6 +24,14 @@ public class AuthImpl implements AuthApi {
 	@Context HttpServletRequest request;
 	@Context HttpServletResponse response;
 	
+	/**
+	 * API method for user login. Checks the given credentials and in case
+	 * of a successful login the username and authentication token will be added
+	 * to the request's header. Otherwise a 401 HTTP error will be given.
+	 * Derived from: http://www.aschua.de/blog/pairing-angularjs-and-javaee-for-authentication/ (02/07/2015)
+	 * 
+	 * @return Object with authentication information
+	 */
 	public AuthAccessElement login(AuthLoginElement loginElement) {
         AuthAccessElement accessElement = authService.login(loginElement);
         if (accessElement != null) {

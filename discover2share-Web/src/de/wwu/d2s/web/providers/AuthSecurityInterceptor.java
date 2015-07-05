@@ -20,6 +20,14 @@ import javax.ws.rs.ext.Provider;
 import de.wwu.d2s.dto.AuthAccessElement;
 import de.wwu.d2s.ejb.AuthService;
 
+/**
+ * Interceptor that is called on every incoming request.
+ * Runs an authorization check for the auth info included in the request.
+ * In case the request is not authorized to run the requested method, a 401 
+ * HTTP error is issued with additional information in the body.
+ * 
+ * Derived from: http://www.aschua.de/blog/pairing-angularjs-and-javaee-for-authentication/ (02/07/2015)
+ */
 @Provider
 public class AuthSecurityInterceptor implements ContainerRequestFilter {
 	  
@@ -42,12 +50,13 @@ public class AuthSecurityInterceptor implements ContainerRequestFilter {
         Method methodInvoked = resourceInfo.getResourceMethod();
         
         if (methodInvoked.isAnnotationPresent(RolesAllowed.class)) {
+        	// Gather allowed roles for the requested method to list
             RolesAllowed rolesAllowedAnnotation = methodInvoked.getAnnotation(RolesAllowed.class);
             Set<String> rolesAllowed = new HashSet<>(Arrays.asList(rolesAllowedAnnotation.value()));
 
             int authResult = authService.isAuthorized(authId, authToken, rolesAllowed);
-            if (authResult<1) {
-                requestContext.abortWith(buildResponse(authResult));
+            if (authResult<1) { //if caller is not authorized for the method
+                requestContext.abortWith(buildResponse(authResult)); // abort request
             }
         }
     }

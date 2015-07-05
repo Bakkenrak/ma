@@ -2,6 +2,10 @@ package de.wwu.d2s.dto;
 
 import java.io.Serializable;
 
+/**
+ * Data transfer object for authentication info for a user.
+ * Derived from: http://www.aschua.de/blog/pairing-angularjs-and-javaee-for-authentication/ (02/07/2015)
+ */
 public class AuthAccessElement implements Serializable {
 	private static final long serialVersionUID = -3707972521817063145L;
 	

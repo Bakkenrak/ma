@@ -11,6 +11,10 @@ import de.wwu.d2s.dto.AuthAccessElement;
 import de.wwu.d2s.dto.AuthLoginElement;
 import de.wwu.d2s.jpa.User;
 
+/**
+ * Provides methods for user authorization.
+ * Derived from: http://www.aschua.de/blog/pairing-angularjs-and-javaee-for-authentication/ (02/07/2015)
+ */
 @Stateless
 public class AuthServiceBean implements AuthService {
 	 

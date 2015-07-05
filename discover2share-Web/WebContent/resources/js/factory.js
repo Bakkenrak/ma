@@ -3,6 +3,12 @@
 	
 	var d2sApp = angular.module('d2sApp');
 	
+	/**
+	 *	Provides methods for user authentication. This encompasses API communication
+	 *	and cookie management.
+	 *
+	 *	derived from: http://www.aschua.de/blog/pairing-angularjs-and-javaee-for-authentication/ (02/07/2015)
+	 */
 	d2sApp.factory('authFactory', function ($rootScope, $http, $cookieStore) {
 		
 	        var authFactory = {};
@@ -39,6 +45,13 @@
 	    return authFactory;
 	});
 	
+	/**
+	 *	Is called on every request or response of an HTTP call. Adds authentication info
+	 *	from cookies to requests. Removes old authentication info from cookies on responses
+	 *	with error code 401 due to an expired authentication.
+	 *
+	 *	derived from: http://www.aschua.de/blog/pairing-angularjs-and-javaee-for-authentication/ (02/07/2015)
+	 */
 	d2sApp.factory('authHttpInterceptor', function ($rootScope, $injector, $cookieStore) {
 	    var authHttpInterceptor = {
 	        request: function ($request) {
