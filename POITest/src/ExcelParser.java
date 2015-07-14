@@ -10,8 +10,8 @@ import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-public class ReadeExcelDemo {
-	public static void main(String[] args) {
+public class ExcelParser {
+	public static List<ExcelPlatform> parsePlatforms(String filePath) {
 		//Config
 		Boolean hasHeader = true;
 		String[] requiredCols = { "A", "B", "C", "D", "E", "F", "G", "H", "I",
@@ -25,7 +25,7 @@ public class ReadeExcelDemo {
 		List<ExcelPlatform> platforms = new ArrayList<ExcelPlatform>();
 		try {
 			FileInputStream file = new FileInputStream(new File(
-					"D:\\MA\\Tabelle.xlsx"));
+					filePath));
 
 			// Create Workbook instance holding reference to .xlsx file
 			XSSFWorkbook workbook = new XSSFWorkbook(file);
@@ -62,9 +62,12 @@ public class ReadeExcelDemo {
 				//create platform object from array
 				platforms.add(new ExcelPlatform(colValues));
 			}
+			workbook.close();
 			file.close();
+			return platforms;
 		} catch (Exception e) {
 			e.printStackTrace();
+			return null;
 		}
 	}
 
