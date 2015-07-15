@@ -11,7 +11,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class ExcelParser {
-	public static List<ExcelPlatform> parsePlatforms(String filePath) {
+	public static List<ExcelPlatform> parsePlatforms(File inputFile) {
 		//Config
 		Boolean hasHeader = true;
 		String[] requiredCols = { "A", "B", "C", "D", "E", "F", "G", "H", "I",
@@ -24,8 +24,7 @@ public class ExcelParser {
 
 		List<ExcelPlatform> platforms = new ArrayList<ExcelPlatform>();
 		try {
-			FileInputStream file = new FileInputStream(new File(
-					filePath));
+			FileInputStream file = new FileInputStream(inputFile);
 
 			// Create Workbook instance holding reference to .xlsx file
 			XSSFWorkbook workbook = new XSSFWorkbook(file);

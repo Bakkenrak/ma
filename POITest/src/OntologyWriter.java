@@ -257,7 +257,7 @@ public class OntologyWriter {
 
 	private void initializePlatform() {
 		// Create new platform instance
-		platformResource = ontologyModel.createResource(D2S
+		platformResource = ontologyModel.createResource(D2S + "platform_"
 				+ currentPlatform.getIdNew());
 		// Set type
 		platformResource.addProperty(rdfType, p2pSccPlatformClass);
@@ -275,8 +275,7 @@ public class OntologyWriter {
 			return;
 
 		// Create new resource type instance
-		Resource resourceType = ontologyModel.createResource(); // anonymous
-																// instance
+		Resource resourceType = ontologyModel.createResource(); // anonymous instance
 		// Set type
 		resourceType.addProperty(rdfType, resourceTypeClass);
 		// add rdfs:label property
