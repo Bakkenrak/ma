@@ -2,7 +2,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.apache.log4j.Logger;
 
 import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
 import com.hp.hpl.jena.ontology.OntModel;
@@ -19,10 +23,12 @@ import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
 
 public class OntologyWriter {
+	
+	private Logger log;
 
 	private final String RDF = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
 	private final String RDFS = "http://www.w3.org/2000/01/rdf-schema#";
-	private final String D2S = "http://www.discover2share.org/d2s-ont/";
+	private final String D2S = "http://www.discover2share.net/d2s-ont/";
 	private final String DBPP = "http://dbpedia.org/property/";
 	private final String DBPR = "http://dbpedia.org/resource/";
 	private final String DBPO = "http://dbpedia.org/ontology/";
@@ -36,12 +42,13 @@ public class OntologyWriter {
 
 	private Resource platformResource;
 	private ExcelPlatform currentPlatform;
+	private Map<String, Resource> countryMap = new HashMap<String, Resource>();
 
 	private Property rdfType;
 	private Property rdfsLabel;
 	private Property dbppUrl;
 	private Property hasResourceType;
-	private Property hasSustainableConsumerism;
+	private Property promotes;
 	private Property hasPattern;
 	private Property hasMarketMediation;
 	private Property accessedObjectHasType;
@@ -55,6 +62,8 @@ public class OntologyWriter {
 	private Property hasScope;
 	private Property launchYear;
 	private Property launchedIn;
+	private Property location;
+	private Property hasApp;
 
 	private Resource resourceTypeClass;
 	private Resource p2pSccPlatformClass;
@@ -93,9 +102,15 @@ public class OntologyWriter {
 	private Resource stateWide;
 	private Resource countryWide;
 	private Resource global;
+	private Resource androidApp;
+	private Resource iOSApp;
+	private Resource windowsPhoneApp;
 	
 	
 	public OntologyWriter() {
+		log = Logger.getLogger(this.getClass().getName());
+		
+		log.info("Creating ontology model and setting namespace prefixes.");
 		ontologyModel = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM);
 		// define namespace prefixes to be used in output
 		ontologyModel.setNsPrefix("dbpp", DBPP);
@@ -107,20 +122,20 @@ public class OntologyWriter {
 		ontologyModel.setNsPrefix("time", TIME);
 		ontologyModel.setNsPrefix("wordnet", WORDNET);
 
+		log.info("Defining D2S properties.");
 		// create properties once in the beginning to use for every platform
 		rdfType = ontologyModel.createProperty(RDF + "type");
 		rdfsLabel = ontologyModel.createProperty(RDFS + "label");
 		dbppUrl = ontologyModel.createProperty(DBPP + "url");
 		hasResourceType = ontologyModel.createProperty(D2S
 				+ "has_resource_type");
-		hasSustainableConsumerism = ontologyModel.createProperty(D2S
-				+ "has_sustainable_consumerism");
+		promotes = ontologyModel.createProperty(D2S + "promotes");
 		hasPattern = ontologyModel.createProperty(D2S + "has_p2p_scc_pattern");
 		hasMarketMediation = ontologyModel.createProperty(D2S + "has_market_mediation");
 		accessedObjectHasType = ontologyModel.createProperty(D2S + "accessed_object_has_type");
 		hasResourceOwner = ontologyModel.createProperty(D2S + "has_resource_owner");
-		minServiceDuration = ontologyModel.createProperty(D2S + "service_duration_measured_in");
-		maxServiceDuration = ontologyModel.createProperty(D2S + "service_duration_measured_in");
+		minServiceDuration = ontologyModel.createProperty(D2S + "min_service_duration");
+		maxServiceDuration = ontologyModel.createProperty(D2S + "max_service_duration");
 		hasConsumerInvolvement = ontologyModel.createProperty(D2S + "has_consumer_involvement");
 		hasMoneyFlow = ontologyModel.createProperty(D2S + "has_money_flow");
 		hasMarketIntegration = ontologyModel.createProperty(D2S + "has_market_integration");
@@ -128,8 +143,10 @@ public class OntologyWriter {
 		hasScope = ontologyModel.createProperty(D2S + "has_scope");
 		launchYear = ontologyModel.createProperty(DBPP + "launchYear");
 		launchedIn = ontologyModel.createProperty(D2S + "launched_in");
+		location = ontologyModel.createProperty(DBPO + "location");
+		hasApp = ontologyModel.createProperty(D2S + "has_app");
 		
-		
+		log.info("Defining D2S classes/instances.");
 		// create resources once in the beginning to use for every platform
 		resourceTypeClass = ontologyModel.createResource(D2S + "Resource_Type");
 		
@@ -182,16 +199,24 @@ public class OntologyWriter {
 		stateWide = ontologyModel.createResource(D2S + "State-wide");
 		countryWide = ontologyModel.createResource(D2S + "Country-wide");
 		global = ontologyModel.createResource(D2S + "Global");
+		
+		androidApp = ontologyModel.createResource(D2S + "Android_app");
+		iOSApp = ontologyModel.createResource(D2S + "iOS_app");
+		windowsPhoneApp = ontologyModel.createResource(D2S + "Windows_Phone_app");
 	}
 
 	public void writeAll(List<ExcelPlatform> platforms, String outputFile) {
-		for (ExcelPlatform platform : platforms) {
-			currentPlatform = platform;
+		int nrPlatforms = platforms.size();
+		for (int i=0; i < nrPlatforms; i++) {
+			currentPlatform = platforms.get(i);
+			
+			log.info("Creating '" + currentPlatform.getName() + "' platform (" + (i+1) + "/" + nrPlatforms + ")");
+			
 			constructPlatform();
 		}
 
 		try (OutputStream out = new FileOutputStream(outputFile)) {
-			ontologyModel.write(out, "TURTLE"); // "RDF/XML"
+			ontologyModel.write(out, "RDF/XML"); // "RDF/XML"
 			out.close();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -214,6 +239,8 @@ public class OntologyWriter {
 		marketIntegrationDimension();
 		launchYearDimension();
 		launchCountryDimension();
+		residenceCountryDimension();
+		smartphoneAppDimension();
 	}
 
 
@@ -236,7 +263,7 @@ public class OntologyWriter {
 		// Create new resource type instance
 		Resource resourceType = ontologyModel.createResource(); //anonymous instance
 		// Set type
-		platformResource.addProperty(rdfType, resourceTypeClass);
+		resourceType.addProperty(rdfType, resourceTypeClass);
 		// add rdfs:label property
 		resourceType.addProperty(rdfsLabel, currentPlatform.getResourceType(),
 				XSDDatatype.XSDstring);
@@ -248,17 +275,17 @@ public class OntologyWriter {
 		if (currentPlatform.getEconomical().equals("o")
 				&& currentPlatform.getEnvironmental().equals("o")
 				&& currentPlatform.getSocial().equals("o")) {
-			platformResource.addProperty(hasSustainableConsumerism,
+			platformResource.addProperty(promotes,
 					noConsumerism);
 		} else {
 			if (currentPlatform.getEconomical().equals("x"))
-				platformResource.addProperty(hasSustainableConsumerism,
+				platformResource.addProperty(promotes,
 						economicConsumerism);
 			if (currentPlatform.getEnvironmental().equals("x"))
-				platformResource.addProperty(hasSustainableConsumerism,
+				platformResource.addProperty(promotes,
 						environmentalConsumerism);
 			if (currentPlatform.getSocial().equals("x"))
-				platformResource.addProperty(hasSustainableConsumerism,
+				platformResource.addProperty(promotes,
 						socialConsumerism);
 		}
 	}
@@ -429,26 +456,64 @@ public class OntologyWriter {
 		}
 	}
 
-	private void launchCountryDimension() {
-		String lgdEndpoint = "http://linkedgeodata.org/sparql";
-		
-		String sparqlQuery = "Prefix lgdo:<http://linkedgeodata.org/ontology/> "
-				+ "Prefix rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
-				+ "Select ?country {"
-				+ "	?country rdf:type lgdo:Country ."
-				+ "	?country lgdo:country_code_iso3166_1_alpha_2 '" + currentPlatform.getLaunchCountry().toUpperCase() + "'"
-				+ "}";
-
-		Query query = QueryFactory.create(sparqlQuery);
-		QueryExecution qexec = QueryExecutionFactory.sparqlService(lgdEndpoint, query);
-		ResultSet results = qexec.execSelect();
-		
-		if(results.hasNext()){
-			QuerySolution first = results.nextSolution();
-			Resource country = ontologyModel.createResource(first.getResource("country").getURI());
+	private void launchCountryDimension() {		
+		Resource country = findCountry(currentPlatform.getLaunchCountry().toUpperCase());
+		if(country != null)
 			platformResource.addProperty(launchedIn, country);
-		}
+	}
+	
+	private void residenceCountryDimension() {		
+		Resource country = findCountry(currentPlatform.getResidenceCountry().toUpperCase());
+		if(country != null)
+			platformResource.addProperty(location, country);
+	}
+	
+	private Resource findCountry(String country) {
+		if(country.isEmpty()) return null;
 		
-		qexec.close();
+		if(countryMap.containsKey(country)) {
+			
+			return countryMap.get(country);
+			
+		} else {
+			String lgdEndpoint = "http://linkedgeodata.org/sparql";
+			
+			String sparqlQuery = "Prefix lgdo:<http://linkedgeodata.org/ontology/> "
+					+ "Prefix rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
+					+ "Select ?country {"
+					+ "	?country rdf:type lgdo:Country ."
+					+ "	?country lgdo:country_code_iso3166_1_alpha_2 '" + country + "'"
+					+ "}";
+	
+			Query query = QueryFactory.create(sparqlQuery);
+			QueryExecution qexec = QueryExecutionFactory.sparqlService(lgdEndpoint, query);
+			ResultSet results = qexec.execSelect();
+			
+			Resource countryResource = null;
+			
+			if(results.hasNext()){
+				QuerySolution first = results.nextSolution();
+				countryResource = ontologyModel.createResource(first.getResource("country").getURI());
+				
+				countryMap.put(country, countryResource);
+			}
+			
+			qexec.close();
+			return countryResource;
+		}
+	}
+	
+	private void smartphoneAppDimension() {
+		
+		if (currentPlatform.getAndroid().equals("x"))
+			platformResource.addProperty(hasApp,
+					androidApp);
+		if (currentPlatform.getiOS().equals("x"))
+			platformResource.addProperty(hasApp,
+					iOSApp);
+		if (currentPlatform.getWindowsPhone().equals("x"))
+			platformResource.addProperty(hasApp,
+					windowsPhoneApp);
+		
 	}
 }
