@@ -1,11 +1,14 @@
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import uk.ac.shef.wit.simmetrics.similaritymetrics.Levenshtein;
 
@@ -212,6 +215,9 @@ public class OntologyWriter {
 			constructPlatform();
 		}
 
+		for(String c : citiesNotFound)
+			System.out.println(c);
+		
 		try (OutputStream out = new FileOutputStream(outputFile)) {
 			ontologyModel.write(out, "RDF/XML"); // "RDF/XML"
 			out.close();
@@ -223,7 +229,10 @@ public class OntologyWriter {
 
 	private void constructPlatform() {
 		initializePlatform();
-
+		
+		findCityJSON(currentPlatform.getLaunchCity().toLowerCase(), currentPlatform.getLaunchCountry().toUpperCase());
+		findCityJSON(currentPlatform.getResidenceCity().toLowerCase(), currentPlatform.getLaunchCountry().toUpperCase());
+/*
 		resourceTypeDimension();
 		sustainableConsumerismDimension();
 		patternDimension(currentPlatform.getDeferredP2PPattern().toLowerCase());
@@ -238,7 +247,7 @@ public class OntologyWriter {
 		launchYearDimension();
 		launchCountryDimension();
 		residenceCountryDimension();
-		smartphoneAppDimension();
+		smartphoneAppDimension();*/
 	}
 
 	private void initializePlatform() {
@@ -717,6 +726,65 @@ public class OntologyWriter {
 			qexec.close();
 			return countryResource;
 		}
+	}
+	
+	private Resource findCity(String city){
+		String lgdEndpoint = "http://linkedgeodata.org/sparql";
+
+		String sparqlQuery = "Prefix lgdo:<http://linkedgeodata.org/ontology/> "
+				+ "Prefix rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
+				+ "Prefix rdfs:<http://www.w3.org/2000/01/rdf-schema#> " 
+				+ "Select distinct ?city {{"
+				+ " ?city rdf:type lgdo:City ."
+				+ " ?city rdfs:label ?label ."
+				+ " FILTER (lcase(str(?label)) = '" + city + "')"
+				+ "} union {"
+				+ " ?city rdf:type lgdo:Town ."
+				+ " ?city rdfs:label ?label ."
+				+ " FILTER (lcase(str(?label)) = '" + city + "')"
+				+ "}}";
+
+		Query query = QueryFactory.create(sparqlQuery);
+		QueryExecution qexec = QueryExecutionFactory.sparqlService(lgdEndpoint, query);
+		ResultSet results = qexec.execSelect();
+
+		Resource countryResource = null;
+
+		if (results.hasNext()) {
+			QuerySolution first = results.nextSolution();
+			countryResource = ontologyModel.createResource(first.getResource("city").getURI());
+
+		}
+		else{
+			if(!citiesNotFound.contains(city))
+				citiesNotFound.add(city);
+		}
+
+		qexec.close();
+		return countryResource;
+	}
+	private List<String> citiesNotFound = new ArrayList<String>();
+	
+	private void findCityJSON(String city, String country){
+		if(city.isEmpty() || city.equals("?")) return;
+		String query = "http://api.geonames.org/searchJSON?username=demo&maxRows=1&featureClass=P&q="+city + " " + country;
+		try {
+			JSONObject json = JsonReader.readJsonFromUrl(query);
+				
+			if(json.has("totalResultsCount") && json.getInt("totalResultsCount") > 0){
+				int id = json.getJSONArray("geonames").getJSONObject(0).getInt("geonameId");
+			}else{
+				if(city.contains("\u00A0")){ //in case of non-breaking spaces
+					city = city.replace(String.valueOf((char) 160), " ").trim();
+					findCityJSON(city, country);
+					return;
+				}
+				citiesNotFound.add(city + ", " + country + " " + query);
+			}
+		} catch (Exception e){
+			e.printStackTrace();
+		}
+		
 	}
 
 	private void smartphoneAppDimension() {
