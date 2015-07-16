@@ -7,6 +7,8 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import uk.ac.shef.wit.simmetrics.similaritymetrics.Levenshtein;
+
 import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.ontology.OntModelSpec;
@@ -23,6 +25,7 @@ import com.hp.hpl.jena.rdf.model.Resource;
 public class OntologyWriter {
 
 	private Logger log;
+	private Levenshtein levenshtein = new Levenshtein();
 
 	private final String RDF = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
 	private final String RDFS = "http://www.w3.org/2000/01/rdf-schema#";
@@ -125,25 +128,17 @@ public class OntologyWriter {
 		rdfType = ontologyModel.createProperty(RDF + "type");
 		rdfsLabel = ontologyModel.createProperty(RDFS + "label");
 		dbppUrl = ontologyModel.createProperty(DBPP + "url");
-		hasResourceType = ontologyModel.createProperty(D2S
-				+ "has_resource_type");
+		hasResourceType = ontologyModel.createProperty(D2S + "has_resource_type");
 		promotes = ontologyModel.createProperty(D2S + "promotes");
 		hasPattern = ontologyModel.createProperty(D2S + "has_p2p_scc_pattern");
-		hasMarketMediation = ontologyModel.createProperty(D2S
-				+ "has_market_mediation");
-		accessedObjectHasType = ontologyModel.createProperty(D2S
-				+ "accessed_object_has_type");
-		hasResourceOwner = ontologyModel.createProperty(D2S
-				+ "has_resource_owner");
-		minServiceDuration = ontologyModel.createProperty(D2S
-				+ "min_service_duration");
-		maxServiceDuration = ontologyModel.createProperty(D2S
-				+ "max_service_duration");
-		hasConsumerInvolvement = ontologyModel.createProperty(D2S
-				+ "has_consumer_involvement");
+		hasMarketMediation = ontologyModel.createProperty(D2S + "has_market_mediation");
+		accessedObjectHasType = ontologyModel.createProperty(D2S + "accessed_object_has_type");
+		hasResourceOwner = ontologyModel.createProperty(D2S + "has_resource_owner");
+		minServiceDuration = ontologyModel.createProperty(D2S + "min_service_duration");
+		maxServiceDuration = ontologyModel.createProperty(D2S + "max_service_duration");
+		hasConsumerInvolvement = ontologyModel.createProperty(D2S + "has_consumer_involvement");
 		hasMoneyFlow = ontologyModel.createProperty(D2S + "has_money_flow");
-		hasMarketIntegration = ontologyModel.createProperty(D2S
-				+ "has_market_integration");
+		hasMarketIntegration = ontologyModel.createProperty(D2S + "has_market_integration");
 		marketsAre = ontologyModel.createProperty(D2S + "markets_are");
 		hasScope = ontologyModel.createProperty(D2S + "has_scope");
 		launchYear = ontologyModel.createProperty(DBPP + "launchYear");
@@ -155,13 +150,11 @@ public class OntologyWriter {
 		// create resources once in the beginning to use for every platform
 		resourceTypeClass = ontologyModel.createResource(D2S + "Resource_Type");
 
-		p2pSccPlatformClass = ontologyModel.createResource(D2S
-				+ "P2P_SCC_Platform");
+		p2pSccPlatformClass = ontologyModel.createResource(D2S + "P2P_SCC_Platform");
 
 		socialConsumerism = ontologyModel.createResource(D2S + "Social");
 		economicConsumerism = ontologyModel.createResource(D2S + "Economic");
-		environmentalConsumerism = ontologyModel.createResource(D2S
-				+ "Environmental");
+		environmentalConsumerism = ontologyModel.createResource(D2S + "Environmental");
 		noConsumerism = ontologyModel.createResource(D2S + "None");
 
 		deferredPattern = ontologyModel.createResource(D2S + "Deferred");
@@ -170,19 +163,15 @@ public class OntologyWriter {
 
 		indirectProfit = ontologyModel.createResource(D2S + "Indirect_Profit");
 		profitFromBoth = ontologyModel.createResource(D2S + "Profit_from_both");
-		profitFromPeerConsumers = ontologyModel.createResource(D2S
-				+ "Profit_from_peer_consumers");
-		profitFromPeerProviders = ontologyModel.createResource(D2S
-				+ "Profit_from_peer_providers");
+		profitFromPeerConsumers = ontologyModel.createResource(D2S + "Profit_from_peer_consumers");
+		profitFromPeerProviders = ontologyModel.createResource(D2S + "Profit_from_peer_providers");
 
 		mixedObjectType = ontologyModel.createResource(D2S + "Mixed");
-		experientialObjectType = ontologyModel.createResource(D2S
-				+ "Experiential");
+		experientialObjectType = ontologyModel.createResource(D2S + "Experiential");
 		functionalObjectType = ontologyModel.createResource(D2S + "Functional");
 
 		privateResourceOwner = ontologyModel.createResource(D2S + "Private");
-		privateAndBusinessResourceOwner = ontologyModel.createResource(D2S
-				+ "Private_and_business");
+		privateAndBusinessResourceOwner = ontologyModel.createResource(D2S + "Private_and_business");
 
 		minutes = ontologyModel.createResource(TIME + "unitMinute");
 		hours = ontologyModel.createResource(TIME + "unitHour");
@@ -190,7 +179,7 @@ public class OntologyWriter {
 		weeks = ontologyModel.createResource(TIME + "unitWeek");
 		months = ontologyModel.createResource(TIME + "unitMonth");
 		years = ontologyModel.createResource(TIME + "unitYear");
-		
+
 		fullService = ontologyModel.createResource(D2S + "Full-service");
 		selfService = ontologyModel.createResource(D2S + "Self-service");
 		inBetween = ontologyModel.createResource(D2S + "In-Between");
@@ -199,12 +188,10 @@ public class OntologyWriter {
 		c2b2c = ontologyModel.createResource(D2S + "C2B2C");
 		free = ontologyModel.createResource(D2S + "Free");
 
-		marketIntegrationClass = ontologyModel.createResource(D2S
-				+ "Market_Integration");
+		marketIntegrationClass = ontologyModel.createResource(D2S + "Market_Integration");
 		integrated = ontologyModel.createResource(D2S + "Integrated");
 		separated = ontologyModel.createResource(D2S + "Separated");
-		neighbourhoodWide = ontologyModel.createResource(D2S
-				+ "Neighbourhood-wide");
+		neighbourhoodWide = ontologyModel.createResource(D2S + "Neighbourhood-wide");
 		cityWide = ontologyModel.createResource(D2S + "City-wide");
 		stateWide = ontologyModel.createResource(D2S + "State-wide");
 		countryWide = ontologyModel.createResource(D2S + "Country-wide");
@@ -212,8 +199,7 @@ public class OntologyWriter {
 
 		androidApp = ontologyModel.createResource(D2S + "Android_app");
 		iOSApp = ontologyModel.createResource(D2S + "iOS_app");
-		windowsPhoneApp = ontologyModel.createResource(D2S
-				+ "Windows_Phone_app");
+		windowsPhoneApp = ontologyModel.createResource(D2S + "Windows_Phone_app");
 	}
 
 	public void writeAll(List<ExcelPlatform> platforms, String outputFile) {
@@ -221,8 +207,7 @@ public class OntologyWriter {
 		for (int i = 0; i < nrPlatforms; i++) {
 			currentPlatform = platforms.get(i);
 
-			log.info("Creating '" + currentPlatform.getName() + "' platform ("
-					+ (i + 1) + "/" + nrPlatforms + ")");
+			log.info("Creating '" + currentPlatform.getName() + "' platform (" + (i + 1) + "/" + nrPlatforms + ")");
 
 			constructPlatform();
 		}
@@ -241,13 +226,14 @@ public class OntologyWriter {
 
 		resourceTypeDimension();
 		sustainableConsumerismDimension();
-		patternDimension();
-		marketMediationDimension();
-		typeOfAccessedObjectDimension();
-		resourceOwnerDimension();
-		serviceDurationDimension();
-		consumerInvolvementDimension();
-		moneyFlowDimension();
+		patternDimension(currentPlatform.getDeferredP2PPattern().toLowerCase());
+		marketMediationDimension(currentPlatform.getMarketMediation().toLowerCase());
+		typeOfAccessedObjectDimension(currentPlatform.getTypeOfAccessedObject().toLowerCase());
+		resourceOwnerDimension(currentPlatform.getResourceOwner().toLowerCase());
+		minServiceDurationDimension(currentPlatform.getServiceDurationMin().toLowerCase());
+		maxServiceDurationDimension(currentPlatform.getServiceDurationMax().toLowerCase());
+		consumerInvolvementDimension(currentPlatform.getConsumerInvolvement().toLowerCase());
+		moneyFlowDimension(currentPlatform.getMoneyFlow().toLowerCase());
 		marketIntegrationDimension();
 		launchYearDimension();
 		launchCountryDimension();
@@ -257,16 +243,13 @@ public class OntologyWriter {
 
 	private void initializePlatform() {
 		// Create new platform instance
-		platformResource = ontologyModel.createResource(D2S + "platform_"
-				+ currentPlatform.getIdNew());
+		platformResource = ontologyModel.createResource(D2S + "platform_" + currentPlatform.getIdNew());
 		// Set type
 		platformResource.addProperty(rdfType, p2pSccPlatformClass);
 		// add rdfs:label property
-		platformResource.addProperty(rdfsLabel, currentPlatform.getName(),
-				XSDDatatype.XSDstring);
+		platformResource.addProperty(rdfsLabel, currentPlatform.getName(), XSDDatatype.XSDstring);
 		// add dbpp:url property
-		platformResource.addProperty(dbppUrl, currentPlatform.getStrippedUrl(),
-				XSDDatatype.XSDanyURI);
+		platformResource.addProperty(dbppUrl, currentPlatform.getStrippedUrl(), XSDDatatype.XSDanyURI);
 	}
 
 	// TODO
@@ -279,233 +262,301 @@ public class OntologyWriter {
 		// Set type
 		resourceType.addProperty(rdfType, resourceTypeClass);
 		// add rdfs:label property
-		resourceType.addProperty(rdfsLabel, currentPlatform.getResourceType(),
-				XSDDatatype.XSDstring);
+		resourceType.addProperty(rdfsLabel, currentPlatform.getResourceType(), XSDDatatype.XSDstring);
 		// add d2s:has_resource_type
 		platformResource.addProperty(hasResourceType, resourceType);
 	}
 
 	private void sustainableConsumerismDimension() {
-		if (currentPlatform.getEconomical().equals("o")
-				&& currentPlatform.getEnvironmental().equals("o")
+		if (currentPlatform.getEconomical().equals("o") && currentPlatform.getEnvironmental().equals("o")
 				&& currentPlatform.getSocial().equals("o")) {
 			platformResource.addProperty(promotes, noConsumerism);
 		} else {
 			if (currentPlatform.getEconomical().equals("x"))
 				platformResource.addProperty(promotes, economicConsumerism);
 			if (currentPlatform.getEnvironmental().equals("x"))
-				platformResource
-						.addProperty(promotes, environmentalConsumerism);
+				platformResource.addProperty(promotes, environmentalConsumerism);
 			if (currentPlatform.getSocial().equals("x"))
 				platformResource.addProperty(promotes, socialConsumerism);
 		}
 
 		// value testing
-		if (!currentPlatform.getEconomical().isEmpty()
-				&& !currentPlatform.getEconomical().equals("o")
+		if (!currentPlatform.getEconomical().isEmpty() && !currentPlatform.getEconomical().equals("o")
 				&& !currentPlatform.getEconomical().equals("x"))
-			log.warn("Economical column not 'o'/'x'. Is: '"
-					+ currentPlatform.getEconomical() + "'");
-		if (!currentPlatform.getEnvironmental().isEmpty()
-				&& !currentPlatform.getEnvironmental().equals("o")
+			log.warn("Economical column not 'o'/'x'. Is: '" + currentPlatform.getEconomical() + "'");
+		if (!currentPlatform.getEnvironmental().isEmpty() && !currentPlatform.getEnvironmental().equals("o")
 				&& !currentPlatform.getEnvironmental().equals("x"))
-			log.warn("Environmental column not 'o'/'x'. Is: '"
-					+ currentPlatform.getEnvironmental() + "'");
-		if (!currentPlatform.getSocial().isEmpty()
-				&& !currentPlatform.getSocial().equals("o")
+			log.warn("Environmental column not 'o'/'x'. Is: '" + currentPlatform.getEnvironmental() + "'");
+		if (!currentPlatform.getSocial().isEmpty() && !currentPlatform.getSocial().equals("o")
 				&& !currentPlatform.getSocial().equals("x"))
-			log.warn("Social column not 'o'/'x'. Is: '"
-					+ currentPlatform.getSocial() + "'");
+			log.warn("Social column not 'o'/'x'. Is: '" + currentPlatform.getSocial() + "'");
 	}
 
-	private void patternDimension() {
-		if (currentPlatform.getDeferredP2PPattern().isEmpty())
+	private String[] patternValues = { "deferred", "immediate", "recurrent" };
+
+	private void patternDimension(String value) {
+		if (value.isEmpty())
 			return;
 
-		switch (currentPlatform.getDeferredP2PPattern().toLowerCase()) {
-		case "deferred":
+		if (value.equals(patternValues[0]))
 			platformResource.addProperty(hasPattern, deferredPattern);
-			break;
-		case "immediate":
+		else if (value.equals(patternValues[1]))
 			platformResource.addProperty(hasPattern, immediatePattern);
-			break;
-		case "recurrent":
+		else if (value.equals(patternValues[2]))
 			platformResource.addProperty(hasPattern, recurrentPattern);
-			break;
-		default:
-			log.warn("P2P Pattern column not 'deferred'/'immediate'/'recurrent'. Is: '"
-					+ currentPlatform.getDeferredP2PPattern() + "'");
+		else {
+			float maxSimilarity = 0;
+			String maxSimValue = "";
+
+			for (String val : patternValues) {
+				float sim = levenshtein.getSimilarity(value, val);
+				if (sim > maxSimilarity) {
+					maxSimilarity = sim;
+					maxSimValue = val;
+				}
+			}
+
+			if (maxSimilarity > 0.7)
+				patternDimension(maxSimValue);
+			else
+				log.warn("P2P Pattern column not 'deferred'/'immediate'/'recurrent'. Is: '" + value + "'");
 		}
 	}
 
-	private void marketMediationDimension() {
-		if (currentPlatform.getMarketMediation().isEmpty())
+	private String[] mediationValues = { "profit from both", "profit from both peer consumers and peer providers",
+			"indirect profit", "profit from peer consumers", "profit from peer providers" };
+
+	private void marketMediationDimension(String value) {
+		if (value.isEmpty())
 			return;
 
-		switch (currentPlatform.getMarketMediation().toLowerCase()) {
-		case "profit from both peer consumers and peer providers":
+		if (value.equals(mediationValues[0]) || value.equals(mediationValues[1]))
 			platformResource.addProperty(hasMarketMediation, profitFromBoth);
-			break;
-		case "indirect profit":
+		else if (value.equals(mediationValues[2]))
 			platformResource.addProperty(hasMarketMediation, indirectProfit);
-			break;
-		case "profit from peer consumers":
-			platformResource.addProperty(hasMarketMediation,
-					profitFromPeerConsumers);
-			break;
-		case "profit from peer providers":
-			platformResource.addProperty(hasMarketMediation,
-					profitFromPeerProviders);
-			break;
-		case "not-for-profit":
-			// TODO
-			break;
-		default:
-			log.warn("Market mediation column not 'profit from both peer consumers and peer providers'/'indirect profit'/'profit from peer consumers'/'profit from peer providers'. Is: '"
-					+ currentPlatform.getMarketMediation() + "'");
-		}
-	}
+		else if (value.equals(mediationValues[3]))
+			platformResource.addProperty(hasMarketMediation, profitFromPeerConsumers);
+		else if (value.equals(mediationValues[4]))
+			platformResource.addProperty(hasMarketMediation, profitFromPeerProviders);
+		else {
+			float maxSimilarity = 0;
+			String maxSimValue = "";
 
-	private void typeOfAccessedObjectDimension() {
-		if (currentPlatform.getTypeOfAccessedObject().isEmpty())
-			return;
-
-		switch (currentPlatform.getTypeOfAccessedObject().toLowerCase()) {
-		case "mixed":
-			platformResource
-					.addProperty(accessedObjectHasType, mixedObjectType);
-			break;
-		case "functional":
-			platformResource.addProperty(accessedObjectHasType,
-					functionalObjectType);
-			break;
-		case "experiential":
-			platformResource.addProperty(accessedObjectHasType,
-					experientialObjectType);
-			break;
-		default:
-			log.warn("Type of acc. object column not 'mixed'/'functional'/'experiential'. Is: '"
-					+ currentPlatform.getTypeOfAccessedObject() + "'");
-		}
-	}
-
-	private void resourceOwnerDimension() {
-		if (currentPlatform.getResourceOwner().isEmpty())
-			return;
-
-		switch (currentPlatform.getResourceOwner().toLowerCase()) {
-		case "private":
-			platformResource
-					.addProperty(hasResourceOwner, privateResourceOwner);
-			break;
-		case "private and business":
-			platformResource.addProperty(hasResourceOwner,
-					privateAndBusinessResourceOwner);
-			break;
-		case "business":
-			break;
-		default:
-			log.warn("Resource owner column not 'private'/'private and business'. Is: '"
-					+ currentPlatform.getResourceOwner() + "'");
-		}
-	}
-
-	private void serviceDurationDimension() {
-		if (!currentPlatform.getServiceDurationMin().isEmpty()) {
-
-			switch (currentPlatform.getServiceDurationMin().toLowerCase()) {
-			case "minutes":
-				platformResource.addProperty(minServiceDuration, minutes);
-				break;
-			case "hours":
-				platformResource.addProperty(minServiceDuration, hours);
-				break;
-			case "days":
-				platformResource.addProperty(minServiceDuration, days);
-				break;
-			case "weeks":
-				platformResource.addProperty(minServiceDuration, weeks);
-				break;
-			case "months":
-				platformResource.addProperty(minServiceDuration, months);
-				break;
-			case "years":
-				platformResource.addProperty(minServiceDuration, years);
-				break;
-			default:
-				log.warn("Service duration min column not 'minutes'/'hours'/'days'/'weeks'/'months'. Is: '"
-						+ currentPlatform.getServiceDurationMin() + "'");
+			for (String val : mediationValues) {
+				float sim = levenshtein.getSimilarity(value, val);
+				if (sim > maxSimilarity) {
+					maxSimilarity = sim;
+					maxSimValue = val;
+				}
 			}
-		}
 
-		if (!currentPlatform.getServiceDurationMax().isEmpty()) {
-
-			switch (currentPlatform.getServiceDurationMax().toLowerCase()) {
-			case "minutes":
-				platformResource.addProperty(maxServiceDuration, minutes);
-				break;
-			case "hours":
-				platformResource.addProperty(maxServiceDuration, hours);
-				break;
-			case "days":
-				platformResource.addProperty(maxServiceDuration, days);
-				break;
-			case "weeks":
-				platformResource.addProperty(maxServiceDuration, weeks);
-				break;
-			case "months":
-				platformResource.addProperty(maxServiceDuration, months);
-				break;
-			case "years":
-				platformResource.addProperty(maxServiceDuration, years);
-				break;
-			default:
-				log.warn("Service duration max column not 'minutes'/'hours'/'days'/'weeks'/'months'. Is: '"
-						+ currentPlatform.getServiceDurationMax() + "'");
-			}
+			if (maxSimilarity > 0.7)
+				marketMediationDimension(maxSimValue);
+			else
+				log.warn("Market mediation column not 'profit from both peer consumers and peer providers'/'indirect profit'/'profit from peer consumers'/'profit from peer providers'. Is: '"
+						+ value + "'");
 		}
 	}
 
-	private void consumerInvolvementDimension() {
-		if (currentPlatform.getConsumerInvolvement().isEmpty())
+	private String[] objectTypeValues = { "mixed", "functional", "experiential" };
+
+	private void typeOfAccessedObjectDimension(String value) {
+		if (value.isEmpty())
 			return;
 
-		switch (currentPlatform.getConsumerInvolvement().toLowerCase()) {
-		case "full-service":
+		if (value.equals(objectTypeValues[0]))
+			platformResource.addProperty(accessedObjectHasType, mixedObjectType);
+		else if (value.equals(objectTypeValues[1]))
+			platformResource.addProperty(accessedObjectHasType, functionalObjectType);
+		else if (value.equals(objectTypeValues[2]))
+			platformResource.addProperty(accessedObjectHasType, experientialObjectType);
+		else {
+			float maxSimilarity = 0;
+			String maxSimValue = "";
+
+			for (String val : objectTypeValues) {
+				float sim = levenshtein.getSimilarity(value, val);
+				if (sim > maxSimilarity) {
+					maxSimilarity = sim;
+					maxSimValue = val;
+				}
+			}
+
+			if (maxSimilarity > 0.7)
+				typeOfAccessedObjectDimension(maxSimValue);
+			else
+				log.warn("Type of acc. object column not 'mixed'/'functional'/'experiential'. Is: '" + value + "'");
+		}
+	}
+
+	private String[] resourceOwnerValues = { "private", "private and business", "business" };
+
+	private void resourceOwnerDimension(String value) {
+		if (value.isEmpty())
+			return;
+
+		if (value.equals(resourceOwnerValues[0]))
+			platformResource.addProperty(hasResourceOwner, privateResourceOwner);
+		else if (value.equals(resourceOwnerValues[1]))
+			platformResource.addProperty(hasResourceOwner, privateAndBusinessResourceOwner);
+		else if (value.equals(resourceOwnerValues[2])) {
+		} else {
+			float maxSimilarity = 0;
+			String maxSimValue = "";
+
+			for (String val : resourceOwnerValues) {
+				float sim = levenshtein.getSimilarity(value, val);
+				if (sim > maxSimilarity) {
+					maxSimilarity = sim;
+					maxSimValue = val;
+				}
+			}
+
+			if (maxSimilarity > 0.7)
+				resourceOwnerDimension(maxSimValue);
+			else
+				log.warn("Resource owner column not 'private'/'private and business'. Is: '" + value + "'");
+
+		}
+	}
+
+	private String[] serviceDurationValues = { "minutes", "hours", "days", "weeks", "months", "years" };
+
+	private void minServiceDurationDimension(String value) {
+		if (value.isEmpty())
+			return;
+
+		if (value.equals(serviceDurationValues[0]))
+			platformResource.addProperty(minServiceDuration, minutes);
+		else if (value.equals(serviceDurationValues[1]))
+			platformResource.addProperty(minServiceDuration, hours);
+		else if (value.equals(serviceDurationValues[2]))
+			platformResource.addProperty(minServiceDuration, days);
+		else if (value.equals(serviceDurationValues[3]))
+			platformResource.addProperty(minServiceDuration, weeks);
+		else if (value.equals(serviceDurationValues[4]))
+			platformResource.addProperty(minServiceDuration, months);
+		else if (value.equals(serviceDurationValues[5]))
+			platformResource.addProperty(minServiceDuration, years);
+		else {
+			float maxSimilarity = 0;
+			String maxSimValue = "";
+
+			for (String val : serviceDurationValues) {
+				float sim = levenshtein.getSimilarity(value, val);
+				if (sim > maxSimilarity) {
+					maxSimilarity = sim;
+					maxSimValue = val;
+				}
+			}
+
+			if (maxSimilarity > 0.7)
+				minServiceDurationDimension(maxSimValue);
+			else
+				log.warn("Service duration min column not 'minutes'/'hours'/'days'/'weeks'/'months'. Is: '" + value
+						+ "'");
+		}
+
+	}
+
+	private void maxServiceDurationDimension(String value) {
+		if (value.isEmpty())
+			return;
+
+		if (value.equals(serviceDurationValues[0]))
+			platformResource.addProperty(maxServiceDuration, minutes);
+		else if (value.equals(serviceDurationValues[1]))
+			platformResource.addProperty(maxServiceDuration, hours);
+		else if (value.equals(serviceDurationValues[2]))
+			platformResource.addProperty(maxServiceDuration, days);
+		else if (value.equals(serviceDurationValues[3]))
+			platformResource.addProperty(maxServiceDuration, weeks);
+		else if (value.equals(serviceDurationValues[4]))
+			platformResource.addProperty(maxServiceDuration, months);
+		else if (value.equals(serviceDurationValues[5]))
+			platformResource.addProperty(maxServiceDuration, years);
+		else {
+			float maxSimilarity = 0;
+			String maxSimValue = "";
+
+			for (String val : serviceDurationValues) {
+				float sim = levenshtein.getSimilarity(value, val);
+				if (sim > maxSimilarity) {
+					maxSimilarity = sim;
+					maxSimValue = val;
+				}
+			}
+
+			if (maxSimilarity > 0.7)
+				maxServiceDurationDimension(maxSimValue);
+			else
+				log.warn("Service duration max column not 'minutes'/'hours'/'days'/'weeks'/'months'. Is: '" + value
+						+ "'");
+		}
+
+	}
+
+	private String[] consumerInvolvementValues = { "full-service", "self-service", "in-between" };
+
+	private void consumerInvolvementDimension(String value) {
+		if (value.isEmpty())
+			return;
+
+		if (value.equals(consumerInvolvementValues[0]))
 			platformResource.addProperty(hasConsumerInvolvement, fullService);
-			break;
-		case "self-service":
+		else if (value.equals(consumerInvolvementValues[1]))
 			platformResource.addProperty(hasConsumerInvolvement, selfService);
-			break;
-		case "in-between":
+		else if (value.equals(consumerInvolvementValues[2]))
 			platformResource.addProperty(hasConsumerInvolvement, inBetween);
-			break;
-		default:
-			log.warn("Consumer involvement column not 'full-service'/'self-service'/'in-between'. Is: '"
-					+ currentPlatform.getConsumerInvolvement() + "'");
+		else {
+			float maxSimilarity = 0;
+			String maxSimValue = "";
+
+			for (String val : consumerInvolvementValues) {
+				float sim = levenshtein.getSimilarity(value, val);
+				if (sim > maxSimilarity) {
+					maxSimilarity = sim;
+					maxSimValue = val;
+				}
+			}
+
+			if (maxSimilarity > 0.7)
+				consumerInvolvementDimension(maxSimValue);
+			else
+				log.warn("Consumer involvement column not 'full-service'/'self-service'/'in-between'. Is: '" + value
+						+ "'");
 		}
 	}
 
-	private void moneyFlowDimension() {
-		if (currentPlatform.getMoneyFlow().isEmpty())
+	private String[] moneyFlowValues = { "c2c", "c2b2c", "free", "c2b" };
+
+	private void moneyFlowDimension(String value) {
+		if (value.isEmpty())
 			return;
 
-		switch (currentPlatform.getMoneyFlow().toLowerCase()) {
-		case "c2c":
+		if (value.equals(moneyFlowValues[0]))
 			platformResource.addProperty(hasMoneyFlow, c2c);
-			break;
-		case "c2b2c":
+		else if (value.equals(moneyFlowValues[1]))
 			platformResource.addProperty(hasMoneyFlow, c2b2c);
-			break;
-		case "free":
+		else if (value.equals(moneyFlowValues[2]))
 			platformResource.addProperty(hasMoneyFlow, free);
-			break;
-		case "c2b":
-			// TODO
-			break;
-		default:
-			log.warn("Money flow column not 'c2c'/'c2b2c'/'free'. Is: '"
-					+ currentPlatform.getMoneyFlow() + "'");
+		else if (value.equals(moneyFlowValues[3])) {
+		} else {
+			float maxSimilarity = 0;
+			String maxSimValue = "";
+
+			for (String val : moneyFlowValues) {
+				float sim = levenshtein.getSimilarity(value, val);
+				if (sim > maxSimilarity) {
+					maxSimilarity = sim;
+					maxSimValue = val;
+				}
+			}
+
+			if (maxSimilarity > 0.7)
+				moneyFlowDimension(maxSimValue);
+			else
+				log.warn("Money flow column not 'c2c'/'c2b2c'/'free'. Is: '" + value + "'");
 		}
 	}
 
@@ -514,51 +565,78 @@ public class OntologyWriter {
 				&& currentPlatform.getGlobalIntegrationFinestLevel().isEmpty())
 			return;
 
-		Resource marketIntegration = ontologyModel.createResource(); // anonymous
-																		// instance
+		Resource marketIntegration = ontologyModel.createResource(); // anonymous instance
 		marketIntegration.addProperty(rdfType, marketIntegrationClass);
 		platformResource.addProperty(hasMarketIntegration, marketIntegration);
 
-		if (!currentPlatform.getGlobalIntegration().isEmpty()) {
-			switch (currentPlatform.getGlobalIntegration().toLowerCase()) {
-			case "integrated":
-				marketIntegration.addProperty(marketsAre, integrated);
-				break;
-			case "separated communities":
-			case "separated":
-				marketIntegration.addProperty(marketsAre, separated);
-				break;
-			default:
-				log.warn("Global integration column not 'integrated'/'separated'. Is: '"
-						+ currentPlatform.getGlobalIntegration() + "'");
-			}
-		}
+		marketOffering(marketIntegration, currentPlatform.getGlobalIntegration().toLowerCase());
 
-		if (!currentPlatform.getGlobalIntegrationFinestLevel().isEmpty()) {
-			switch (currentPlatform.getGlobalIntegrationFinestLevel()
-					.toLowerCase()) {
-			case "neighborhood-wide":
-			case "neighbourhood-wide":
-				marketIntegration.addProperty(hasScope, neighbourhoodWide);
-				break;
-			case "city-wide":
-				marketIntegration.addProperty(hasScope, cityWide);
-				break;
-			case "region-wide":
-			case "state-wide":
-				marketIntegration.addProperty(hasScope, stateWide);
-				break;
-			case "country-wide":
-				marketIntegration.addProperty(hasScope, countryWide);
-				break;
-			case "global":
-				marketIntegration.addProperty(hasScope, global);
-				break;
-			default:
-				log.warn("Global integration finest level column not 'neighbourhood-wide'/'city-wide'/'state-wide'/'country-wide'/'global'. Is: '"
-						+ currentPlatform.getGlobalIntegrationFinestLevel()
-						+ "'");
+		marketWidth(marketIntegration, currentPlatform.getGlobalIntegrationFinestLevel().toLowerCase());
+	}
+
+	private String[] marketOfferingValues = { "integrated", "separated", "separated communities" };
+
+	private void marketOffering(Resource marketIntegration, String value) {
+		if (value.isEmpty())
+			return;
+
+		if (value.equals(marketOfferingValues[0]))
+			marketIntegration.addProperty(marketsAre, integrated);
+		else if (value.equals(marketOfferingValues[1]) || value.equals(marketOfferingValues[2]))
+			marketIntegration.addProperty(marketsAre, separated);
+		else {
+			float maxSimilarity = 0;
+			String maxSimValue = "";
+
+			for (String val : marketOfferingValues) {
+				float sim = levenshtein.getSimilarity(value, val);
+				if (sim > maxSimilarity) {
+					maxSimilarity = sim;
+					maxSimValue = val;
+				}
 			}
+
+			if (maxSimilarity > 0.7)
+				marketOffering(marketIntegration, maxSimValue);
+			else
+				log.warn("Global integration column not 'integrated'/'separated'. Is: '" + value + "'");
+		}
+	}
+
+	private String[] marketWidthValues = { "neighbourhood-wide", "city-wide", "state-wide", "country-wide", "global" };
+
+	private void marketWidth(Resource marketIntegration, String value) {
+		if (value.isEmpty())
+			return;
+
+		if (value.equals(marketWidthValues[0]))
+			marketIntegration.addProperty(hasScope, neighbourhoodWide);
+		else if (value.equals(marketWidthValues[1]))
+			marketIntegration.addProperty(hasScope, cityWide);
+		else if (value.equals(marketWidthValues[2]))
+			marketIntegration.addProperty(hasScope, stateWide);
+		else if (value.equals(marketWidthValues[3]))
+			marketIntegration.addProperty(hasScope, countryWide);
+		else if (value.equals(marketWidthValues[4]))
+			marketIntegration.addProperty(hasScope, global);
+		else {
+			float maxSimilarity = 0;
+			String maxSimValue = "";
+
+			for (String val : marketWidthValues) {
+				float sim = levenshtein.getSimilarity(value, val);
+				if (sim > maxSimilarity) {
+					maxSimilarity = sim;
+					maxSimValue = val;
+				}
+			}
+
+			if (maxSimilarity > 0.7)
+				marketWidth(marketIntegration, maxSimValue);
+			else
+				log.warn("Global integration finest level column not 'neighbourhood-wide'/'city-wide'/'state-wide'/'country-wide'/'global'. Is: '"
+						+ value + "'");
+
 		}
 	}
 
@@ -568,12 +646,10 @@ public class OntologyWriter {
 
 		try {
 			int year = Integer.parseInt(currentPlatform.getYearLaunch());
-			Resource launchYearResource = ontologyModel.createResource(DBPR
-					+ year);
+			Resource launchYearResource = ontologyModel.createResource(DBPR + year);
 			platformResource.addProperty(launchYear, launchYearResource);
 		} catch (NumberFormatException e) {
-			log.warn("Year launch column not a proper number. Is: '"
-					+ currentPlatform.getYearLaunch() + "'");
+			log.warn("Year launch column not a proper number. Is: '" + currentPlatform.getYearLaunch() + "'");
 		}
 	}
 
@@ -581,21 +657,19 @@ public class OntologyWriter {
 		if (currentPlatform.getLaunchCountry().isEmpty())
 			return;
 
-		Resource country = findCountry(currentPlatform.getLaunchCountry()
-				.toUpperCase());
+		Resource country = findCountry(currentPlatform.getLaunchCountry().toUpperCase());
 		if (country != null)
 			platformResource.addProperty(launchedIn, country);
 		else
-			log.warn("Launch Country column is no resolvable country code. Is: '"
-					+ currentPlatform.getLaunchCountry() + "'");
+			log.warn("Launch Country column is no resolvable country code. Is: '" + currentPlatform.getLaunchCountry()
+					+ "'");
 	}
 
 	private void residenceCountryDimension() {
 		if (currentPlatform.getResidenceCountry().isEmpty())
 			return;
 
-		Resource country = findCountry(currentPlatform.getResidenceCountry()
-				.toUpperCase());
+		Resource country = findCountry(currentPlatform.getResidenceCountry().toUpperCase());
 		if (country != null)
 			platformResource.addProperty(location, country);
 		else
@@ -615,31 +689,27 @@ public class OntologyWriter {
 			String lgdEndpoint = "http://linkedgeodata.org/sparql";
 
 			String sparqlQuery = "Prefix lgdo:<http://linkedgeodata.org/ontology/> "
-					+ "Prefix rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
+					+ "Prefix rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " 
 					+ "Select distinct ?country {{"
-					+ "	?country rdf:type lgdo:Country ."
-					+ "	?country lgdo:country_code_iso3166_1_alpha_2 '"
-					+ country
-					+ "'"
-					+ "} union {"
-					+ "	?country rdf:type lgdo:Country ."
-					+ "	?country lgdo:ISO3166-1 '" + country + "'" + "}"
-					+ "union {"
+					+ "	?country rdf:type lgdo:Country ." + "	?country lgdo:country_code_iso3166_1_alpha_2 '" + country
+					+ "'" 
+					+ "} union {" 
+					+ "	?country rdf:type lgdo:Country ." + "	?country lgdo:ISO3166-1 '" + country
+					+ "'" 
+					+ "} union {" 
 					+ " ?country rdf:type lgdo:Country ."
-					+ " ?country <http://linkedgeodata.org/ontology/name%3Aabbreviation> '" + country + "'"
+					+ " ?country <http://linkedgeodata.org/ontology/name%3Aabbreviation> '" + country + "'" 
 					+ "}}";
 
 			Query query = QueryFactory.create(sparqlQuery);
-			QueryExecution qexec = QueryExecutionFactory.sparqlService(
-					lgdEndpoint, query);
+			QueryExecution qexec = QueryExecutionFactory.sparqlService(lgdEndpoint, query);
 			ResultSet results = qexec.execSelect();
 
 			Resource countryResource = null;
 
 			if (results.hasNext()) {
 				QuerySolution first = results.nextSolution();
-				countryResource = ontologyModel.createResource(first
-						.getResource("country").getURI());
+				countryResource = ontologyModel.createResource(first.getResource("country").getURI());
 
 				countryMap.put(country, countryResource);
 			}
@@ -652,23 +722,17 @@ public class OntologyWriter {
 	private void smartphoneAppDimension() {
 		if (currentPlatform.getAndroid().equals("x"))
 			platformResource.addProperty(hasApp, androidApp);
-		else if (!currentPlatform.getAndroid().equals("o")
-				&& !currentPlatform.getAndroid().isEmpty())
-			log.warn("Android column is not 'o'/'x'. Is: '"
-					+ currentPlatform.getAndroid() + "'");
+		else if (!currentPlatform.getAndroid().equals("o") && !currentPlatform.getAndroid().isEmpty())
+			log.warn("Android column is not 'o'/'x'. Is: '" + currentPlatform.getAndroid() + "'");
 
 		if (currentPlatform.getiOS().equals("x"))
 			platformResource.addProperty(hasApp, iOSApp);
-		else if (!currentPlatform.getiOS().equals("o")
-				&& !currentPlatform.getiOS().isEmpty())
-			log.warn("iOS column is not 'o'/'x'. Is: '"
-					+ currentPlatform.getiOS() + "'");
+		else if (!currentPlatform.getiOS().equals("o") && !currentPlatform.getiOS().isEmpty())
+			log.warn("iOS column is not 'o'/'x'. Is: '" + currentPlatform.getiOS() + "'");
 
 		if (currentPlatform.getWindowsPhone().equals("x"))
 			platformResource.addProperty(hasApp, windowsPhoneApp);
-		else if (!currentPlatform.getWindowsPhone().equals("o")
-				&& !currentPlatform.getWindowsPhone().isEmpty())
-			log.warn("Windows phone column is not 'o'/'x'. Is: '"
-					+ currentPlatform.getWindowsPhone() + "'");
+		else if (!currentPlatform.getWindowsPhone().equals("o") && !currentPlatform.getWindowsPhone().isEmpty())
+			log.warn("Windows phone column is not 'o'/'x'. Is: '" + currentPlatform.getWindowsPhone() + "'");
 	}
 }
