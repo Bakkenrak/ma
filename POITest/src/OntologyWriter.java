@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,6 +48,7 @@ public class OntologyWriter {
 	private Resource platformResource;
 	private ExcelPlatform currentPlatform;
 	private Map<String, Resource> countryMap = new HashMap<String, Resource>();
+	private Map<String, Resource> cityMap = new HashMap<String, Resource>();
 
 	private Property rdfType;
 	private Property rdfsLabel;
@@ -209,14 +211,10 @@ public class OntologyWriter {
 		int nrPlatforms = platforms.size();
 		for (int i = 0; i < nrPlatforms; i++) {
 			currentPlatform = platforms.get(i);
-
+			
 			log.info("Creating '" + currentPlatform.getName() + "' platform (" + (i + 1) + "/" + nrPlatforms + ")");
-
 			constructPlatform();
 		}
-
-		for(String c : citiesNotFound)
-			System.out.println(c);
 		
 		try (OutputStream out = new FileOutputStream(outputFile)) {
 			ontologyModel.write(out, "RDF/XML"); // "RDF/XML"
@@ -229,10 +227,7 @@ public class OntologyWriter {
 
 	private void constructPlatform() {
 		initializePlatform();
-		
-		findCityJSON(currentPlatform.getLaunchCity().toLowerCase(), currentPlatform.getLaunchCountry().toUpperCase());
-		findCityJSON(currentPlatform.getResidenceCity().toLowerCase(), currentPlatform.getLaunchCountry().toUpperCase());
-/*
+
 		resourceTypeDimension();
 		sustainableConsumerismDimension();
 		patternDimension(currentPlatform.getDeferredP2PPattern().toLowerCase());
@@ -245,9 +240,9 @@ public class OntologyWriter {
 		moneyFlowDimension(currentPlatform.getMoneyFlow().toLowerCase());
 		marketIntegrationDimension();
 		launchYearDimension();
-		launchCountryDimension();
-		residenceCountryDimension();
-		smartphoneAppDimension();*/
+		locationDimension(currentPlatform.getLaunchCity(), currentPlatform.getLaunchCountry().toUpperCase(), location);
+		locationDimension(currentPlatform.getResidenceCity(), currentPlatform.getResidenceCountry().toUpperCase(), location);
+		smartphoneAppDimension();
 	}
 
 	private void initializePlatform() {
@@ -661,130 +656,83 @@ public class OntologyWriter {
 			log.warn("Year launch column not a proper number. Is: '" + currentPlatform.getYearLaunch() + "'");
 		}
 	}
-
-	private void launchCountryDimension() {
-		if (currentPlatform.getLaunchCountry().isEmpty())
-			return;
-
-		Resource country = findCountry(currentPlatform.getLaunchCountry().toUpperCase());
-		if (country != null)
-			platformResource.addProperty(launchedIn, country);
-		else
-			log.warn("Launch Country column is no resolvable country code. Is: '" + currentPlatform.getLaunchCountry()
-					+ "'");
-	}
-
-	private void residenceCountryDimension() {
-		if (currentPlatform.getResidenceCountry().isEmpty())
-			return;
-
-		Resource country = findCountry(currentPlatform.getResidenceCountry().toUpperCase());
-		if (country != null)
-			platformResource.addProperty(location, country);
-		else
-			log.warn("Residence Country column is no resolvable country code. Is: '"
-					+ currentPlatform.getResidenceCountry() + "'");
-	}
-
-	private Resource findCountry(String country) {
-		if (country.isEmpty())
-			return null;
-
-		if (countryMap.containsKey(country)) {
-
-			return countryMap.get(country);
-
-		} else {
-			String lgdEndpoint = "http://linkedgeodata.org/sparql";
-
-			String sparqlQuery = "Prefix lgdo:<http://linkedgeodata.org/ontology/> "
-					+ "Prefix rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " 
-					+ "Select distinct ?country {{"
-					+ "	?country rdf:type lgdo:Country ." + "	?country lgdo:country_code_iso3166_1_alpha_2 '" + country
-					+ "'" 
-					+ "} union {" 
-					+ "	?country rdf:type lgdo:Country ." + "	?country lgdo:ISO3166-1 '" + country
-					+ "'" 
-					+ "} union {" 
-					+ " ?country rdf:type lgdo:Country ."
-					+ " ?country <http://linkedgeodata.org/ontology/name%3Aabbreviation> '" + country + "'" 
-					+ "}}";
-
-			Query query = QueryFactory.create(sparqlQuery);
-			QueryExecution qexec = QueryExecutionFactory.sparqlService(lgdEndpoint, query);
-			ResultSet results = qexec.execSelect();
-
-			Resource countryResource = null;
-
-			if (results.hasNext()) {
-				QuerySolution first = results.nextSolution();
-				countryResource = ontologyModel.createResource(first.getResource("country").getURI());
-
-				countryMap.put(country, countryResource);
-			}
-
-			qexec.close();
-			return countryResource;
-		}
-	}
 	
-	private Resource findCity(String city){
-		String lgdEndpoint = "http://linkedgeodata.org/sparql";
-
-		String sparqlQuery = "Prefix lgdo:<http://linkedgeodata.org/ontology/> "
-				+ "Prefix rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
-				+ "Prefix rdfs:<http://www.w3.org/2000/01/rdf-schema#> " 
-				+ "Select distinct ?city {{"
-				+ " ?city rdf:type lgdo:City ."
-				+ " ?city rdfs:label ?label ."
-				+ " FILTER (lcase(str(?label)) = '" + city + "')"
-				+ "} union {"
-				+ " ?city rdf:type lgdo:Town ."
-				+ " ?city rdfs:label ?label ."
-				+ " FILTER (lcase(str(?label)) = '" + city + "')"
-				+ "}}";
-
-		Query query = QueryFactory.create(sparqlQuery);
-		QueryExecution qexec = QueryExecutionFactory.sparqlService(lgdEndpoint, query);
-		ResultSet results = qexec.execSelect();
-
+	private void locationDimension(String city, String country, Property property){
+		if((city.isEmpty() || city.equals("?")) && (country.isEmpty() || country.equals("?"))) return;
+			
 		Resource countryResource = null;
-
-		if (results.hasNext()) {
-			QuerySolution first = results.nextSolution();
-			countryResource = ontologyModel.createResource(first.getResource("city").getURI());
-
+		Resource cityResource = null;
+		
+		JSONObject json = findCity(city, country);
+		if(json != null){
+			try{
+				int cityId = json.getJSONArray("geonames").getJSONObject(0).getInt("geonameId");
+				cityResource = ontologyModel.createResource("http://www.geonames.org/" + cityId);
+				if(!cityMap.containsKey(city))
+					cityMap.put(city, cityResource);
+				int countryId = json.getJSONArray("geonames").getJSONObject(0).getInt("countryId");
+				countryResource = ontologyModel.createResource("http://www.geonames.org/" + countryId);
+			}catch(Exception e){e.printStackTrace();}
+		} else {
+			json = findCountry(country);
+			if(json!=null){
+				try{
+					int countryId = json.getJSONArray("geonames").getJSONObject(0).getInt("countryId");
+					countryResource = ontologyModel.createResource("http://www.geonames.org/" + countryId);
+						if(!countryMap.containsKey(country))
+							countryMap.put(country, countryResource);
+				}catch(Exception e){e.printStackTrace();}
+			}else 
+				log.warn("Could not find the city '" + city + "' nor a country with code '" + country + "'.");
 		}
-		else{
-			if(!citiesNotFound.contains(city))
-				citiesNotFound.add(city);
+		
+		if(countryResource != null){
+			Resource locationResource = ontologyModel.createResource();
+			platformResource.addProperty(property, locationResource);
+			
+			locationResource.addProperty(location, countryResource);
+			if(cityResource!=null)
+				locationResource.addProperty(location, cityResource);
 		}
-
-		qexec.close();
-		return countryResource;
 	}
-	private List<String> citiesNotFound = new ArrayList<String>();
 	
-	private void findCityJSON(String city, String country){
-		if(city.isEmpty() || city.equals("?")) return;
-		String query = "http://api.geonames.org/searchJSON?username=demo&maxRows=1&featureClass=P&q="+city + " " + country;
+	public JSONObject findCity(String city, String country){
+		if(city.isEmpty() || city.equals("?")) return null;
+			
+		String base = "http://api.geonames.org/searchJSON?username=demo&maxRows=1&featureClass=P";
+		String query1 = base + "&name=" + city.replace(" ", "%20") + "&country=" + country;
+		String query2 = base + "&q=" + city.replace(" ", "%20") + "&country=" + country;
 		try {
-			JSONObject json = JsonReader.readJsonFromUrl(query);
+			JSONObject json = JsonReader.readJsonFromUrl(query1);
 				
 			if(json.has("totalResultsCount") && json.getInt("totalResultsCount") > 0){
-				int id = json.getJSONArray("geonames").getJSONObject(0).getInt("geonameId");
-			}else{
-				if(city.contains("\u00A0")){ //in case of non-breaking spaces
-					city = city.replace(String.valueOf((char) 160), " ").trim();
-					findCityJSON(city, country);
-					return;
-				}
-				citiesNotFound.add(city + ", " + country + " " + query);
+				return json;
+			} else {
+				json = JsonReader.readJsonFromUrl(query2);
+				
+				if(json.has("totalResultsCount") && json.getInt("totalResultsCount") > 0)
+					return json;
 			}
 		} catch (Exception e){
 			e.printStackTrace();
 		}
+		return null;
+	}
+	
+	public JSONObject findCountry(String country){
+		if(country.isEmpty() || country.equals("?")) return null;
 		
+		String query = "http://api.geonames.org/searchJSON?username=demo&maxRows=1&featureClass=A&country="+ country;
+		try {
+			JSONObject json = JsonReader.readJsonFromUrl(query);
+				
+			if(json.has("totalResultsCount") && json.getInt("totalResultsCount") > 0){
+				return json;
+			}
+		} catch (Exception e){
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	private void smartphoneAppDimension() {

@@ -55,7 +55,8 @@ public class ExcelParser {
 					CellReference cr = new CellReference(c);
 					Cell cell = row.getCell(cr.getCol()); //retrieve the cell from current row
 
-					colValues[i++] = getCellValue(cell).trim(); //save value as string in array
+					//save value as string in array, replace non-breaking whitespaces by normal ones, trim
+					colValues[i++] = getCellValue(cell).replace(String.valueOf((char) 160), " ").trim(); 
 				}
 				
 				//create platform object from array
