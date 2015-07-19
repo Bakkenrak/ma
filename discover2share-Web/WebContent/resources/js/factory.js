@@ -2,6 +2,7 @@
 	'use strict';
 	
 	var d2sApp = angular.module('d2sApp');
+
 	
 	/**
 	 *	Provides methods for user authentication. This encompasses API communication
@@ -79,4 +80,18 @@
 		$httpProvider.interceptors.push('authHttpInterceptor');
 	});
 	
+	
+	d2sApp.factory('platformFactory', function ($http){
+		var platformFactory = {};
+		
+		platformFactory.getAll = function() {
+			return $http.get('api/platforms');
+		};
+		
+		platformFactory.getPlatform = function(platform) {
+			return $http.get('api/platforms/' + platform);
+		};
+		
+		return platformFactory;
+	});
 })();

@@ -16,6 +16,8 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>Route Servlet</servlet-name>
+		<url-pattern>/platforms</url-pattern>
+		<url-pattern>/platforms/*</url-pattern>
 		<url-pattern>/add</url-pattern>
 		<url-pattern>/search</url-pattern>
 		<url-pattern>/login</url-pattern>

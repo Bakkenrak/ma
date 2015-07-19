@@ -1,0 +1,32 @@
+<h1>P2P SCC Platforms</h1>
+
+<pagination total-items="platforms.length"
+	ng-model="pagination.currentPage" max-size="15"
+	items-per-page="pagination.itemsPerPage" class="pagination-sm"
+	boundary-links="true" rotate="true" num-pages="pagination.numPages"></pagination>
+<pre>Page: {{pagination.currentPage}} / {{pagination.numPages}}. 
+Items: {{pagination.begin + 1}}-{{pagination.end}} / {{platforms.length}}</pre>
+
+<table class="table table-bordered table-striped">
+	<thead>
+		<tr>
+			<td>Platform</td>
+			<td>URL</td>
+			<td>Resource type</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="platform in filteredPlatforms | orderBy: 'label'">
+			<td><a href="platforms/{{platform.name.substring(38)}}">{{platform.label}}</a></td>
+			<td><a href="{{platform.url}}">{{platform.url}}</a></td>
+			<td>{{platform.resourceType}}</td>
+		</tr>
+	</tbody>
+</table>
+
+<pagination total-items="platforms.length"
+	ng-model="pagination.currentPage" max-size="15"
+	items-per-page="pagination.itemsPerPage" class="pagination-sm"
+	boundary-links="true" rotate="true" num-pages="pagination.numPages"></pagination>
+<pre>Page: {{pagination.currentPage}} / {{pagination.numPages}}. 
+Items: {{pagination.begin + 1}}-{{pagination.end}} / {{platforms.length}}</pre>

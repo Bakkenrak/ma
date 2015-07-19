@@ -34,7 +34,7 @@
 		});
 	});
 	
-	d2sApp.controller('loginCtrl', function LoginCtrl($scope, $location, authFactory) {
+	d2sApp.controller('loginCtrl', function($scope, $location, authFactory) {
 		
 		$scope.loggedOut = false;
 		
@@ -66,7 +66,7 @@
 	    };
 	});
 	
-	d2sApp.controller('registrationCtrl', function LoginCtrl($scope, $location, authFactory) {
+	d2sApp.controller('registrationCtrl', function($scope, $location, authFactory) {
 		$scope.isAdmin = (authFactory.isAuthenticated() && authFactory.getAuthData().authRole === "admin");
 		$scope.user = {};
 		$scope.registerFailed = false;
@@ -85,6 +85,35 @@
 		        });
 	    	}
 	    };
+	});
+	
+	d2sApp.controller('platformsCtrl', function($scope, platformFactory) {		
+		$scope.pagination = { 
+				currentPage: 1,
+				itemsPerPage: 40
+		};
+		
+		platformFactory.getAll().success(function(data){
+			$scope.platforms = data;
+			$scope.filteredPlatforms = $scope.platforms.slice(0, $scope.pagination.itemsPerPage);
+		}).error(function(){});
+		
+		$scope.$watch("pagination.currentPage + pagination.numPerPage", function() {
+			$scope.pagination.begin = (($scope.pagination.currentPage - 1) * $scope.pagination.itemsPerPage);
+			$scope.pagination.end = $scope.pagination.begin + $scope.pagination.itemsPerPage;
+			
+			if(angular.isUndefined($scope.platforms)) return; //on startup, to avoid errors
+			
+			if($scope.pagination.end > $scope.platforms.length) $scope.pagination.end = $scope.platforms.length;
+			$scope.filteredPlatforms = $scope.platforms.slice($scope.pagination.begin, $scope.pagination.end);
+		});
+	});
+	
+	d2sApp.controller('platformDetailCtrl', function($scope, platformFactory, $routeParams) {		
+		platformFactory.getPlatform($routeParams.platform).success(function(data){
+			$scope.platform = data;			
+		}).error(function(){});
+		
 	});
 
 })();
