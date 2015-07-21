@@ -90,6 +90,7 @@ public class OntologyWriter {
 	private Resource experientialObjectType;
 	private Resource functionalObjectType;
 	private Resource privateResourceOwner;
+	private Resource businessResourceOwner;
 	private Resource privateAndBusinessResourceOwner;
 	private Resource minutes;
 	private Resource hours;
@@ -180,6 +181,7 @@ public class OntologyWriter {
 		functionalObjectType = ontologyModel.createResource(D2S + "Functional");
 
 		privateResourceOwner = ontologyModel.createResource(D2S + "Private");
+		businessResourceOwner = ontologyModel.createResource(D2S + "Business");
 		privateAndBusinessResourceOwner = ontologyModel.createResource(D2S + "Private_and_business");
 
 		minutes = ontologyModel.createResource(TIME + "unitMinute");
@@ -414,6 +416,7 @@ public class OntologyWriter {
 		else if (value.equals(resourceOwnerValues[1]))
 			platformResource.addProperty(hasResourceOwner, privateAndBusinessResourceOwner);
 		else if (value.equals(resourceOwnerValues[2])) {
+			platformResource.addProperty(hasResourceOwner, businessResourceOwner);
 		} else {
 			float maxSimilarity = 0;
 			String maxSimValue = "";
