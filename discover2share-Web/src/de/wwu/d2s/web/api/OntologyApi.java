@@ -20,5 +20,10 @@ public interface OntologyApi {
 	@Path("{platform}")
 	@GET
 	@Produces("application/json")
-	public Map<String, String> getPlatform(@PathParam("platform") String url);
+	public Map<String, List<String>> getPlatform(@PathParam("platform") String url);
+	
+	@Path("descriptions/")
+	@GET
+	@Produces("application/json")
+	public Map<String, Map<String, String>> getDescriptions();
 }

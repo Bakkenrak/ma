@@ -92,6 +92,15 @@
 			return $http.get('api/platforms/' + platform);
 		};
 		
+		platformFactory.getGeoData = function(geoUrl){
+			var geoId = geoUrl.replace("http://www.geonames.org/", "");
+			return $http.get('http://api.geonames.org/getJSON?username=demo&geonameId=' + geoId);
+		};
+		
+		platformFactory.getDescriptions = function(){
+			return $http.get('api/platforms/descriptions');
+		};
+				
 		return platformFactory;
 	});
 })();

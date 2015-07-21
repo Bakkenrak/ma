@@ -1,10 +1,258 @@
-<h1>{{platform.label}}</h1>
+<h1>{{platform.label[0]}}</h1>
 
 <div class="row">
-	<div class="col-md-3">
-		Resource Type:
+	<div class="col-md-2">Resource Type:</div>
+	<div class="col-md-4">
+		<span ng-repeat="resourceType in platform.resourceType">{{resourceType}}<span
+			ng-if="!$last">, </span></span>
 	</div>
-	<div class="col-md-7">
-		{{platform.resourceType}}
+	<div class="col-md-6">
+		<strong>{{descriptions["Resource_Type"]["label"]}}:</strong>
+		{{descriptions["Resource_Type"]["comment"]}}
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-2">Consumer Involvement:</div>
+	<div class="col-md-4">{{platform.consumerInvolvement[0]}}</div>
+	<div class="col-md-6 descriptionBox">
+		<strong>{{descriptions["Consumer_Involvement"]["label"]}}:</strong>
+		{{descriptions["Consumer_Involvement"]["comment"]}}
+		<ul>
+			<li><strong>{{descriptions["Full-service"]["label"]}}:</strong>
+				{{descriptions["Full-service"]["comment"]}}</li>
+			<li><strong>{{descriptions["Self-Service"]["label"]}}:</strong>
+				{{descriptions["Self-Service"]["comment"]}}</li>
+			<li><strong>{{descriptions["In-Between"]["label"]}}:</strong>
+				{{descriptions["In-Between"]["comment"]}}</li>
+		</ul>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-2">Place of launch:</div>
+	<div class="col-md-4">
+		<a href="{{platform.launchCity[0]}}">{{platform.launchCityName}}</a><span
+			ng-if="platform.residenceCity.length>0">, </span><a
+			href="{{platform.launchCountry[0]}}">{{platform.launchCountryName}}</a>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-2">Year of launch:</div>
+	<div class="col-md-4">
+		<a href="{{platform.launchYear[0]}}">{{platform.launchYearName}}</a>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-2">Place of residence:</div>
+	<div class="col-md-4">
+		<a href="{{platform.residenceCity[0]}}">{{platform.residenceCityName}}</a><span
+			ng-if="platform.residenceCity.length>0 && platform.residenceCountry.length>0">,
+		</span><a href="{{platform.residenceCountry[0]}}">{{platform.residenceCountryName}}</a>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-2">Market Mediation:</div>
+	<div class="col-md-4">
+		<span ng-repeat="mediation in platform.mediation">{{mediation}}<span
+			ng-if="!$last">, </span></span>
+	</div>
+	<div class="col-md-6">
+		<strong>{{descriptions["Market_Mediation"]["label"]}}:</strong>
+		{{descriptions["Market_Mediation"]["comment"]}}
+		<ul>
+			<li><strong>{{descriptions["Profit_from_peer_consumers"]["label"]}}:</strong>
+				{{descriptions["Profit_from_peer_consumers"]["comment"]}}</li>
+			<li><strong>{{descriptions["Profit_from_peer_providers"]["label"]}}:</strong>
+				{{descriptions["Profit_from_peer_providers"]["comment"]}}</li>
+			<li><strong>{{descriptions["Profit_from_both"]["label"]}}:</strong>
+				{{descriptions["Profit_from_both"]["comment"]}}</li>
+			<li><strong>{{descriptions["Indirect_profit"]["label"]}}:</strong>
+				{{descriptions["Indirect_profit"]["comment"]}}
+				<ul>
+					<li><strong>{{descriptions["Profit_from_advertisement"]["label"]}}:</strong>
+						{{descriptions["Profit_from_advertisement"]["comment"]}}</li>
+					<li><strong>{{descriptions["Profit_from_user_data"]["label"]}}:</strong>
+						{{descriptions["Profit_from_user_data"]["comment"]}}</li>
+				</ul></li>
+		</ul>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-2">Integration:</div>
+	<div class="col-md-4">{{platform.offering[0]}}
+		{{platform.scope[0]}}</div>
+	<div class="col-md-6">
+		<p>
+			<strong>{{descriptions["Market_Integration"]["label"]}}:</strong>
+			{{descriptions["Market_Integration"]["comment"]}}
+		</p>
+		<strong>{{descriptions["Market_Offering"]["label"]}}:</strong>
+		{{descriptions["Market_Offering"]["comment"]}}
+		<ul>
+			<li><strong>{{descriptions["Integrated"]["label"]}}:</strong>
+				{{descriptions["Integrated"]["comment"]}}</li>
+			<li><strong>{{descriptions["Separated"]["label"]}}:</strong>
+				{{descriptions["Separated"]["comment"]}}</li>
+		</ul>
+		<strong>{{descriptions["Geographic_Scope"]["label"]}}:</strong>
+		{{descriptions["Geographic_Scope"]["comment"]}}
+		<ul>
+			<li><strong>{{descriptions["Neighbourhood-wide"]["label"]}}</strong></li>
+			<li><strong>{{descriptions["City-wide"]["label"]}}</strong></li>
+			<li><strong>{{descriptions["State-wide"]["label"]}}</strong></li>
+			<li><strong>{{descriptions["Country-wide"]["label"]}}</strong></li>
+			<li><strong>{{descriptions["Global"]["label"]}}</strong></li>
+		</ul>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-2">Money Flow:</div>
+	<div class="col-md-4">
+		<span ng-repeat="moneyFlow in platform.moneyFlow">{{moneyFlow}}<span
+			ng-if="!$last">, </span></span>
+	</div>
+	<div class="col-md-6">
+		<strong>{{descriptions["Money_Flow"]["label"]}}:</strong>
+		{{descriptions["Money_Flow"]["comment"]}}
+		<ul>
+			<li><strong>{{descriptions["C2C"]["label"]}}:</strong>
+				{{descriptions["C2C"]["comment"]}}</li>
+			<li><strong>{{descriptions["C2B2C"]["label"]}}:</strong>
+				{{descriptions["C2B2C"]["comment"]}}</li>
+		</ul>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-2">P2P SCC Pattern:</div>
+	<div class="col-md-4">
+		{{platform.pattern[0]}}<span
+			ng-if="platform.pattern.length>0 && platform.temporality.length>0">,
+		</span>{{platform.temporality[0]}}
+	</div>
+	<div class="col-md-6">
+		<strong>{{descriptions["P2P_SCC_Pattern"]["label"]}}:</strong>
+		{{descriptions["P2P_SCC_Pattern"]["comment"]}}
+		<ul>
+			<li><strong>{{descriptions["Deferred"]["label"]}}:</strong>
+				{{descriptions["Deferred"]["comment"]}}</li>
+			<li><strong>{{descriptions["Immediate"]["label"]}}:</strong>
+				{{descriptions["Immediate"]["comment"]}}</li>
+			<li><strong>{{descriptions["Recurrent"]["label"]}}:</strong>
+				{{descriptions["Recurrent"]["comment"]}}</li>
+		</ul>
+		<strong>{{descriptions["Temporality"]["label"]}}:</strong>
+		{{descriptions["Temporality"]["comment"]}}
+		<ul>
+			<li><strong>{{descriptions["Once"]["label"]}}:</strong>
+				{{descriptions["Once"]["comment"]}}</li>
+			<li><strong>{{descriptions["Often"]["label"]}}:</strong>
+				{{descriptions["Often"]["comment"]}}</li>
+		</ul>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-2">Promoted Consumerism:</div>
+	<div class="col-md-4">
+		<span ng-repeat="consumerism in platform.consumerism">{{consumerism}}<span
+			ng-if="!$last">, </span></span>
+	</div>
+	<div class="col-md-6">
+		<strong>{{descriptions["Sustainable_Consumerism"]["label"]}}:</strong>
+		{{descriptions["Sustainable_Consumerism"]["comment"]}}
+		<ul>
+			<li><strong>{{descriptions["Social"]["label"]}}:</strong>
+				{{descriptions["Social"]["comment"]}}</li>
+			<li><strong>{{descriptions["Environmental"]["label"]}}:</strong>
+				{{descriptions["Environmental"]["comment"]}}</li>
+			<li><strong>{{descriptions["Economic"]["label"]}}:</strong>
+				{{descriptions["Economic"]["comment"]}}</li>
+			<li><strong>{{descriptions["None"]["label"]}}:</strong>
+				{{descriptions["None"]["comment"]}}</li>
+		</ul>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-2">Resource Owner:</div>
+	<div class="col-md-4">
+		<span ng-repeat="resourceOwner in platform.resourceOwner">{{resourceOwner}}<span
+			ng-if="!$last">, </span></span>
+	</div>
+	<div class="col-md-6">
+		<strong>{{descriptions["Resource_Owner"]["label"]}}:</strong>
+		{{descriptions["Resource_Owner"]["comment"]}}
+		<ul>
+			<li><strong>{{descriptions["Private"]["label"]}}:</strong>
+				{{descriptions["Private"]["comment"]}}</li>
+			<li><strong>{{descriptions["Business"]["label"]}}:</strong>
+				{{descriptions["Business"]["comment"]}}</li>
+			<li><strong>{{descriptions["Private_and_business"]["label"]}}:</strong>
+				{{descriptions["Private_and_business"]["comment"]}}</li>
+		</ul>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-2">Service Duration:</div>
+	<div class="col-md-4">
+		<a href="{{platform.minDuration[0]}}">{{timeConverter(platform.minDuration[0])}}</a>
+		<span
+			ng-if="platform.minDuration.length>0 && platform.maxDuration.length>0">to</span>
+		<a href="{{platform.maxDuration[0]}}">{{timeConverter(platform.maxDuration[0])}}</a>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-2">Smartphone Apps:</div>
+	<div class="col-md-4">
+		<span ng-repeat="app in platform.app">{{app}}<span
+			ng-if="!$last">, </span></span>
+	</div>
+	<div class="col-md-6">
+		<strong>{{descriptions["Smartphone_App"]["label"]}}:</strong>
+		{{descriptions["Smartphone_App"]["comment"]}}
+		<ul>
+			<li><strong>{{descriptions["Android_app"]["label"]}}:</strong>
+				{{descriptions["Android_app"]["comment"]}}</li>
+			<li><strong>{{descriptions["iOS_app"]["label"]}}:</strong>
+				{{descriptions["iOS_app"]["comment"]}}</li>
+			<li><strong>{{descriptions["Windows_Phone_app"]["label"]}}:</strong>
+				{{descriptions["Windows_Phone_app"]["comment"]}}</li>
+		</ul>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-2">Trust Contribution:</div>
+	<div class="col-md-4">
+		<span ng-repeat="trustContribution in platform.trustContribution">{{trustContribution}}<span
+			ng-if="!$last">, </span></span>
+	</div>
+	<div class="col-md-6">
+		<strong>{{descriptions["Trust_Contribution"]["label"]}}:</strong>
+		{{descriptions["Trust_Contribution"]["comment"]}}
+		<ul>
+			<li><strong>{{descriptions["Provider_ratings"]["label"]}}:</strong>
+				{{descriptions["Provider_ratings"]["comment"]}}</li>
+			<li><strong>{{descriptions["Provider_and_consumer_ratings"]["label"]}}:</strong>
+				{{descriptions["Provider_and_consumer_ratings"]["comment"]}}</li>
+			<li><strong>{{descriptions["Referral"]["label"]}}:</strong>
+				{{descriptions["Referral"]["comment"]}}</li>
+			<li><strong>{{descriptions["Vouching"]["label"]}}:</strong>
+				{{descriptions["Vouching"]["comment"]}}</li>
+			<li><strong>{{descriptions["Value-added_services"]["label"]}}:</strong>
+				{{descriptions["Value-added_services"]["comment"]}}</li>
+		</ul>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-2">Type of Accessed Object:</div>
+	<div class="col-md-4">{{platform.objectType[0]}}</div>
+	<div class="col-md-6">
+		<strong>{{descriptions["Type_of_Accessed_Object"]["label"]}}:</strong>
+		{{descriptions["Type_of_Accessed_Object"]["comment"]}}
+		<ul>
+			<li><strong>{{descriptions["Functional"]["label"]}}:</strong>
+				{{descriptions["Functional"]["comment"]}}</li>
+			<li><strong>{{descriptions["Experiential"]["label"]}}:</strong>
+				{{descriptions["Experiential"]["comment"]}}</li>
+			<li><strong>{{descriptions["Mixed"]["label"]}}:</strong>
+				{{descriptions["Mixed"]["comment"]}}</li>
+		</ul>
 	</div>
 </div>

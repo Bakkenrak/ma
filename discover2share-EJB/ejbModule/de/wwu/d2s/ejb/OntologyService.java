@@ -10,6 +10,8 @@ public interface OntologyService {
 	
 	public List<Map<String, String>> getAllPlatforms();
 
-	public Map<String, String> getPlatform(String url);
+	public Map<String, List<String>> getPlatform(String url);
+	
+	public Map<String, Map<String, String>> getDescriptions();
 	
 }

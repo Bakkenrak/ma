@@ -22,8 +22,13 @@ public class OntologyImpl implements OntologyApi {
 	}
 
 	@Override
-	public Map<String, String> getPlatform(String url) {
+	public Map<String, List<String>> getPlatform(String url) {
 		return ontologyService.getPlatform(url);
+	}
+
+	@Override
+	public Map<String, Map<String, String>> getDescriptions() {
+		return ontologyService.getDescriptions();
 	}
 
 }
