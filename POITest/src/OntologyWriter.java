@@ -69,6 +69,8 @@ public class OntologyWriter {
 	private Property launchYear;
 	private Property launchedIn;
 	private Property location;
+	private Property locationCity;
+	private Property locationCountry;
 	private Property hasApp;
 
 	private Resource resourceTypeClass;
@@ -149,6 +151,8 @@ public class OntologyWriter {
 		launchYear = ontologyModel.createProperty(DBPP + "launchYear");
 		launchedIn = ontologyModel.createProperty(D2S + "launched_in");
 		location = ontologyModel.createProperty(DBPO + "location");
+		locationCity = ontologyModel.createProperty(DBPP + "locationCity");
+		locationCountry = ontologyModel.createProperty(DBPP + "locationCountry");
 		hasApp = ontologyModel.createProperty(D2S + "has_app");
 
 		log.info("Defining D2S classes/instances.");
@@ -240,7 +244,7 @@ public class OntologyWriter {
 		moneyFlowDimension(currentPlatform.getMoneyFlow().toLowerCase());
 		marketIntegrationDimension();
 		launchYearDimension();
-		locationDimension(currentPlatform.getLaunchCity(), currentPlatform.getLaunchCountry().toUpperCase(), location);
+		locationDimension(currentPlatform.getLaunchCity(), currentPlatform.getLaunchCountry().toUpperCase(), launchedIn);
 		locationDimension(currentPlatform.getResidenceCity(), currentPlatform.getResidenceCountry().toUpperCase(), location);
 		smartphoneAppDimension();
 	}
@@ -302,13 +306,19 @@ public class OntologyWriter {
 		if (value.isEmpty())
 			return;
 
-		if (value.equals(patternValues[0]))
-			platformResource.addProperty(hasPattern, deferredPattern);
-		else if (value.equals(patternValues[1]))
-			platformResource.addProperty(hasPattern, immediatePattern);
-		else if (value.equals(patternValues[2]))
-			platformResource.addProperty(hasPattern, recurrentPattern);
-		else {
+		if (value.equals(patternValues[0])){
+			Resource pattern = ontologyModel.createResource();
+			pattern.addProperty(rdfType, deferredPattern);
+			platformResource.addProperty(hasPattern, pattern);
+		} else if (value.equals(patternValues[1])){
+			Resource pattern = ontologyModel.createResource();
+			pattern.addProperty(rdfType, immediatePattern);
+			platformResource.addProperty(hasPattern, pattern);
+		} else if (value.equals(patternValues[2])){
+			Resource pattern = ontologyModel.createResource();
+			pattern.addProperty(rdfType, recurrentPattern);
+			platformResource.addProperty(hasPattern, pattern);
+		} else {
 			float maxSimilarity = 0;
 			String maxSimValue = "";
 
@@ -607,7 +617,7 @@ public class OntologyWriter {
 		}
 	}
 
-	private String[] marketWidthValues = { "neighbourhood-wide", "city-wide", "state-wide", "country-wide", "global" };
+	private String[] marketWidthValues = { "neighbourhood-wide", "city-wide", "state-wide", "country-wide", "region-wide", "global" };
 
 	private void marketWidth(Resource marketIntegration, String value) {
 		if (value.isEmpty())
@@ -621,7 +631,7 @@ public class OntologyWriter {
 			marketIntegration.addProperty(hasScope, stateWide);
 		else if (value.equals(marketWidthValues[3]))
 			marketIntegration.addProperty(hasScope, countryWide);
-		else if (value.equals(marketWidthValues[4]))
+		else if (value.equals(marketWidthValues[4]) || value.equals(marketWidthValues[5]))
 			marketIntegration.addProperty(hasScope, global);
 		else {
 			float maxSimilarity = 0;
@@ -690,9 +700,9 @@ public class OntologyWriter {
 			Resource locationResource = ontologyModel.createResource();
 			platformResource.addProperty(property, locationResource);
 			
-			locationResource.addProperty(location, countryResource);
+			locationResource.addProperty(locationCountry, countryResource);
 			if(cityResource!=null)
-				locationResource.addProperty(location, cityResource);
+				locationResource.addProperty(locationCity, cityResource);
 		}
 	}
 	
