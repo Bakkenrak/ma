@@ -23,7 +23,8 @@
 		}).when('/logout', {
 			templateUrl: 'resources/html/logout.html'
 		}).when('/add', {
-			templateUrl: 'resources/html/add.html'
+			controller: 'addPlatformCtrl',
+			templateUrl: 'resources/html/addPlatform.html'
 		}).otherwise({ 
 			templateUrl: 'resources/html/404.html'
 		});

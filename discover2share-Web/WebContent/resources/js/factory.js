@@ -83,6 +83,10 @@
 	
 	d2sApp.factory('platformFactory', function ($http){
 		var platformFactory = {};
+
+		platformFactory.getCountries = function() {
+			return $http.get('resources/js/countries.json');
+		};
 		
 		platformFactory.getAll = function() {
 			return $http.get('api/platforms');
@@ -92,15 +96,27 @@
 			return $http.get('api/platforms/' + platform);
 		};
 		
+		platformFactory.getDescriptions = function(){
+			return $http.get('api/platforms/descriptions');
+		};
+		
 		platformFactory.getGeoData = function(geoUrl){
 			var geoId = geoUrl.replace("http://www.geonames.org/", "");
 			return $http.get('http://api.geonames.org/getJSON?username=demo&geonameId=' + geoId);
 		};
 		
-		platformFactory.getDescriptions = function(){
-			return $http.get('api/platforms/descriptions');
-		};
-				
+		platformFactory.findCity = function(cityName, country){
+			var query = "http://api.geonames.org/searchJSON?username=discover2share&maxRows=10&featureClass=P&q=" + cityName;
+			if(!angular.isUndefined(country) && country !== ""){
+				query = query + "&country=" + country;
+			}
+			return $http.get(query);
+		}
+		
+		platformFactory.findCountry = function(countryName){
+			var query = "http://api.geonames.org/searchJSON?username=discover2share&maxRows=10&featureClass=A&isNameRequired&q=" + countryName;
+			return $http.get(query);
+		}		
 		return platformFactory;
 	});
 })();

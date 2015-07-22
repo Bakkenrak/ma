@@ -3,3 +3,10 @@
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;
 }
+
+#detailTable tr td:nth-child(1) {
+	width: 20%;
+}
+#detailTable tr td:nth-child(3) {
+	width: 50%;
+}

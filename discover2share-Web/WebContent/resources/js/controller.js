@@ -175,5 +175,57 @@
 				});
 		}
 	});
+	
+	d2sApp.controller('addPlatformCtrl', function($scope, $rootScope, platformFactory){
+		//retrieve dimension comments and labels (only once)
+		if(angular.isUndefined($rootScope.descriptions)) {
+				platformFactory.getDescriptions().success(function(data){
+					$rootScope.descriptions = data;
+				});
+		}
+		if(angular.isUndefined($rootScope.countries)){
+			platformFactory.getCountries().success(function(data){
+				$rootScope.countries = data;
+			});
+		}
+		
+		$scope.platform = {};
+		
+		$scope.launchCitySelected = function(item){
+			$scope.platform.launchCityName = item.toponymName;
+			$scope.platform.launchCityItem = item;
+			$scope.platform.launchCity = "http://www.geonames.org/" + item.geonameId;
+			if(!angular.isUndefined($scope.platform.launchCountryItem) && 
+					$scope.platform.launchCityItem.countryCode !== $scope.platform.launchCountryItem.countryCode)
+				console.log("Selected City is not situated in the selected country.");
+		}
+		$scope.launchCountrySelected = function(item){
+			$scope.platform.launchCountryName = item.countryName;
+			$scope.platform.launchCountryItem = item
+			$scope.platform.launchCountry = "http://www.geonames.org/" + item.countryId;
+			if(!angular.isUndefined($scope.platform.launchCityItem) && 
+					$scope.platform.launchCityItem.countryCode !== $scope.platform.launchCountryItem.countryCode)
+				console.log("Selected City is not situated in the selected country.");
+		}
+		// triggered when the search term input changes
+		$scope.findLaunchCity = function(){
+			if($scope.platform.launchCityName === ""){
+				$scope.platform.launchCity = "";
+				return;
+			}
+			return platformFactory.findCity($scope.platform.launchCityName, $scope.platform.launchCountryItem.countryCode).then(function(response){
+				return response.data.geonames;
+			});
+		};
+		$scope.findLaunchCountry = function(){
+			if($scope.platform.launchCountryName === ""){
+				$scope.platform.launchCountry = "";
+				return;
+			}
+			return platformFactory.findCountry($scope.platform.launchCountryName).then(function(response){
+				return response.data.geonames;
+			});
+		};
+	});
 
 })();
