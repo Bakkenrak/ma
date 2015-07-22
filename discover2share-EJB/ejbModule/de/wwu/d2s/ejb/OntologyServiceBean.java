@@ -1,12 +1,13 @@
 package de.wwu.d2s.ejb;
 
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.ontology.OntModelSpec;
@@ -16,9 +17,10 @@ import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.query.ResultSetFormatter;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.RDFNode;
+
+import de.wwu.d2s.jpa.Platform;
 
 @Stateless
 public class OntologyServiceBean implements OntologyService {
@@ -221,6 +223,11 @@ public class OntologyServiceBean implements OntologyService {
 		qe.close();
 
 		return output;
+	}
+	
+	@Override
+	public void createPlatform(Platform platform){
+		//em.persist(platform);
 	}
 
 }

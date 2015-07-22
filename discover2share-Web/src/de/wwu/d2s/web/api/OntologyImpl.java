@@ -6,9 +6,8 @@ import java.util.Map;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
-import com.hp.hpl.jena.query.ResultSet;
-
 import de.wwu.d2s.ejb.OntologyService;
+import de.wwu.d2s.jpa.Platform;
 
 @Stateless
 public class OntologyImpl implements OntologyApi {
@@ -29,6 +28,11 @@ public class OntologyImpl implements OntologyApi {
 	@Override
 	public Map<String, Map<String, String>> getDescriptions() {
 		return ontologyService.getDescriptions();
+	}
+
+	@Override
+	public void createPlatform(Platform platform) {
+		ontologyService.createPlatform(platform);
 	}
 
 }
