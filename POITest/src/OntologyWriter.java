@@ -111,6 +111,7 @@ public class OntologyWriter {
 	private Resource cityWide;
 	private Resource stateWide;
 	private Resource countryWide;
+	private Resource regionWide;
 	private Resource global;
 	private Resource androidApp;
 	private Resource iOSApp;
@@ -206,6 +207,7 @@ public class OntologyWriter {
 		cityWide = ontologyModel.createResource(D2S + "City-wide");
 		stateWide = ontologyModel.createResource(D2S + "State-wide");
 		countryWide = ontologyModel.createResource(D2S + "Country-wide");
+		regionWide = ontologyModel.createResource(D2S + "Region-wide");
 		global = ontologyModel.createResource(D2S + "Global");
 
 		androidApp = ontologyModel.createResource(D2S + "Android_app");
@@ -634,7 +636,9 @@ public class OntologyWriter {
 			marketIntegration.addProperty(hasScope, stateWide);
 		else if (value.equals(marketWidthValues[3]))
 			marketIntegration.addProperty(hasScope, countryWide);
-		else if (value.equals(marketWidthValues[4]) || value.equals(marketWidthValues[5]))
+		else if (value.equals(marketWidthValues[4]))
+			marketIntegration.addProperty(hasScope, regionWide);
+		else if (value.equals(marketWidthValues[5]))
 			marketIntegration.addProperty(hasScope, global);
 		else {
 			float maxSimilarity = 0;
@@ -651,9 +655,8 @@ public class OntologyWriter {
 			if (maxSimilarity > 0.7)
 				marketWidth(marketIntegration, maxSimValue);
 			else
-				log.warn("Global integration finest level column not 'neighbourhood-wide'/'city-wide'/'state-wide'/'country-wide'/'global'. Is: '"
+				log.warn("Global integration finest level column not 'neighbourhood-wide'/'city-wide'/'state-wide'/'country-wide'/'region-wide'/'global'. Is: '"
 						+ value + "'");
-
 		}
 	}
 
