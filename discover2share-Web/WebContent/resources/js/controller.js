@@ -185,7 +185,7 @@
 		}
 		if(angular.isUndefined($rootScope.countries)){
 			platformFactory.getCountries().success(function(data){
-				$rootScope.countries = data;
+				$rootScope.countries = data.countries;
 			});
 		}
 		
