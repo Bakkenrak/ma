@@ -38,6 +38,7 @@ public class OntologyWriter {
 	private final String SKOS = "http://www.w3.org/2004/02/skos/core#";
 	private final String TIME = "http://www.w3.org/2006/time#";
 	private final String WORDNET = "http://wordnet-rdf.princeton.edu/wn31/";
+	private final String OWL = "http://www.w3.org/2002/07/owl#";
 
 	private OntModel ontologyModel;
 
@@ -66,7 +67,7 @@ public class OntologyWriter {
 	private Property hasScope;
 	private Property launchYear;
 	private Property launchedIn;
-	private Property location;
+	private Property operatorResidesIn;
 	private Property locationCity;
 	private Property locationCountry;
 	private Property hasApp;
@@ -74,7 +75,9 @@ public class OntologyWriter {
 	private Property date;
 	private Property percentage;
 	private Property skosRelatedMatch;
+	private Property owlSameAs;
 
+	private Resource yearClass;
 	private Resource cityClass;
 	private Resource resourceTypeClass;
 	private Resource p2pSccPlatformClass;
@@ -161,7 +164,7 @@ public class OntologyWriter {
 		hasScope = ontologyModel.createProperty(D2S + "has_scope");
 		launchYear = ontologyModel.createProperty(DBPP + "launchYear");
 		launchedIn = ontologyModel.createProperty(D2S + "launched_in");
-		location = ontologyModel.createProperty(DBPO + "location");
+		operatorResidesIn = ontologyModel.createProperty(D2S + "operator_resides_in");
 		locationCity = ontologyModel.createProperty(DBPP + "locationCity");
 		locationCountry = ontologyModel.createProperty(DBPP + "locationCountry");
 		hasApp = ontologyModel.createProperty(D2S + "has_app");
@@ -169,9 +172,11 @@ public class OntologyWriter {
 		date = ontologyModel.createProperty(DCT + "date");
 		percentage = ontologyModel.createProperty(D2S + "user_percentage");
 		skosRelatedMatch = ontologyModel.createProperty(SKOS + "relatedMatch");
+		owlSameAs = ontologyModel.createProperty(OWL + "sameAs");
 
 		log.info("Defining D2S classes/instances.");
 		// create resources once in the beginning to use for every platform
+		yearClass = ontologyModel.createResource(D2S + "Year");
 		cityClass = ontologyModel.createResource(D2S + "City");
 
 		resourceTypeClass = ontologyModel.createResource(D2S + "Resource_Type");
@@ -289,7 +294,7 @@ public class OntologyWriter {
 		launchYearDimension();
 		locationDimension(currentPlatform.getLaunchCity(), currentPlatform.getLaunchCountry().toUpperCase(), launchedIn);
 		locationDimension(currentPlatform.getResidenceCity(), currentPlatform.getResidenceCountry().toUpperCase(),
-				location);
+				operatorResidesIn);
 		smartphoneAppDimension();
 		userDistributionDimension();
 	}
@@ -725,7 +730,10 @@ public class OntologyWriter {
 
 		try {
 			int year = Integer.parseInt(currentPlatform.getYearLaunch());
-			Resource launchYearResource = ontologyModel.createResource(DBPR + year);
+			Resource launchYearResource = ontologyModel.createResource(D2S + year);
+			launchYearResource.addProperty(rdfType, yearClass);
+			Resource launchYearResourceDBpedia = ontologyModel.createResource(DBPR + year);
+			launchYearResource.addProperty(owlSameAs, launchYearResourceDBpedia);
 			platformResource.addProperty(launchYear, launchYearResource);
 		} catch (NumberFormatException e) {
 			log.warn("Year launch column not a proper number. Is: '" + currentPlatform.getYearLaunch() + "'");
@@ -752,7 +760,7 @@ public class OntologyWriter {
 					cityResource.addProperty(rdfType, cityClass);
 					cityResource.addProperty(rdfsLabel, cityName);
 					Resource cityGeonames = ontologyModel.createResource("http://www.geonames.org/" + cityId);
-					cityResource.addProperty(skosRelatedMatch, cityGeonames);
+					cityResource.addProperty(owlSameAs, cityGeonames);
 
 					JSONObject cityInfo = JsonReader
 							.readJsonFromUrl("http://api.geonames.org/getJSON?username=discover2share&geonameId="
@@ -760,7 +768,7 @@ public class OntologyWriter {
 					if (cityInfo.has("wikipediaURL")) {
 						String dbpediaId = cityInfo.getString("wikipediaURL").replace("en.wikipedia.org/wiki", "");
 						Resource dbpedia = ontologyModel.createResource("http://dbpedia.org/resource" + dbpediaId);
-						cityResource.addProperty(skosRelatedMatch, dbpedia);
+						cityResource.addProperty(owlSameAs, dbpedia);
 					}
 
 					String countryCode = o.getString("countryCode");
