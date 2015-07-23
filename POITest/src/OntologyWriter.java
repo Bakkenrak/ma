@@ -1,27 +1,23 @@
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import uk.ac.shef.wit.simmetrics.similaritymetrics.Levenshtein;
+import util.Pair;
 
 import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.ontology.OntModelSpec;
-import com.hp.hpl.jena.query.Query;
-import com.hp.hpl.jena.query.QueryExecution;
-import com.hp.hpl.jena.query.QueryExecutionFactory;
-import com.hp.hpl.jena.query.QueryFactory;
-import com.hp.hpl.jena.query.QuerySolution;
-import com.hp.hpl.jena.query.ResultSet;
+import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
@@ -47,8 +43,10 @@ public class OntologyWriter {
 
 	private Resource platformResource;
 	private ExcelPlatform currentPlatform;
-	private Map<String, Resource> countryMap = new HashMap<String, Resource>();
-	private Map<String, Resource> cityMap = new HashMap<String, Resource>();
+	private Map<String, Resource> countryResources = new HashMap<String, Resource>();
+	private Map<String, Resource> countryResourcesFullName = new HashMap<String, Resource>();
+	private Map<String, Pair<Resource, Resource>> cityResources = new HashMap<String, Pair<Resource, Resource>>();
+	private Map<String, Map<String, String>> countryIndex = new HashMap<String, Map<String, String>>();
 
 	private Property rdfType;
 	private Property rdfsLabel;
@@ -72,7 +70,12 @@ public class OntologyWriter {
 	private Property locationCity;
 	private Property locationCountry;
 	private Property hasApp;
+	private Property usedIn;
+	private Property date;
+	private Property percentage;
+	private Property skosRelatedMatch;
 
+	private Resource cityClass;
 	private Resource resourceTypeClass;
 	private Resource p2pSccPlatformClass;
 	private Resource socialConsumerism;
@@ -86,6 +89,9 @@ public class OntologyWriter {
 	private Resource profitFromBoth;
 	private Resource profitFromPeerConsumers;
 	private Resource profitFromPeerProviders;
+	private Resource perTransaction;
+	private Resource perListing;
+	private Resource membershipFee;
 	private Resource mixedObjectType;
 	private Resource experientialObjectType;
 	private Resource functionalObjectType;
@@ -119,6 +125,9 @@ public class OntologyWriter {
 
 	public OntologyWriter() {
 		log = Logger.getLogger(this.getClass().getName());
+
+		log.info("Build country index");
+		buildCountryIndex();
 
 		log.info("Creating ontology model and setting namespace prefixes.");
 		ontologyModel = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM);
@@ -156,9 +165,15 @@ public class OntologyWriter {
 		locationCity = ontologyModel.createProperty(DBPP + "locationCity");
 		locationCountry = ontologyModel.createProperty(DBPP + "locationCountry");
 		hasApp = ontologyModel.createProperty(D2S + "has_app");
+		usedIn = ontologyModel.createProperty(D2S + "used_in");
+		date = ontologyModel.createProperty(DCT + "date");
+		percentage = ontologyModel.createProperty(D2S + "user_percentage");
+		skosRelatedMatch = ontologyModel.createProperty(SKOS + "relatedMatch");
 
 		log.info("Defining D2S classes/instances.");
 		// create resources once in the beginning to use for every platform
+		cityClass = ontologyModel.createResource(D2S + "City");
+
 		resourceTypeClass = ontologyModel.createResource(D2S + "Resource_Type");
 
 		p2pSccPlatformClass = ontologyModel.createResource(D2S + "P2P_SCC_Platform");
@@ -176,6 +191,9 @@ public class OntologyWriter {
 		profitFromBoth = ontologyModel.createResource(D2S + "Profit_from_both");
 		profitFromPeerConsumers = ontologyModel.createResource(D2S + "Profit_from_peer_consumers");
 		profitFromPeerProviders = ontologyModel.createResource(D2S + "Profit_from_peer_providers");
+		perTransaction = ontologyModel.createResource(D2S + "Per_transaction");
+		perListing = ontologyModel.createResource(D2S + "Per_listing");
+		membershipFee = ontologyModel.createResource(D2S + "Membership_fee");
 
 		mixedObjectType = ontologyModel.createResource(D2S + "Mixed");
 		experientialObjectType = ontologyModel.createResource(D2S + "Experiential");
@@ -215,15 +233,35 @@ public class OntologyWriter {
 		windowsPhoneApp = ontologyModel.createResource(D2S + "Windows_Phone_app");
 	}
 
+	private void buildCountryIndex() {
+		JSONObject json;
+		try {
+			json = JsonReader.readJsonFromUrl("http://localhost:8080/discover2share-Web/resources/js/countries.json");
+			JSONArray a = json.getJSONArray("countries");
+			for (int i = 0; i < a.length(); i++) {
+				JSONObject o = a.getJSONObject(i);
+				Map<String, String> map = new HashMap<String, String>();
+				map.put("countryId", o.getString("countryId"));
+				map.put("countryName", o.getString("countryName"));
+				map.put("countryCode", o.getString("countryCode"));
+				map.put("resourceName",
+						o.getString("countryName").replace(" ", "_").replace("[", "%5B").replace("]", "%5D"));
+				countryIndex.put(o.getString("countryCode"), map);
+			}
+		} catch (IOException | JSONException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public void writeAll(List<ExcelPlatform> platforms, String outputFile) {
 		int nrPlatforms = platforms.size();
 		for (int i = 0; i < nrPlatforms; i++) {
 			currentPlatform = platforms.get(i);
-			
+
 			log.info("Creating '" + currentPlatform.getName() + "' platform (" + (i + 1) + "/" + nrPlatforms + ")");
 			constructPlatform();
 		}
-		
+
 		try (OutputStream out = new FileOutputStream(outputFile)) {
 			ontologyModel.write(out, "RDF/XML"); // "RDF/XML"
 			out.close();
@@ -240,6 +278,7 @@ public class OntologyWriter {
 		sustainableConsumerismDimension();
 		patternDimension(currentPlatform.getDeferredP2PPattern().toLowerCase());
 		marketMediationDimension(currentPlatform.getMarketMediation().toLowerCase());
+		marketMediationDimension2();
 		typeOfAccessedObjectDimension(currentPlatform.getTypeOfAccessedObject().toLowerCase());
 		resourceOwnerDimension(currentPlatform.getResourceOwner().toLowerCase());
 		minServiceDurationDimension(currentPlatform.getServiceDurationMin().toLowerCase());
@@ -249,8 +288,10 @@ public class OntologyWriter {
 		marketIntegrationDimension();
 		launchYearDimension();
 		locationDimension(currentPlatform.getLaunchCity(), currentPlatform.getLaunchCountry().toUpperCase(), launchedIn);
-		locationDimension(currentPlatform.getResidenceCity(), currentPlatform.getResidenceCountry().toUpperCase(), location);
+		locationDimension(currentPlatform.getResidenceCity(), currentPlatform.getResidenceCountry().toUpperCase(),
+				location);
 		smartphoneAppDimension();
+		userDistributionDimension();
 	}
 
 	private void initializePlatform() {
@@ -259,7 +300,7 @@ public class OntologyWriter {
 		// Set type
 		platformResource.addProperty(rdfType, p2pSccPlatformClass);
 		// add rdfs:label property
-		platformResource.addProperty(rdfsLabel, currentPlatform.getName(), XSDDatatype.XSDstring);
+		platformResource.addProperty(rdfsLabel, currentPlatform.getName());
 		// add dbpp:url property
 		platformResource.addProperty(dbppUrl, currentPlatform.getStrippedUrl(), XSDDatatype.XSDanyURI);
 	}
@@ -274,7 +315,7 @@ public class OntologyWriter {
 		// Set type
 		resourceType.addProperty(rdfType, resourceTypeClass);
 		// add rdfs:label property
-		resourceType.addProperty(rdfsLabel, currentPlatform.getResourceType(), XSDDatatype.XSDstring);
+		resourceType.addProperty(rdfsLabel, currentPlatform.getResourceType());
 		// add d2s:has_resource_type
 		platformResource.addProperty(hasResourceType, resourceType);
 	}
@@ -310,15 +351,15 @@ public class OntologyWriter {
 		if (value.isEmpty())
 			return;
 
-		if (value.equals(patternValues[0])){
+		if (value.equals(patternValues[0])) {
 			Resource pattern = ontologyModel.createResource();
 			pattern.addProperty(rdfType, deferredPattern);
 			platformResource.addProperty(hasPattern, pattern);
-		} else if (value.equals(patternValues[1])){
+		} else if (value.equals(patternValues[1])) {
 			Resource pattern = ontologyModel.createResource();
 			pattern.addProperty(rdfType, immediatePattern);
 			platformResource.addProperty(hasPattern, pattern);
-		} else if (value.equals(patternValues[2])){
+		} else if (value.equals(patternValues[2])) {
 			Resource pattern = ontologyModel.createResource();
 			pattern.addProperty(rdfType, recurrentPattern);
 			platformResource.addProperty(hasPattern, pattern);
@@ -374,6 +415,23 @@ public class OntologyWriter {
 				log.warn("Market mediation column not 'profit from both peer consumers and peer providers'/'indirect profit'/'profit from peer consumers'/'profit from peer providers'. Is: '"
 						+ value + "'");
 		}
+	}
+
+	private void marketMediationDimension2() {
+		if (currentPlatform.getPerTransaction().equals("x"))
+			platformResource.addProperty(hasMarketMediation, perTransaction);
+		else if (!currentPlatform.getPerTransaction().equals("o") && !currentPlatform.getPerTransaction().isEmpty())
+			log.warn("Per transaction is not 'o'/'x'. Is: '" + currentPlatform.getPerTransaction() + "'");
+
+		if (currentPlatform.getPerListing().equals("x"))
+			platformResource.addProperty(hasMarketMediation, perListing);
+		else if (!currentPlatform.getPerListing().equals("o") && !currentPlatform.getPerListing().isEmpty())
+			log.warn("Per listing is not 'o'/'x'. Is: '" + currentPlatform.getPerListing() + "'");
+
+		if (currentPlatform.getMembershipFee().equals("x"))
+			platformResource.addProperty(hasMarketMediation, membershipFee);
+		else if (!currentPlatform.getMembershipFee().equals("o") && !currentPlatform.getMembershipFee().isEmpty())
+			log.warn("Membership fee is not 'o'/'x'. Is: '" + currentPlatform.getMembershipFee() + "'");
 	}
 
 	private String[] objectTypeValues = { "mixed", "functional", "experiential" };
@@ -622,7 +680,8 @@ public class OntologyWriter {
 		}
 	}
 
-	private String[] marketWidthValues = { "neighbourhood-wide", "city-wide", "state-wide", "country-wide", "region-wide", "global" };
+	private String[] marketWidthValues = { "neighbourhood-wide", "city-wide", "state-wide", "country-wide",
+			"region-wide", "global" };
 
 	private void marketWidth(Resource marketIntegration, String value) {
 		if (value.isEmpty())
@@ -672,80 +731,119 @@ public class OntologyWriter {
 			log.warn("Year launch column not a proper number. Is: '" + currentPlatform.getYearLaunch() + "'");
 		}
 	}
-	
-	private void locationDimension(String city, String country, Property property){
-		if((city.isEmpty() || city.equals("?")) && (country.isEmpty() || country.equals("?"))) return;
-			
+
+	private void locationDimension(String city, String country, Property property) {
+		if ((city.isEmpty() || city.equals("?")) && (country.isEmpty() || country.equals("?")))
+			return;
+
 		Resource countryResource = null;
 		Resource cityResource = null;
-		
-		JSONObject json = findCity(city, country);
-		if(json != null){
-			try{
-				int cityId = json.getJSONArray("geonames").getJSONObject(0).getInt("geonameId");
-				cityResource = ontologyModel.createResource("http://www.geonames.org/" + cityId);
-				if(!cityMap.containsKey(city))
-					cityMap.put(city, cityResource);
-				int countryId = json.getJSONArray("geonames").getJSONObject(0).getInt("countryId");
-				countryResource = ontologyModel.createResource("http://www.geonames.org/" + countryId);
-			}catch(Exception e){e.printStackTrace();}
+
+		if (!cityResources.containsKey(city + country)) {
+			JSONObject json = findCity(city, country);
+			if (json != null) {
+				try {
+					JSONObject o = json.getJSONArray("geonames").getJSONObject(0);
+					int cityId = o.getInt("geonameId");
+					String cityName = o.getString("toponymName");
+
+					cityResource = ontologyModel.createResource(D2S
+							+ cityName.replace(" ", "_").replace("[", "%5B").replace("]", "%5D"));
+					cityResource.addProperty(rdfType, cityClass);
+					cityResource.addProperty(rdfsLabel, cityName);
+					Resource cityGeonames = ontologyModel.createResource("http://www.geonames.org/" + cityId);
+					cityResource.addProperty(skosRelatedMatch, cityGeonames);
+
+					JSONObject cityInfo = JsonReader
+							.readJsonFromUrl("http://api.geonames.org/getJSON?username=discover2share&geonameId="
+									+ cityId);
+					if (cityInfo.has("wikipediaURL")) {
+						String dbpediaId = cityInfo.getString("wikipediaURL").replace("en.wikipedia.org/wiki", "");
+						Resource dbpedia = ontologyModel.createResource("http://dbpedia.org/resource" + dbpediaId);
+						cityResource.addProperty(skosRelatedMatch, dbpedia);
+					}
+
+					String countryCode = o.getString("countryCode");
+					if (!countryResources.containsKey(countryCode)) {
+						if (countryIndex.containsKey(countryCode)) {
+							countryResource = ontologyModel.createResource(D2S
+									+ countryIndex.get(countryCode).get("resourceName"));
+							countryResources.put(country, countryResource);
+						} else
+							log.warn("Could not find a country with code '" + countryCode + "'.");
+					} else {
+						countryResource = countryResources.get(countryCode);
+					}
+					cityResource.addProperty(locationCountry, countryResource);
+
+					cityResources.put(city + country, new Pair<Resource, Resource>(cityResource, countryResource));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			} else if (!countryResources.containsKey(country)) {
+				if (countryIndex.containsKey(country)) {
+					countryResource = ontologyModel.createResource(D2S + countryIndex.get(country).get("resourceName"));
+					countryResources.put(country, countryResource);
+					if (!city.isEmpty() && !city.equals("?"))
+						log.warn("Could not find the city '" + city + "'.");
+				} else
+					log.warn("Could not find the city '" + city + "' nor a country with code '" + country + "'.");
+			} else {
+				countryResource = countryResources.get(country);
+			}
 		} else {
-			json = findCountry(country);
-			if(json!=null){
-				try{
-					int countryId = json.getJSONArray("geonames").getJSONObject(0).getInt("countryId");
-					countryResource = ontologyModel.createResource("http://www.geonames.org/" + countryId);
-						if(!countryMap.containsKey(country))
-							countryMap.put(country, countryResource);
-				}catch(Exception e){e.printStackTrace();}
-			}else 
-				log.warn("Could not find the city '" + city + "' nor a country with code '" + country + "'.");
+			cityResource = cityResources.get(city + country).getFirst();
+			countryResource = cityResources.get(city + country).getSecond();
 		}
-		
-		if(countryResource != null){
+
+		if (countryResource != null) {
 			Resource locationResource = ontologyModel.createResource();
 			platformResource.addProperty(property, locationResource);
-			
+
 			locationResource.addProperty(locationCountry, countryResource);
-			if(cityResource!=null)
+			if (cityResource != null)
 				locationResource.addProperty(locationCity, cityResource);
 		}
 	}
-	
-	public JSONObject findCity(String city, String country){
-		if(city.isEmpty() || city.equals("?")) return null;
-			
-		String base = "http://api.geonames.org/searchJSON?username=demo&maxRows=1&featureClass=P";
+
+	public JSONObject findCity(String city, String country) {
+		if (city.isEmpty() || city.equals("?"))
+			return null;
+
+		String base = "http://api.geonames.org/searchJSON?username=discover2share&maxRows=1&featureClass=P";
 		String query1 = base + "&name=" + city.replace(" ", "%20") + "&country=" + country;
 		String query2 = base + "&q=" + city.replace(" ", "%20") + "&country=" + country;
 		try {
 			JSONObject json = JsonReader.readJsonFromUrl(query1);
-				
-			if(json.has("totalResultsCount") && json.getInt("totalResultsCount") > 0){
+
+			if (json.has("totalResultsCount") && json.getInt("totalResultsCount") > 0) {
 				return json;
 			} else {
 				json = JsonReader.readJsonFromUrl(query2);
-				
-				if(json.has("totalResultsCount") && json.getInt("totalResultsCount") > 0)
+
+				if (json.has("totalResultsCount") && json.getInt("totalResultsCount") > 0)
 					return json;
 			}
-		} catch (Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
-	
-	public JSONObject findCountry(String country){
-		if(country.isEmpty() || country.equals("?")) return null;
-		
-		String query = "http://api.geonames.org/searchJSON?username=demo&maxRows=1&featureClass=A&country="+ country;
+
+	public JSONObject findCountry(String country) {
+		if (country.isEmpty() || country.equals("?"))
+			return null;
+
+		String query = "http://api.geonames.org/searchJSON?username=discover2share&maxRows=1&featureClass=A&isNameRequired&q="
+				+ country;
+
 		try {
 			JSONObject json = JsonReader.readJsonFromUrl(query);
-				
-			if(json.has("totalResultsCount") && json.getInt("totalResultsCount") > 0){
+
+			if (json.has("totalResultsCount") && json.getInt("totalResultsCount") > 0) {
 				return json;
 			}
-		} catch (Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
@@ -766,5 +864,44 @@ public class OntologyWriter {
 			platformResource.addProperty(hasApp, windowsPhoneApp);
 		else if (!currentPlatform.getWindowsPhone().equals("o") && !currentPlatform.getWindowsPhone().isEmpty())
 			log.warn("Windows phone column is not 'o'/'x'. Is: '" + currentPlatform.getWindowsPhone() + "'");
+	}
+
+	private void userDistributionDimension() {
+		Map<String, Double> userCountries = AlexaParser.parseAlexa(currentPlatform.getStrippedUrl());
+		if (userCountries != null) {
+			for (String country : userCountries.keySet()) {
+				Resource countryResource = null;
+				if (!countryResourcesFullName.containsKey(country)) {
+					JSONObject json = findCountry(country);
+					if (json != null) {
+						try {
+							String countryCode = json.getJSONArray("geonames").getJSONObject(0)
+									.getString("countryCode");
+							if (countryIndex.containsKey(countryCode)) {
+								countryResource = ontologyModel.createResource(D2S
+										+ countryIndex.get(countryCode).get("resourceName"));
+								countryResourcesFullName.put(country, countryResource);
+							} else
+								log.warn("Could not find the country '" + country + "'.");
+						} catch (Exception e) {
+							log.warn("Could not find the country '" + country + "'.");
+						}
+					} else {
+						log.warn("Could not find the country '" + country + "'.");
+					}
+				} else {
+					countryResource = countryResourcesFullName.get(country);
+				}
+
+				if (countryResource != null) {
+					Resource node = ontologyModel.createResource();
+					platformResource.addProperty(usedIn, node);
+					Literal dateLiteral = ontologyModel.createTypedLiteral(GregorianCalendar.getInstance());
+					node.addLiteral(date, dateLiteral);
+					node.addLiteral(percentage, userCountries.get(country));
+					node.addProperty(locationCountry, countryResource);
+				}
+			}
+		}
 	}
 }
