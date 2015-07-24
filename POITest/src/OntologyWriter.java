@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -74,12 +75,46 @@ public class OntologyWriter {
 	private Property usedIn;
 	private Property date;
 	private Property percentage;
-	private Property skosRelatedMatch;
 	private Property owlSameAs;
 
 	private Resource yearClass;
 	private Resource cityClass;
-	private Resource resourceTypeClass;
+	private Resource resourceType;
+	private Resource threeDPrinters;
+	private Resource accommodations;
+	private Resource accommodationsFlatmate;
+	private Resource adventureAndOutdoorRelatedResources;
+	private Resource boats;
+	private Resource books;
+	private Resource cameras;
+	private Resource campingVehicles;
+	private Resource cargoBicycles;
+	private Resource carsRide;
+	private Resource carsTaxi;
+	private Resource carsRent;
+	private Resource carsTaxiBussesRide;
+	private Resource clothing;
+	private Resource dogs;
+	private Resource foodDining;
+	private Resource foodSelfGrown;
+	private Resource jets;
+	private Resource land;
+	private Resource laundryMachines;
+	private Resource media;
+	private Resource miscellaneous;
+	private Resource miscellaneousCombined;
+	private Resource motorizedVehicles;
+	private Resource nonMotorizedSportGear;
+	private Resource parkingSpaces;
+	private Resource retailSpaces;
+	private Resource spaces;
+	private Resource sportFacilities;
+	private Resource storageSpaces;
+	private Resource tools;
+	private Resource transporters;
+	private Resource venues;
+	private Resource WiFiRouters;
+	private Resource workSpaces;
 	private Resource p2pSccPlatformClass;
 	private Resource socialConsumerism;
 	private Resource economicConsumerism;
@@ -171,7 +206,6 @@ public class OntologyWriter {
 		usedIn = ontologyModel.createProperty(D2S + "used_in");
 		date = ontologyModel.createProperty(DCT + "date");
 		percentage = ontologyModel.createProperty(D2S + "user_percentage");
-		skosRelatedMatch = ontologyModel.createProperty(SKOS + "relatedMatch");
 		owlSameAs = ontologyModel.createProperty(OWL + "sameAs");
 
 		log.info("Defining D2S classes/instances.");
@@ -179,7 +213,42 @@ public class OntologyWriter {
 		yearClass = ontologyModel.createResource(D2S + "Year");
 		cityClass = ontologyModel.createResource(D2S + "City");
 
-		resourceTypeClass = ontologyModel.createResource(D2S + "Resource_Type");
+		resourceType = ontologyModel.createResource(D2S + "Resource_Type");
+		threeDPrinters = ontologyModel.createResource(D2S + "3d_printers");
+		accommodations = ontologyModel.createResource(D2S + "Accommodations");
+		accommodationsFlatmate = ontologyModel.createResource(D2S + "Accommodations_flatmate");
+		adventureAndOutdoorRelatedResources = ontologyModel.createResource(D2S + "Adventure-_and_outdoor-related_resources");
+		boats = ontologyModel.createResource(D2S + "Boats");
+		books = ontologyModel.createResource(D2S + "Books");
+		cameras = ontologyModel.createResource(D2S + "Cameras");
+		campingVehicles = ontologyModel.createResource(D2S + "Camping_vehicles");
+		cargoBicycles = ontologyModel.createResource(D2S + "Cargo_bicycles");
+		carsRide = ontologyModel.createResource(D2S + "Cars_ride");
+		carsTaxi = ontologyModel.createResource(D2S + "Cars_taxi");
+		carsRent = ontologyModel.createResource(D2S + "Cars_rent");
+		carsTaxiBussesRide = ontologyModel.createResource(D2S + "Cars_taxi_busses_ride");
+		clothing = ontologyModel.createResource(D2S + "Clothing");
+		dogs = ontologyModel.createResource(D2S + "Dogs");
+		foodDining = ontologyModel.createResource(D2S + "Food_dining");
+		foodSelfGrown = ontologyModel.createResource(D2S + "Food_self-grown");
+		jets = ontologyModel.createResource(D2S + "Jets");
+		land = ontologyModel.createResource(D2S + "Land");
+		laundryMachines = ontologyModel.createResource(D2S + "Laundry_machines");
+		media = ontologyModel.createResource(D2S + "Media");
+		miscellaneous = ontologyModel.createResource(D2S + "Miscellaneous");
+		miscellaneousCombined = ontologyModel.createResource(D2S + "Miscellaneous_(combined)");
+		motorizedVehicles = ontologyModel.createResource(D2S + "Motorized_vehicles");
+		nonMotorizedSportGear = ontologyModel.createResource(D2S + "Non-motorized_(sport)_gear");
+		parkingSpaces = ontologyModel.createResource(D2S + "Parking_spaces");
+		retailSpaces = ontologyModel.createResource(D2S + "Retail_spaces");
+		spaces = ontologyModel.createResource(D2S + "Spaces");
+		sportFacilities = ontologyModel.createResource(D2S + "Sport_facilities");
+		storageSpaces = ontologyModel.createResource(D2S + "Storage_spaces");
+		tools = ontologyModel.createResource(D2S + "Tools");
+		transporters = ontologyModel.createResource(D2S + "Tranporters");
+		venues = ontologyModel.createResource(D2S + "Venues");
+		WiFiRouters = ontologyModel.createResource(D2S + "Wi-Fi_routers");
+		workSpaces = ontologyModel.createResource(D2S + "Work_spaces");
 
 		p2pSccPlatformClass = ontologyModel.createResource(D2S + "P2P_SCC_Platform");
 
@@ -279,7 +348,7 @@ public class OntologyWriter {
 	private void constructPlatform() {
 		initializePlatform();
 
-		resourceTypeDimension();
+		resourceTypeDimension(currentPlatform.getResourceType());
 		sustainableConsumerismDimension();
 		patternDimension(currentPlatform.getDeferredP2PPattern().toLowerCase());
 		marketMediationDimension(currentPlatform.getMarketMediation().toLowerCase());
@@ -310,19 +379,114 @@ public class OntologyWriter {
 		platformResource.addProperty(dbppUrl, currentPlatform.getStrippedUrl(), XSDDatatype.XSDanyURI);
 	}
 
-	// TODO
-	private void resourceTypeDimension() {
-		if (currentPlatform.getResourceType().isEmpty())
+	private String[] resourceTypes = { "3d printers", "accommodations", "accommodations / flatmate",
+			"adventure- and outdoor-related resources", "boats", "books", "cameras", "camping vehicles",
+			"cargo bicycles", "cars / ride", "cars / taxi", "cars / rent", "cars, taxi, busses / ride", "clothing",
+			"dogs", "food / dining", "food / self-grown", "jets", "land", "laundry machines", "media", "miscellaneous",
+			"miscellaneous (combined)", "motorized vehicles", "non-motorized (sport) gear", "parking spaces",
+			"retail spaces", "spaces", "sport facilities", "storage spaces", "tools", "tranporters", "venues",
+			"Wi-Fi routers", "work spaces" };
+
+	private void resourceTypeDimension(String value) {
+		if (value.isEmpty())
 			return;
 
-		// Create new resource type instance
-		Resource resourceType = ontologyModel.createResource(); // anonymous instance
-		// Set type
-		resourceType.addProperty(rdfType, resourceTypeClass);
-		// add rdfs:label property
-		resourceType.addProperty(rdfsLabel, currentPlatform.getResourceType());
-		// add d2s:has_resource_type
-		platformResource.addProperty(hasResourceType, resourceType);
+		if (value.equals(resourceTypes[0])) {
+			platformResource.addProperty(hasResourceType, threeDPrinters);
+		} else if (value.equals(resourceTypes[1])) {
+			platformResource.addProperty(hasResourceType, accommodations);
+		} else if (value.equals(resourceTypes[2])) {
+			platformResource.addProperty(hasResourceType, accommodationsFlatmate);
+		} else if (value.equals(resourceTypes[3])) {
+			platformResource.addProperty(hasResourceType, adventureAndOutdoorRelatedResources);
+		} else if (value.equals(resourceTypes[4])) {
+			platformResource.addProperty(hasResourceType, boats);
+		} else if (value.equals(resourceTypes[5])) {
+			platformResource.addProperty(hasResourceType, books);
+		} else if (value.equals(resourceTypes[6])) {
+			platformResource.addProperty(hasResourceType, cameras);
+		} else if (value.equals(resourceTypes[7])) {
+			platformResource.addProperty(hasResourceType, campingVehicles);
+		} else if (value.equals(resourceTypes[8])) {
+			platformResource.addProperty(hasResourceType, cargoBicycles);
+		} else if (value.equals(resourceTypes[9])) {
+			platformResource.addProperty(hasResourceType, carsRide);
+		} else if (value.equals(resourceTypes[10])) {
+			platformResource.addProperty(hasResourceType, carsTaxi);
+		} else if (value.equals(resourceTypes[11])) {
+			platformResource.addProperty(hasResourceType, carsRent);
+		} else if (value.equals(resourceTypes[12])) {
+			platformResource.addProperty(hasResourceType, carsTaxiBussesRide);
+		} else if (value.equals(resourceTypes[13])) {
+			platformResource.addProperty(hasResourceType, clothing);
+		} else if (value.equals(resourceTypes[14])) {
+			platformResource.addProperty(hasResourceType, dogs);
+		} else if (value.equals(resourceTypes[15])) {
+			platformResource.addProperty(hasResourceType, foodDining);
+		} else if (value.equals(resourceTypes[16])) {
+			platformResource.addProperty(hasResourceType, foodSelfGrown);
+		} else if (value.equals(resourceTypes[17])) {
+			platformResource.addProperty(hasResourceType, jets);
+		} else if (value.equals(resourceTypes[18])) {
+			platformResource.addProperty(hasResourceType, land);
+		} else if (value.equals(resourceTypes[19])) {
+			platformResource.addProperty(hasResourceType, laundryMachines);
+		} else if (value.equals(resourceTypes[20])) {
+			platformResource.addProperty(hasResourceType, media);
+		} else if (value.equals(resourceTypes[21])) {
+			platformResource.addProperty(hasResourceType, miscellaneous);
+		} else if (value.equals(resourceTypes[22])) {
+			platformResource.addProperty(hasResourceType, miscellaneousCombined);
+		} else if (value.equals(resourceTypes[23])) {
+			platformResource.addProperty(hasResourceType, motorizedVehicles);
+		} else if (value.equals(resourceTypes[24])) {
+			platformResource.addProperty(hasResourceType, nonMotorizedSportGear);
+		} else if (value.equals(resourceTypes[25])) {
+			platformResource.addProperty(hasResourceType, parkingSpaces);
+		} else if (value.equals(resourceTypes[26])) {
+			platformResource.addProperty(hasResourceType, retailSpaces);
+		} else if (value.equals(resourceTypes[27])) {
+			platformResource.addProperty(hasResourceType, spaces);
+		} else if (value.equals(resourceTypes[28])) {
+			platformResource.addProperty(hasResourceType, sportFacilities);
+		} else if (value.equals(resourceTypes[29])) {
+			platformResource.addProperty(hasResourceType, storageSpaces);
+		} else if (value.equals(resourceTypes[30])) {
+			platformResource.addProperty(hasResourceType, tools);
+		} else if (value.equals(resourceTypes[31])) {
+			platformResource.addProperty(hasResourceType, transporters);
+		} else if (value.equals(resourceTypes[32])) {
+			platformResource.addProperty(hasResourceType, venues);
+		} else if (value.equals(resourceTypes[33])) {
+			platformResource.addProperty(hasResourceType, WiFiRouters);
+		} else if (value.equals(resourceTypes[34])) {
+			platformResource.addProperty(hasResourceType, workSpaces);
+		} else {
+			float maxSimilarity = 0;
+			String maxSimValue = "";
+
+			for (String val : resourceTypes) {
+				float sim = levenshtein.getSimilarity(value, val);
+				if (sim > maxSimilarity) {
+					maxSimilarity = sim;
+					maxSimValue = val;
+				}
+			}
+
+			if (maxSimilarity > 0.7)
+				resourceTypeDimension(maxSimValue);
+			else {
+				value = Character.toUpperCase(value.charAt(0)) + value.substring(1);
+				try{
+					Resource newType = ontologyModel.createResource(D2S + new File(value).toURI().toURL());
+					newType.addProperty(rdfType, resourceType);
+					newType.addProperty(rdfsLabel, value);
+					platformResource.addProperty(hasResourceType, newType);
+				} catch(Exception e){
+					log.warn("Could not identify resource type '" + value + "' nor create a new one.");
+				}
+			}
+		}
 	}
 
 	private void sustainableConsumerismDimension() {
