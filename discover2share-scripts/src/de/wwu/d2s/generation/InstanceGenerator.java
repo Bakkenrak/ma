@@ -25,6 +25,8 @@ import de.wwu.d2s.util.JsonReader;
  * A class offering methods to generate all countries and continents on earth as instances of their respective D2S
  * ontology classes. Furthermore all languages by ISO639-1 standard are generated.
  * The output is written into a text file.
+ * 
+ * The output of this generator was already included in the discover2share ontology.
  */
 public class InstanceGenerator {
 	// Ontology namespaces
