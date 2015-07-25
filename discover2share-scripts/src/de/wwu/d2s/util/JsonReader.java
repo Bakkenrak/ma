@@ -1,3 +1,4 @@
+package de.wwu.d2s.util;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;

@@ -1,3 +1,4 @@
+package de.wwu.d2s.transformation;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -13,7 +14,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import uk.ac.shef.wit.simmetrics.similaritymetrics.Levenshtein;
-import util.Pair;
 
 import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
 import com.hp.hpl.jena.ontology.OntModel;
@@ -23,11 +23,19 @@ import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
 
+import de.wwu.d2s.util.JsonReader;
+import de.wwu.d2s.util.Pair;
+
+/**
+ * Transforms P2P SCC platform objects into instances of the Discover2Share ontology.
+ */
 public class OntologyWriter {
 
 	private Logger log;
-	private Levenshtein levenshtein = new Levenshtein();
+	private Levenshtein levenshtein = new Levenshtein(); // Levenshtein similarity
+	private final double SIMILARITY = 0.7;
 
+	// ontology namespaces
 	private final String RDF = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
 	private final String RDFS = "http://www.w3.org/2000/01/rdf-schema#";
 	private final String D2S = "http://www.discover2share.net/d2s-ont/";
@@ -41,15 +49,22 @@ public class OntologyWriter {
 	private final String WORDNET = "http://wordnet-rdf.princeton.edu/wn31/";
 	private final String OWL = "http://www.w3.org/2002/07/owl#";
 
+	// the central element for output
 	private OntModel ontologyModel;
 
+	// current platform object and RDF resource centrally available for all methods
 	private Resource platformResource;
 	private ExcelPlatform currentPlatform;
+
+	// Maps to avoid unnecessary AJAX calls to geonames.org
 	private Map<String, Resource> countryResources = new HashMap<String, Resource>();
 	private Map<String, Resource> countryResourcesFullName = new HashMap<String, Resource>();
 	private Map<String, Pair<Resource, Resource>> cityResources = new HashMap<String, Pair<Resource, Resource>>();
 	private Map<String, Map<String, String>> countryIndex = new HashMap<String, Map<String, String>>();
+	// Map to avoid multiple creations of Year instances in the ontology
+	private Map<Integer, Resource> yearResources = new HashMap<Integer, Resource>();
 
+	// properties available centrally for all methods and platforms to only require one instantiation
 	private Property rdfType;
 	private Property rdfsLabel;
 	private Property dbppUrl;
@@ -77,6 +92,7 @@ public class OntologyWriter {
 	private Property percentage;
 	private Property owlSameAs;
 
+	// resources available centrally for all methods and platforms to only require one instantiation
 	private Resource yearClass;
 	private Resource cityClass;
 	private Resource resourceType;
@@ -161,11 +177,14 @@ public class OntologyWriter {
 	private Resource iOSApp;
 	private Resource windowsPhoneApp;
 
+	/**
+	 * Instantiates the new ontology model and most resources and properties
+	 */
 	public OntologyWriter() {
-		log = Logger.getLogger(this.getClass().getName());
+		log = Logger.getLogger(this.getClass().getName()); // instantiate logger
 
 		log.info("Build country index");
-		buildCountryIndex();
+		buildCountryIndex(); // transform json array into map with country codes as keys
 
 		log.info("Creating ontology model and setting namespace prefixes.");
 		ontologyModel = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM);
@@ -217,7 +236,8 @@ public class OntologyWriter {
 		threeDPrinters = ontologyModel.createResource(D2S + "3d_printers");
 		accommodations = ontologyModel.createResource(D2S + "Accommodations");
 		accommodationsFlatmate = ontologyModel.createResource(D2S + "Accommodations_flatmate");
-		adventureAndOutdoorRelatedResources = ontologyModel.createResource(D2S + "Adventure-_and_outdoor-related_resources");
+		adventureAndOutdoorRelatedResources = ontologyModel.createResource(D2S
+				+ "Adventure-_and_outdoor-related_resources");
 		boats = ontologyModel.createResource(D2S + "Boats");
 		books = ontologyModel.createResource(D2S + "Books");
 		cameras = ontologyModel.createResource(D2S + "Cameras");
@@ -307,14 +327,19 @@ public class OntologyWriter {
 		windowsPhoneApp = ontologyModel.createResource(D2S + "Windows_Phone_app");
 	}
 
+	/**
+	 * Retrieve JSON from discover2share server and transform it into a map with country codes as keys and a map as
+	 * value. Latter map contains all attributes of a country object with their names as keys and values as values.
+	 */
 	private void buildCountryIndex() {
-		JSONObject json;
 		try {
-			json = JsonReader.readJsonFromUrl("http://localhost:8080/discover2share-Web/resources/js/countries.json");
-			JSONArray a = json.getJSONArray("countries");
-			for (int i = 0; i < a.length(); i++) {
+			// read JSON from discover2share server
+			JSONObject json = JsonReader
+					.readJsonFromUrl("http://localhost:8080/discover2share-Web/resources/js/countries.json");
+			JSONArray a = json.getJSONArray("countries"); // retrieved object contains an array at the key "countries"
+			for (int i = 0; i < a.length(); i++) { // for each country
 				JSONObject o = a.getJSONObject(i);
-				Map<String, String> map = new HashMap<String, String>();
+				Map<String, String> map = new HashMap<String, String>(); // create a map of its attributes
 				map.put("countryId", o.getString("countryId"));
 				map.put("countryName", o.getString("countryName"));
 				map.put("countryCode", o.getString("countryCode"));
@@ -327,6 +352,15 @@ public class OntologyWriter {
 		}
 	}
 
+	/**
+	 * Iterates through the list of platforms and starts their respective construction. Finally writes the model out
+	 * into a text file.
+	 * 
+	 * @param platforms
+	 *            List of platform objects.
+	 * @param outputFile
+	 *            Filepath to output the result into. Provided by the user.
+	 */
 	public void writeAll(List<ExcelPlatform> platforms, String outputFile) {
 		int nrPlatforms = platforms.size();
 		for (int i = 0; i < nrPlatforms; i++) {
@@ -337,7 +371,7 @@ public class OntologyWriter {
 		}
 
 		try (OutputStream out = new FileOutputStream(outputFile)) {
-			ontologyModel.write(out, "RDF/XML"); // "RDF/XML"
+			ontologyModel.write(out, "RDF/XML"); // Output format RDF/XML. Could also be e.g. Turtle
 			out.close();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -345,6 +379,9 @@ public class OntologyWriter {
 
 	}
 
+	/**
+	 * Calls all necessary steps required to construct the D2S representation of a platform.
+	 */
 	private void constructPlatform() {
 		initializePlatform();
 
@@ -368,6 +405,10 @@ public class OntologyWriter {
 		userDistributionDimension();
 	}
 
+	/**
+	 * Creates the ontology Resource of type d2s:P2P_SCC_Platform representing the platform. Label and URL are added as
+	 * properties.
+	 */
 	private void initializePlatform() {
 		// Create new platform instance
 		platformResource = ontologyModel.createResource(D2S + "platform_" + currentPlatform.getIdNew());
@@ -379,6 +420,7 @@ public class OntologyWriter {
 		platformResource.addProperty(dbppUrl, currentPlatform.getStrippedUrl(), XSDDatatype.XSDanyURI);
 	}
 
+	// Array containing all resource types used in by the platforms to transform
 	private String[] resourceTypes = { "3d printers", "accommodations", "accommodations / flatmate",
 			"adventure- and outdoor-related resources", "boats", "books", "cameras", "camping vehicles",
 			"cargo bicycles", "cars / ride", "cars / taxi", "cars / rent", "cars, taxi, busses / ride", "clothing",
@@ -387,6 +429,12 @@ public class OntologyWriter {
 			"retail spaces", "spaces", "sport facilities", "storage spaces", "tools", "tranporters", "venues",
 			"Wi-Fi routers", "work spaces" };
 
+	/**
+	 * Creates a link between the platform resource an its value for the resource type dimension.
+	 * 
+	 * @param value
+	 *            Platform's resource type as defined in the excel table.
+	 */
 	private void resourceTypeDimension(String value) {
 		if (value.isEmpty())
 			return;
@@ -461,39 +509,44 @@ public class OntologyWriter {
 			platformResource.addProperty(hasResourceType, WiFiRouters);
 		} else if (value.equals(resourceTypes[34])) {
 			platformResource.addProperty(hasResourceType, workSpaces);
-		} else {
+		} else { // if no match with the known resource types is possible
 			float maxSimilarity = 0;
 			String maxSimValue = "";
 
-			for (String val : resourceTypes) {
-				float sim = levenshtein.getSimilarity(value, val);
-				if (sim > maxSimilarity) {
+			for (String val : resourceTypes) { // for each resource type
+				float sim = levenshtein.getSimilarity(value, val); // calculate similarity to cope with typos
+				if (sim > maxSimilarity) { // only keep similarity if it is the highest so far
 					maxSimilarity = sim;
 					maxSimValue = val;
 				}
 			}
 
-			if (maxSimilarity > 0.7)
-				resourceTypeDimension(maxSimValue);
-			else {
+			if (maxSimilarity > SIMILARITY) // when a similarity higher than the threshold is asserted
+				resourceTypeDimension(maxSimValue); // restart method with max similar value
+			else { // if no similarity found
 				value = Character.toUpperCase(value.charAt(0)) + value.substring(1);
-				try{
+				try {
+					// create new resource type. Remove illegal charcters from used in the desciptions name
 					Resource newType = ontologyModel.createResource(D2S + new File(value).toURI().toURL());
 					newType.addProperty(rdfType, resourceType);
 					newType.addProperty(rdfsLabel, value);
 					platformResource.addProperty(hasResourceType, newType);
-				} catch(Exception e){
+					log.info("New resource type '" + value + "' created.");
+				} catch (Exception e) {
 					log.warn("Could not identify resource type '" + value + "' nor create a new one.");
 				}
 			}
 		}
 	}
 
+	/**
+	 * Creates a link between the platform resource an its values for the sustainable consumerism dimension.
+	 */
 	private void sustainableConsumerismDimension() {
 		if (currentPlatform.getEconomical().equals("o") && currentPlatform.getEnvironmental().equals("o")
-				&& currentPlatform.getSocial().equals("o")) {
-			platformResource.addProperty(promotes, noConsumerism);
-		} else {
+				&& currentPlatform.getSocial().equals("o")) { // if all three types are marked as not promoted via "o"
+			platformResource.addProperty(promotes, noConsumerism); // add link to type "none"
+		} else { // otherwise set link where marked as promoted via "x"
 			if (currentPlatform.getEconomical().equals("x"))
 				platformResource.addProperty(promotes, economicConsumerism);
 			if (currentPlatform.getEnvironmental().equals("x"))
@@ -502,7 +555,7 @@ public class OntologyWriter {
 				platformResource.addProperty(promotes, socialConsumerism);
 		}
 
-		// value testing
+		// output warnings where something other than "o" or "x" where used in the excel table
 		if (!currentPlatform.getEconomical().isEmpty() && !currentPlatform.getEconomical().equals("o")
 				&& !currentPlatform.getEconomical().equals("x"))
 			log.warn("Economical column not 'o'/'x'. Is: '" + currentPlatform.getEconomical() + "'");
@@ -516,11 +569,18 @@ public class OntologyWriter {
 
 	private String[] patternValues = { "deferred", "immediate", "recurrent" };
 
+	/**
+	 * Creates a link between the platform resource an its value for the P2P SCC pattern dimension.
+	 * 
+	 * @param value
+	 *            Platform's pattern as defined in the excel table.
+	 */
 	private void patternDimension(String value) {
 		if (value.isEmpty())
 			return;
 
-		if (value.equals(patternValues[0])) {
+		if (value.equals(patternValues[0])) { // when matching
+			// create a new anonymous instance of type deferred to be able to add temporality to it later on
 			Resource pattern = ontologyModel.createResource();
 			pattern.addProperty(rdfType, deferredPattern);
 			platformResource.addProperty(hasPattern, pattern);
@@ -544,7 +604,7 @@ public class OntologyWriter {
 				}
 			}
 
-			if (maxSimilarity > 0.7)
+			if (maxSimilarity > SIMILARITY)
 				patternDimension(maxSimValue);
 			else
 				log.warn("P2P Pattern column not 'deferred'/'immediate'/'recurrent'. Is: '" + value + "'");
@@ -554,6 +614,12 @@ public class OntologyWriter {
 	private String[] mediationValues = { "profit from both", "profit from both peer consumers and peer providers",
 			"indirect profit", "profit from peer consumers", "profit from peer providers" };
 
+	/**
+	 * Creates a link between the platform resource an its value for the market mediation dimension.
+	 * 
+	 * @param value
+	 *            Platform's market mediation as defined in the excel table.
+	 */
 	private void marketMediationDimension(String value) {
 		if (value.isEmpty())
 			return;
@@ -578,7 +644,7 @@ public class OntologyWriter {
 				}
 			}
 
-			if (maxSimilarity > 0.7)
+			if (maxSimilarity > SIMILARITY)
 				marketMediationDimension(maxSimValue);
 			else
 				log.warn("Market mediation column not 'profit from both peer consumers and peer providers'/'indirect profit'/'profit from peer consumers'/'profit from peer providers'. Is: '"
@@ -586,6 +652,9 @@ public class OntologyWriter {
 		}
 	}
 
+	/**
+	 * Creates links between the platform resource an its values concerning additional mediation types.
+	 */
 	private void marketMediationDimension2() {
 		if (currentPlatform.getPerTransaction().equals("x"))
 			platformResource.addProperty(hasMarketMediation, perTransaction);
@@ -605,6 +674,9 @@ public class OntologyWriter {
 
 	private String[] objectTypeValues = { "mixed", "functional", "experiential" };
 
+	/**
+	 * Creates a link between the platform resource an its value for the type of accessed object dimension.
+	 */
 	private void typeOfAccessedObjectDimension(String value) {
 		if (value.isEmpty())
 			return;
@@ -627,7 +699,7 @@ public class OntologyWriter {
 				}
 			}
 
-			if (maxSimilarity > 0.7)
+			if (maxSimilarity > SIMILARITY)
 				typeOfAccessedObjectDimension(maxSimValue);
 			else
 				log.warn("Type of acc. object column not 'mixed'/'functional'/'experiential'. Is: '" + value + "'");
@@ -636,6 +708,12 @@ public class OntologyWriter {
 
 	private String[] resourceOwnerValues = { "private", "private and business", "business" };
 
+	/**
+	 * Creates a link between the platform resource an its value for the resource owner dimension.
+	 * 
+	 * @param value
+	 *            Platform's resource type as defined in the excel table.
+	 */
 	private void resourceOwnerDimension(String value) {
 		if (value.isEmpty())
 			return;
@@ -658,7 +736,7 @@ public class OntologyWriter {
 				}
 			}
 
-			if (maxSimilarity > 0.7)
+			if (maxSimilarity > SIMILARITY)
 				resourceOwnerDimension(maxSimValue);
 			else
 				log.warn("Resource owner column not 'private'/'private and business'. Is: '" + value + "'");
@@ -668,6 +746,12 @@ public class OntologyWriter {
 
 	private String[] serviceDurationValues = { "minutes", "hours", "days", "weeks", "months", "years" };
 
+	/**
+	 * Creates a link between the platform resource an its value for the min service duration.
+	 * 
+	 * @param value
+	 *            Platform's min service duration as defined in the excel table.
+	 */
 	private void minServiceDurationDimension(String value) {
 		if (value.isEmpty())
 			return;
@@ -696,7 +780,7 @@ public class OntologyWriter {
 				}
 			}
 
-			if (maxSimilarity > 0.7)
+			if (maxSimilarity > SIMILARITY)
 				minServiceDurationDimension(maxSimValue);
 			else
 				log.warn("Service duration min column not 'minutes'/'hours'/'days'/'weeks'/'months'. Is: '" + value
@@ -705,6 +789,12 @@ public class OntologyWriter {
 
 	}
 
+	/**
+	 * Creates a link between the platform resource an its value for the max service duration.
+	 * 
+	 * @param value
+	 *            Platform's max service duration as defined in the excel table.
+	 */
 	private void maxServiceDurationDimension(String value) {
 		if (value.isEmpty())
 			return;
@@ -733,7 +823,7 @@ public class OntologyWriter {
 				}
 			}
 
-			if (maxSimilarity > 0.7)
+			if (maxSimilarity > SIMILARITY)
 				maxServiceDurationDimension(maxSimValue);
 			else
 				log.warn("Service duration max column not 'minutes'/'hours'/'days'/'weeks'/'months'. Is: '" + value
@@ -744,6 +834,12 @@ public class OntologyWriter {
 
 	private String[] consumerInvolvementValues = { "full-service", "self-service", "in-between" };
 
+	/**
+	 * Creates a link between the platform resource an its value for the consumer involvement dimension.
+	 * 
+	 * @param value
+	 *            Platform's consumer involvement as defined in the excel table.
+	 */
 	private void consumerInvolvementDimension(String value) {
 		if (value.isEmpty())
 			return;
@@ -766,7 +862,7 @@ public class OntologyWriter {
 				}
 			}
 
-			if (maxSimilarity > 0.7)
+			if (maxSimilarity > SIMILARITY)
 				consumerInvolvementDimension(maxSimValue);
 			else
 				log.warn("Consumer involvement column not 'full-service'/'self-service'/'in-between'. Is: '" + value
@@ -776,6 +872,12 @@ public class OntologyWriter {
 
 	private String[] moneyFlowValues = { "c2c", "c2b2c", "free", "c2b" };
 
+	/**
+	 * Creates a link between the platform resource an its value for the money flow dimension.
+	 * 
+	 * @param value
+	 *            Platform's money flow as defined in the excel table.
+	 */
 	private void moneyFlowDimension(String value) {
 		if (value.isEmpty())
 			return;
@@ -799,13 +901,17 @@ public class OntologyWriter {
 				}
 			}
 
-			if (maxSimilarity > 0.7)
+			if (maxSimilarity > SIMILARITY)
 				moneyFlowDimension(maxSimValue);
 			else
 				log.warn("Money flow column not 'c2c'/'c2b2c'/'free'. Is: '" + value + "'");
 		}
 	}
 
+	/**
+	 * Creates a link between the platform resource and a new market integration instance. This instance is then
+	 * connected to the respective market offering and geographic scope.
+	 */
 	private void marketIntegrationDimension() {
 		if (currentPlatform.getGlobalIntegration().isEmpty()
 				&& currentPlatform.getGlobalIntegrationFinestLevel().isEmpty())
@@ -817,11 +923,19 @@ public class OntologyWriter {
 
 		marketOffering(marketIntegration, currentPlatform.getGlobalIntegration().toLowerCase());
 
-		marketWidth(marketIntegration, currentPlatform.getGlobalIntegrationFinestLevel().toLowerCase());
+		geographicScope(marketIntegration, currentPlatform.getGlobalIntegrationFinestLevel().toLowerCase());
 	}
 
 	private String[] marketOfferingValues = { "integrated", "separated", "separated communities" };
 
+	/**
+	 * Creates a link between a platform's market integration instance and its value for the market offering.
+	 * 
+	 * @param marketIntegration
+	 *            Instance created for the current platform.
+	 * @param value
+	 *            Market offering value as defined in the excel table.
+	 */
 	private void marketOffering(Resource marketIntegration, String value) {
 		if (value.isEmpty())
 			return;
@@ -842,37 +956,45 @@ public class OntologyWriter {
 				}
 			}
 
-			if (maxSimilarity > 0.7)
+			if (maxSimilarity > SIMILARITY)
 				marketOffering(marketIntegration, maxSimValue);
 			else
 				log.warn("Global integration column not 'integrated'/'separated'. Is: '" + value + "'");
 		}
 	}
 
-	private String[] marketWidthValues = { "neighbourhood-wide", "city-wide", "state-wide", "country-wide",
+	private String[] geographicScopeValues = { "neighbourhood-wide", "city-wide", "state-wide", "country-wide",
 			"region-wide", "global" };
 
-	private void marketWidth(Resource marketIntegration, String value) {
+	/**
+	 * Creates a link between a platform's market integration instance and its value for the geographic scope.
+	 * 
+	 * @param marketIntegration
+	 *            Instance created for the current platform.
+	 * @param value
+	 *            Geographic scope as defined in the excel table.
+	 */
+	private void geographicScope(Resource marketIntegration, String value) {
 		if (value.isEmpty())
 			return;
 
-		if (value.equals(marketWidthValues[0]))
+		if (value.equals(geographicScopeValues[0]))
 			marketIntegration.addProperty(hasScope, neighbourhoodWide);
-		else if (value.equals(marketWidthValues[1]))
+		else if (value.equals(geographicScopeValues[1]))
 			marketIntegration.addProperty(hasScope, cityWide);
-		else if (value.equals(marketWidthValues[2]))
+		else if (value.equals(geographicScopeValues[2]))
 			marketIntegration.addProperty(hasScope, stateWide);
-		else if (value.equals(marketWidthValues[3]))
+		else if (value.equals(geographicScopeValues[3]))
 			marketIntegration.addProperty(hasScope, countryWide);
-		else if (value.equals(marketWidthValues[4]))
+		else if (value.equals(geographicScopeValues[4]))
 			marketIntegration.addProperty(hasScope, regionWide);
-		else if (value.equals(marketWidthValues[5]))
+		else if (value.equals(geographicScopeValues[5]))
 			marketIntegration.addProperty(hasScope, global);
 		else {
 			float maxSimilarity = 0;
 			String maxSimValue = "";
 
-			for (String val : marketWidthValues) {
+			for (String val : geographicScopeValues) {
 				float sim = levenshtein.getSimilarity(value, val);
 				if (sim > maxSimilarity) {
 					maxSimilarity = sim;
@@ -880,150 +1002,270 @@ public class OntologyWriter {
 				}
 			}
 
-			if (maxSimilarity > 0.7)
-				marketWidth(marketIntegration, maxSimValue);
+			if (maxSimilarity > SIMILARITY)
+				geographicScope(marketIntegration, maxSimValue);
 			else
 				log.warn("Global integration finest level column not 'neighbourhood-wide'/'city-wide'/'state-wide'/'country-wide'/'region-wide'/'global'. Is: '"
 						+ value + "'");
 		}
 	}
 
+	/**
+	 * Creates a link between the platform and the resource representing its launch year.
+	 */
 	private void launchYearDimension() {
 		if (currentPlatform.getYearLaunch().isEmpty())
 			return;
 
 		try {
 			int year = Integer.parseInt(currentPlatform.getYearLaunch());
-			Resource launchYearResource = ontologyModel.createResource(D2S + year);
-			launchYearResource.addProperty(rdfType, yearClass);
-			Resource launchYearResourceDBpedia = ontologyModel.createResource(DBPR + year);
-			launchYearResource.addProperty(owlSameAs, launchYearResourceDBpedia);
-			platformResource.addProperty(launchYear, launchYearResource);
+			Resource launchYearResource;
+			if (!yearResources.containsKey(year)) { // when no instance for this year has been created before
+				launchYearResource = ontologyModel.createResource(D2S + year); // create new resource
+				launchYearResource.addProperty(rdfType, yearClass); // of type Year
+				// create Resource for DBpedia equivalent
+				Resource launchYearResourceDBpedia = ontologyModel.createResource(DBPR + year);
+				launchYearResource.addProperty(owlSameAs, launchYearResourceDBpedia); // connect to DBpedia equivalent
+				// add new resource to map to avoid duplicate creation in the future
+				yearResources.put(year, launchYearResource);
+			} else
+				// if instance for this year was already created
+				launchYearResource = yearResources.get(year); // use it
+
+			platformResource.addProperty(launchYear, launchYearResource); // connect platform and year instance
 		} catch (NumberFormatException e) {
 			log.warn("Year launch column not a proper number. Is: '" + currentPlatform.getYearLaunch() + "'");
 		}
 	}
 
+	/**
+	 * Connects the platform either to an anonymous class representing its foundation or residence place depending on
+	 * the given property. The anonymous class bundles city and country resources of that respective place.
+	 * 
+	 * @param city
+	 *            City as defined in the excel table.
+	 * @param country
+	 *            Country code as defined in the excel table.
+	 * @param property
+	 *            Property to use when connecting place and platform.
+	 */
 	private void locationDimension(String city, String country, Property property) {
 		if ((city.isEmpty() || city.equals("?")) && (country.isEmpty() || country.equals("?")))
-			return;
+			return; // stop if neither city nor country are provided
 
 		Resource countryResource = null;
 		Resource cityResource = null;
 
+		// if resource for the given city-country combination was not already created
 		if (!cityResources.containsKey(city + country)) {
-			JSONObject json = findCity(city, country);
-			if (json != null) {
+			JSONObject json = findCity(city, country); // lookup combination on geonames.org
+			if (json != null) { // if a result was found
 				try {
-					JSONObject o = json.getJSONArray("geonames").getJSONObject(0);
+					JSONObject o = json.getJSONArray("geonames").getJSONObject(0); // take first object aka the result
 					int cityId = o.getInt("geonameId");
 					String cityName = o.getString("toponymName");
 
+					// Create proxy instance of d2s:City. Remove illegal characters for resource name.
 					cityResource = ontologyModel.createResource(D2S
 							+ cityName.replace(" ", "_").replace("[", "%5B").replace("]", "%5D"));
 					cityResource.addProperty(rdfType, cityClass);
-					cityResource.addProperty(rdfsLabel, cityName);
+					cityResource.addProperty(rdfsLabel, cityName); // Add city name as label
+					// Create resource for the found geonames concept
 					Resource cityGeonames = ontologyModel.createResource("http://www.geonames.org/" + cityId);
-					cityResource.addProperty(owlSameAs, cityGeonames);
+					cityResource.addProperty(owlSameAs, cityGeonames); // link the two equivalents
 
+					// make another request to geonames to retrieve extended info on the city concept
 					JSONObject cityInfo = JsonReader
 							.readJsonFromUrl("http://api.geonames.org/getJSON?username=discover2share&geonameId="
 									+ cityId);
+					// if the extended info contains a proper link to the respective wikipedia article
 					if (cityInfo.has("wikipediaURL")) {
+						// Create resource for DBpedia concept belonging to the wikipedia article
 						String dbpediaId = cityInfo.getString("wikipediaURL").replace("en.wikipedia.org/wiki", "");
 						Resource dbpedia = ontologyModel.createResource("http://dbpedia.org/resource" + dbpediaId);
+						// Connect the two equivalents
 						cityResource.addProperty(owlSameAs, dbpedia);
 					}
 
+					// Take country code from the geonames city info instead of the one provided in the excel table to
+					// avoid retaining possible city-country assignment faults
 					String countryCode = o.getString("countryCode");
+					// if a resource for the country was not yet created
 					if (!countryResources.containsKey(countryCode)) {
-						if (countryIndex.containsKey(countryCode)) {
+						if (countryIndex.containsKey(countryCode)) { // get necessary country info from the index
 							countryResource = ontologyModel.createResource(D2S
-									+ countryIndex.get(countryCode).get("resourceName"));
+									+ countryIndex.get(countryCode).get("resourceName")); // create new resource
+							// add the resource to the map for future re-use
 							countryResources.put(country, countryResource);
 						} else
+							// Country code is apparently not among those in the complete list maintained on the
+							// Discover2Share server
 							log.warn("Could not find a country with code '" + countryCode + "'.");
-					} else {
-						countryResource = countryResources.get(countryCode);
+					} else { // if a resource was previously created for the country
+						countryResource = countryResources.get(countryCode); // use that one
 					}
-					cityResource.addProperty(locationCountry, countryResource);
+					cityResource.addProperty(locationCountry, countryResource); // connect city and country resources
 
+					// put city and country resource pair in the map for future re-use
 					cityResources.put(city + country, new Pair<Resource, Resource>(cityResource, countryResource));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-			} else if (!countryResources.containsKey(country)) {
-				if (countryIndex.containsKey(country)) {
+			} // if the city was not found and no resource for the given country has been created yet
+			else if (!countryResources.containsKey(country)) {
+				if (countryIndex.containsKey(country)) { // get necessary country info from the index
+					// create new resource
 					countryResource = ontologyModel.createResource(D2S + countryIndex.get(country).get("resourceName"));
-					countryResources.put(country, countryResource);
-					if (!city.isEmpty() && !city.equals("?"))
-						log.warn("Could not find the city '" + city + "'.");
+					countryResources.put(country, countryResource); // add the resource to the map for future re-use
+					if (!city.isEmpty() && !city.equals("?")) // if a city was provided to begin with
+						log.warn("Could not find the city '" + city + "'."); // warn that the given city was not found
 				} else
+					// if no country info could be found
+					// warn that neither city nor country were found
 					log.warn("Could not find the city '" + city + "' nor a country with code '" + country + "'.");
-			} else {
-				countryResource = countryResources.get(country);
+			} else { // if a resource was previously created for the country
+				countryResource = countryResources.get(country); // use that one
 			}
-		} else {
+		} else { // if a resource pair for the given city and country was previously created, use both resources.
 			cityResource = cityResources.get(city + country).getFirst();
 			countryResource = cityResources.get(city + country).getSecond();
 		}
 
-		if (countryResource != null) {
-			Resource locationResource = ontologyModel.createResource();
-			platformResource.addProperty(property, locationResource);
-
+		if (countryResource != null) { // if a resource was created for the country
+			Resource locationResource = ontologyModel.createResource(); // create a new anonymous resource
+			platformResource.addProperty(property, locationResource); // connect platform and anonymous resource
+			// connect anonymous resource and country resource
 			locationResource.addProperty(locationCountry, countryResource);
-			if (cityResource != null)
+
+			if (cityResource != null) // if a resource was created for the city as well
+				// connect anonymous resource and city resource
 				locationResource.addProperty(locationCity, cityResource);
 		}
 	}
 
+	/**
+	 * Makes a call to the geonames.org API to retrieve a city matching the given city and country.
+	 * 
+	 * @param city
+	 *            City to search for.
+	 * @param country
+	 *            Country to search in (optional)
+	 * @return JSON result object
+	 */
 	public JSONObject findCity(String city, String country) {
 		if (city.isEmpty() || city.equals("?"))
 			return null;
 
+		// Define query that ought to return maximum one result of featureClass P (city, village,...)
 		String base = "http://api.geonames.org/searchJSON?username=discover2share&maxRows=1&featureClass=P";
+		// try querying by exact name in the given country
 		String query1 = base + "&name=" + city.replace(" ", "%20") + "&country=" + country;
+		// otherwise by all attributes of cities in the given country
 		String query2 = base + "&q=" + city.replace(" ", "%20") + "&country=" + country;
 		try {
-			JSONObject json = JsonReader.readJsonFromUrl(query1);
+			JSONObject json = JsonReader.readJsonFromUrl(query1); // run first query
 
 			if (json.has("totalResultsCount") && json.getInt("totalResultsCount") > 0) {
-				return json;
-			} else {
+				return json; // return the result if one was found
+			} else { // otherwise run the second query
 				json = JsonReader.readJsonFromUrl(query2);
 
 				if (json.has("totalResultsCount") && json.getInt("totalResultsCount") > 0)
-					return json;
+					return json; // return the result if one was found.
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return null;
+		return null; // if no results were found at all, return null-
 	}
 
+	/**
+	 * Connects the platform with the countries it is used in as a representation of the user distribution dimension.
+	 */
+	private void userDistributionDimension() {
+		// parse the countries the platform is used in from its Alexa page
+		Map<String, Double> userCountries = AlexaParser.parseAlexa(currentPlatform.getStrippedUrl());
+		if (userCountries != null) { // if any countries were found at Alexa
+			for (String country : userCountries.keySet()) { // for each
+				Resource countryResource = null;
+				// if no resource for this country name was yet created
+				if (!countryResourcesFullName.containsKey(country)) {
+					JSONObject json = findCountry(country); // query for it on geonames.org
+					if (json != null) { // if a result was found
+						try {
+							String countryCode = json.getJSONArray("geonames").getJSONObject(0)
+									.getString("countryCode"); // take country code from the result
+							// if country info for this country code is available
+							if (countryIndex.containsKey(countryCode)) {
+								// create a resource from this info
+								countryResource = ontologyModel.createResource(D2S
+										+ countryIndex.get(countryCode).get("resourceName"));
+								// add it to the map for future re-use
+								countryResourcesFullName.put(country, countryResource);
+							} else
+								// Country code is apparently not among those in the complete list maintained on the
+								// Discover2Share server
+								log.warn("Could not find the country '" + country + "'.");
+						} catch (Exception e) { // in case of an error while doing the geonames call
+							log.warn("Could not find the country '" + country + "'.");
+						}
+					} else { // if no match was found on geonames
+						log.warn("Could not find the country '" + country + "'.");
+					}
+				} else { // if a resource for this country name was already created
+					countryResource = countryResourcesFullName.get(country); // use it
+				}
+
+				if (countryResource != null) { // if a country resource was found
+					// create an anonymous node to bundle country, percentage of overall users for that country and
+					// the information retrieval date
+					Resource node = ontologyModel.createResource();
+					platformResource.addProperty(usedIn, node); // connect platform and anonymous node
+					// create a dateTime literal for the current time
+					Literal dateLiteral = ontologyModel.createTypedLiteral(GregorianCalendar.getInstance());
+					node.addLiteral(date, dateLiteral); // add the retrieval date to the anonymous node
+					node.addLiteral(percentage, userCountries.get(country)); // add the user percentage
+					node.addProperty(locationCountry, countryResource); // link the country
+				}
+			}
+		}
+	}
+
+	/**
+	 * Makes a call to the geonames.org API to retrieve a country matching the given name.
+	 * 
+	 * @param country
+	 *            The country to search for
+	 * @return JSON result object
+	 */
 	public JSONObject findCountry(String country) {
 		if (country.isEmpty() || country.equals("?"))
 			return null;
 
+		// Query that ought to return at most one result of feature class A (country, state, region,...) and where at
+		// least one of the words in the search string is part of the entities name.
 		String query = "http://api.geonames.org/searchJSON?username=discover2share&maxRows=1&featureClass=A&isNameRequired&q="
 				+ country;
 
 		try {
-			JSONObject json = JsonReader.readJsonFromUrl(query);
+			JSONObject json = JsonReader.readJsonFromUrl(query); // Make request
 
 			if (json.has("totalResultsCount") && json.getInt("totalResultsCount") > 0) {
-				return json;
+				return json; // return result if found
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return null;
+		return null; // if no result was found, return null
 	}
 
+	/**
+	 * Connects the platform to its values from the Smartphone App dimension
+	 */
 	private void smartphoneAppDimension() {
-		if (currentPlatform.getAndroid().equals("x"))
-			platformResource.addProperty(hasApp, androidApp);
+		if (currentPlatform.getAndroid().equals("x")) // if an android app is marked as existent
+			platformResource.addProperty(hasApp, androidApp); //link platform and android app class
+		// warn if a value other than "x" or "o" was used in the excel table
 		else if (!currentPlatform.getAndroid().equals("o") && !currentPlatform.getAndroid().isEmpty())
 			log.warn("Android column is not 'o'/'x'. Is: '" + currentPlatform.getAndroid() + "'");
 
@@ -1036,44 +1278,5 @@ public class OntologyWriter {
 			platformResource.addProperty(hasApp, windowsPhoneApp);
 		else if (!currentPlatform.getWindowsPhone().equals("o") && !currentPlatform.getWindowsPhone().isEmpty())
 			log.warn("Windows phone column is not 'o'/'x'. Is: '" + currentPlatform.getWindowsPhone() + "'");
-	}
-
-	private void userDistributionDimension() {
-		Map<String, Double> userCountries = AlexaParser.parseAlexa(currentPlatform.getStrippedUrl());
-		if (userCountries != null) {
-			for (String country : userCountries.keySet()) {
-				Resource countryResource = null;
-				if (!countryResourcesFullName.containsKey(country)) {
-					JSONObject json = findCountry(country);
-					if (json != null) {
-						try {
-							String countryCode = json.getJSONArray("geonames").getJSONObject(0)
-									.getString("countryCode");
-							if (countryIndex.containsKey(countryCode)) {
-								countryResource = ontologyModel.createResource(D2S
-										+ countryIndex.get(countryCode).get("resourceName"));
-								countryResourcesFullName.put(country, countryResource);
-							} else
-								log.warn("Could not find the country '" + country + "'.");
-						} catch (Exception e) {
-							log.warn("Could not find the country '" + country + "'.");
-						}
-					} else {
-						log.warn("Could not find the country '" + country + "'.");
-					}
-				} else {
-					countryResource = countryResourcesFullName.get(country);
-				}
-
-				if (countryResource != null) {
-					Resource node = ontologyModel.createResource();
-					platformResource.addProperty(usedIn, node);
-					Literal dateLiteral = ontologyModel.createTypedLiteral(GregorianCalendar.getInstance());
-					node.addLiteral(date, dateLiteral);
-					node.addLiteral(percentage, userCountries.get(country));
-					node.addProperty(locationCountry, countryResource);
-				}
-			}
-		}
 	}
 }

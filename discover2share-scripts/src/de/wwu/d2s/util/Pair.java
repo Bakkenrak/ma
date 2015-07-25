@@ -1,4 +1,4 @@
-package util;
+package de.wwu.d2s.util;
 
 public class Pair<E, F> {
 

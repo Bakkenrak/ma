@@ -1,3 +1,8 @@
+package de.wwu.d2s.transformation;
+
+/**
+ * A class providing attributes for each cell in a row of the excel table.
+ */
 public class ExcelPlatform {
 
 	private String classified;
