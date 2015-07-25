@@ -189,7 +189,7 @@
 			});
 		}
 		
-		$scope.platform = {};
+		$scope.platform = { launchCountryItem: {}};
 		
 		$scope.launchCitySelected = function(item){
 			$scope.platform.launchCityName = item.toponymName;

@@ -97,7 +97,7 @@ public class OntologyServiceBean implements OntologyService {
 				+ " dbpp:launchYear ?launchYear } ."
 				+ " OPTIONAL {  d2s:"
 				+ name
-				+ " dbpo:location ?residence } ."
+				+ " d2s:operator_resides_in ?residence } ."
 				+ " OPTIONAL {  ?residence dbpp:locationCity ?residenceCity } ."
 				+ " OPTIONAL {  ?residence dbpp:locationCountry ?residenceCountry } ."
 				+ " OPTIONAL {  d2s:"

@@ -110,7 +110,7 @@
 			if(!angular.isUndefined(country) && country !== ""){
 				query = query + "&country=" + country;
 			}
-			return $http.get(query);
+			return $http.jsonp(query+"&callback=JSON_CALLBACK");
 		}
 		
 		platformFactory.findCountry = function(countryName){
