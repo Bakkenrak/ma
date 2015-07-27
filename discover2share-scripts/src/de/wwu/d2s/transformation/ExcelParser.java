@@ -61,8 +61,8 @@ public class ExcelParser {
 				// collect row's values in an array
 				String[] colValues = new String[requiredCols.length];
 				int i = 0;
-				for (String c : requiredCols) { // for every specified required column
-					CellReference cr = new CellReference(c);
+				for (String col : requiredCols) { // for every specified required column
+					CellReference cr = new CellReference(col);
 					Cell cell = row.getCell(cr.getCol()); // retrieve the cell from current row
 
 					// save value as string in array, replace non-breaking whitespaces by normal ones, trim
