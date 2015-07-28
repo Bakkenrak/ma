@@ -176,6 +176,7 @@ public class OntologyWriter {
 	private Resource androidApp;
 	private Resource iOSApp;
 	private Resource windowsPhoneApp;
+	private Resource userDistributionClass;
 
 	/**
 	 * Instantiates the new ontology model and most resources and properties
@@ -325,6 +326,8 @@ public class OntologyWriter {
 		androidApp = ontologyModel.createResource(D2S + "Android_app");
 		iOSApp = ontologyModel.createResource(D2S + "iOS_app");
 		windowsPhoneApp = ontologyModel.createResource(D2S + "Windows_Phone_app");
+		
+		userDistributionClass = ontologyModel.createResource(D2S + "User_Distribution");
 	}
 
 	/**
@@ -1216,6 +1219,7 @@ public class OntologyWriter {
 					// create an anonymous node to bundle country, percentage of overall users for that country and
 					// the information retrieval date
 					Resource node = ontologyModel.createResource();
+					node.addProperty(rdfType, userDistributionClass);
 					platformResource.addProperty(usedIn, node); // connect platform and anonymous node
 					// create a dateTime literal for the current time
 					Literal dateLiteral = ontologyModel.createTypedLiteral(GregorianCalendar.getInstance());
