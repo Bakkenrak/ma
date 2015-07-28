@@ -1,4 +1,5 @@
 package de.wwu.d2s.transformation;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -58,7 +59,6 @@ public class OntologyWriter {
 
 	// Maps to avoid unnecessary AJAX calls to geonames.org
 	private Map<String, Resource> countryResources = new HashMap<String, Resource>();
-	private Map<String, Resource> countryResourcesFullName = new HashMap<String, Resource>();
 	private Map<String, Pair<Resource, Resource>> cityResources = new HashMap<String, Pair<Resource, Resource>>();
 	private Map<String, Map<String, String>> countryIndex = new HashMap<String, Map<String, String>>();
 	// Map to avoid multiple creations of Year instances in the ontology
@@ -362,6 +362,14 @@ public class OntologyWriter {
 	 *            Filepath to output the result into. Provided by the user.
 	 */
 	public void writeAll(List<ExcelPlatform> platforms, String outputFile) {
+		log.info("Making a first request to the GeoNames API, which usually fails!");
+		try {
+			JsonReader
+					.readJsonFromUrl("http://api.geonames.org/searchJSON?username=discover2share&maxRows=1&featureClass=P&country=DE&q=Celle");
+		} catch (IOException | JSONException e1) {
+			log.info("Failed indeed. Should work from now on though!");
+		}
+
 		int nrPlatforms = platforms.size();
 		for (int i = 0; i < nrPlatforms; i++) {
 			currentPlatform = platforms.get(i);
@@ -1189,31 +1197,19 @@ public class OntologyWriter {
 			for (String country : userCountries.keySet()) { // for each
 				Resource countryResource = null;
 				// if no resource for this country name was yet created
-				if (!countryResourcesFullName.containsKey(country)) {
-					JSONObject json = findCountry(country); // query for it on geonames.org
-					if (json != null) { // if a result was found
-						try {
-							String countryCode = json.getJSONArray("geonames").getJSONObject(0)
-									.getString("countryCode"); // take country code from the result
-							// if country info for this country code is available
-							if (countryIndex.containsKey(countryCode)) {
-								// create a resource from this info
-								countryResource = ontologyModel.createResource(D2S
-										+ countryIndex.get(countryCode).get("resourceName"));
-								// add it to the map for future re-use
-								countryResourcesFullName.put(country, countryResource);
-							} else
-								// Country code is apparently not among those in the complete list maintained on the
-								// Discover2Share server
-								log.warn("Could not find the country '" + country + "'.");
-						} catch (Exception e) { // in case of an error while doing the geonames call
-							log.warn("Could not find the country '" + country + "'.");
-						}
-					} else { // if no match was found on geonames
+				if (!countryResources.containsKey(country)) {
+					if (countryIndex.containsKey(country)) {
+						// create a resource from this info
+						countryResource = ontologyModel.createResource(D2S
+								+ countryIndex.get(country).get("resourceName"));
+						// add it to the map for future re-use
+						countryResources.put(country, countryResource);
+					} else
+						// Country code is apparently not among those in the complete list maintained on the
+						// Discover2Share server
 						log.warn("Could not find the country '" + country + "'.");
-					}
 				} else { // if a resource for this country name was already created
-					countryResource = countryResourcesFullName.get(country); // use it
+					countryResource = countryResources.get(country); // use it
 				}
 
 				if (countryResource != null) { // if a country resource was found
@@ -1264,7 +1260,7 @@ public class OntologyWriter {
 	 */
 	private void smartphoneAppDimension() {
 		if (currentPlatform.getAndroid().equals("x")) // if an android app is marked as existent
-			platformResource.addProperty(hasApp, androidApp); //link platform and android app class
+			platformResource.addProperty(hasApp, androidApp); // link platform and android app class
 		// warn if a value other than "x" or "o" was used in the excel table
 		else if (!currentPlatform.getAndroid().equals("o") && !currentPlatform.getAndroid().isEmpty())
 			log.warn("Android column is not 'o'/'x'. Is: '" + currentPlatform.getAndroid() + "'");

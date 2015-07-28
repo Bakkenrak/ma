@@ -51,11 +51,10 @@ public class AlexaParser {
 					DomNodeList<HtmlElement> cells = line.getElementsByTagName("td"); // parse row cells
 					// remove the % sign from the second cell's content and convert to double
 					Double percentage = Double.parseDouble(cells.get(1).asText().replace("%", "").trim());
-					// replace non-breakable whitespace, trim, replace normal whitespaces with %20 to avoid problems
-					// when querying with this string at geonames.org
-					String name = cells.get(0).asText().replace(String.valueOf((char) 160), " ").trim()
-							.replace(" ", "%20");
-					tableData.put(name, percentage); // add to output map
+					// retrieve country code from link's href
+					String code = cells.get(0).getElementsByTagName("a").get(0).getAttribute("href")
+							.replace("/topsites/countries/", "");
+					tableData.put(code, percentage); // add to output map
 				}
 				return tableData;
 			}
