@@ -72,7 +72,7 @@
 	    	if($scope.user.password === $scope.user.passwordConfirm){
 	    		delete $scope.user.passwordConfirm;
 		        authFactory.register($scope.user).success(function (data, status) {
-		            $scope.registerFailed = !(status === 200);
+		            $scope.registerFailed = (status !== 200);
 		            $scope.registerSuccess = (status === 200);
 		            $scope.user = {};
 		        }).error(function () {
@@ -189,7 +189,13 @@
 			});
 		}
 		
-		$scope.platform = { launchCountryItem: {}};
+		$scope.platform = { 
+				launchCountryItem: {},
+				trustContributions: [],
+				smartphoneApps: [],
+				consumerisms: [],
+				marketMediations: []
+		};
 		
 		$scope.launchCitySelected = function(item){
 			$scope.platform.launchCityName = item.toponymName;
@@ -197,7 +203,15 @@
 			$scope.platform.launchCity = "http://www.geonames.org/" + item.geonameId;
 			if(!angular.isUndefined($scope.platform.launchCountryItem) && 
 					$scope.platform.launchCityItem.countryCode !== $scope.platform.launchCountryItem.countryCode)
-				console.log("Selected City is not situated in the selected country.");
+				console.log("Selected launch city is not situated in the selected country.");
+		}
+		$scope.residenceCitySelected = function(item){
+			$scope.platform.residenceCityName = item.toponymName;
+			$scope.platform.residenceCityItem = item;
+			$scope.platform.residenceCity = "http://www.geonames.org/" + item.geonameId;
+			if(!angular.isUndefined($scope.platform.residenceCountryItem) && 
+					$scope.platform.residenceCityItem.countryCode !== $scope.platform.residenceCountryItem.countryCode)
+				console.log("Selected residence city is not situated in the selected country.");
 		}
 		$scope.launchCountrySelected = function(item){
 			$scope.platform.launchCountryName = item.countryName;
@@ -205,8 +219,17 @@
 			$scope.platform.launchCountry = "http://www.geonames.org/" + item.countryId;
 			if(!angular.isUndefined($scope.platform.launchCityItem) && 
 					$scope.platform.launchCityItem.countryCode !== $scope.platform.launchCountryItem.countryCode)
-				console.log("Selected City is not situated in the selected country.");
+				console.log("Selected launch city is not situated in the selected country.");
 		}
+		$scope.residenceCountrySelected = function(item){
+			$scope.platform.residenceCountryName = item.countryName;
+			$scope.platform.residenceCountryItem = item
+			$scope.platform.residenceCountry = "http://www.geonames.org/" + item.countryId;
+			if(!angular.isUndefined($scope.platform.residenceCityItem) && 
+					$scope.platform.residenceCityItem.countryCode !== $scope.platform.residenceCountryItem.countryCode)
+				console.log("Selected residence city is not situated in the selected country.");
+		}
+		
 		// triggered when the search term input changes
 		$scope.findLaunchCity = function(){
 			if($scope.platform.launchCityName === ""){
@@ -217,14 +240,37 @@
 				return response.data.geonames;
 			});
 		};
-		$scope.findLaunchCountry = function(){
-			if($scope.platform.launchCountryName === ""){
-				$scope.platform.launchCountry = "";
+		$scope.findResidenceCity = function(){
+			if($scope.platform.residenceCityName === ""){
+				$scope.platform.residenceCity = "";
 				return;
 			}
-			return platformFactory.findCountry($scope.platform.launchCountryName).then(function(response){
+			return platformFactory.findCity($scope.platform.residenceCityName, $scope.platform.residenceCountryItem.countryCode).then(function(response){
 				return response.data.geonames;
 			});
+		};
+		
+		$scope.getYears = function(){
+			var currentYear = new Date().getFullYear();
+			var output = [];
+			for(var i=currentYear; i>1989; output.push(i--));
+			return output;
+		};
+		
+		$scope.marketMediations = ["Profit from peer consumers", "Profit from peer providers", "Profit from both", "Indirect profit", "Profit from advertisement", "Profit from user data"];
+		$scope.consumerisms = ["Social","Environmental","Economic"];
+		$scope.smartphoneApps = ["Android app", "iOS app", "Windows Phone app"];
+		$scope.trustContributions = ["Provider ratings", "Provider and consumer ratings", "Referral", "Vouching", "Value-added services"];
+		$scope.toggleSelection = function(current,selected) {
+			var idx=selected.indexOf(current);
+		    if (~idx) // is currently selected
+		      selected.splice(idx, 1);
+		    else // is newly selected
+		      selected.push(current);
+		};
+		
+		$scope.submit = function(){
+			console.log($scope.platform);
 		};
 	});
 

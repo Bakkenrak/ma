@@ -2,253 +2,357 @@
 
 <h1>{{platform.name}}</h1>
 
-<table id="detailTable" class="table table-bordered">
-	<tr>
-		<td><strong>Name:</strong></td>
-		<td><input type="text" class="form-control"
-			ng-model="platform.name" /></td>
-		<td></td>
-	</tr>
-	<tr>
-		<td><strong>URL:</strong></td>
-		<td><input type="text" class="form-control"
-			ng-model="platform.url" /></td>
-		<td></td>
-	</tr>
-	<tr>
-		<td><strong>Resource Type:</strong></td>
-		<td><input type="text" class="form-control"
-			ng-model="platform.resourceType" /></td>
-		<td><strong>{{descriptions["Resource_Type"]["label"]}}:</strong>
-			{{descriptions["Resource_Type"]["comment"]}}</td>
-	</tr>
-	<tr>
-		<td><strong>Consumer Involvement:</strong></td>
-		<td><select class="form-control"
-			ng-model="platform.consumerInvolvement">
-				<option value="http://www.discover2share.net/d2s-ont/Deferred">Deferred</option>
-				<option value="http://www.discover2share.net/d2s-ont/Immediate">Deferred</option>
-				<option value="http://www.discover2share.net/d2s-ont/Recurrent">Recurrent</option>
-		</select></td>
-		<td><strong>{{descriptions["Consumer_Involvement"]["label"]}}:</strong>
-			{{descriptions["Consumer_Involvement"]["comment"]}}
-			<ul>
-				<li><strong>{{descriptions["Full-service"]["label"]}}:</strong>
-					{{descriptions["Full-service"]["comment"]}}</li>
-				<li><strong>{{descriptions["Self-Service"]["label"]}}:</strong>
-					{{descriptions["Self-Service"]["comment"]}}</li>
-				<li><strong>{{descriptions["In-Between"]["label"]}}:</strong>
-					{{descriptions["In-Between"]["comment"]}}</li>
-			</ul></td>
-	</tr>
-	<tr>
-		<td><strong>Country of launch:</strong></td>
-		<td>
-			<input type="text" class="form-control"
+<form ng-submit="submit()">
+	<table id="detailTable" class="table table-bordered">
+		<tr>
+			<td><strong>Name:</strong></td>
+			<td><input type="text" class="form-control"
+				ng-model="platform.name" /></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td><strong>URL:</strong></td>
+			<td><input type="text" class="form-control"
+				ng-model="platform.url" /></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td><strong>Resource Type:</strong></td>
+			<td><input type="text" class="form-control"
+				ng-model="platform.resourceType" /></td>
+			<td><strong>{{descriptions["Resource_Type"]["label"]}}:</strong>
+				{{descriptions["Resource_Type"]["comment"]}}</td>
+		</tr>
+		<tr>
+			<td><strong>Consumer Involvement:</strong></td>
+			<td><select class="form-control"
+				ng-model="platform.consumerInvolvement">
+					<option value="http://www.discover2share.net/d2s-ont/Full-Service">Full-Service</option>
+					<option value="http://www.discover2share.net/d2s-ont/Self-Service">Self-Service</option>
+					<option value="http://www.discover2share.net/d2s-ont/In-Between">In-Between</option>
+			</select></td>
+			<td><strong>{{descriptions["Consumer_Involvement"]["label"]}}:</strong>
+				{{descriptions["Consumer_Involvement"]["comment"]}}
+				<ul>
+					<li><strong>{{descriptions["Full-service"]["label"]}}:</strong>
+						{{descriptions["Full-service"]["comment"]}}</li>
+					<li><strong>{{descriptions["Self-Service"]["label"]}}:</strong>
+						{{descriptions["Self-Service"]["comment"]}}</li>
+					<li><strong>{{descriptions["In-Between"]["label"]}}:</strong>
+						{{descriptions["In-Between"]["comment"]}}</li>
+				</ul></td>
+		</tr>
+		<tr>
+			<td><strong>Country of launch:</strong></td>
+			<td><input type="text" class="form-control"
 				ng-model="platform.launchCountryName"
 				typeahead="country.countryName + ' (' + country.countryCode + ')' for country in countries | orderBy: 'countryName' | containsFilter: $viewValue"
-				typeahead-on-select="launchCountrySelected($item)" 
-				typeahead-editable="false" />
-			<a href="{{platform.launchCountry}}" target="_blank">{{platform.launchCountry}}</a>
-		</td>
-	</tr>
-	<tr>
-		<td><strong>City of launch:</strong></td>
-		<td><input type="text" class="form-control"
-			ng-model="platform.launchCityName"
-			typeahead="(city.toponymName + ', ' + city.adminName1 + ' (' + city.countryCode + ')') for city in findLaunchCity()"
-			typeahead-wait-ms="750"
-			typeahead-on-select="launchCitySelected($item)" />
-			<a href="{{platform.launchCity}}" target="_blank">{{platform.launchCity}}</a>
-		</td>
-		<td></td>
-	</tr>
-	<tr>
-		<td><strong>Year of launch:</strong></td>
-		<td><a href="{{platform.launchYear[0]}}">{{platform.launchYearName}}</a>
-		</td>
-		<td></td>
-	</tr>
-	<tr>
-		<td><strong>Place of residence:</strong></td>
-		<td><a href="{{platform.residenceCity[0]}}">{{platform.residenceCityName}}</a><span
-			ng-if="platform.residenceCity.length>0 && platform.residenceCountry.length>0">,
-		</span><a href="{{platform.residenceCountry[0]}}">{{platform.residenceCountryName}}</a>
-		</td>
-		<td></td>
-	</tr>
-	<tr>
-		<td><strong>Market Mediation:</strong></td>
-		<td><span ng-repeat="mediation in platform.mediation">{{mediation}}<span
-				ng-if="!$last">, </span></span></td>
-		<td><strong>{{descriptions["Market_Mediation"]["label"]}}:</strong>
-			{{descriptions["Market_Mediation"]["comment"]}}
-			<ul>
-				<li><strong>{{descriptions["Profit_from_peer_consumers"]["label"]}}:</strong>
-					{{descriptions["Profit_from_peer_consumers"]["comment"]}}</li>
-				<li><strong>{{descriptions["Profit_from_peer_providers"]["label"]}}:</strong>
-					{{descriptions["Profit_from_peer_providers"]["comment"]}}</li>
-				<li><strong>{{descriptions["Profit_from_both"]["label"]}}:</strong>
-					{{descriptions["Profit_from_both"]["comment"]}}</li>
-				<li><strong>{{descriptions["Indirect_profit"]["label"]}}:</strong>
-					{{descriptions["Indirect_profit"]["comment"]}}
-					<ul>
-						<li><strong>{{descriptions["Profit_from_advertisement"]["label"]}}:</strong>
-							{{descriptions["Profit_from_advertisement"]["comment"]}}</li>
-						<li><strong>{{descriptions["Profit_from_user_data"]["label"]}}:</strong>
-							{{descriptions["Profit_from_user_data"]["comment"]}}</li>
-					</ul></li>
-			</ul></td>
-	</tr>
-	<tr>
-		<td><strong>Integration:</strong></td>
-		<td>{{platform.offering[0]}} {{platform.scope[0]}}</td>
-		<td>
-			<p>
-				<strong>{{descriptions["Market_Integration"]["label"]}}:</strong>
-				{{descriptions["Market_Integration"]["comment"]}}
-			</p> <strong>{{descriptions["Market_Offering"]["label"]}}:</strong>
-			{{descriptions["Market_Offering"]["comment"]}}
-			<ul>
-				<li><strong>{{descriptions["Integrated"]["label"]}}:</strong>
-					{{descriptions["Integrated"]["comment"]}}</li>
-				<li><strong>{{descriptions["Separated"]["label"]}}:</strong>
-					{{descriptions["Separated"]["comment"]}}</li>
-			</ul> <strong>{{descriptions["Geographic_Scope"]["label"]}}:</strong>
-			{{descriptions["Geographic_Scope"]["comment"]}}
-			<ul>
-				<li><strong>{{descriptions["Neighbourhood-wide"]["label"]}}</strong></li>
-				<li><strong>{{descriptions["City-wide"]["label"]}}</strong></li>
-				<li><strong>{{descriptions["State-wide"]["label"]}}</strong></li>
-				<li><strong>{{descriptions["Country-wide"]["label"]}}</strong></li>
-				<li><strong>{{descriptions["Global"]["label"]}}</strong></li>
-			</ul>
-		</td>
-	</tr>
-	<tr>
-		<td><strong>Money Flow:</strong></td>
-		<td><span ng-repeat="moneyFlow in platform.moneyFlow">{{moneyFlow}}<span
-				ng-if="!$last">, </span></span></td>
-		<td><strong>{{descriptions["Money_Flow"]["label"]}}:</strong>
-			{{descriptions["Money_Flow"]["comment"]}}
-			<ul>
-				<li><strong>{{descriptions["C2C"]["label"]}}:</strong>
-					{{descriptions["C2C"]["comment"]}}</li>
-				<li><strong>{{descriptions["C2B2C"]["label"]}}:</strong>
-					{{descriptions["C2B2C"]["comment"]}}</li>
-			</ul></td>
-	</tr>
-	<tr>
-		<td><strong>P2P SCC Pattern:</strong></td>
-		<td>{{platform.pattern[0]}}<span
-			ng-if="platform.pattern.length>0 && platform.temporality.length>0">,
-		</span>{{platform.temporality[0]}}
-		</td>
-		<td><strong>{{descriptions["P2P_SCC_Pattern"]["label"]}}:</strong>
-			{{descriptions["P2P_SCC_Pattern"]["comment"]}}
-			<ul>
-				<li><strong>{{descriptions["Deferred"]["label"]}}:</strong>
-					{{descriptions["Deferred"]["comment"]}}</li>
-				<li><strong>{{descriptions["Immediate"]["label"]}}:</strong>
-					{{descriptions["Immediate"]["comment"]}}</li>
-				<li><strong>{{descriptions["Recurrent"]["label"]}}:</strong>
-					{{descriptions["Recurrent"]["comment"]}}</li>
-			</ul> <strong>{{descriptions["Temporality"]["label"]}}:</strong>
-			{{descriptions["Temporality"]["comment"]}}
-			<ul>
-				<li><strong>{{descriptions["Once"]["label"]}}:</strong>
-					{{descriptions["Once"]["comment"]}}</li>
-				<li><strong>{{descriptions["Often"]["label"]}}:</strong>
-					{{descriptions["Often"]["comment"]}}</li>
-			</ul></td>
-	</tr>
-	<tr>
-		<td><strong>Promoted Consumerism:</strong></td>
-		<td><span ng-repeat="consumerism in platform.consumerism">{{consumerism}}<span
-				ng-if="!$last">, </span></span></td>
-		<td><strong>{{descriptions["Sustainable_Consumerism"]["label"]}}:</strong>
-			{{descriptions["Sustainable_Consumerism"]["comment"]}}
-			<ul>
-				<li><strong>{{descriptions["Social"]["label"]}}:</strong>
-					{{descriptions["Social"]["comment"]}}</li>
-				<li><strong>{{descriptions["Environmental"]["label"]}}:</strong>
-					{{descriptions["Environmental"]["comment"]}}</li>
-				<li><strong>{{descriptions["Economic"]["label"]}}:</strong>
-					{{descriptions["Economic"]["comment"]}}</li>
-				<li><strong>{{descriptions["None"]["label"]}}:</strong>
-					{{descriptions["None"]["comment"]}}</li>
-			</ul></td>
-	</tr>
-	<tr>
-		<td><strong>Resource Owner:</strong></td>
-		<td><span ng-repeat="resourceOwner in platform.resourceOwner">{{resourceOwner}}<span
-				ng-if="!$last">, </span></span></td>
-		<td><strong>{{descriptions["Resource_Owner"]["label"]}}:</strong>
-			{{descriptions["Resource_Owner"]["comment"]}}
-			<ul>
-				<li><strong>{{descriptions["Private"]["label"]}}:</strong>
-					{{descriptions["Private"]["comment"]}}</li>
-				<li><strong>{{descriptions["Business"]["label"]}}:</strong>
-					{{descriptions["Business"]["comment"]}}</li>
-				<li><strong>{{descriptions["Private_and_business"]["label"]}}:</strong>
-					{{descriptions["Private_and_business"]["comment"]}}</li>
-			</ul></td>
-	</tr>
-	<tr>
-		<td><strong>Service Duration:</strong></td>
-		<td><a href="{{platform.minDuration[0]}}">{{timeConverter(platform.minDuration[0])}}</a>
-			<span
-			ng-if="platform.minDuration.length>0 && platform.maxDuration.length>0">to</span>
-			<a href="{{platform.maxDuration[0]}}">{{timeConverter(platform.maxDuration[0])}}</a>
-		</td>
-	</tr>
-	<tr>
-		<td><strong>Smartphone Apps:</strong></td>
-		<td><span ng-repeat="app in platform.app">{{app}}<span
-				ng-if="!$last">, </span></span></td>
-		<td><strong>{{descriptions["Smartphone_App"]["label"]}}:</strong>
-			{{descriptions["Smartphone_App"]["comment"]}}
-			<ul>
-				<li><strong>{{descriptions["Android_app"]["label"]}}:</strong>
-					{{descriptions["Android_app"]["comment"]}}</li>
-				<li><strong>{{descriptions["iOS_app"]["label"]}}:</strong>
-					{{descriptions["iOS_app"]["comment"]}}</li>
-				<li><strong>{{descriptions["Windows_Phone_app"]["label"]}}:</strong>
-					{{descriptions["Windows_Phone_app"]["comment"]}}</li>
-			</ul></td>
-	</tr>
-	<tr>
-		<td><strong>Trust Contribution:</strong></td>
-		<td><span
-			ng-repeat="trustContribution in platform.trustContribution">{{trustContribution}}<span
-				ng-if="!$last">, </span></span></td>
-		<td><strong>{{descriptions["Trust_Contribution"]["label"]}}:</strong>
-			{{descriptions["Trust_Contribution"]["comment"]}}
-			<ul>
-				<li><strong>{{descriptions["Provider_ratings"]["label"]}}:</strong>
-					{{descriptions["Provider_ratings"]["comment"]}}</li>
-				<li><strong>{{descriptions["Provider_and_consumer_ratings"]["label"]}}:</strong>
-					{{descriptions["Provider_and_consumer_ratings"]["comment"]}}</li>
-				<li><strong>{{descriptions["Referral"]["label"]}}:</strong>
-					{{descriptions["Referral"]["comment"]}}</li>
-				<li><strong>{{descriptions["Vouching"]["label"]}}:</strong>
-					{{descriptions["Vouching"]["comment"]}}</li>
-				<li><strong>{{descriptions["Value-added_services"]["label"]}}:</strong>
-					{{descriptions["Value-added_services"]["comment"]}}</li>
-			</ul></td>
-	</tr>
-	<tr>
-		<td><strong>Type of Accessed Object:</strong></td>
-		<td>{{platform.objectType[0]}}</td>
-		<td><strong>{{descriptions["Type_of_Accessed_Object"]["label"]}}:</strong>
-			{{descriptions["Type_of_Accessed_Object"]["comment"]}}
-			<ul>
-				<li><strong>{{descriptions["Functional"]["label"]}}:</strong>
-					{{descriptions["Functional"]["comment"]}}</li>
-				<li><strong>{{descriptions["Experiential"]["label"]}}:</strong>
-					{{descriptions["Experiential"]["comment"]}}</li>
-				<li><strong>{{descriptions["Mixed"]["label"]}}:</strong>
-					{{descriptions["Mixed"]["comment"]}}</li>
-			</ul></td>
-	</tr>
-</table>
+				typeahead-on-select="launchCountrySelected($item)"
+				typeahead-editable="false" /> <a href="{{platform.launchCountry}}"
+				target="_blank">{{platform.launchCountry}}</a></td>
+		</tr>
+		<tr>
+			<td><strong>City of launch:</strong></td>
+			<td><input type="text" class="form-control"
+				ng-model="platform.launchCityName"
+				typeahead="(city.toponymName + ', ' + city.adminName1 + ' (' + city.countryCode + ')') for city in findLaunchCity()"
+				typeahead-wait-ms="750"
+				typeahead-on-select="launchCitySelected($item)" /> <a
+				href="{{platform.launchCity}}" target="_blank">{{platform.launchCity}}</a>
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td><strong>Year of launch:</strong></td>
+			<td><select ng-model="platform.launchYear" class="form-control">
+					<option ng-repeat="year in getYears()" value="year">{{year}}</option>
+			</select></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td><strong>Country of residence:</strong></td>
+			<td><input type="text" class="form-control"
+				ng-model="platform.residenceCountryName"
+				typeahead="country.countryName + ' (' + country.countryCode + ')' for country in countries | orderBy: 'countryName' | containsFilter: $viewValue"
+				typeahead-on-select="residenceCountrySelected($item)"
+				typeahead-editable="false" /> <a
+				href="{{platform.residenceCountry}}" target="_blank">{{platform.residenceCountry}}</a>
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td><strong>City of residence:</strong></td>
+			<td><input type="text" class="form-control"
+				ng-model="platform.residenceCityName"
+				typeahead="(city.toponymName + ', ' + city.adminName1 + ' (' + city.countryCode + ')') for city in findResidenceCity()"
+				typeahead-wait-ms="750"
+				typeahead-on-select="residenceCitySelected($item)" /> <a
+				href="{{platform.residenceCity}}" target="_blank">{{platform.residenceCity}}</a>
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td><strong>Market Mediation:</strong></td>
+			<td><div ng-repeat="mediation in marketMediations"
+					class="checkbox">
+					<label> <input type="checkbox" value="{{mediation}}"
+						ng-checked="platform.marketMediations.indexOf(mediation)>-1"
+						ng-click="toggleSelection(mediation,platform.marketMediations)">
+						{{mediation}}
+					</label>
+				</div></td>
+			<td><strong>{{descriptions["Market_Mediation"]["label"]}}:</strong>
+				{{descriptions["Market_Mediation"]["comment"]}}
+				<ul>
+					<li><strong>{{descriptions["Profit_from_peer_consumers"]["label"]}}:</strong>
+						{{descriptions["Profit_from_peer_consumers"]["comment"]}}</li>
+					<li><strong>{{descriptions["Profit_from_peer_providers"]["label"]}}:</strong>
+						{{descriptions["Profit_from_peer_providers"]["comment"]}}</li>
+					<li><strong>{{descriptions["Profit_from_both"]["label"]}}:</strong>
+						{{descriptions["Profit_from_both"]["comment"]}}</li>
+					<li><strong>{{descriptions["Indirect_profit"]["label"]}}:</strong>
+						{{descriptions["Indirect_profit"]["comment"]}}
+						<ul>
+							<li><strong>{{descriptions["Profit_from_advertisement"]["label"]}}:</strong>
+								{{descriptions["Profit_from_advertisement"]["comment"]}}</li>
+							<li><strong>{{descriptions["Profit_from_user_data"]["label"]}}:</strong>
+								{{descriptions["Profit_from_user_data"]["comment"]}}</li>
+						</ul></li>
+				</ul></td>
+		</tr>
+		<tr>
+			<td><strong>Integration:</strong></td>
+			<td><p>
+					<select class="form-control" ng-model="platform.marketOffering">
+						<option value="http://www.discover2share.net/d2s-ont/Integrated">Integrated</option>
+						<option value="http://www.discover2share.net/d2s-ont/Separated">Separated</option>
+					</select>
+				</p>
+				<p>
+					<select class="form-control" ng-model="platform.geographicScope">
+						<option
+							value="http://www.discover2share.net/d2s-ont/Neighbourhood-wide">Neighbourhood-wide</option>
+						<option value="http://www.discover2share.net/d2s-ont/City-wide">City-wide</option>
+						<option value="http://www.discover2share.net/d2s-ont/State-wide">State-wide</option>
+						<option value="http://www.discover2share.net/d2s-ont/Country-wide">Country-wide</option>
+						<option value="http://www.discover2share.net/d2s-ont/Region-wide">Region-wide</option>
+						<option value="http://www.discover2share.net/d2s-ont/Global">Global</option>
+					</select>
+				</p></td>
+			<td>
+				<p>
+					<strong>{{descriptions["Market_Integration"]["label"]}}:</strong>
+					{{descriptions["Market_Integration"]["comment"]}}
+				</p> <strong>{{descriptions["Market_Offering"]["label"]}}:</strong>
+				{{descriptions["Market_Offering"]["comment"]}}
+				<ul>
+					<li><strong>{{descriptions["Integrated"]["label"]}}:</strong>
+						{{descriptions["Integrated"]["comment"]}}</li>
+					<li><strong>{{descriptions["Separated"]["label"]}}:</strong>
+						{{descriptions["Separated"]["comment"]}}</li>
+				</ul> <strong>{{descriptions["Geographic_Scope"]["label"]}}:</strong>
+				{{descriptions["Geographic_Scope"]["comment"]}}
+				<ul>
+					<li><strong>{{descriptions["Neighbourhood-wide"]["label"]}}</strong></li>
+					<li><strong>{{descriptions["City-wide"]["label"]}}</strong></li>
+					<li><strong>{{descriptions["State-wide"]["label"]}}</strong></li>
+					<li><strong>{{descriptions["Country-wide"]["label"]}}</strong></li>
+					<li><strong>{{descriptions["Global"]["label"]}}</strong></li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
+			<td><strong>Money Flow:</strong></td>
+			<td><select class="form-control" ng-model="platform.moneyFlow">
+					<option value="http://www.discover2share.net/d2s-ont/C2C">C2C</option>
+					<option value="http://www.discover2share.net/d2s-ont/C2B2C">C2B2C</option>
+			</select></td>
+			<td><strong>{{descriptions["Money_Flow"]["label"]}}:</strong>
+				{{descriptions["Money_Flow"]["comment"]}}
+				<ul>
+					<li><strong>{{descriptions["C2C"]["label"]}}:</strong>
+						{{descriptions["C2C"]["comment"]}}</li>
+					<li><strong>{{descriptions["C2B2C"]["label"]}}:</strong>
+						{{descriptions["C2B2C"]["comment"]}}</li>
+				</ul></td>
+		</tr>
+		<tr>
+			<td><strong>P2P SCC Pattern:</strong></td>
+			<td><p>
+					<select class="form-control" ng-model="platform.p2pSccPattern">
+						<option value="http://www.discover2share.net/d2s-ont/Deferred">Deferred</option>
+						<option value="http://www.discover2share.net/d2s-ont/Immediate">Immediate</option>
+						<option value="http://www.discover2share.net/d2s-ont/Recurrent">Recurrent</option>
+					</select>
+				</p>
+				<p>
+					<select class="form-control" ng-model="platform.temporality">
+						<option value="http://www.discover2share.net/d2s-ont/Once">Once</option>
+						<option value="http://www.discover2share.net/d2s-ont/Often">Often</option>
+					</select>
+				</p></td>
+			<td><strong>{{descriptions["P2P_SCC_Pattern"]["label"]}}:</strong>
+				{{descriptions["P2P_SCC_Pattern"]["comment"]}}
+				<ul>
+					<li><strong>{{descriptions["Deferred"]["label"]}}:</strong>
+						{{descriptions["Deferred"]["comment"]}}</li>
+					<li><strong>{{descriptions["Immediate"]["label"]}}:</strong>
+						{{descriptions["Immediate"]["comment"]}}</li>
+					<li><strong>{{descriptions["Recurrent"]["label"]}}:</strong>
+						{{descriptions["Recurrent"]["comment"]}}</li>
+				</ul> <strong>{{descriptions["Temporality"]["label"]}}:</strong>
+				{{descriptions["Temporality"]["comment"]}}
+				<ul>
+					<li><strong>{{descriptions["Once"]["label"]}}:</strong>
+						{{descriptions["Once"]["comment"]}}</li>
+					<li><strong>{{descriptions["Often"]["label"]}}:</strong>
+						{{descriptions["Often"]["comment"]}}</li>
+				</ul></td>
+		</tr>
+		<tr>
+			<td><strong>Promoted Consumerism:</strong></td>
+			<td>
+				<div class="checkbox">
+					<label><input type="checkbox"
+						ng-checked="platform.consumerisms.length===0"
+						ng-click="platform.consumerisms.length=0" /> None</label>
+				</div>
+				<div ng-repeat="consumerism in consumerisms" class="checkbox">
+					<label> <input type="checkbox" name="consumerisms[]"
+						value="{{consumerism}}"
+						ng-checked="platform.consumerisms.indexOf(consumerism)>-1"
+						ng-click="toggleSelection(consumerism,platform.consumerisms)">
+						{{consumerism}}
+					</label>
+				</div>
+			</td>
+			<td><strong>{{descriptions["Sustainable_Consumerism"]["label"]}}:</strong>
+				{{descriptions["Sustainable_Consumerism"]["comment"]}}
+				<ul>
+					<li><strong>{{descriptions["Social"]["label"]}}:</strong>
+						{{descriptions["Social"]["comment"]}}</li>
+					<li><strong>{{descriptions["Environmental"]["label"]}}:</strong>
+						{{descriptions["Environmental"]["comment"]}}</li>
+					<li><strong>{{descriptions["Economic"]["label"]}}:</strong>
+						{{descriptions["Economic"]["comment"]}}</li>
+					<li><strong>{{descriptions["None"]["label"]}}:</strong>
+						{{descriptions["None"]["comment"]}}</li>
+				</ul></td>
+		</tr>
+		<tr>
+			<td><strong>Resource Owner:</strong></td>
+			<td><select class="form-control"
+				ng-model="platform.resourceOwner">
+					<option value="http://www.discover2share.net/d2s-ont/Private">Private</option>
+					<option value="http://www.discover2share.net/d2s-ont/Business">Business</option>
+					<option
+						value="http://www.discover2share.net/d2s-ont/Private_and_Business">Private
+						and business</option>
+			</select></td>
+			<td><strong>{{descriptions["Resource_Owner"]["label"]}}:</strong>
+				{{descriptions["Resource_Owner"]["comment"]}}
+				<ul>
+					<li><strong>{{descriptions["Private"]["label"]}}:</strong>
+						{{descriptions["Private"]["comment"]}}</li>
+					<li><strong>{{descriptions["Business"]["label"]}}:</strong>
+						{{descriptions["Business"]["comment"]}}</li>
+					<li><strong>{{descriptions["Private_and_business"]["label"]}}:</strong>
+						{{descriptions["Private_and_business"]["comment"]}}</li>
+				</ul></td>
+		</tr>
+		<tr>
+			<td><strong>Minimal Service Duration:</strong></td>
+			<td><select class="form-control"
+				ng-model="platform.minServiceDuration">
+					<option value="http://www.w3.org/2006/time#unitMinute">Minutes</option>
+					<option value="http://www.w3.org/2006/time#unitHour">Hours</option>
+					<option value="http://www.w3.org/2006/time#unitDay">Days</option>
+					<option value="http://www.w3.org/2006/time#unitWeek">Weeks</option>
+					<option value="http://www.w3.org/2006/time#unitMonth">Months</option>
+			</select></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td><strong>Maximal Service Duration:</strong></td>
+			<td><select class="form-control"
+				ng-model="platform.maxServiceDuration">
+					<option value="http://www.w3.org/2006/time#unitMinute">Minutes</option>
+					<option value="http://www.w3.org/2006/time#unitHour">Hours</option>
+					<option value="http://www.w3.org/2006/time#unitDay">Days</option>
+					<option value="http://www.w3.org/2006/time#unitWeek">Weeks</option>
+					<option value="http://www.w3.org/2006/time#unitMonth">Months</option>
+			</select></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td><strong>Smartphone Apps:</strong></td>
+			<td><div ng-repeat="app in smartphoneApps" class="checkbox">
+					<label> <input type="checkbox"
+						name="platform.smartphoneApps[]" value="{{app}}"
+						ng-checked="platform.smartphoneApps.indexOf(app)>-1"
+						ng-click="toggleSelection(app,platform.smartphoneApps)">
+						{{app}}
+					</label>
+				</div></td>
+			<td><strong>{{descriptions["Smartphone_App"]["label"]}}:</strong>
+				{{descriptions["Smartphone_App"]["comment"]}}
+				<ul>
+					<li><strong>{{descriptions["Android_app"]["label"]}}:</strong>
+						{{descriptions["Android_app"]["comment"]}}</li>
+					<li><strong>{{descriptions["iOS_app"]["label"]}}:</strong>
+						{{descriptions["iOS_app"]["comment"]}}</li>
+					<li><strong>{{descriptions["Windows_Phone_app"]["label"]}}:</strong>
+						{{descriptions["Windows_Phone_app"]["comment"]}}</li>
+				</ul></td>
+		</tr>
+		<tr>
+			<td><strong>Trust Contribution:</strong></td>
+			<td><div ng-repeat="contribution in trustContributions"
+					class="checkbox">
+					<label> <input type="checkbox"
+						name="platform.trustContributions[]" value="{{contribution}}"
+						ng-checked="platform.trustContributions.indexOf(contribution)>-1"
+						ng-click="toggleSelection(contribution,platform.trustContributions)">
+						{{contribution}}
+					</label>
+				</div></td>
+			<td><strong>{{descriptions["Trust_Contribution"]["label"]}}:</strong>
+				{{descriptions["Trust_Contribution"]["comment"]}}
+				<ul>
+					<li><strong>{{descriptions["Provider_ratings"]["label"]}}:</strong>
+						{{descriptions["Provider_ratings"]["comment"]}}</li>
+					<li><strong>{{descriptions["Provider_and_consumer_ratings"]["label"]}}:</strong>
+						{{descriptions["Provider_and_consumer_ratings"]["comment"]}}</li>
+					<li><strong>{{descriptions["Referral"]["label"]}}:</strong>
+						{{descriptions["Referral"]["comment"]}}</li>
+					<li><strong>{{descriptions["Vouching"]["label"]}}:</strong>
+						{{descriptions["Vouching"]["comment"]}}</li>
+					<li><strong>{{descriptions["Value-added_services"]["label"]}}:</strong>
+						{{descriptions["Value-added_services"]["comment"]}}</li>
+				</ul></td>
+		</tr>
+		<tr>
+			<td><strong>Type of Accessed Object:</strong></td>
+			<td><select class="form-control"
+				ng-model="platform.typeOfAccessedObject">
+					<option value="http://www.discover2share.net/d2s-ont/Functional">Functional</option>
+					<option value="http://www.discover2share.net/d2s-ont/Experiential">Experiential</option>
+					<option value="http://www.discover2share.net/d2s-ont/Mixed">Mixed</option>
+			</select></td>
+			<td><strong>{{descriptions["Type_of_Accessed_Object"]["label"]}}:</strong>
+				{{descriptions["Type_of_Accessed_Object"]["comment"]}}
+				<ul>
+					<li><strong>{{descriptions["Functional"]["label"]}}:</strong>
+						{{descriptions["Functional"]["comment"]}}</li>
+					<li><strong>{{descriptions["Experiential"]["label"]}}:</strong>
+						{{descriptions["Experiential"]["comment"]}}</li>
+					<li><strong>{{descriptions["Mixed"]["label"]}}:</strong>
+						{{descriptions["Mixed"]["comment"]}}</li>
+				</ul></td>
+		</tr>
+		<tr>
+			<td colspan="3"><input type="submit" value="Submit new platform" class="btn btn-primary" />
+			</td>
+		</tr>
+	</table>
+</form>

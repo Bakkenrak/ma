@@ -96,6 +96,10 @@
 			return $http.get('api/platforms/' + platform);
 		};
 		
+		platformFactory.addPlatform = function(platform) {
+			return $http.post('api/platforms/add', platform);
+		};
+		
 		platformFactory.getDescriptions = function(){
 			return $http.get('api/platforms/descriptions');
 		};
