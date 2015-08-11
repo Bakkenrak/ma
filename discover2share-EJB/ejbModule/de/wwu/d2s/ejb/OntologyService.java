@@ -12,10 +12,12 @@ public interface OntologyService {
 	
 	public List<Map<String, String>> getAllPlatforms();
 
-	public Map<String, List<String>> getPlatform(String url);
+	public Platform getPlatform(String url);
 	
 	public Map<String, Map<String, String>> getDescriptions();
 	
 	public void createPlatform(Platform platform);
+	
+	public List<Platform> getAllSuggestions();
 	
 }

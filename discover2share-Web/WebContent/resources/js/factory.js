@@ -88,7 +88,7 @@
 			return $http.get('resources/js/countries.json');
 		};
 		
-		platformFactory.getAll = function() {
+		platformFactory.getAllPlatforms = function() {
 			return $http.get('api/platforms');
 		};
 		
@@ -96,17 +96,23 @@
 			return $http.get('api/platforms/' + platform);
 		};
 		
-		platformFactory.addPlatform = function(platform) {
-			return $http.post('api/platforms/add', platform);
-		};
-		
 		platformFactory.getDescriptions = function(){
 			return $http.get('api/platforms/descriptions');
 		};
 		
+		platformFactory.getAllSuggestions = function(){
+			return $http.get('api/platforms/suggestions/');
+		};
+		
+		platformFactory.addPlatformSuggestion = function(platform) {
+			return $http.post('api/platforms/suggestions/new', platform);
+		};
+		
+		
+		
 		platformFactory.getGeoData = function(geoUrl){
 			var geoId = geoUrl.replace("http://www.geonames.org/", "");
-			return $http.get('http://api.geonames.org/getJSON?username=demo&geonameId=' + geoId);
+			return $http.jsonp('http://api.geonames.org/getJSON?username=demo&geonameId=' + geoId +"&callback=JSON_CALLBACK");
 		};
 		
 		platformFactory.findCity = function(cityName, country){

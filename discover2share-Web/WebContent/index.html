@@ -11,9 +11,9 @@
 
 </head>
 <body>
-	<div class="container">
-		<div id="header" class="row" ng-controller="headerController">
-			<nav class="navbar navbar-default">
+	<div id="header" class="row" ng-controller="headerController">
+		<nav class="navbar navbar-default">
+		<div class="container">
 			<div class="navbar-header">
 				<a class="navbar-brand" href="./">Discover2Share</a>
 			</div>
@@ -24,16 +24,23 @@
 						a platform</a></li>
 				<li ng-class="{'active' : currentTab=='search'}"><a
 					href="search">Search for a platform</a></li>
+				<li ng-if="authRole==='mod'||authRole==='admin'"
+					ng-class="{'active' : currentTab==='suggestions'}"><a
+					href="suggestions">Moderation</a></li>
 				<li ng-if="authRole=='admin'"
 					ng-class="{'active' : currentTab=='register'}"><a
 					href="register">Create user</a></li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right" ng-cloak="true">
+				<li ng-if="loggedIn"><a href="account">{{username}}</a></li>
 				<li ng-if="!loggedIn" ng-class="{'active' : currentTab=='login'}"><a
 					href="login">Login</a></li>
 				<li ng-if="loggedIn"><a href="logout" ng-click="logout()">Logout</a></li>
 			</ul>
-			</nav>
 		</div>
-
+		</nav>
+	</div>
+	<div class="container">
 		<div ng-view="true"></div>
 	</div>
 	<script

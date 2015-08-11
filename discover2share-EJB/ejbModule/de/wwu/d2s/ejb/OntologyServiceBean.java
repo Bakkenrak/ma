@@ -24,6 +24,9 @@ import de.wwu.d2s.jpa.Platform;
 
 @Stateless
 public class OntologyServiceBean implements OntologyService {
+	
+	@PersistenceContext
+	EntityManager em;
 
 	@Override
 	public List<Map<String, String>> getAllPlatforms() {
@@ -63,13 +66,15 @@ public class OntologyServiceBean implements OntologyService {
 	}
 
 	@Override
-	public Map<String, List<String>> getPlatform(String name) {
+	public Platform getPlatform(String name) {
 		String sparqlEndpoint = "http://localhost:3030/d2s-ont/query";
 
 		String sparqlQuery = "PREFIX d2s: <http://www.discover2share.net/d2s-ont/> "
 				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
 				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
-				+ "PREFIX dbpp: <http://dbpedia.org/property/> " + "PREFIX dbpo: <http://dbpedia.org/ontology/> "
+				+ "PREFIX dbpp: <http://dbpedia.org/property/> " 
+				+ "PREFIX dbpo: <http://dbpedia.org/ontology/> "
+				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#> "
 				+ "Select * " + "WHERE { " + "  d2s:"
 				+ name
 				+ " rdf:type d2s:P2P_SCC_Platform ."
@@ -90,27 +95,35 @@ public class OntologyServiceBean implements OntologyService {
 				+ " OPTIONAL {  d2s:"
 				+ name
 				+ " d2s:launched_in ?launch } ."
-				+ " OPTIONAL {  ?launch dbpp:locationCity ?launchCity } ."
-				+ " OPTIONAL {  ?launch dbpp:locationCountry ?launchCountry } ."
+				+ " OPTIONAL {  ?launch dbpp:locationCity ?launchCity."
+				+ "				{?launchCity owl:sameAs ?launchCityGeonames."
+				+ "				 FILTER(STRSTARTS(STR(?launchCityGeonames), 'http://www.geonames.org/'))} } ."
+				+ " OPTIONAL {  ?launch dbpp:locationCountry ?launchCountry."
+				+ "				{?launchCountry owl:sameAs ?launchCountryGeonames."
+				+ "				 FILTER(STRSTARTS(STR(?launchCountryGeonames), 'http://www.geonames.org/'))} } ."
 				+ " OPTIONAL {  d2s:"
 				+ name
 				+ " dbpp:launchYear ?launchYear } ."
 				+ " OPTIONAL {  d2s:"
 				+ name
 				+ " d2s:operator_resides_in ?residence } ."
-				+ " OPTIONAL {  ?residence dbpp:locationCity ?residenceCity } ."
-				+ " OPTIONAL {  ?residence dbpp:locationCountry ?residenceCountry } ."
+				+ " OPTIONAL {  ?residence dbpp:locationCity ?residenceCity."
+				+ "				{?residenceCity owl:sameAs ?residenceCityGeonames."
+				+ "				 FILTER(STRSTARTS(STR(?residenceCityGeonames), 'http://www.geonames.org/'))} } ."
+				+ " OPTIONAL {  ?residence dbpp:locationCountry ?residenceCountry."
+				+ "				{?residenceCountry owl:sameAs ?residenceCountryGeonames."
+				+ "				 FILTER(STRSTARTS(STR(?residenceCountryGeonames), 'http://www.geonames.org/'))} } ."
 				+ " OPTIONAL {  d2s:"
 				+ name
 				+ " d2s:has_market_mediation ?me ."
-				+ "  ?me rdfs:label ?mediation } ."
+				+ "  ?me rdfs:label ?marketMediation } ."
 				+ " OPTIONAL {  d2s:"
 				+ name
 				+ " d2s:has_market_integration ?integration } ."
 				+ " OPTIONAL {  ?integration d2s:markets_are ?of ."
 				+ "  ?of rdfs:label ?offering } ."
 				+ " OPTIONAL {  ?integration d2s:has_scope ?sc ."
-				+ "  ?sc rdfs:label ?scope } ."
+				+ "  ?sc rdfs:label ?geographicScope } ."
 				+ " OPTIONAL {  d2s:"
 				+ name
 				+ " d2s:has_money_flow ?mf ."
@@ -132,10 +145,10 @@ public class OntologyServiceBean implements OntologyService {
 				+ "  ?ro rdfs:label ?resourceOwner } ."
 				+ " OPTIONAL {  d2s:"
 				+ name
-				+ " d2s:min_service_duration ?minDuration } ."
+				+ " d2s:min_service_duration ?serviceDurationMin } ."
 				+ " OPTIONAL {  d2s:"
 				+ name
-				+ " d2s:max_service_duration ?maxDuration } ."
+				+ " d2s:max_service_duration ?serviceDurationMax } ."
 				+ " OPTIONAL {  d2s:"
 				+ name
 				+ " d2s:has_app ?ap ."
@@ -146,13 +159,14 @@ public class OntologyServiceBean implements OntologyService {
 				+ "  ?tc rdfs:label ?trustContribution } ."
 				+ " OPTIONAL {  d2s:"
 				+ name
-				+ " d2s:accessed_object_has_type ?ot ." + "  ?ot rdfs:label ?objectType } ." + "}";
+				+ " d2s:accessed_object_has_type ?ot ." 
+				+ "  ?ot rdfs:label ?typeOfAccessedObject } ." + "}";
 
 		Query query = QueryFactory.create(sparqlQuery);
 		QueryExecution qexec = QueryExecutionFactory.sparqlService(sparqlEndpoint, query);
 		ResultSet results = qexec.execSelect();
 
-		Map<String, List<String>> platform = new HashMap<String, List<String>>();
+		Platform platform = new Platform();
 		while (results.hasNext()) {
 			QuerySolution result = results.next();
 			for (String var : results.getResultVars()) {
@@ -162,22 +176,11 @@ public class OntologyServiceBean implements OntologyService {
 
 				if (node.isLiteral()) {
 					String literal = node.asLiteral().getString();
-					if (platform.containsKey(var) && !platform.get(var).contains(literal))
-						platform.get(var).add(literal);
-					else {
-						List<String> list = new ArrayList<String>();
-						list.add(literal);
-						platform.put(var, list);
-					}
+					platform.set(var, literal);
 				} else if (node.isResource()) {
 					String uri = node.asResource().getURI();
-					if (uri != null && platform.containsKey(var) && !platform.get(var).contains(uri))
-						platform.get(var).add(uri);
-					else {
-						List<String> list = new ArrayList<String>();
-						list.add(uri);
-						platform.put(var, list);
-					}
+					if (uri != null)
+						platform.set(var, uri);
 				}
 			}
 		}
@@ -227,7 +230,13 @@ public class OntologyServiceBean implements OntologyService {
 	
 	@Override
 	public void createPlatform(Platform platform){
-		//em.persist(platform);
+		em.persist(platform);
+	}
+
+	@Override
+	public List<Platform> getAllSuggestions() {
+		List<Platform> x = em.createQuery("from Platform", Platform.class).getResultList();
+		return x;
 	}
 
 }

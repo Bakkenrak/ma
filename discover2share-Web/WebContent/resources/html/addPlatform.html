@@ -1,13 +1,9 @@
-{{cIds}}
-
-<h1>{{platform.name}}</h1>
-
 <form ng-submit="submit()">
 	<table id="detailTable" class="table table-bordered">
 		<tr>
 			<td><strong>Name:</strong></td>
 			<td><input type="text" class="form-control"
-				ng-model="platform.name" /></td>
+				ng-model="platform.label" /></td>
 			<td></td>
 		</tr>
 		<tr>
@@ -17,9 +13,29 @@
 			<td></td>
 		</tr>
 		<tr>
-			<td><strong>Resource Type:</strong></td>
-			<td><input type="text" class="form-control"
-				ng-model="platform.resourceType" /></td>
+			<td><strong>Description:</strong></td>
+			<td><textarea class="form-control"
+					ng-model="platform.description"></textarea></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td><strong>Resource Types:</strong></td>
+			<td>
+				<p ng-repeat="type in platform.resourceTypes" class="input-group">
+					<input type="text" class="form-control" ng-model="type.label"
+						name="rt{{$index}}" /> <span class="input-group-btn">
+						<button type="button" class="btn btn-default"
+							data-type="plus" data-field="rt{{$index}}" ng-click="platform.resourceTypes.splice($index,1)">
+							<span class="glyphicon glyphicon-minus"></span>&nbsp;
+						</button>
+					</span>
+				</p>
+				<button type="button" class="btn btn-default btn-sm pull-right"
+					ng-click="platform.resourceTypes.push({})">
+					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+					Add another type
+				</button>
+			</td>
 			<td><strong>{{descriptions["Resource_Type"]["label"]}}:</strong>
 				{{descriptions["Resource_Type"]["comment"]}}</td>
 		</tr>
@@ -27,9 +43,9 @@
 			<td><strong>Consumer Involvement:</strong></td>
 			<td><select class="form-control"
 				ng-model="platform.consumerInvolvement">
-					<option value="http://www.discover2share.net/d2s-ont/Full-Service">Full-Service</option>
-					<option value="http://www.discover2share.net/d2s-ont/Self-Service">Self-Service</option>
-					<option value="http://www.discover2share.net/d2s-ont/In-Between">In-Between</option>
+					<option value="Full-Service">Full-Service</option>
+					<option value="Self-Service">Self-Service</option>
+					<option value="In-Between">In-Between</option>
 			</select></td>
 			<td><strong>{{descriptions["Consumer_Involvement"]["label"]}}:</strong>
 				{{descriptions["Consumer_Involvement"]["comment"]}}
@@ -44,51 +60,65 @@
 		</tr>
 		<tr>
 			<td><strong>Country of launch:</strong></td>
-			<td><input type="text" class="form-control"
-				ng-model="platform.launchCountryName"
-				typeahead="country.countryName + ' (' + country.countryCode + ')' for country in countries | orderBy: 'countryName' | containsFilter: $viewValue"
-				typeahead-on-select="launchCountrySelected($item)"
-				typeahead-editable="false" /> <a href="{{platform.launchCountry}}"
-				target="_blank">{{platform.launchCountry}}</a></td>
+			<td><p>
+					<input type="text" class="form-control"
+						placeholder="Search country..."
+						ng-model="platform.launchCountrySearch"
+						typeahead="country.countryName + ' (' + country.countryCode + ')' for country in countries | orderBy: 'countryName' | containsFilter: $viewValue"
+						typeahead-on-select="launchCountrySelected($item)"
+						typeahead-editable="false" />
+				</p> <a href="{{platform.launchCountry}}" target="_blank"
+				ng-show="platform.launchCountryItem.countryId">{{platform.launchCountryItem.countryName}}
+					({{platform.launchCountryItem.countryCode}})</a></td>
 		</tr>
 		<tr>
 			<td><strong>City of launch:</strong></td>
-			<td><input type="text" class="form-control"
-				ng-model="platform.launchCityName"
-				typeahead="(city.toponymName + ', ' + city.adminName1 + ' (' + city.countryCode + ')') for city in findLaunchCity()"
-				typeahead-wait-ms="750"
-				typeahead-on-select="launchCitySelected($item)" /> <a
-				href="{{platform.launchCity}}" target="_blank">{{platform.launchCity}}</a>
-			</td>
+			<td><p>
+					<input type="text" class="form-control"
+						placeholder="Search city..." ng-model="platform.launchCitySearch"
+						typeahead="(city.toponymName + ', ' + city.adminName1 + ' (' + city.countryCode + ')') for city in findLaunchCity()"
+						typeahead-wait-ms="750"
+						typeahead-on-select="launchCitySelected($item)" />
+				</p> <a href="{{platform.launchCity}}" target="_blank"
+				ng-show="platform.launchCityItem.toponymName">{{platform.launchCityItem.toponymName}},
+					{{platform.launchCityItem.adminName1}}
+					({{platform.launchCityItem.countryCode}})</a></td>
 			<td></td>
 		</tr>
 		<tr>
 			<td><strong>Year of launch:</strong></td>
-			<td><select ng-model="platform.launchYear" class="form-control">
-					<option ng-repeat="year in getYears()" value="year">{{year}}</option>
+			<td><select ng-model="platform.yearLaunch" class="form-control">
+					<option ng-repeat="year in getYears()" value="http://www.discover2share.net/d2s-ont/{{year}}">{{year}}</option>
 			</select></td>
 			<td></td>
 		</tr>
 		<tr>
 			<td><strong>Country of residence:</strong></td>
-			<td><input type="text" class="form-control"
-				ng-model="platform.residenceCountryName"
-				typeahead="country.countryName + ' (' + country.countryCode + ')' for country in countries | orderBy: 'countryName' | containsFilter: $viewValue"
-				typeahead-on-select="residenceCountrySelected($item)"
-				typeahead-editable="false" /> <a
-				href="{{platform.residenceCountry}}" target="_blank">{{platform.residenceCountry}}</a>
-			</td>
+			<td><p>
+					<input type="text" class="form-control"
+						placeholder="Search country..."
+						ng-model="platform.residenceCountrySearch"
+						typeahead="country.countryName + ' (' + country.countryCode + ')' for country in countries | orderBy: 'countryName' | containsFilter: $viewValue"
+						typeahead-on-select="residenceCountrySelected($item)"
+						typeahead-editable="false" />
+				</p> <a href="{{platform.residenceCountry}}" target="_blank"
+				ng-show="platform.residenceCountryItem.countryId">{{platform.residenceCountryItem.countryName}}
+					({{platform.residenceCountryItem.countryCode}})</a></td>
 			<td></td>
 		</tr>
 		<tr>
 			<td><strong>City of residence:</strong></td>
-			<td><input type="text" class="form-control"
-				ng-model="platform.residenceCityName"
-				typeahead="(city.toponymName + ', ' + city.adminName1 + ' (' + city.countryCode + ')') for city in findResidenceCity()"
-				typeahead-wait-ms="750"
-				typeahead-on-select="residenceCitySelected($item)" /> <a
-				href="{{platform.residenceCity}}" target="_blank">{{platform.residenceCity}}</a>
-			</td>
+			<td><p>
+					<input type="text" class="form-control"
+						placeholder="Search city..."
+						ng-model="platform.residenceCitySearch"
+						typeahead="(city.toponymName + ', ' + city.adminName1 + ' (' + city.countryCode + ')') for city in findResidenceCity()"
+						typeahead-wait-ms="750"
+						typeahead-on-select="residenceCitySelected($item)" />
+				</p> <a href="{{platform.residenceCity}}" target="_blank"
+				ng-show="platform.residenceCityItem.toponymName">{{platform.residenceCityItem.toponymName}},
+					{{platform.residenceCityItem.adminName1}}
+					({{platform.residenceCityItem.countryCode}})</a></td>
 			<td></td>
 		</tr>
 		<tr>
@@ -123,20 +153,19 @@
 		<tr>
 			<td><strong>Integration:</strong></td>
 			<td><p>
-					<select class="form-control" ng-model="platform.marketOffering">
-						<option value="http://www.discover2share.net/d2s-ont/Integrated">Integrated</option>
-						<option value="http://www.discover2share.net/d2s-ont/Separated">Separated</option>
+					<select class="form-control" ng-model="platform.offering">
+						<option value="Integrated">Integrated</option>
+						<option value="Separated">Separated</option>
 					</select>
 				</p>
 				<p>
 					<select class="form-control" ng-model="platform.geographicScope">
-						<option
-							value="http://www.discover2share.net/d2s-ont/Neighbourhood-wide">Neighbourhood-wide</option>
-						<option value="http://www.discover2share.net/d2s-ont/City-wide">City-wide</option>
-						<option value="http://www.discover2share.net/d2s-ont/State-wide">State-wide</option>
-						<option value="http://www.discover2share.net/d2s-ont/Country-wide">Country-wide</option>
-						<option value="http://www.discover2share.net/d2s-ont/Region-wide">Region-wide</option>
-						<option value="http://www.discover2share.net/d2s-ont/Global">Global</option>
+						<option value="Neighbourhood-wide">Neighbourhood-wide</option>
+						<option value="City-wide">City-wide</option>
+						<option value="State-wide">State-wide</option>
+						<option value="Country-wide">Country-wide</option>
+						<option value="Region-wide">Region-wide</option>
+						<option value="Global">Global</option>
 					</select>
 				</p></td>
 			<td>
@@ -164,8 +193,8 @@
 		<tr>
 			<td><strong>Money Flow:</strong></td>
 			<td><select class="form-control" ng-model="platform.moneyFlow">
-					<option value="http://www.discover2share.net/d2s-ont/C2C">C2C</option>
-					<option value="http://www.discover2share.net/d2s-ont/C2B2C">C2B2C</option>
+					<option value="C2C">C2C</option>
+					<option value="C2B2C">C2B2C</option>
 			</select></td>
 			<td><strong>{{descriptions["Money_Flow"]["label"]}}:</strong>
 				{{descriptions["Money_Flow"]["comment"]}}
@@ -179,16 +208,16 @@
 		<tr>
 			<td><strong>P2P SCC Pattern:</strong></td>
 			<td><p>
-					<select class="form-control" ng-model="platform.p2pSccPattern">
-						<option value="http://www.discover2share.net/d2s-ont/Deferred">Deferred</option>
-						<option value="http://www.discover2share.net/d2s-ont/Immediate">Immediate</option>
-						<option value="http://www.discover2share.net/d2s-ont/Recurrent">Recurrent</option>
+					<select class="form-control" ng-model="platform.pattern">
+						<option value="Deferred">Deferred</option>
+						<option value="Immediate">Immediate</option>
+						<option value="Recurrent">Recurrent</option>
 					</select>
 				</p>
 				<p>
 					<select class="form-control" ng-model="platform.temporality">
-						<option value="http://www.discover2share.net/d2s-ont/Once">Once</option>
-						<option value="http://www.discover2share.net/d2s-ont/Often">Often</option>
+						<option value="Once">Once</option>
+						<option value="Often">Often</option>
 					</select>
 				</p></td>
 			<td><strong>{{descriptions["P2P_SCC_Pattern"]["label"]}}:</strong>
@@ -243,11 +272,9 @@
 			<td><strong>Resource Owner:</strong></td>
 			<td><select class="form-control"
 				ng-model="platform.resourceOwner">
-					<option value="http://www.discover2share.net/d2s-ont/Private">Private</option>
-					<option value="http://www.discover2share.net/d2s-ont/Business">Business</option>
-					<option
-						value="http://www.discover2share.net/d2s-ont/Private_and_Business">Private
-						and business</option>
+					<option value="Private">Private</option>
+					<option value="Business">Business</option>
+					<option value="Private_and_business">Private and business</option>
 			</select></td>
 			<td><strong>{{descriptions["Resource_Owner"]["label"]}}:</strong>
 				{{descriptions["Resource_Owner"]["comment"]}}
@@ -261,9 +288,9 @@
 				</ul></td>
 		</tr>
 		<tr>
-			<td><strong>Minimal Service Duration:</strong></td>
+			<td><strong>Service Duration Minimum:</strong></td>
 			<td><select class="form-control"
-				ng-model="platform.minServiceDuration">
+				ng-model="platform.serviceDurationMin">
 					<option value="http://www.w3.org/2006/time#unitMinute">Minutes</option>
 					<option value="http://www.w3.org/2006/time#unitHour">Hours</option>
 					<option value="http://www.w3.org/2006/time#unitDay">Days</option>
@@ -273,9 +300,9 @@
 			<td></td>
 		</tr>
 		<tr>
-			<td><strong>Maximal Service Duration:</strong></td>
+			<td><strong>Service Duration Maximum:</strong></td>
 			<td><select class="form-control"
-				ng-model="platform.maxServiceDuration">
+				ng-model="platform.serviceDurationMax">
 					<option value="http://www.w3.org/2006/time#unitMinute">Minutes</option>
 					<option value="http://www.w3.org/2006/time#unitHour">Hours</option>
 					<option value="http://www.w3.org/2006/time#unitDay">Days</option>
@@ -287,11 +314,9 @@
 		<tr>
 			<td><strong>Smartphone Apps:</strong></td>
 			<td><div ng-repeat="app in smartphoneApps" class="checkbox">
-					<label> <input type="checkbox"
-						name="platform.smartphoneApps[]" value="{{app}}"
-						ng-checked="platform.smartphoneApps.indexOf(app)>-1"
-						ng-click="toggleSelection(app,platform.smartphoneApps)">
-						{{app}}
+					<label> <input type="checkbox" name="platform.apps[]"
+						value="{{app}}" ng-checked="platform.apps.indexOf(app)>-1"
+						ng-click="toggleSelection(app,platform.apps)"> {{app}}
 					</label>
 				</div></td>
 			<td><strong>{{descriptions["Smartphone_App"]["label"]}}:</strong>
@@ -335,9 +360,9 @@
 			<td><strong>Type of Accessed Object:</strong></td>
 			<td><select class="form-control"
 				ng-model="platform.typeOfAccessedObject">
-					<option value="http://www.discover2share.net/d2s-ont/Functional">Functional</option>
-					<option value="http://www.discover2share.net/d2s-ont/Experiential">Experiential</option>
-					<option value="http://www.discover2share.net/d2s-ont/Mixed">Mixed</option>
+					<option value="Functional">Functional</option>
+					<option value="Experiential">Experiential</option>
+					<option value="Mixed">Mixed</option>
 			</select></td>
 			<td><strong>{{descriptions["Type_of_Accessed_Object"]["label"]}}:</strong>
 				{{descriptions["Type_of_Accessed_Object"]["comment"]}}
@@ -350,9 +375,7 @@
 						{{descriptions["Mixed"]["comment"]}}</li>
 				</ul></td>
 		</tr>
-		<tr>
-			<td colspan="3"><input type="submit" value="Submit new platform" class="btn btn-primary" />
-			</td>
-		</tr>
 	</table>
+	<input type="submit" value="Submit new platform"
+		class="btn btn-primary" />
 </form>

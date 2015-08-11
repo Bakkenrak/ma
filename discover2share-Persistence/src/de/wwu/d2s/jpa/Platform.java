@@ -1,58 +1,62 @@
 package de.wwu.d2s.jpa;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.PrePersist;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Platform implements Serializable {
 	private static final long serialVersionUID = -6541452756921763514L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
-	
-	private String name;
+
+	private Date created;
+
+	private String label;
 	private String url;
 	private String description;
-	
-	@ElementCollection
-	@CollectionTable(joinColumns=@JoinColumn(name="id"))
-	@Column(name="resourceType")
-	private List<String> resourceTypes;
-	
-	@ElementCollection
-	@CollectionTable(joinColumns=@JoinColumn(name="id"))
-	@Column(name="consumerism")
-	private List<String> consumerisms;
-	
+
+	@ElementCollection(fetch=FetchType.EAGER)
+	@CollectionTable(joinColumns = @JoinColumn(name = "id"))
+	@Column(name = "resourceType")
+	private List<String> resourceTypes = new ArrayList<String>();
+
+	@ElementCollection(fetch=FetchType.EAGER)
+	@CollectionTable(joinColumns = @JoinColumn(name = "id"))
+	@Column(name = "consumerism")
+	private List<String> consumerisms = new ArrayList<String>();
+
 	private String pattern;
 	private String temporality;
-	
-	@ElementCollection
-	@CollectionTable(joinColumns=@JoinColumn(name="id"))
-	@Column(name="marketMediation")
-	private List<String> marketMediations;
-	
+
+	@ElementCollection(fetch=FetchType.EAGER)
+	@CollectionTable(joinColumns = @JoinColumn(name = "id"))
+	@Column(name = "marketMediation")
+	private List<String> marketMediations = new ArrayList<String>();
+
 	private String typeOfAccessedObject;
 	private String resourceOwner;
 	private String serviceDurationMin;
 	private String serviceDurationMax;
 	private String consumerInvolvement;
-	
-	@ElementCollection
-	@CollectionTable(joinColumns=@JoinColumn(name="id"))
-	@Column(name="moneyFlow")
-	private List<String> moneyFlows;
-	
+	private String moneyFlow;
 	private String offering;
 	private String geographicScope;
 	private String yearLaunch;
@@ -60,14 +64,111 @@ public class Platform implements Serializable {
 	private String launchCity;
 	private String residenceCountry;
 	private String residenceCity;
+
+	@ElementCollection(fetch=FetchType.EAGER)
+	@CollectionTable(joinColumns = @JoinColumn(name = "id"))
+	@Column(name = "app")
+	private List<String> apps = new ArrayList<String>();
+
+	public Platform() { //hibernate constructor
+	}	
 	
-	@ElementCollection
-	@CollectionTable(joinColumns=@JoinColumn(name="id"))
-	@Column(name="app")
-	private List<String> apps;
+
+
+	public void set(String var, String val) {
+		switch (var){
+			case "label":
+				setLabel(val);
+				break;
+			case "url":
+				setUrl(val);
+				break;
+			case "description":
+				setDescription(val);
+				break;
+			case "resourceType":
+				addResourceType(val);
+				break;
+			case "consumerism":
+				addConsumerism(val);
+				break;
+			case "pattern":
+				setPattern(val);
+				break;
+			case "temporality":
+				setTemporality(val);
+				break;
+			case "marketMediation":
+				addMarketMediation(val);
+				break;
+			case "typeOfAccessedObject":
+				setTypeOfAccessedObject(val);
+				break;
+			case "resourceOwner":
+				setResourceOwner(val);
+				break;
+			case "serviceDurationMin":
+				setServiceDurationMin(val);
+				break;
+			case "serviceDurationMax":
+				setServiceDurationMax(val);
+				break;
+			case "consumerInvolvement":
+				setConsumerInvolvement(val);
+				break;
+			case "moneyFlow":
+				setMoneyFlow(val);
+				break;
+			case "offering":
+				setOffering(val);
+				break;
+			case "geographicScope":
+				setGeographicScope(val);
+				break;
+			case "yearLaunch":
+				setYearLaunch(val);
+				break;
+			case "launchCountryGeonames":
+				setLaunchCountry(val);
+				break;
+			case "launchCityGeonames":
+				setLaunchCity(val);
+				break;
+			case "residenceCountryGeonames":
+				setResidenceCountry(val);
+				break;
+			case "residenceCityGeonames":
+				setResidenceCity(val);
+				break;
+			case "app":
+				addApp(val);
+				break;
+		}
+	}
+
+	private void addResourceType(String val) {
+		if(!resourceTypes.contains(val))
+			resourceTypes.add(val);
+	}
+
+	private void addConsumerism(String val) {
+		if(!consumerisms.contains(val))
+			consumerisms.add(val);
+	}
 	
-	public Platform(){
-		
+	private void addMarketMediation(String val) {
+		if(!marketMediations.contains(val))
+			marketMediations.add(val);
+	}
+	
+	private void addApp(String val) {
+		if(!apps.contains(val))
+			apps.add(val);
+	}
+
+	@PrePersist
+	protected void onCreate() {
+		created = new Date();
 	}
 
 	public int getId() {
@@ -78,12 +179,12 @@ public class Platform implements Serializable {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getLabel() {
+		return label;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setLabel(String label) {
+		this.label = label;
 	}
 
 	public String getUrl() {
@@ -139,7 +240,7 @@ public class Platform implements Serializable {
 	}
 
 	public void setMarketMediations(List<String> marketMediations) {
-		marketMediations = marketMediations;
+		this.marketMediations = marketMediations;
 	}
 
 	public String getTypeOfAccessedObject() {
@@ -182,12 +283,12 @@ public class Platform implements Serializable {
 		this.consumerInvolvement = consumerInvolvement;
 	}
 
-	public List<String> getMoneyFlows() {
-		return moneyFlows;
+	public String getMoneyFlow() {
+		return moneyFlow;
 	}
 
-	public void setMoneyFlows(List<String> moneyFlows) {
-		this.moneyFlows = moneyFlows;
+	public void setMoneyFlow(String moneyFlow) {
+		this.moneyFlow = moneyFlow;
 	}
 
 	public String getOffering() {

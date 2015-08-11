@@ -3,6 +3,7 @@ package de.wwu.d2s.web.api;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -22,16 +23,22 @@ public interface OntologyApi {
 	@Path("{platform}")
 	@GET
 	@Produces("application/json")
-	public Map<String, List<String>> getPlatform(@PathParam("platform") String url);
+	public Platform getPlatform(@PathParam("platform") String url);
 	
 	@Path("descriptions/")
 	@GET
 	@Produces("application/json")
 	public Map<String, Map<String, String>> getDescriptions();
 	
-	@Path("new/")
+	@Path("suggestions/new")
 	@POST
 	@Produces("application/json")
 	@Consumes("application/json")
 	public void createPlatform(Platform platform);
+	
+	@Path("suggestions/")
+	@GET
+	@Produces("application/json")
+	@RolesAllowed(value={"admin", "mod"})
+	public List<Platform> getAllSuggestions();
 }

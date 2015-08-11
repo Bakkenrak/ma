@@ -1,16 +1,16 @@
-<h1>{{platform.label[0]}}</h1>
+<h1>{{platform.label}}</h1>
 
 <table id="detailTable" class="table table-bordered">
 	<tr>
 		<td><strong>Resource Type:</strong></td>
-		<td><span ng-repeat="resourceType in platform.resourceType">{{resourceType}}<span
+		<td><span ng-repeat="resourceType in platform.resourceTypes">{{resourceType}}<span
 				ng-if="!$last">, </span></span></td>
 		<td><strong>{{descriptions["Resource_Type"]["label"]}}:</strong>
 			{{descriptions["Resource_Type"]["comment"]}}</td>
 	</tr>
 	<tr>
 		<td><strong>Consumer Involvement:</strong></td>
-		<td>{{platform.consumerInvolvement[0]}}</td>
+		<td>{{platform.consumerInvolvement}}</td>
 		<td><strong>{{descriptions["Consumer_Involvement"]["label"]}}:</strong>
 			{{descriptions["Consumer_Involvement"]["comment"]}}
 			<ul>
@@ -24,29 +24,28 @@
 	</tr>
 	<tr>
 		<td><strong>Place of launch:</strong></td>
-		<td><a href="{{platform.launchCity[0]}}">{{platform.launchCityName}}</a><span
-			ng-if="platform.residenceCity.length>0">, </span><a
-			href="{{platform.launchCountry[0]}}">{{platform.launchCountryName}}</a>
+		<td><a href="{{platform.launchCity}}">{{platform.launchCityName}}</a><span
+			ng-if="platform.residenceCity!==null">, </span><a
+			href="{{platform.launchCountry}}">{{platform.launchCountryName}}</a>
 		</td>
 		<td></td>
 	</tr>
 	<tr>
 		<td><strong>Year of launch:</strong></td>
-		<td><a href="{{platform.launchYear[0]}}">{{platform.launchYearName}}</a>
-		</td>
+		<td>{{platform.yearLaunchName}}</td>
 		<td></td>
 	</tr>
 	<tr>
 		<td><strong>Place of residence:</strong></td>
-		<td><a href="{{platform.residenceCity[0]}}">{{platform.residenceCityName}}</a><span
-			ng-if="platform.residenceCity.length>0 && platform.residenceCountry.length>0">,
-		</span><a href="{{platform.residenceCountry[0]}}">{{platform.residenceCountryName}}</a>
+		<td><a href="{{platform.residenceCity}}">{{platform.residenceCityName}}</a><span
+			ng-if="platform.residenceCity">,
+		</span><a href="{{platform.residenceCountry}}">{{platform.residenceCountryName}}</a>
 		</td>
 		<td></td>
 	</tr>
 	<tr>
 		<td><strong>Market Mediation:</strong></td>
-		<td><span ng-repeat="mediation in platform.mediation">{{mediation}}<span
+		<td><span ng-repeat="mediation in platform.marketMediations">{{mediation}}<span
 				ng-if="!$last">, </span></span></td>
 		<td><strong>{{descriptions["Market_Mediation"]["label"]}}:</strong>
 			{{descriptions["Market_Mediation"]["comment"]}}
@@ -69,7 +68,7 @@
 	</tr>
 	<tr>
 		<td><strong>Integration:</strong></td>
-		<td>{{platform.offering[0]}} {{platform.scope[0]}}</td>
+		<td>{{platform.offering}}<span ng-if="platform.offering!==null && platform.geographicScope!==null">, </span> {{platform.geographicScope}}</td>
 		<td>
 			<p>
 				<strong>{{descriptions["Market_Integration"]["label"]}}:</strong>
@@ -94,8 +93,7 @@
 	</tr>
 	<tr>
 		<td><strong>Money Flow:</strong></td>
-		<td><span ng-repeat="moneyFlow in platform.moneyFlow">{{moneyFlow}}<span
-				ng-if="!$last">, </span></span></td>
+		<td>{{platform.moneyFlow}}</td>
 		<td><strong>{{descriptions["Money_Flow"]["label"]}}:</strong>
 			{{descriptions["Money_Flow"]["comment"]}}
 			<ul>
@@ -107,9 +105,9 @@
 	</tr>
 	<tr>
 		<td><strong>P2P SCC Pattern:</strong></td>
-		<td>{{platform.pattern[0]}}<span
-			ng-if="platform.pattern.length>0 && platform.temporality.length>0">,
-		</span>{{platform.temporality[0]}}
+		<td>{{platform.pattern}}<span
+			ng-if="platform.pattern!==null && platform.temporality!==null">,
+		</span>{{platform.temporality}}
 		</td>
 		<td><strong>{{descriptions["P2P_SCC_Pattern"]["label"]}}:</strong>
 			{{descriptions["P2P_SCC_Pattern"]["comment"]}}
@@ -131,7 +129,7 @@
 	</tr>
 	<tr>
 		<td><strong>Promoted Consumerism:</strong></td>
-		<td><span ng-repeat="consumerism in platform.consumerism">{{consumerism}}<span
+		<td><span ng-repeat="consumerism in platform.consumerisms">{{consumerism}}<span
 				ng-if="!$last">, </span></span></td>
 		<td><strong>{{descriptions["Sustainable_Consumerism"]["label"]}}:</strong>
 			{{descriptions["Sustainable_Consumerism"]["comment"]}}
@@ -148,8 +146,7 @@
 	</tr>
 	<tr>
 		<td><strong>Resource Owner:</strong></td>
-		<td><span ng-repeat="resourceOwner in platform.resourceOwner">{{resourceOwner}}<span
-				ng-if="!$last">, </span></span></td>
+		<td>{{platform.resourceOwner}}</td>
 		<td><strong>{{descriptions["Resource_Owner"]["label"]}}:</strong>
 			{{descriptions["Resource_Owner"]["comment"]}}
 			<ul>
@@ -163,15 +160,12 @@
 	</tr>
 	<tr>
 		<td><strong>Service Duration:</strong></td>
-		<td><a href="{{platform.minDuration[0]}}">{{timeConverter(platform.minDuration[0])}}</a>
-			<span
-			ng-if="platform.minDuration.length>0 && platform.maxDuration.length>0">to</span>
-			<a href="{{platform.maxDuration[0]}}">{{timeConverter(platform.maxDuration[0])}}</a>
+		<td>{{timeConverter(platform.serviceDurationMin)}}<span ng-if="platform.serviceDurationMin!==null && platform.serviceDurationMax!==null"> to </span>{{timeConverter(platform.serviceDurationMax)}}
 		</td>
 	</tr>
 	<tr>
 		<td><strong>Smartphone Apps:</strong></td>
-		<td><span ng-repeat="app in platform.app">{{app}}<span
+		<td><span ng-repeat="app in platform.apps">{{app}}<span
 				ng-if="!$last">, </span></span></td>
 		<td><strong>{{descriptions["Smartphone_App"]["label"]}}:</strong>
 			{{descriptions["Smartphone_App"]["comment"]}}
@@ -187,7 +181,7 @@
 	<tr>
 		<td><strong>Trust Contribution:</strong></td>
 		<td><span
-			ng-repeat="trustContribution in platform.trustContribution">{{trustContribution}}<span
+			ng-repeat="trustContribution in platform.trustContributions">{{trustContribution}}<span
 				ng-if="!$last">, </span></span></td>
 		<td><strong>{{descriptions["Trust_Contribution"]["label"]}}:</strong>
 			{{descriptions["Trust_Contribution"]["comment"]}}
@@ -206,7 +200,7 @@
 	</tr>
 	<tr>
 		<td><strong>Type of Accessed Object:</strong></td>
-		<td>{{platform.objectType[0]}}</td>
+		<td>{{platform.typeOfAccessedObject}}</td>
 		<td><strong>{{descriptions["Type_of_Accessed_Object"]["label"]}}:</strong>
 			{{descriptions["Type_of_Accessed_Object"]["comment"]}}
 			<ul>

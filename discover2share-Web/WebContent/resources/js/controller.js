@@ -9,10 +9,13 @@
 	        $scope.currentTab = $location.path().substr(1); // set scope variable to current route
 	        //determine if logged in from cookie
 	        $scope.loggedIn = authFactory.isAuthenticated();
-	        if($scope.loggedIn)
+	        if($scope.loggedIn){
 	        	$scope.authRole = authFactory.getAuthData().authRole;
-	        else
+	        	$scope.username = authFactory.getAuthData().username;
+	        } else{
 	        	$scope.authRole = undefined;
+	        	$scope.username = undefined;
+	        }
 		});
 		
 		$scope.logout = function(){
@@ -83,21 +86,14 @@
 	    };
 	});
 	
-	d2sApp.controller('platformsCtrl', function($scope, platformFactory) {		
-		$scope.pagination = {itemsPerPage: 40 };
-		
-		// retrieve all platforms from ontolgy
-		platformFactory.getAll().success(function(data){
-			$scope.filteredPlatforms = $scope.platforms = data;
-			$scope.pagination.currentPage = 1; // Set pagination to first page. Causes update of the table display
-		}).error(function(){});
+	d2sApp.controller('platformsCtrl', function($scope, platforms) {
+		$scope.pagination = {itemsPerPage: 25};
+		$scope.searchTerm = "";
 		
 		// triggered when the current page of pagination, the items per page or the filtered platform array change
 		$scope.$watch("pagination.currentPage + pagination.itemsPerPage + filteredPlatforms", function() {
 			$scope.pagination.begin = (($scope.pagination.currentPage - 1) * $scope.pagination.itemsPerPage);
 			$scope.pagination.end = $scope.pagination.begin + $scope.pagination.itemsPerPage;
-			
-			if(angular.isUndefined($scope.platforms)) return; //cancel function here on startup, to avoid errors
 			
 			//adjust end if it exceeds the actual numer of platforms
 			if($scope.pagination.end > $scope.filteredPlatforms.length) $scope.pagination.end = $scope.filteredPlatforms.length;
@@ -107,15 +103,15 @@
 		
 		// triggered when the search term input changes
 		$scope.$watch("searchTerm", function(){
-			if(angular.isUndefined($scope.platforms)) return; //cancel function here on startup, to avoid errors
-			
 			$scope.filteredPlatforms = []; //empty filtered list
 			angular.forEach($scope.platforms, function(platform){
-				if(~platform.label.toLowerCase().indexOf($scope.searchTerm)) //add those whose label contains the search term
+				if(platform.label!==null && ~platform.label.toLowerCase().indexOf($scope.searchTerm)) //add those whose label contains the search term
 					$scope.filteredPlatforms.push(platform);
 			});
 			$scope.pagination.currentPage = 1; //set pagination to first page
 		});
+		
+		$scope.filteredPlatforms = $scope.platforms = platforms.data;
 	});
 	
 	d2sApp.controller('platformDetailCtrl', function($scope, platformFactory, $routeParams, $rootScope) {		
@@ -123,32 +119,32 @@
 			$scope.platform = data;
 			
 			//retrieve names of cities and countries
-			if(!angular.isUndefined(data.launchCity[0]))
-				platformFactory.getGeoData(data.launchCity[0]).success(function(data){
+			if(!angular.isUndefined(data.launchCity))
+				platformFactory.getGeoData(data.launchCity).success(function(data){
 					$scope.platform.launchCityName = data.toponymName;
-					if($scope.platform.residenceCity[0] === $scope.platform.launchCity[0])
+					if($scope.platform.residenceCity === $scope.platform.launchCity)
 						$scope.platform.residenceCityName = data.toponymName;
 				});
-			if(!angular.isUndefined(data.launchCountry[0]))
-				platformFactory.getGeoData(data.launchCountry[0]).success(function(data){
+			if(!angular.isUndefined(data.launchCountry))
+				platformFactory.getGeoData(data.launchCountry).success(function(data){
 					$scope.platform.launchCountryName = data.countryName;
-					if($scope.platform.residenceCountry[0] === $scope.platform.launchCountry[0])
+					if($scope.platform.residenceCountry === $scope.platform.launchCountry)
 						$scope.platform.residenceCountryName = data.countryName;
 				});
 			
 			//when residence city or country equal launch city or country, save the extra calls
-			if(data.residenceCity[0] !== data.launchCity[0] && !angular.isUndefined(data.residenceCity[0]))
-				platformFactory.getGeoData(data.residenceCity[0]).success(function(data){
+			if(data.residenceCity[0] !== data.launchCity && !angular.isUndefined(data.residenceCity))
+				platformFactory.getGeoData(data.residenceCity).success(function(data){
 					$scope.platform.residenceCityName = data.toponymName;
 				});
-			if(data.residenceCountry[0] !== data.launchCountry[0] && !angular.isUndefined(data.residenceCountry[0]))
-				platformFactory.getGeoData(data.residenceCountry[0]).success(function(data){
+			if(data.residenceCountry[0] !== data.launchCountry && !angular.isUndefined(data.residenceCountry))
+				platformFactory.getGeoData(data.residenceCountry).success(function(data){
 					$scope.platform.residenceCountryName = data.countryName;
 				});
 			
 			//retrieve launchYear label
-			if(!angular.isUndefined(data.launchYear[0])) 
-				$scope.platform.launchYearName = data.launchYear[0].replace("http://dbpedia.org/resource/", "");		
+			if(!angular.isUndefined(data.launchYear)) 
+				$scope.platform.yearLaunchName = data.yearLaunch.replace("http://www.discover2share.net/d2s-ont/", "");	
 		}).error(function(){});
 				
 		
@@ -190,15 +186,16 @@
 		}
 		
 		$scope.platform = { 
+				resourceTypes: [{}],
 				launchCountryItem: {},
 				trustContributions: [],
-				smartphoneApps: [],
+				apps: [],
 				consumerisms: [],
 				marketMediations: []
 		};
 		
 		$scope.launchCitySelected = function(item){
-			$scope.platform.launchCityName = item.toponymName;
+			$scope.platform.launchCitySearch = "";
 			$scope.platform.launchCityItem = item;
 			$scope.platform.launchCity = "http://www.geonames.org/" + item.geonameId;
 			if(!angular.isUndefined($scope.platform.launchCountryItem) && 
@@ -206,7 +203,7 @@
 				console.log("Selected launch city is not situated in the selected country.");
 		}
 		$scope.residenceCitySelected = function(item){
-			$scope.platform.residenceCityName = item.toponymName;
+			$scope.platform.residenceCitySearch = "";
 			$scope.platform.residenceCityItem = item;
 			$scope.platform.residenceCity = "http://www.geonames.org/" + item.geonameId;
 			if(!angular.isUndefined($scope.platform.residenceCountryItem) && 
@@ -214,7 +211,7 @@
 				console.log("Selected residence city is not situated in the selected country.");
 		}
 		$scope.launchCountrySelected = function(item){
-			$scope.platform.launchCountryName = item.countryName;
+			$scope.platform.launchCountrySearch = "";
 			$scope.platform.launchCountryItem = item
 			$scope.platform.launchCountry = "http://www.geonames.org/" + item.countryId;
 			if(!angular.isUndefined($scope.platform.launchCityItem) && 
@@ -222,7 +219,7 @@
 				console.log("Selected launch city is not situated in the selected country.");
 		}
 		$scope.residenceCountrySelected = function(item){
-			$scope.platform.residenceCountryName = item.countryName;
+			$scope.platform.residenceCountrySearch = "";
 			$scope.platform.residenceCountryItem = item
 			$scope.platform.residenceCountry = "http://www.geonames.org/" + item.countryId;
 			if(!angular.isUndefined($scope.platform.residenceCityItem) && 
@@ -232,20 +229,14 @@
 		
 		// triggered when the search term input changes
 		$scope.findLaunchCity = function(){
-			if($scope.platform.launchCityName === ""){
-				$scope.platform.launchCity = "";
-				return;
-			}
-			return platformFactory.findCity($scope.platform.launchCityName, $scope.platform.launchCountryItem.countryCode).then(function(response){
+			if($scope.platform.launchCitySearch === "") return;
+			return platformFactory.findCity($scope.platform.launchCitySearch, $scope.platform.launchCountryItem.countryCode).then(function(response){
 				return response.data.geonames;
 			});
 		};
 		$scope.findResidenceCity = function(){
-			if($scope.platform.residenceCityName === ""){
-				$scope.platform.residenceCity = "";
-				return;
-			}
-			return platformFactory.findCity($scope.platform.residenceCityName, $scope.platform.residenceCountryItem.countryCode).then(function(response){
+			if($scope.platform.residenceCitySearch === "") return;
+			return platformFactory.findCity($scope.platform.residenceCitySearch, $scope.platform.residenceCountryItem.countryCode).then(function(response){
 				return response.data.geonames;
 			});
 		};
@@ -270,7 +261,8 @@
 		};
 		
 		$scope.submit = function(){
-			console.log($scope.platform);
+			$scope.platform.resourceTypes = $scope.platform.resourceTypes.map(function(item){return item.label});
+			platformFactory.addPlatformSuggestion($scope.platform);
 		};
 	});
 
