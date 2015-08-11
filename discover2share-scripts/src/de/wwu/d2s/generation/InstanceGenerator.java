@@ -35,6 +35,7 @@ public class InstanceGenerator {
 	private final static String D2S = "http://www.discover2share.net/d2s-ont/";
 	private final static String SKOS = "http://www.w3.org/2004/02/skos/core#";
 	private final static String DBPP = "http://dbpedia.org/property/";
+	private final static String OWL = "http://www.w3.org/2002/07/owl#";
 
 	// Instantiate logger
 	private final Logger log = Logger.getLogger(InstanceGenerator.class);
@@ -42,7 +43,7 @@ public class InstanceGenerator {
 	// Properties defined centrally to be used in every method
 	private Property rdfType;
 	private Property rdfsLabel;
-	private Property skosRelatedMatch;
+	private Property owlSameAs;
 
 	// The central component of the output
 	private OntModel ontologyModel;
@@ -88,8 +89,7 @@ public class InstanceGenerator {
 		// Instantiate commonly used properties
 		rdfType = ontologyModel.createProperty(RDF + "type");
 		rdfsLabel = ontologyModel.createProperty(RDFS + "label");
-		skosRelatedMatch = ontologyModel.createProperty(SKOS + "relatedMatch");
-
+		owlSameAs = ontologyModel.createProperty(OWL + "sameAs");
 		generateContinents(); // generate and add all continents to the model
 		generateCountries(); // generate and add all countries to the model
 		generateLanguages(); // generate and add all languages to the model
@@ -111,47 +111,47 @@ public class InstanceGenerator {
 		africa.addProperty(rdfType, continent); // of type d2s:Continent
 		africa.addProperty(rdfsLabel, "Africa");
 		// link to geonames equivalent
-		africa.addProperty(skosRelatedMatch, ontologyModel.createResource("http://www.geonames.org/6255146"));
+		africa.addProperty(owlSameAs, ontologyModel.createResource("http://www.geonames.org/6255146"));
 		africa.addProperty(continentCode, "AF"); // add continent code
 		// link to DBpedia equivalent
-		africa.addProperty(skosRelatedMatch, ontologyModel.createResource("http://dbpedia.org/resource/Africa"));
+		africa.addProperty(owlSameAs, ontologyModel.createResource("http://dbpedia.org/resource/Africa"));
 		continents.put("AF", africa); // add to map for future re-use
 
 		// Antarctica
 		Resource antarctica = ontologyModel.createResource(D2S + "Antarctica");
 		antarctica.addProperty(rdfType, continent);
 		antarctica.addProperty(rdfsLabel, "Antarctica");
-		antarctica.addProperty(skosRelatedMatch, ontologyModel.createResource("http://www.geonames.org/6255152"));
+		antarctica.addProperty(owlSameAs, ontologyModel.createResource("http://www.geonames.org/6255152"));
 		antarctica.addProperty(continentCode, "AN");
 		antarctica
-				.addProperty(skosRelatedMatch, ontologyModel.createResource("http://dbpedia.org/resource/Antarctica"));
+				.addProperty(owlSameAs, ontologyModel.createResource("http://dbpedia.org/resource/Antarctica"));
 		continents.put("AN", antarctica);
 
 		// Asia
 		Resource asia = ontologyModel.createResource(D2S + "Asia");
 		asia.addProperty(rdfType, continent);
 		asia.addProperty(rdfsLabel, "Asia");
-		asia.addProperty(skosRelatedMatch, ontologyModel.createResource("http://www.geonames.org/6255147"));
+		asia.addProperty(owlSameAs, ontologyModel.createResource("http://www.geonames.org/6255147"));
 		asia.addProperty(continentCode, "AS");
-		asia.addProperty(skosRelatedMatch, ontologyModel.createResource("http://dbpedia.org/resource/Asia"));
+		asia.addProperty(owlSameAs, ontologyModel.createResource("http://dbpedia.org/resource/Asia"));
 		continents.put("AS", asia);
 
 		// Europe
 		Resource europe = ontologyModel.createResource(D2S + "Europe");
 		europe.addProperty(rdfType, continent);
 		europe.addProperty(rdfsLabel, "Europe");
-		europe.addProperty(skosRelatedMatch, ontologyModel.createResource("http://www.geonames.org/6255148"));
+		europe.addProperty(owlSameAs, ontologyModel.createResource("http://www.geonames.org/6255148"));
 		europe.addProperty(continentCode, "EU");
-		europe.addProperty(skosRelatedMatch, ontologyModel.createResource("http://dbpedia.org/resource/Europe"));
+		europe.addProperty(owlSameAs, ontologyModel.createResource("http://dbpedia.org/resource/Europe"));
 		continents.put("EU", europe);
 
 		// Northern America
 		Resource northernAmerica = ontologyModel.createResource(D2S + "Northern_America");
 		northernAmerica.addProperty(rdfType, continent);
 		northernAmerica.addProperty(rdfsLabel, "Northern America");
-		northernAmerica.addProperty(skosRelatedMatch, ontologyModel.createResource("http://www.geonames.org/7729890"));
+		northernAmerica.addProperty(owlSameAs, ontologyModel.createResource("http://www.geonames.org/7729890"));
 		northernAmerica.addProperty(continentCode, "NA");
-		northernAmerica.addProperty(skosRelatedMatch,
+		northernAmerica.addProperty(owlSameAs,
 				ontologyModel.createResource("http://dbpedia.org/resource/Northern_America"));
 		continents.put("NA", northernAmerica);
 
@@ -159,18 +159,18 @@ public class InstanceGenerator {
 		Resource oceania = ontologyModel.createResource(D2S + "Oceania");
 		oceania.addProperty(rdfType, continent);
 		oceania.addProperty(rdfsLabel, "Oceania");
-		oceania.addProperty(skosRelatedMatch, ontologyModel.createResource("http://www.geonames.org/6255151"));
+		oceania.addProperty(owlSameAs, ontologyModel.createResource("http://www.geonames.org/6255151"));
 		oceania.addProperty(continentCode, "OC");
-		oceania.addProperty(skosRelatedMatch, ontologyModel.createResource("http://dbpedia.org/resource/Oceania"));
+		oceania.addProperty(owlSameAs, ontologyModel.createResource("http://dbpedia.org/resource/Oceania"));
 		continents.put("OC", oceania);
 
 		// South America
 		Resource southAmerica = ontologyModel.createResource(D2S + "South_America");
 		southAmerica.addProperty(rdfType, continent);
 		southAmerica.addProperty(rdfsLabel, "South America");
-		southAmerica.addProperty(skosRelatedMatch, ontologyModel.createResource("http://www.geonames.org/6255150"));
+		southAmerica.addProperty(owlSameAs, ontologyModel.createResource("http://www.geonames.org/6255150"));
 		southAmerica.addProperty(continentCode, "SA");
-		southAmerica.addProperty(skosRelatedMatch,
+		southAmerica.addProperty(owlSameAs,
 				ontologyModel.createResource("http://dbpedia.org/resource/South_America"));
 		continents.put("SA", southAmerica);
 	}
@@ -203,7 +203,7 @@ public class InstanceGenerator {
 				countryResource.addProperty(rdfsLabel, country.getString("countryName"));
 				Resource geonamesId = ontologyModel.createResource("http://www.geonames.org/"
 						+ country.getString("countryId")); // create resource for the geonames equivalent
-				countryResource.addProperty(skosRelatedMatch, geonamesId); // link to the geonames equivalent
+				countryResource.addProperty(owlSameAs, geonamesId); // link to the geonames equivalent
 				countryResource.addProperty(countryCode, country.getString("countryCode")); // all country code property
 				// link country to the continent it is situated in
 				countryResource.addProperty(continent, continents.get(country.getString("continentCode")));
@@ -215,7 +215,7 @@ public class InstanceGenerator {
 					// create a resource to the DBpedia entity for that wikipedia article
 					Resource dbpedia = ontologyModel.createResource("http://dbpedia.org/resource"
 							+ countryInfo.getString("wikipediaURL").replace("en.wikipedia.org/wiki", ""));
-					countryResource.addProperty(skosRelatedMatch, dbpedia); // link the two equivalents
+					countryResource.addProperty(owlSameAs, dbpedia); // link the two equivalents
 				}
 			}
 		} catch (IOException | JSONException e1) {
@@ -247,7 +247,7 @@ public class InstanceGenerator {
 				languageResource.addProperty(rdfsLabel, language.getString("name"));
 				// create resource for dbpedia equivalent
 				Resource dbpedia = ontologyModel.createResource(language.getString("dbpedia"));
-				languageResource.addProperty(skosRelatedMatch, dbpedia); // link the equivalents
+				languageResource.addProperty(owlSameAs, dbpedia); // link the equivalents
 				languageResource.addProperty(languageCode, language.getString("code")); // add language code
 			}
 		} catch (IOException | JSONException e1) {
