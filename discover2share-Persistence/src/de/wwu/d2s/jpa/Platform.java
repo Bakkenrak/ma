@@ -69,11 +69,15 @@ public class Platform implements Serializable {
 	@CollectionTable(joinColumns = @JoinColumn(name = "id"))
 	@Column(name = "app")
 	private List<String> apps = new ArrayList<String>();
+	
+	@ElementCollection(fetch=FetchType.EAGER)
+	@CollectionTable(joinColumns = @JoinColumn(name = "id"))
+	@Column(name = "language")
+	private List<String> languages = new ArrayList<String>();
 
 	public Platform() { //hibernate constructor
 	}	
 	
-
 
 	public void set(String var, String val) {
 		switch (var){
@@ -143,6 +147,9 @@ public class Platform implements Serializable {
 			case "app":
 				addApp(val);
 				break;
+			case "language":
+				addLanguage(val);
+				break;
 		}
 	}
 
@@ -164,6 +171,11 @@ public class Platform implements Serializable {
 	private void addApp(String val) {
 		if(!apps.contains(val))
 			apps.add(val);
+	}
+	
+	private void addLanguage(String val) {
+		if(!languages.contains(val))
+			languages.add(val);
 	}
 
 	@PrePersist
@@ -353,5 +365,25 @@ public class Platform implements Serializable {
 
 	public void setApps(List<String> apps) {
 		this.apps = apps;
+	}
+
+
+	public Date getCreated() {
+		return created;
+	}
+
+
+	public void setCreated(Date created) {
+		this.created = created;
+	}
+
+
+	public List<String> getLanguages() {
+		return languages;
+	}
+
+
+	public void setLanguages(List<String> languages) {
+		this.languages = languages;
 	}
 }

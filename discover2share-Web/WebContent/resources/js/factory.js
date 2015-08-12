@@ -87,6 +87,9 @@
 		platformFactory.getCountries = function() {
 			return $http.get('resources/js/countries.json');
 		};
+		platformFactory.getLanguages = function() {
+			return $http.get('resources/js/languages.json');
+		};
 		
 		platformFactory.getAllPlatforms = function() {
 			return $http.get('api/platforms');

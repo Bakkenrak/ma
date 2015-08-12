@@ -184,9 +184,15 @@
 				$rootScope.countries = data.countries;
 			});
 		}
+		if(angular.isUndefined($rootScope.languages)){
+			platformFactory.getLanguages().success(function(data){
+				$rootScope.languages = data.languages;
+			});
+		}
 		
 		$scope.platform = { 
 				resourceTypes: [{}],
+				languages: [{}],
 				launchCountryItem: {},
 				trustContributions: [],
 				apps: [],

@@ -44,6 +44,11 @@
 		<td></td>
 	</tr>
 	<tr>
+		<td><strong>Languages:</strong></td>
+		<td><span ng-repeat="language in platform.languages">{{language}} <span ng-if="!$last">, </span></span></td>
+		<td></td>
+	</tr>
+	<tr>
 		<td><strong>Market Mediation:</strong></td>
 		<td><span ng-repeat="mediation in platform.marketMediations">{{mediation}}<span
 				ng-if="!$last">, </span></span></td>

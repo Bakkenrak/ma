@@ -122,6 +122,28 @@
 			<td></td>
 		</tr>
 		<tr>
+			<td><strong>Languages:</strong></td>
+			<td>
+				<p ng-repeat="language in platform.languages" class="input-group">
+					<select class="form-control" ng-model="language.label"
+						name="lang{{$index}}">
+							<option ng-repeat="l in languages" value="{{l.resourceName}}">{{l.name}}</option>
+						</select> <span class="input-group-btn">
+						<button type="button" class="btn btn-default"
+							data-type="plus" data-field="lang{{$index}}" ng-click="platform.languages.splice($index,1)">
+							<span class="glyphicon glyphicon-minus"></span>&nbsp;
+						</button>
+					</span>
+				</p>
+				<button type="button" class="btn btn-default btn-sm pull-right"
+					ng-click="platform.languages.push({})">
+					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+					Add another type
+				</button>
+			</td>
+			<td></td>
+		</tr>
+		<tr>
 			<td><strong>Market Mediation:</strong></td>
 			<td><div ng-repeat="mediation in marketMediations"
 					class="checkbox">
