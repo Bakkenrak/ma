@@ -108,7 +108,7 @@ public class OntologyServiceBean implements OntologyService {
 				+ "  ?ci rdfs:label ?consumerInvolvement } ."
 				+ " OPTIONAL {  d2s:"
 				+ name
-				+ " d2s:launched_in ?launch } ."
+				+ " d2s:launched_in ?launch ."
 				+ " OPTIONAL {  ?launch dbpp:locationCity ?launchCity."
 				+ "				?launchCity rdfs:label ?launchCityName."
 				+ "				{?launchCity owl:sameAs ?launchCityGeonames."
@@ -116,13 +116,13 @@ public class OntologyServiceBean implements OntologyService {
 				+ " OPTIONAL {  ?launch dbpp:locationCountry ?launchCountry."
 				+ "				?launchCountry rdfs:label ?launchCountryName."
 				+ "				{?launchCountry owl:sameAs ?launchCountryGeonames."
-				+ "				 FILTER(STRSTARTS(STR(?launchCountryGeonames), 'http://www.geonames.org/'))} } ."
+				+ "				 FILTER(STRSTARTS(STR(?launchCountryGeonames), 'http://www.geonames.org/'))} } }."
 				+ " OPTIONAL {  d2s:"
 				+ name
 				+ " dbpp:launchYear ?yearLaunch } ."
 				+ " OPTIONAL {  d2s:"
 				+ name
-				+ " d2s:operator_resides_in ?residence } ."
+				+ " d2s:operator_resides_in ?residence ."
 				+ " OPTIONAL {  ?residence dbpp:locationCity ?residenceCity."
 				+ "				?residenceCity rdfs:label ?residenceCityName."
 				+ "				{?residenceCity owl:sameAs ?residenceCityGeonames."
@@ -130,18 +130,18 @@ public class OntologyServiceBean implements OntologyService {
 				+ " OPTIONAL {  ?residence dbpp:locationCountry ?residenceCountry."
 				+ "				?residenceCountry rdfs:label ?residenceCountryName."
 				+ "				{?residenceCountry owl:sameAs ?residenceCountryGeonames."
-				+ "				 FILTER(STRSTARTS(STR(?residenceCountryGeonames), 'http://www.geonames.org/'))} } ."
+				+ "				 FILTER(STRSTARTS(STR(?residenceCountryGeonames), 'http://www.geonames.org/'))} } } ."
 				+ " OPTIONAL {  d2s:"
 				+ name
 				+ " d2s:has_market_mediation ?me ."
 				+ "  ?me rdfs:label ?marketMediation } ."
 				+ " OPTIONAL {  d2s:"
 				+ name
-				+ " d2s:has_market_integration ?integration } ."
+				+ " d2s:has_market_integration ?integration  ."
 				+ " OPTIONAL {  ?integration d2s:markets_are ?of ."
 				+ "  ?of rdfs:label ?offering } ."
 				+ " OPTIONAL {  ?integration d2s:has_scope ?sc ."
-				+ "  ?sc rdfs:label ?geographicScope } ."
+				+ "  ?sc rdfs:label ?geographicScope } }."
 				+ " OPTIONAL {  d2s:"
 				+ name
 				+ " d2s:has_money_flow ?mf ."
