@@ -10,7 +10,7 @@ import de.wwu.d2s.jpa.Platform;
 @Remote
 public interface OntologyService {
 	
-	public List<Map<String, String>> getAllPlatforms();
+	public List<Platform> getAllPlatforms();
 
 	public Platform getPlatform(String url);
 	
@@ -19,5 +19,7 @@ public interface OntologyService {
 	public void createPlatform(Platform platform);
 	
 	public List<Platform> getAllSuggestions();
+
+	public Platform getSuggestion(int id);
 	
 }

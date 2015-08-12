@@ -21,17 +21,19 @@
 		<tr>
 			<td><strong>Resource Types:</strong></td>
 			<td>
-				<p ng-repeat="type in platform.resourceTypes" class="input-group">
+				<p ng-repeat="type in platform.resourceTypes" ng-class="{'input-group' : platform.resourceTypes.length>1}">
 					<input type="text" class="form-control" ng-model="type.label"
-						name="rt{{$index}}" /> <span class="input-group-btn">
-						<button type="button" class="btn btn-default"
-							data-type="plus" data-field="rt{{$index}}" ng-click="platform.resourceTypes.splice($index,1)">
+						name="rt{{$index}}" cu-enter="addOption(platform.resourceTypes)" cu-focuslast /> 
+					<span ng-if="platform.resourceTypes.length>1" class="input-group-btn">
+						<button type="button" class="btn btn-default" data-type="plus"
+							data-field="rt{{$index}}"
+							ng-click="platform.resourceTypes.splice($index,1)">
 							<span class="glyphicon glyphicon-minus"></span>&nbsp;
 						</button>
 					</span>
 				</p>
 				<button type="button" class="btn btn-default btn-sm pull-right"
-					ng-click="platform.resourceTypes.push({})">
+					ng-click="addOption(platform.resourceTypes)">
 					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 					Add another type
 				</button>
@@ -52,8 +54,8 @@
 				<ul>
 					<li><strong>{{descriptions["Full-service"]["label"]}}:</strong>
 						{{descriptions["Full-service"]["comment"]}}</li>
-					<li><strong>{{descriptions["Self-Service"]["label"]}}:</strong>
-						{{descriptions["Self-Service"]["comment"]}}</li>
+					<li><strong>{{descriptions["Self-service"]["label"]}}:</strong>
+						{{descriptions["Self-service"]["comment"]}}</li>
 					<li><strong>{{descriptions["In-Between"]["label"]}}:</strong>
 						{{descriptions["In-Between"]["comment"]}}</li>
 				</ul></td>
@@ -63,32 +65,34 @@
 			<td><p>
 					<input type="text" class="form-control"
 						placeholder="Search country..."
-						ng-model="platform.launchCountrySearch"
+						ng-model="platform.launchCountry.search"
 						typeahead="country.countryName + ' (' + country.countryCode + ')' for country in countries | orderBy: 'countryName' | containsFilter: $viewValue"
 						typeahead-on-select="launchCountrySelected($item)"
 						typeahead-editable="false" />
-				</p> <a href="{{platform.launchCountry}}" target="_blank"
-				ng-show="platform.launchCountryItem.countryId">{{platform.launchCountryItem.countryName}}
-					({{platform.launchCountryItem.countryCode}})</a></td>
+				</p> <a href="{{platform.launchCountry.geonames}}" target="_blank"
+				ng-show="platform.launchCountry.item.countryId">{{platform.launchCountry.label}}
+					({{platform.launchCountry.item.countryCode}})</a></td>
+			<td></td>
 		</tr>
 		<tr>
 			<td><strong>City of launch:</strong></td>
 			<td><p>
 					<input type="text" class="form-control"
-						placeholder="Search city..." ng-model="platform.launchCitySearch"
+						placeholder="Search city..." ng-model="platform.launchCity.search"
 						typeahead="(city.toponymName + ', ' + city.adminName1 + ' (' + city.countryCode + ')') for city in findLaunchCity()"
 						typeahead-wait-ms="750"
 						typeahead-on-select="launchCitySelected($item)" />
-				</p> <a href="{{platform.launchCity}}" target="_blank"
-				ng-show="platform.launchCityItem.toponymName">{{platform.launchCityItem.toponymName}},
-					{{platform.launchCityItem.adminName1}}
-					({{platform.launchCityItem.countryCode}})</a></td>
+				</p> <a href="{{platform.launchCity.geonames}}" target="_blank"
+				ng-show="platform.launchCity.label">{{platform.launchCity.label}},
+					{{platform.launchCity.item.adminName1}}
+					({{platform.launchCity.item.countryCode}})</a></td>
 			<td></td>
 		</tr>
 		<tr>
 			<td><strong>Year of launch:</strong></td>
 			<td><select ng-model="platform.yearLaunch" class="form-control">
-					<option ng-repeat="year in getYears()" value="http://www.discover2share.net/d2s-ont/{{year}}">{{year}}</option>
+					<option ng-repeat="year in getYears()"
+						value="http://www.discover2share.net/d2s-ont/{{year}}">{{year}}</option>
 			</select></td>
 			<td></td>
 		</tr>
@@ -97,13 +101,13 @@
 			<td><p>
 					<input type="text" class="form-control"
 						placeholder="Search country..."
-						ng-model="platform.residenceCountrySearch"
+						ng-model="platform.residenceCountry.search"
 						typeahead="country.countryName + ' (' + country.countryCode + ')' for country in countries | orderBy: 'countryName' | containsFilter: $viewValue"
 						typeahead-on-select="residenceCountrySelected($item)"
 						typeahead-editable="false" />
-				</p> <a href="{{platform.residenceCountry}}" target="_blank"
-				ng-show="platform.residenceCountryItem.countryId">{{platform.residenceCountryItem.countryName}}
-					({{platform.residenceCountryItem.countryCode}})</a></td>
+				</p> <a href="{{platform.residenceCountry.geonames}}" target="_blank"
+				ng-show="platform.residenceCountry.item.countryId">{{platform.residenceCountry.label}}
+					({{platform.residenceCountry.item.countryCode}})</a></td>
 			<td></td>
 		</tr>
 		<tr>
@@ -111,32 +115,33 @@
 			<td><p>
 					<input type="text" class="form-control"
 						placeholder="Search city..."
-						ng-model="platform.residenceCitySearch"
+						ng-model="platform.residenceCity.search"
 						typeahead="(city.toponymName + ', ' + city.adminName1 + ' (' + city.countryCode + ')') for city in findResidenceCity()"
 						typeahead-wait-ms="750"
 						typeahead-on-select="residenceCitySelected($item)" />
-				</p> <a href="{{platform.residenceCity}}" target="_blank"
-				ng-show="platform.residenceCityItem.toponymName">{{platform.residenceCityItem.toponymName}},
-					{{platform.residenceCityItem.adminName1}}
-					({{platform.residenceCityItem.countryCode}})</a></td>
+				</p> <a href="{{platform.residenceCity.geonames}}" target="_blank"
+				ng-show="platform.residenceCity.label">{{platform.residenceCity.label}},
+					{{platform.residenceCity.item.adminName1}}
+					({{platform.residenceCity.item.countryCode}})</a></td>
 			<td></td>
 		</tr>
 		<tr>
 			<td><strong>Languages:</strong></td>
 			<td>
-				<p ng-repeat="language in platform.languages" class="input-group">
-					<select class="form-control" ng-model="language.label"
-						name="lang{{$index}}">
-							<option ng-repeat="l in languages" value="{{l.resourceName}}">{{l.name}}</option>
-						</select> <span class="input-group-btn">
-						<button type="button" class="btn btn-default"
-							data-type="plus" data-field="lang{{$index}}" ng-click="platform.languages.splice($index,1)">
+				<p ng-repeat="language in platform.languages" ng-class="{'input-group' : platform.languages.length>1}">
+					<select class="form-control" ng-model="language.resourceName"
+						name="lang{{$index}}" cu-enter="addOption(platform.languages)" cu-focuslast>
+						<option ng-repeat="l in languages" value="http://www.discover2share.net/d2s-ont/{{l.resourceName}}">{{l.name}}</option>
+					</select> <span class="input-group-btn" ng-if="platform.languages.length>1">
+						<button type="button" class="btn btn-default" data-type="plus"
+							data-field="lang{{$index}}"
+							ng-click="platform.languages.splice($index,1)">
 							<span class="glyphicon glyphicon-minus"></span>&nbsp;
 						</button>
 					</span>
 				</p>
 				<button type="button" class="btn btn-default btn-sm pull-right"
-					ng-click="platform.languages.push({})">
+					ng-click="addOption(platform.languages)">
 					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 					Add another type
 				</button>

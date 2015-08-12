@@ -18,7 +18,7 @@ public interface OntologyApi {
 
 	@GET
 	@Produces("application/json")
-	public List<Map<String, String>> getAllPlatforms();
+	public List<Platform> getAllPlatforms();
 	
 	@Path("{platform}")
 	@GET
@@ -41,4 +41,10 @@ public interface OntologyApi {
 	@Produces("application/json")
 	@RolesAllowed(value={"admin", "mod"})
 	public List<Platform> getAllSuggestions();
+	
+	@Path("suggestions/{id}")
+	@GET
+	@Produces("application/json")
+	@RolesAllowed(value={"admin", "mod"})
+	public Platform getSuggestion(@PathParam("id") int id);
 }

@@ -3,7 +3,9 @@ package de.wwu.d2s.jpa;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -29,6 +31,7 @@ public class Platform implements Serializable {
 
 	private Date created;
 
+	private String resourceName;
 	private String label;
 	private String url;
 	private String description;
@@ -36,12 +39,12 @@ public class Platform implements Serializable {
 	@ElementCollection(fetch=FetchType.EAGER)
 	@CollectionTable(joinColumns = @JoinColumn(name = "id"))
 	@Column(name = "resourceType")
-	private List<String> resourceTypes = new ArrayList<String>();
+	private Set<String> resourceTypes = new HashSet<String>();
 
 	@ElementCollection(fetch=FetchType.EAGER)
 	@CollectionTable(joinColumns = @JoinColumn(name = "id"))
 	@Column(name = "consumerism")
-	private List<String> consumerisms = new ArrayList<String>();
+	private Set<String> consumerisms = new HashSet<String>();
 
 	private String pattern;
 	private String temporality;
@@ -49,7 +52,7 @@ public class Platform implements Serializable {
 	@ElementCollection(fetch=FetchType.EAGER)
 	@CollectionTable(joinColumns = @JoinColumn(name = "id"))
 	@Column(name = "marketMediation")
-	private List<String> marketMediations = new ArrayList<String>();
+	private Set<String> marketMediations = new HashSet<String>();
 
 	private String typeOfAccessedObject;
 	private String resourceOwner;
@@ -60,20 +63,25 @@ public class Platform implements Serializable {
 	private String offering;
 	private String geographicScope;
 	private String yearLaunch;
-	private String launchCountry;
-	private String launchCity;
-	private String residenceCountry;
-	private String residenceCity;
+	private GeoUnit launchCountry = new GeoUnit();
+	private GeoUnit launchCity = new GeoUnit();
+	private GeoUnit residenceCountry = new GeoUnit();
+	private GeoUnit residenceCity = new GeoUnit();
 
 	@ElementCollection(fetch=FetchType.EAGER)
 	@CollectionTable(joinColumns = @JoinColumn(name = "id"))
 	@Column(name = "app")
-	private List<String> apps = new ArrayList<String>();
+	private Set<String> apps = new HashSet<String>();
 	
 	@ElementCollection(fetch=FetchType.EAGER)
 	@CollectionTable(joinColumns = @JoinColumn(name = "id"))
 	@Column(name = "language")
-	private List<String> languages = new ArrayList<String>();
+	private Set<String> languages = new HashSet<String>();
+	
+	@ElementCollection(fetch=FetchType.EAGER)
+	@CollectionTable(joinColumns = @JoinColumn(name = "id"))
+	@Column(name = "trustContribution")
+	private Set<String> trustContributions = new HashSet<String>();
 
 	public Platform() { //hibernate constructor
 	}	
@@ -81,6 +89,9 @@ public class Platform implements Serializable {
 
 	public void set(String var, String val) {
 		switch (var){
+			case "resourceName":
+				setResourceName(val);
+				break;
 			case "label":
 				setLabel(val);
 				break;
@@ -132,17 +143,41 @@ public class Platform implements Serializable {
 			case "yearLaunch":
 				setYearLaunch(val);
 				break;
+			case "launchCountry":
+				launchCountry.setResource(val);
+				break;
 			case "launchCountryGeonames":
-				setLaunchCountry(val);
+				launchCountry.setGeonames(val);
+				break;
+			case "launchCountryName":
+				launchCountry.setLabel(val);
+				break;
+			case "launchCity":
+				launchCity.setResource(val);
 				break;
 			case "launchCityGeonames":
-				setLaunchCity(val);
+				launchCity.setGeonames(val);
+				break;
+			case "launchCityName":
+				launchCity.setLabel(val);
+				break;
+			case "residenceCountry":
+				residenceCountry.setResource(val);
 				break;
 			case "residenceCountryGeonames":
-				setResidenceCountry(val);
+				residenceCountry.setGeonames(val);
+				break;
+			case "residenceCountryName":
+				residenceCountry.setLabel(val);
+				break;
+			case "residenceCity":
+				residenceCity.setResource(val);
 				break;
 			case "residenceCityGeonames":
-				setResidenceCity(val);
+				residenceCity.setGeonames(val);
+				break;
+			case "residenceCityName":
+				residenceCity.setLabel(val);
 				break;
 			case "app":
 				addApp(val);
@@ -150,8 +185,12 @@ public class Platform implements Serializable {
 			case "language":
 				addLanguage(val);
 				break;
+			case "trustContribution":
+				addTrustContribution(val);
+				break;
 		}
 	}
+
 
 	private void addResourceType(String val) {
 		if(!resourceTypes.contains(val))
@@ -176,6 +215,11 @@ public class Platform implements Serializable {
 	private void addLanguage(String val) {
 		if(!languages.contains(val))
 			languages.add(val);
+	}
+	
+	private void addTrustContribution(String val) {
+		if(!trustContributions.contains(val))
+			trustContributions.add(val);
 	}
 
 	@PrePersist
@@ -215,19 +259,19 @@ public class Platform implements Serializable {
 		this.description = description;
 	}
 
-	public List<String> getResourceTypes() {
+	public Set<String> getResourceTypes() {
 		return resourceTypes;
 	}
 
-	public void setResourceTypes(List<String> resourceTypes) {
+	public void setResourceTypes(Set<String> resourceTypes) {
 		this.resourceTypes = resourceTypes;
 	}
 
-	public List<String> getConsumerisms() {
+	public Set<String> getConsumerisms() {
 		return consumerisms;
 	}
 
-	public void setConsumerisms(List<String> consumerisms) {
+	public void setConsumerisms(Set<String> consumerisms) {
 		this.consumerisms = consumerisms;
 	}
 
@@ -247,11 +291,11 @@ public class Platform implements Serializable {
 		this.temporality = temporality;
 	}
 
-	public List<String> getMarketMediations() {
+	public Set<String> getMarketMediations() {
 		return marketMediations;
 	}
 
-	public void setMarketMediations(List<String> marketMediations) {
+	public void setMarketMediations(Set<String> marketMediations) {
 		this.marketMediations = marketMediations;
 	}
 
@@ -327,43 +371,43 @@ public class Platform implements Serializable {
 		this.yearLaunch = yearLaunch;
 	}
 
-	public String getLaunchCountry() {
+	public GeoUnit getLaunchCountry() {
 		return launchCountry;
 	}
 
-	public void setLaunchCountry(String launchCountry) {
+	public void setLaunchCountry(GeoUnit launchCountry) {
 		this.launchCountry = launchCountry;
 	}
 
-	public String getLaunchCity() {
+	public GeoUnit getLaunchCity() {
 		return launchCity;
 	}
 
-	public void setLaunchCity(String launchCity) {
+	public void setLaunchCity(GeoUnit launchCity) {
 		this.launchCity = launchCity;
 	}
 
-	public String getResidenceCountry() {
+	public GeoUnit getResidenceCountry() {
 		return residenceCountry;
 	}
 
-	public void setResidenceCountry(String residenceCountry) {
+	public void setResidenceCountry(GeoUnit residenceCountry) {
 		this.residenceCountry = residenceCountry;
 	}
 
-	public String getResidenceCity() {
+	public GeoUnit getResidenceCity() {
 		return residenceCity;
 	}
 
-	public void setResidenceCity(String residenceCity) {
+	public void setResidenceCity(GeoUnit residenceCity) {
 		this.residenceCity = residenceCity;
 	}
 
-	public List<String> getApps() {
+	public Set<String> getApps() {
 		return apps;
 	}
 
-	public void setApps(List<String> apps) {
+	public void setApps(Set<String> apps) {
 		this.apps = apps;
 	}
 
@@ -378,12 +422,32 @@ public class Platform implements Serializable {
 	}
 
 
-	public List<String> getLanguages() {
+	public Set<String> getLanguages() {
 		return languages;
 	}
 
 
-	public void setLanguages(List<String> languages) {
+	public void setLanguages(Set<String> languages) {
 		this.languages = languages;
+	}
+
+
+	public String getResourceName() {
+		return resourceName;
+	}
+
+
+	public void setResourceName(String resourceName) {
+		this.resourceName = resourceName;
+	}
+
+
+	public Set<String> getTrustContributions() {
+		return trustContributions;
+	}
+
+
+	public void setTrustContributions(Set<String> trustContributions) {
+		this.trustContributions = trustContributions;
 	}
 }

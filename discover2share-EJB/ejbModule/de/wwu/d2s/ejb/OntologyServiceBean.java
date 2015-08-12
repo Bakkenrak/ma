@@ -29,7 +29,7 @@ public class OntologyServiceBean implements OntologyService {
 	EntityManager em;
 
 	@Override
-	public List<Map<String, String>> getAllPlatforms() {
+	public List<Platform> getAllPlatforms() {
 
 		String sparqlEndpoint = "http://localhost:3030/d2s-ont/query";
 
@@ -37,32 +37,46 @@ public class OntologyServiceBean implements OntologyService {
 				+ "PREFIX dbpp: <http://dbpedia.org/property/> "
 				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
 				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" + "Select * {"
-				+ "	?name rdf:type d2s:P2P_SCC_Platform ." + " ?name rdfs:label ?label ." + " ?name dbpp:url ?url ."
-				+ " ?name d2s:has_resource_type ?rt ." + " ?rt rdfs:label ?resourceType ." + "}";
+				+ "	?resourceName rdf:type d2s:P2P_SCC_Platform ." 
+				+ " OPTIONAL{ ?resourceName rdfs:label ?label }." 
+				+ " ?resourceName dbpp:url ?url."
+				+ " OPTIONAL{ ?resourceName d2s:has_resource_type ?rt ." 
+				+ " 		  ?rt rdfs:label ?resourceType }." + "}"
+				+ "ORDER BY ?resourceName";
 
 		Query query = QueryFactory.create(sparqlQuery);
 		QueryExecution qexec = QueryExecutionFactory.sparqlService(sparqlEndpoint, query);
 		ResultSet results = qexec.execSelect();
 
-		List<Map<String, String>> output = new ArrayList<Map<String, String>>();
+		List<Platform> platforms = new ArrayList<Platform>();
+		Platform currentPlatform = new Platform();
 		while (results.hasNext()) {
-			Map<String, String> row = new HashMap<String, String>();
-
 			QuerySolution result = results.next();
+			
+			if(result.get("resourceName").asResource().getURI()!=currentPlatform.getResourceName()){
+				currentPlatform = new Platform();
+				platforms.add(currentPlatform);
+			}
+			
 			for (String var : results.getResultVars()) {
 				RDFNode node = result.get(var);
-				if (node.isLiteral())
-					row.put(var, node.asLiteral().getString());
-				else if (node.isResource())
-					row.put(var, node.asResource().getURI());
+				if (node == null)
+					continue;
 
+				if (node.isLiteral()) {
+					String literal = node.asLiteral().getString();
+					currentPlatform.set(var, literal);
+				} else if (node.isResource()) {
+					String uri = node.asResource().getURI();
+					if (uri != null)
+						currentPlatform.set(var, uri);
+				}
 			}
-			output.add(row);
 		}
 
 		qexec.close();
 
-		return output;
+		return platforms;
 	}
 
 	@Override
@@ -96,21 +110,25 @@ public class OntologyServiceBean implements OntologyService {
 				+ name
 				+ " d2s:launched_in ?launch } ."
 				+ " OPTIONAL {  ?launch dbpp:locationCity ?launchCity."
+				+ "				?launchCity rdfs:label ?launchCityName."
 				+ "				{?launchCity owl:sameAs ?launchCityGeonames."
 				+ "				 FILTER(STRSTARTS(STR(?launchCityGeonames), 'http://www.geonames.org/'))} } ."
 				+ " OPTIONAL {  ?launch dbpp:locationCountry ?launchCountry."
+				+ "				?launchCountry rdfs:label ?launchCountryName."
 				+ "				{?launchCountry owl:sameAs ?launchCountryGeonames."
 				+ "				 FILTER(STRSTARTS(STR(?launchCountryGeonames), 'http://www.geonames.org/'))} } ."
 				+ " OPTIONAL {  d2s:"
 				+ name
-				+ " dbpp:launchYear ?launchYear } ."
+				+ " dbpp:launchYear ?yearLaunch } ."
 				+ " OPTIONAL {  d2s:"
 				+ name
 				+ " d2s:operator_resides_in ?residence } ."
 				+ " OPTIONAL {  ?residence dbpp:locationCity ?residenceCity."
+				+ "				?residenceCity rdfs:label ?residenceCityName."
 				+ "				{?residenceCity owl:sameAs ?residenceCityGeonames."
 				+ "				 FILTER(STRSTARTS(STR(?residenceCityGeonames), 'http://www.geonames.org/'))} } ."
 				+ " OPTIONAL {  ?residence dbpp:locationCountry ?residenceCountry."
+				+ "				?residenceCountry rdfs:label ?residenceCountryName."
 				+ "				{?residenceCountry owl:sameAs ?residenceCountryGeonames."
 				+ "				 FILTER(STRSTARTS(STR(?residenceCountryGeonames), 'http://www.geonames.org/'))} } ."
 				+ " OPTIONAL {  d2s:"
@@ -235,8 +253,12 @@ public class OntologyServiceBean implements OntologyService {
 
 	@Override
 	public List<Platform> getAllSuggestions() {
-		List<Platform> x = em.createQuery("from Platform", Platform.class).getResultList();
-		return x;
+		return em.createQuery("from Platform", Platform.class).getResultList();
+	}
+
+	@Override
+	public Platform getSuggestion(int id) {
+		return em.find(Platform.class, id);
 	}
 
 }

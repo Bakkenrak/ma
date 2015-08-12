@@ -107,6 +107,10 @@
 			return $http.get('api/platforms/suggestions/');
 		};
 		
+		platformFactory.getSuggestion = function(id) {
+			return $http.get('api/platforms/suggestions/' + id);
+		};
+		
 		platformFactory.addPlatformSuggestion = function(platform) {
 			return $http.post('api/platforms/suggestions/new', platform);
 		};
@@ -115,7 +119,7 @@
 		
 		platformFactory.getGeoData = function(geoUrl){
 			var geoId = geoUrl.replace("http://www.geonames.org/", "");
-			return $http.jsonp('http://api.geonames.org/getJSON?username=demo&geonameId=' + geoId +"&callback=JSON_CALLBACK");
+			return $http.jsonp('http://api.geonames.org/getJSON?username=discover2share&geonameId=' + geoId +"&callback=JSON_CALLBACK");
 		};
 		
 		platformFactory.findCity = function(cityName, country){

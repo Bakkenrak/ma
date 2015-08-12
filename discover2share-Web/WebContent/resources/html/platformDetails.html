@@ -1,4 +1,6 @@
-<h1>{{platform.label}}</h1>
+<h1>
+	<a href="{{platform.url}}" target="blank">{{platform.label}}</a>
+</h1>
 
 <table id="detailTable" class="table table-bordered">
 	<tr>
@@ -16,17 +18,17 @@
 			<ul>
 				<li><strong>{{descriptions["Full-service"]["label"]}}:</strong>
 					{{descriptions["Full-service"]["comment"]}}</li>
-				<li><strong>{{descriptions["Self-Service"]["label"]}}:</strong>
-					{{descriptions["Self-Service"]["comment"]}}</li>
+				<li><strong>{{descriptions["Self-service"]["label"]}}:</strong>
+					{{descriptions["Self-service"]["comment"]}}</li>
 				<li><strong>{{descriptions["In-Between"]["label"]}}:</strong>
 					{{descriptions["In-Between"]["comment"]}}</li>
 			</ul></td>
 	</tr>
 	<tr>
 		<td><strong>Place of launch:</strong></td>
-		<td><a href="{{platform.launchCity}}">{{platform.launchCityName}}</a><span
-			ng-if="platform.residenceCity!==null">, </span><a
-			href="{{platform.launchCountry}}">{{platform.launchCountryName}}</a>
+		<td><a target="blank" href="{{platform.launchCity.geonames}}">{{platform.launchCity.label}}</a><span
+			ng-if="platform.residenceCity!==null">, </span><a target="blank"
+			href="{{platform.launchCountry.geonames}}">{{platform.launchCountry.label}}</a>
 		</td>
 		<td></td>
 	</tr>
@@ -37,21 +39,20 @@
 	</tr>
 	<tr>
 		<td><strong>Place of residence:</strong></td>
-		<td><a href="{{platform.residenceCity}}">{{platform.residenceCityName}}</a><span
-			ng-if="platform.residenceCity">,
-		</span><a href="{{platform.residenceCountry}}">{{platform.residenceCountryName}}</a>
+		<td><a target="blank" href="{{platform.residenceCity.geonames}}">{{platform.residenceCity.label}}</a><span
+			ng-if="platform.residenceCity">, </span><a target="blank"
+			href="{{platform.residenceCountry.geonames}}">{{platform.residenceCountry.label}}</a>
 		</td>
 		<td></td>
 	</tr>
 	<tr>
 		<td><strong>Languages:</strong></td>
-		<td><span ng-repeat="language in platform.languages">{{language}} <span ng-if="!$last">, </span></span></td>
+		<td><div ng-repeat="language in platform.languages">{{language}}</div></td>
 		<td></td>
 	</tr>
 	<tr>
 		<td><strong>Market Mediation:</strong></td>
-		<td><span ng-repeat="mediation in platform.marketMediations">{{mediation}}<span
-				ng-if="!$last">, </span></span></td>
+		<td><div ng-repeat="mediation in platform.marketMediations">{{mediation}}</div></td>
 		<td><strong>{{descriptions["Market_Mediation"]["label"]}}:</strong>
 			{{descriptions["Market_Mediation"]["comment"]}}
 			<ul>
@@ -73,7 +74,10 @@
 	</tr>
 	<tr>
 		<td><strong>Integration:</strong></td>
-		<td>{{platform.offering}}<span ng-if="platform.offering!==null && platform.geographicScope!==null">, </span> {{platform.geographicScope}}</td>
+		<td>{{platform.offering}}<span
+			ng-if="platform.offering!==null && platform.geographicScope!==null">,
+		</span> {{platform.geographicScope}}
+		</td>
 		<td>
 			<p>
 				<strong>{{descriptions["Market_Integration"]["label"]}}:</strong>
@@ -134,8 +138,7 @@
 	</tr>
 	<tr>
 		<td><strong>Promoted Consumerism:</strong></td>
-		<td><span ng-repeat="consumerism in platform.consumerisms">{{consumerism}}<span
-				ng-if="!$last">, </span></span></td>
+		<td><div ng-repeat="consumerism in platform.consumerisms">{{consumerism}}</div></td>
 		<td><strong>{{descriptions["Sustainable_Consumerism"]["label"]}}:</strong>
 			{{descriptions["Sustainable_Consumerism"]["comment"]}}
 			<ul>
@@ -165,13 +168,14 @@
 	</tr>
 	<tr>
 		<td><strong>Service Duration:</strong></td>
-		<td>{{timeConverter(platform.serviceDurationMin)}}<span ng-if="platform.serviceDurationMin!==null && platform.serviceDurationMax!==null"> to </span>{{timeConverter(platform.serviceDurationMax)}}
+		<td>{{timeConverter(platform.serviceDurationMin)}}<span
+			ng-if="platform.serviceDurationMin!==null && platform.serviceDurationMax!==null">
+				to </span>{{timeConverter(platform.serviceDurationMax)}}
 		</td>
 	</tr>
 	<tr>
 		<td><strong>Smartphone Apps:</strong></td>
-		<td><span ng-repeat="app in platform.apps">{{app}}<span
-				ng-if="!$last">, </span></span></td>
+		<td><div ng-repeat="app in platform.apps">{{app}}</div></td>
 		<td><strong>{{descriptions["Smartphone_App"]["label"]}}:</strong>
 			{{descriptions["Smartphone_App"]["comment"]}}
 			<ul>
@@ -185,9 +189,7 @@
 	</tr>
 	<tr>
 		<td><strong>Trust Contribution:</strong></td>
-		<td><span
-			ng-repeat="trustContribution in platform.trustContributions">{{trustContribution}}<span
-				ng-if="!$last">, </span></span></td>
+		<td><div ng-repeat="trustContribution in platform.trustContributions">{{trustContribution}}</div></td>
 		<td><strong>{{descriptions["Trust_Contribution"]["label"]}}:</strong>
 			{{descriptions["Trust_Contribution"]["comment"]}}
 			<ul>

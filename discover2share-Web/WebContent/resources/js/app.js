@@ -11,6 +11,12 @@
 		var getAllSuggestions = function(platformFactory){
 			return platformFactory.getAllSuggestions();
 		}
+		var getPlatform = function($route, platformFactory){
+			return platformFactory.getPlatform($route.current.params.platform);
+		}
+		var getSuggestion = function($route, platformFactory){
+			return platformFactory.getSuggestion($route.current.params.id);
+		}
 		
 		$routeProvider.when('/', {
 			controller: 'indexCtrl',
@@ -23,12 +29,21 @@
 			}
 		}).when('/platforms/:platform', {
 			controller: 'platformDetailCtrl',
-			templateUrl: 'resources/html/platformDetails.html'
+			templateUrl: 'resources/html/platformDetails.html',
+			resolve: {
+				platform: getPlatform
+			}
 		}).when('/suggestions', {
 			controller: 'platformsCtrl',
 			templateUrl: 'resources/html/suggestions.html',
 			resolve: {
 				platforms: getAllSuggestions
+			}
+		}).when('/suggestions/:id', {
+			controller: 'platformDetailCtrl',
+			templateUrl: 'resources/html/platformDetails.html',
+			resolve: {
+				platform: getSuggestion
 			}
 		}).when('/register', {
 			controller: 'registrationCtrl',

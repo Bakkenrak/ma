@@ -16,7 +16,7 @@ public class OntologyImpl implements OntologyApi {
 	private OntologyService ontologyService;
 	
 	@Override
-	public List<Map<String, String>> getAllPlatforms() {
+	public List<Platform> getAllPlatforms() {
 		return ontologyService.getAllPlatforms();
 	}
 
@@ -38,6 +38,11 @@ public class OntologyImpl implements OntologyApi {
 	@Override
 	public List<Platform> getAllSuggestions() {
 		return ontologyService.getAllSuggestions();
+	}
+
+	@Override
+	public Platform getSuggestion(int id) {
+		return ontologyService.getSuggestion(id);
 	}
 
 }

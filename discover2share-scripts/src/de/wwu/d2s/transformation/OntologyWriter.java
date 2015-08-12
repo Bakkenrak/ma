@@ -266,7 +266,7 @@ public class OntologyWriter {
 		sportFacilities = ontologyModel.createResource(D2S + "Sport_facilities");
 		storageSpaces = ontologyModel.createResource(D2S + "Storage_spaces");
 		tools = ontologyModel.createResource(D2S + "Tools");
-		transporters = ontologyModel.createResource(D2S + "Tranporters");
+		transporters = ontologyModel.createResource(D2S + "Transporters");
 		venues = ontologyModel.createResource(D2S + "Venues");
 		WiFiRouters = ontologyModel.createResource(D2S + "Wi-Fi_routers");
 		workSpaces = ontologyModel.createResource(D2S + "Work_spaces");

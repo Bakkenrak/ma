@@ -23,10 +23,10 @@
 			</thead>
 			<tbody>
 				<tr ng-repeat="platform in paginatedPlatforms | orderBy: 'label'">
-					<td><a href="platforms/{{platform.name.substring(38)}}">{{platform.label}}</a></td>
+					<td><a href="suggestions/{{platform.id}}">{{platform.label}}</a></td>
 					<td><a target="blank" href="{{platform.url}}">{{platform.url}}</a></td>
 					<td>{{platform.resourceType}}</td>
-					<td>{{platform.added}}</td>
+					<td>{{platform.created | date: 'short'}}</td>
 				</tr>
 			</tbody>
 		</table>
