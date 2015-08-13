@@ -21,19 +21,19 @@
 		<tr>
 			<td><strong>Resource Types:</strong></td>
 			<td>
-				<p ng-repeat="type in platform.resourceTypes" ng-class="{'input-group' : platform.resourceTypes.length>1}">
+				<p ng-repeat="type in platform.resourceTypeObjects" ng-class="{'input-group' : platform.resourceTypeObjects.length>1}">
 					<input type="text" class="form-control" ng-model="type.label"
-						name="rt{{$index}}" cu-enter="addOption(platform.resourceTypes)" cu-focuslast /> 
-					<span ng-if="platform.resourceTypes.length>1" class="input-group-btn">
+						name="rt{{$index}}" cu-enter="addOption(platform.resourceTypeObjects)" cu-focuslast /> 
+					<span ng-if="platform.resourceTypeObjects.length>1" class="input-group-btn">
 						<button type="button" class="btn btn-default" data-type="plus"
 							data-field="rt{{$index}}"
-							ng-click="platform.resourceTypes.splice($index,1)">
+							ng-click="platform.resourceTypeObjects.splice($index,1)">
 							<span class="glyphicon glyphicon-minus"></span>&nbsp;
 						</button>
 					</span>
 				</p>
 				<button type="button" class="btn btn-default btn-sm pull-right"
-					ng-click="addOption(platform.resourceTypes)">
+					ng-click="addOption(platform.resourceTypeObjects)">
 					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 					Add another type
 				</button>
@@ -128,20 +128,20 @@
 		<tr>
 			<td><strong>Languages:</strong></td>
 			<td>
-				<p ng-repeat="language in platform.languages" ng-class="{'input-group' : platform.languages.length>1}">
+				<p ng-repeat="language in platform.languageObjects" ng-class="{'input-group' : platform.languageObjects.length>1}">
 					<select class="form-control" ng-model="language.resourceName"
-						name="lang{{$index}}" cu-enter="addOption(platform.languages)" cu-focuslast>
+						name="lang{{$index}}" cu-enter="addOption(platform.languageObjects)" cu-focuslast>
 						<option ng-repeat="l in languages" value="http://www.discover2share.net/d2s-ont/{{l.resourceName}}">{{l.name}}</option>
-					</select> <span class="input-group-btn" ng-if="platform.languages.length>1">
+					</select> <span class="input-group-btn" ng-if="platform.languageObjects.length>1">
 						<button type="button" class="btn btn-default" data-type="plus"
 							data-field="lang{{$index}}"
-							ng-click="platform.languages.splice($index,1)">
+							ng-click="platform.languageObjects.splice($index,1)">
 							<span class="glyphicon glyphicon-minus"></span>&nbsp;
 						</button>
 					</span>
 				</p>
 				<button type="button" class="btn btn-default btn-sm pull-right"
-					ng-click="addOption(platform.languages)">
+					ng-click="addOption(platform.languageObjects)">
 					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 					Add another type
 				</button>
@@ -268,11 +268,6 @@
 		<tr>
 			<td><strong>Promoted Consumerism:</strong></td>
 			<td>
-				<div class="checkbox">
-					<label><input type="checkbox"
-						ng-checked="platform.consumerisms.length===0"
-						ng-click="platform.consumerisms.length=0" /> None</label>
-				</div>
 				<div ng-repeat="consumerism in consumerisms" class="checkbox">
 					<label> <input type="checkbox" name="consumerisms[]"
 						value="{{consumerism}}"

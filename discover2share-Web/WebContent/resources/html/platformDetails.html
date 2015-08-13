@@ -5,8 +5,7 @@
 <table id="detailTable" class="table table-bordered">
 	<tr>
 		<td><strong>Resource Type:</strong></td>
-		<td><span ng-repeat="resourceType in platform.resourceTypes">{{resourceType}}<span
-				ng-if="!$last">, </span></span></td>
+		<td><div ng-repeat="resourceType in platform.resourceTypes">{{resourceType}}</div></td>
 		<td><strong>{{descriptions["Resource_Type"]["label"]}}:</strong>
 			{{descriptions["Resource_Type"]["comment"]}}</td>
 	</tr>

@@ -21,5 +21,7 @@ public interface OntologyService {
 	public List<Platform> getAllSuggestions();
 
 	public Platform getSuggestion(int id);
+
+	public String doQuery(String query);
 	
 }

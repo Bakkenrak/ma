@@ -13,14 +13,15 @@ import javax.ws.rs.Produces;
 
 import de.wwu.d2s.jpa.Platform;
 
-@Path("platforms/")
+@Path("ontology/")
 public interface OntologyApi {
 
+	@Path("platforms/")
 	@GET
 	@Produces("application/json")
 	public List<Platform> getAllPlatforms();
 	
-	@Path("{platform}")
+	@Path("platforms/{platform}")
 	@GET
 	@Produces("application/json")
 	public Platform getPlatform(@PathParam("platform") String url);
@@ -30,21 +31,27 @@ public interface OntologyApi {
 	@Produces("application/json")
 	public Map<String, Map<String, String>> getDescriptions();
 	
-	@Path("suggestions/new")
+	@Path("platforms/suggestions/new")
 	@POST
 	@Produces("application/json")
 	@Consumes("application/json")
 	public void createPlatform(Platform platform);
 	
-	@Path("suggestions/")
+	@Path("platforms/suggestions/")
 	@GET
 	@Produces("application/json")
 	@RolesAllowed(value={"admin", "mod"})
 	public List<Platform> getAllSuggestions();
 	
-	@Path("suggestions/{id}")
+	@Path("platforms/suggestions/{id}")
 	@GET
 	@Produces("application/json")
 	@RolesAllowed(value={"admin", "mod"})
 	public Platform getSuggestion(@PathParam("id") int id);
+	
+	@Path("query/")
+	@POST
+	@Produces("application/json")
+	@Consumes("application/x-www-form-urlencoded")
+	public String doQuery(String query);
 }

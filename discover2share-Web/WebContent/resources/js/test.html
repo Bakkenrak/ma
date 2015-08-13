@@ -1,0 +1,27 @@
+<html>
+	<head>
+		<link href='http://cdn.jsdelivr.net/yasqe/2.6.1/yasqe.min.css' rel='stylesheet' type='text/css'/>
+		<script src='http://cdn.jsdelivr.net/yasqe/2.6.1/yasqe.bundled.min.js'></script>
+		<link href='http://cdn.jsdelivr.net/yasr/2.6.0/yasr.min.css' rel='stylesheet' type='text/css'/>
+		<script src='http://cdn.jsdelivr.net/yasr/2.6.0/yasr.bundled.min.js'></script>
+	</head>
+	<body>
+		<textarea id="showcase"></textarea>
+		
+		<div id="yasr"></div>
+		
+		<script type="text/javascript">
+			var yasqe = YASQE.fromTextArea(document.getElementById("showcase"), {
+	sparql: {
+		showQueryButton: true
+	}
+}); 
+			var yasr = YASR(document.getElementById("yasr"), {
+	//this way, the URLs in the results are prettified using the defined prefixes in the query
+	getUsedPrefixes: yasqe.getPrefixesFromQuery
+});
+
+			yasqe.options.sparql.callbacks.complete = yasr.setResponse;
+		</script>
+	</body>
+</html>

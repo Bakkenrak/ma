@@ -45,4 +45,9 @@ public class OntologyImpl implements OntologyApi {
 		return ontologyService.getSuggestion(id);
 	}
 
+	@Override
+	public String doQuery(String query) {
+		return ontologyService.doQuery(query);
+	}
+
 }

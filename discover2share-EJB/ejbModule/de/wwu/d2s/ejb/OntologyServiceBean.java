@@ -1,5 +1,8 @@
 package de.wwu.d2s.ejb;
 
+import java.io.ByteArrayOutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +20,7 @@ import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
+import com.hp.hpl.jena.query.ResultSetFormatter;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 
@@ -24,6 +28,10 @@ import de.wwu.d2s.jpa.Platform;
 
 @Stateless
 public class OntologyServiceBean implements OntologyService {
+	
+	private static final String ONTOLOGYURL = "http://localhost:3030/d2s-ont";
+	private static final String ENDPOINT = ONTOLOGYURL + "/query";
+	
 	
 	@PersistenceContext
 	EntityManager em;
@@ -81,8 +89,6 @@ public class OntologyServiceBean implements OntologyService {
 
 	@Override
 	public Platform getPlatform(String name) {
-		String sparqlEndpoint = "http://localhost:3030/d2s-ont/query";
-
 		String sparqlQuery = "PREFIX d2s: <http://www.discover2share.net/d2s-ont/> "
 				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
 				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
@@ -181,7 +187,7 @@ public class OntologyServiceBean implements OntologyService {
 				+ "  ?ot rdfs:label ?typeOfAccessedObject } ." + "}";
 
 		Query query = QueryFactory.create(sparqlQuery);
-		QueryExecution qexec = QueryExecutionFactory.sparqlService(sparqlEndpoint, query);
+		QueryExecution qexec = QueryExecutionFactory.sparqlService(ENDPOINT, query);
 		ResultSet results = qexec.execSelect();
 
 		Platform platform = new Platform();
@@ -209,12 +215,11 @@ public class OntologyServiceBean implements OntologyService {
 
 	@Override
 	public Map<String, Map<String, String>> getDescriptions() {
-		String ontologyUrl = "http://localhost:3030/d2s-ont/";
 		// create a model using reasoner
 		OntModel model1 = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_MICRO_RULE_INF);
 
 		// read the ontology file
-		model1.read(ontologyUrl, "Turtle");
+		model1.read(ONTOLOGYURL, "Turtle");
 
 		// Create a new query
 		String queryString = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
@@ -259,6 +264,28 @@ public class OntologyServiceBean implements OntologyService {
 	@Override
 	public Platform getSuggestion(int id) {
 		return em.find(Platform.class, id);
+	}
+
+	@Override
+	public String doQuery(String query) {
+		if(query.substring(0, 6).equals("query="))
+			query = query.substring(6);
+		try {
+			query = URLDecoder.decode(query, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		
+		Query sparqlQuery = QueryFactory.create(query);
+		QueryExecution qexec = QueryExecutionFactory.sparqlService(ENDPOINT, sparqlQuery);
+		ResultSet results = qexec.execSelect();
+
+		ByteArrayOutputStream b = new ByteArrayOutputStream();
+		ResultSetFormatter.outputAsJSON(b, results);
+		String json = b.toString();
+		
+		qexec.close();
+		return json;
 	}
 
 }

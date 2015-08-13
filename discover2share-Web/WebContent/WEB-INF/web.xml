@@ -19,7 +19,7 @@
 		<url-pattern>/platforms/*</url-pattern>
 		<url-pattern>/suggestions/*</url-pattern>
 		<url-pattern>/add</url-pattern>
-		<url-pattern>/search</url-pattern>
+		<url-pattern>/query</url-pattern>
 		<url-pattern>/login</url-pattern>
 		<url-pattern>/register</url-pattern>
 	</servlet-mapping>

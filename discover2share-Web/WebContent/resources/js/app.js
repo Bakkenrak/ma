@@ -1,22 +1,22 @@
-(function(){
+(function () {
 	'use strict';
 
 	var d2sApp = angular.module('d2sApp', ['ngRoute', 'ngCookies', 'ui.bootstrap']);
 	
-	d2sApp.config(function($routeProvider, $locationProvider){
+	d2sApp.config(function ($routeProvider, $locationProvider) {
 		
-		var getAllPlatforms = function(platformFactory){
+		var getAllPlatforms = function (platformFactory) {
 			return platformFactory.getAllPlatforms();
 		};
-		var getAllSuggestions = function(platformFactory){
+		var getAllSuggestions = function (platformFactory) {
 			return platformFactory.getAllSuggestions();
-		}
-		var getPlatform = function($route, platformFactory){
+		};
+		var getPlatform = function ($route, platformFactory) {
 			return platformFactory.getPlatform($route.current.params.platform);
-		}
-		var getSuggestion = function($route, platformFactory){
+		};
+		var getSuggestion = function ($route, platformFactory) {
 			return platformFactory.getSuggestion($route.current.params.id);
-		}
+		};
 		
 		$routeProvider.when('/', {
 			controller: 'indexCtrl',
@@ -45,6 +45,12 @@
 			resolve: {
 				platform: getSuggestion
 			}
+		}).when('/add', {
+			controller: 'addPlatformCtrl',
+			templateUrl: 'resources/html/addPlatform.html'
+		}).when('/query', {
+			controller: 'queryCtrl',
+			templateUrl: 'resources/html/query.html'
 		}).when('/register', {
 			controller: 'registrationCtrl',
 			templateUrl: 'resources/html/register.html'
@@ -53,9 +59,6 @@
 			templateUrl: 'resources/html/login.html'
 		}).when('/logout', {
 			templateUrl: 'resources/html/logout.html'
-		}).when('/add', {
-			controller: 'addPlatformCtrl',
-			templateUrl: 'resources/html/addPlatform.html'
 		}).otherwise({ 
 			templateUrl: 'resources/html/404.html'
 		});
