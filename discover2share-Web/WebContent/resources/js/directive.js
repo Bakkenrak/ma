@@ -33,16 +33,9 @@
 	});
 	
 	d2sApp.directive('cuYasqe', function () {
-		return { 
-			require: "?ngModel",
-			compile: function compile () {
-				return postLink
-			}
-		};
-		
-		function postLink (scope, element, attrs, ngModel) {
+		function postLink(scope, element, attrs, ngModel) {
 			if (angular.isUndefined(YASQE)) {
-				throw new Error('YASQE library required.')
+				throw new Error('YASQE library required.');
 			}
 			scope.yasqe = YASQE(element[0], scope.$eval(attrs.cuYasqe));
 			scope.query = scope.yasqe.getValue();
@@ -50,7 +43,7 @@
 			configNgModelLink(ngModel, scope);
 		}
 		
-		function configNgModelLink (ngModel, scope) {
+		function configNgModelLink(ngModel, scope) {
 			if (!ngModel) {
 				return;
 			}
@@ -82,6 +75,13 @@
 				}
 			});
 		}
+		
+		return { 
+			require: "?ngModel",
+			compile: function compile() {
+				return postLink;
+			}
+		};
 	});
 	
 	d2sApp.directive('cuYasr', function () {
