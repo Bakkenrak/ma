@@ -320,14 +320,11 @@
 	});
 	
 	d2sApp.controller('queryCtrl', function ($scope, $rootScope, $http) {
-		$scope.editorOptions = { 
-			yasqe: {
-				sparql: {
-					showQueryButton: true,
-					endpoint: "api/ontology/query"
-				}
-			},
-			yasr: {}
+		$scope.yasqeConfig = {
+			sparql: {
+				showQueryButton: true,
+				endpoint: "api/ontology/query"
+			}
 		};
 	});
 
