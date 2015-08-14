@@ -1,4 +1,191 @@
 <h1>Query platforms</h1>
-{{query}}
-<div cu-yasqe="yasqeConfig" ng-model="query"></div>
-<div cu-yasr="yasrConfig"></div>
+
+<h4><strong>Build query using platform options:</strong></h4>
+<div class="row">
+	<div class="col-md-2">
+		<div><strong>Resource Type</strong></div>
+		<input type="text" ng-model="filter.resourceType" class="form-control" />
+	</div>
+	<div class="col-md-2">
+		<div><strong>Consumer Involvement</strong></div>
+		<select class="form-control" ng-model="filter.consumerInvolvement">
+			<option value=""></option>
+			<option value="Full-Service">Full-Service</option>
+			<option value="Self-Service">Self-Service</option>
+			<option value="In-Between">In-Between</option>
+		</select>
+	</div>
+	<div class="col-md-2">
+		<div><strong>Country of Launch</strong></div>
+		<input type="text" ng-model="filter.countryLaunch" class="form-control" />
+	</div>
+	<div class="col-md-2">
+		<div><strong>City of Launch</strong></div>
+		<input type="text" ng-model="filter.cityLaunch" class="form-control" />
+	</div>
+	<div class="col-md-2">
+		<div><strong>Country of Residence</strong></div>
+		<input type="text" ng-model="filter.countryResidence" class="form-control" />
+	</div>
+	<div class="col-md-2">
+		<div><strong>City of Residence</strong></div>
+		<input type="text" ng-model="filter.cityResidence" class="form-control" />
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-2">
+		<div><strong>Year of Launch</strong></div>
+		<select ng-model="filter.yearLaunch" class="form-control">
+			<option ng-repeat="year in getYears()" value="http://www.discover2share.net/d2s-ont/{{year}}">{{year}}</option>
+		</select>
+	</div>
+	<div class="col-md-2">
+		<div><strong>Language</strong></div>
+		<select class="form-control" ng-model="language.resourceName" name="lang{{$index}}" cu-enter="addOption(platform.languageObjects)" cu-focuslast>
+			<option ng-repeat="l in languages" value="http://www.discover2share.net/d2s-ont/{{l.resourceName}}">{{l.name}}</option>
+		</select>
+		<span class="input-group-btn" ng-if="platform.languageObjects.length>1">
+			<button type="button" class="btn btn-default" data-type="plus" data-field="lang{{$index}}" ng-click="platform.languageObjects.splice($index,1)">
+				<span class="glyphicon glyphicon-minus"></span>&nbsp;
+			</button>
+		</span>
+	</div>
+	<div class="col-md-2">
+		<div><strong>Market Mediation</strong></div>
+		<div ng-repeat="mediation in marketMediations" class="checkbox">
+			<label> <input type="checkbox" value="{{mediation}}"
+				ng-checked="platform.marketMediations.indexOf(mediation)>-1"
+				ng-click="toggleSelection(mediation,platform.marketMediations)">
+				{{mediation}}
+			</label>
+		</div>
+	</div>
+	<div class="col-md-2">
+		<div><strong>Integration</strong></div>
+		<p>
+			<select class="form-control" ng-model="platform.offering">
+				<option value="Integrated">Integrated</option>
+				<option value="Separated">Separated</option>
+			</select>
+		</p>
+		<p>
+			<select class="form-control" ng-model="platform.geographicScope">
+				<option value="Neighbourhood-wide">Neighbourhood-wide</option>
+				<option value="City-wide">City-wide</option>
+				<option value="State-wide">State-wide</option>
+				<option value="Country-wide">Country-wide</option>
+				<option value="Region-wide">Region-wide</option>
+				<option value="Global">Global</option>
+			</select>
+		</p>
+	</div>
+	<div class="col-md-2">
+		<div><strong>Money Flow</strong></div>
+		<select class="form-control" ng-model="platform.moneyFlow">
+			<option value="C2C">C2C</option>
+			<option value="C2B2C">C2B2C</option>
+		</select>
+	</div>
+	<div class="col-md-2">
+		<div><strong>P2P SCC Pattern</strong></div>
+		<p>
+			<select class="form-control" ng-model="platform.pattern">
+				<option value="Deferred">Deferred</option>
+				<option value="Immediate">Immediate</option>
+				<option value="Recurrent">Recurrent</option>
+			</select>
+		</p>
+		<p>
+			<select class="form-control" ng-model="platform.temporality">
+				<option value="Once">Once</option>
+				<option value="Often">Often</option>
+			</select>
+		</p>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-2">
+		<div><strong>Promoted Consumerism</strong></div>
+		<div ng-repeat="consumerism in consumerisms" class="checkbox">
+			<label> <input type="checkbox" name="consumerisms[]"
+				value="{{consumerism}}"
+				ng-checked="platform.consumerisms.indexOf(consumerism)>-1"
+				ng-click="toggleSelection(consumerism,platform.consumerisms)">
+				{{consumerism}}
+			</label>
+		</div>
+	</div>
+	<div class="col-md-2">
+		<div><strong>Resource Owner</strong></div>
+		<select class="form-control" ng-model="platform.resourceOwner">
+				<option value="Private">Private</option>
+				<option value="Business">Business</option>
+				<option value="Private_and_business">Private and business</option>
+		</select>
+	</div>
+	<div class="col-md-2">
+		<div><strong>Service Duration Min.</strong></div>
+		<select class="form-control" ng-model="platform.serviceDurationMin">
+			<option value="http://www.w3.org/2006/time#unitMinute">Minutes</option>
+			<option value="http://www.w3.org/2006/time#unitHour">Hours</option>
+			<option value="http://www.w3.org/2006/time#unitDay">Days</option>
+			<option value="http://www.w3.org/2006/time#unitWeek">Weeks</option>
+			<option value="http://www.w3.org/2006/time#unitMonth">Months</option>
+		</select>
+	</div>
+	<div class="col-md-2">
+		<div><strong>Service Duration Max.</strong></div>
+		<select class="form-control" ng-model="platform.serviceDurationMin">
+			<option value="http://www.w3.org/2006/time#unitMinute">Minutes</option>
+			<option value="http://www.w3.org/2006/time#unitHour">Hours</option>
+			<option value="http://www.w3.org/2006/time#unitDay">Days</option>
+			<option value="http://www.w3.org/2006/time#unitWeek">Weeks</option>
+			<option value="http://www.w3.org/2006/time#unitMonth">Months</option>
+		</select>
+	</div>
+	<div class="col-md-2">
+		<div><strong>Smartphone Apps</strong></div>
+		<div ng-repeat="app in smartphoneApps" class="checkbox">
+			<label> <input type="checkbox" name="platform.apps[]"
+				value="{{app}}" ng-checked="platform.apps.indexOf(app)>-1"
+				ng-click="toggleSelection(app,platform.apps)"> {{app}}
+			</label>
+		</div>
+	</div>
+	<div class="col-md-2">
+		<div><strong>Trust Contribution</strong></div>
+		<div ng-repeat="contribution in trustContributions" class="checkbox">
+			<label> <input type="checkbox"
+				name="platform.trustContributions[]" value="{{contribution}}"
+				ng-checked="platform.trustContributions.indexOf(contribution)>-1"
+				ng-click="toggleSelection(contribution,platform.trustContributions)">
+				{{contribution}}
+			</label>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-2">
+		<div><strong>Type of Accessed Obj.</strong></div>
+		<select class="form-control" ng-model="platform.typeOfAccessedObject">
+				<option value="Functional">Functional</option>
+				<option value="Experiential">Experiential</option>
+				<option value="Mixed">Mixed</option>
+		</select>
+	</div>
+</div>
+
+<div class="row">
+	<button type="button" ng-click="setAllDetailsQuery()" class="btn btn-primary">Example query: All details</button>
+	<button type="button" ng-click="doFilter()" class="btn btn-primary">Example query: All details</button>
+</div>
+
+<div class="row">
+	<h4><strong>Query:</strong></h4>
+	<div cu-yasqe="yasqeConfig" ng-model="query"></div>
+</div>
+
+<div class="row">
+	<h4><strong>Results:</strong></h4>
+	<div cu-yasr="yasrConfig" class="row"></div>
+</div>

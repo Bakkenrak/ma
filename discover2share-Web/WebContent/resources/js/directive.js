@@ -33,7 +33,7 @@
 	});
 	
 	d2sApp.directive('cuYasqe', function () {
-		function postLink(scope, element, attrs, ngModel) {
+		function init(scope, element, attrs, ngModel) {
 			if (angular.isUndefined(YASQE)) {
 				throw new Error('YASQE library required.');
 			}
@@ -79,7 +79,7 @@
 		return { 
 			require: "?ngModel",
 			compile: function compile() {
-				return postLink;
+				return init;
 			}
 		};
 	});
