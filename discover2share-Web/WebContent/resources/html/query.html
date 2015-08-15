@@ -1,7 +1,7 @@
 <h1>Query platforms</h1>
 
 <h4><strong>Build query using platform options:</strong></h4>
-<div class="row">
+<div class="row row-margin">
 	<div class="col-md-2">
 		<div><strong>Resource Type</strong></div>
 		<input type="text" ng-model="filter.resourceType" class="form-control" />
@@ -10,9 +10,9 @@
 		<div><strong>Consumer Involvement</strong></div>
 		<select class="form-control" ng-model="filter.consumerInvolvement">
 			<option value=""></option>
-			<option value="Full-Service">Full-Service</option>
-			<option value="Self-Service">Self-Service</option>
-			<option value="In-Between">In-Between</option>
+			<option value="Full_Service">Full-Service</option>
+			<option value="Self_Service">Self-Service</option>
+			<option value="In_Between">In-Between</option>
 		</select>
 	</div>
 	<div class="col-md-2">
@@ -32,17 +32,22 @@
 		<input type="text" ng-model="filter.cityResidence" class="form-control" />
 	</div>
 </div>
-<div class="row">
+<div class="row row-margin">
 	<div class="col-md-2">
 		<div><strong>Year of Launch</strong></div>
 		<select ng-model="filter.yearLaunch" class="form-control">
 			<option ng-repeat="year in getYears()" value="http://www.discover2share.net/d2s-ont/{{year}}">{{year}}</option>
+			<option value="2011">2011</option>
+			<option value="2012">2012</option>
+			<option value="2013">2013</option>
 		</select>
 	</div>
 	<div class="col-md-2">
 		<div><strong>Language</strong></div>
-		<select class="form-control" ng-model="language.resourceName" name="lang{{$index}}" cu-enter="addOption(platform.languageObjects)" cu-focuslast>
+		<select class="form-control" ng-model="filter.language" name="lang{{$index}}" cu-enter="addOption(platform.languageObjects)" cu-focuslast>
 			<option ng-repeat="l in languages" value="http://www.discover2share.net/d2s-ont/{{l.resourceName}}">{{l.name}}</option>
+			<option value="German">German</option>
+			<option value="Germani">Germani</option>
 		</select>
 		<span class="input-group-btn" ng-if="platform.languageObjects.length>1">
 			<button type="button" class="btn btn-default" data-type="plus" data-field="lang{{$index}}" ng-click="platform.languageObjects.splice($index,1)">
@@ -103,7 +108,7 @@
 		</p>
 	</div>
 </div>
-<div class="row">
+<div class="row row-margin">
 	<div class="col-md-2">
 		<div><strong>Promoted Consumerism</strong></div>
 		<div ng-repeat="consumerism in consumerisms" class="checkbox">
@@ -164,7 +169,7 @@
 		</div>
 	</div>
 </div>
-<div class="row">
+<div class="row row-margin">
 	<div class="col-md-2">
 		<div><strong>Type of Accessed Obj.</strong></div>
 		<select class="form-control" ng-model="platform.typeOfAccessedObject">
@@ -175,17 +180,17 @@
 	</div>
 </div>
 
-<div class="row">
+<div class="row row-margin">
 	<button type="button" ng-click="setAllDetailsQuery()" class="btn btn-primary">Example query: All details</button>
-	<button type="button" ng-click="doFilter()" class="btn btn-primary">Example query: All details</button>
+	<button type="button" ng-click="" class="btn btn-primary">Reset to basic query</button>
 </div>
 
-<div class="row">
+<div class="row row-margin">
 	<h4><strong>Query:</strong></h4>
 	<div cu-yasqe="yasqeConfig" ng-model="query"></div>
 </div>
 
-<div class="row">
+<div class="row row-margin">
 	<h4><strong>Results:</strong></h4>
 	<div cu-yasr="yasrConfig" class="row"></div>
 </div>

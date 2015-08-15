@@ -1,7 +1,10 @@
-
 /*CSS for Angular directive ng-cloak. Avoids flickering of elements that will be hidden shortly after*/
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;
+}
+
+.row-margin {
+	margin-bottom: 15px;
 }
 
 #detailTable tr td:nth-child(1) {
