@@ -58,23 +58,25 @@
 	<div class="col-md-2">
 		<div><strong>Market Mediation</strong></div>
 		<div ng-repeat="mediation in marketMediations" class="checkbox">
-			<label> <input type="checkbox" value="{{mediation}}"
-				ng-checked="platform.marketMediations.indexOf(mediation)>-1"
-				ng-click="toggleSelection(mediation,platform.marketMediations)">
-				{{mediation}}
+			<label> <input type="checkbox" value="{{mediation.resource}}"
+				ng-checked="filter.marketMediations.indexOf(mediation.resource)>-1"
+				ng-click="toggleSelection(mediation.resource,filter.marketMediations)">
+				{{mediation.label}}
 			</label>
 		</div>
 	</div>
 	<div class="col-md-2">
 		<div><strong>Integration</strong></div>
 		<p>
-			<select class="form-control" ng-model="platform.offering">
+			<select class="form-control" ng-model="filter.marketOffering">
+				<option value=""></option>
 				<option value="Integrated">Integrated</option>
 				<option value="Separated">Separated</option>
 			</select>
 		</p>
 		<p>
-			<select class="form-control" ng-model="platform.geographicScope">
+			<select class="form-control" ng-model="filter.geographicScope">
+				<option value=""></option>
 				<option value="Neighbourhood-wide">Neighbourhood-wide</option>
 				<option value="City-wide">City-wide</option>
 				<option value="State-wide">State-wide</option>
@@ -86,7 +88,8 @@
 	</div>
 	<div class="col-md-2">
 		<div><strong>Money Flow</strong></div>
-		<select class="form-control" ng-model="platform.moneyFlow">
+		<select class="form-control" ng-model="filter.moneyFlow">
+			<option value=""></option>
 			<option value="C2C">C2C</option>
 			<option value="C2B2C">C2B2C</option>
 		</select>
@@ -94,14 +97,16 @@
 	<div class="col-md-2">
 		<div><strong>P2P SCC Pattern</strong></div>
 		<p>
-			<select class="form-control" ng-model="platform.pattern">
+			<select class="form-control" ng-model="filter.p2pSccPattern">
+				<option value=""></option>
 				<option value="Deferred">Deferred</option>
 				<option value="Immediate">Immediate</option>
 				<option value="Recurrent">Recurrent</option>
 			</select>
 		</p>
 		<p>
-			<select class="form-control" ng-model="platform.temporality">
+			<select class="form-control" ng-model="filter.temporality">
+				<option value=""></option>
 				<option value="Once">Once</option>
 				<option value="Often">Often</option>
 			</select>
@@ -114,15 +119,16 @@
 		<div ng-repeat="consumerism in consumerisms" class="checkbox">
 			<label> <input type="checkbox" name="consumerisms[]"
 				value="{{consumerism}}"
-				ng-checked="platform.consumerisms.indexOf(consumerism)>-1"
-				ng-click="toggleSelection(consumerism,platform.consumerisms)">
+				ng-checked="filter.consumerisms.indexOf(consumerism)>-1"
+				ng-click="toggleSelection(consumerism,filter.consumerisms)">
 				{{consumerism}}
 			</label>
 		</div>
 	</div>
 	<div class="col-md-2">
 		<div><strong>Resource Owner</strong></div>
-		<select class="form-control" ng-model="platform.resourceOwner">
+		<select class="form-control" ng-model="filter.resourceOwner">
+				<option value=""></option>
 				<option value="Private">Private</option>
 				<option value="Business">Business</option>
 				<option value="Private_and_business">Private and business</option>
@@ -130,7 +136,8 @@
 	</div>
 	<div class="col-md-2">
 		<div><strong>Service Duration Min.</strong></div>
-		<select class="form-control" ng-model="platform.serviceDurationMin">
+		<select class="form-control" ng-model="filter.serviceDurationMin">
+			<option value=""></option>
 			<option value="http://www.w3.org/2006/time#unitMinute">Minutes</option>
 			<option value="http://www.w3.org/2006/time#unitHour">Hours</option>
 			<option value="http://www.w3.org/2006/time#unitDay">Days</option>
@@ -140,7 +147,8 @@
 	</div>
 	<div class="col-md-2">
 		<div><strong>Service Duration Max.</strong></div>
-		<select class="form-control" ng-model="platform.serviceDurationMin">
+		<select class="form-control" ng-model="filter.serviceDurationMax">
+			<option value=""></option>
 			<option value="http://www.w3.org/2006/time#unitMinute">Minutes</option>
 			<option value="http://www.w3.org/2006/time#unitHour">Hours</option>
 			<option value="http://www.w3.org/2006/time#unitDay">Days</option>
@@ -151,9 +159,9 @@
 	<div class="col-md-2">
 		<div><strong>Smartphone Apps</strong></div>
 		<div ng-repeat="app in smartphoneApps" class="checkbox">
-			<label> <input type="checkbox" name="platform.apps[]"
-				value="{{app}}" ng-checked="platform.apps.indexOf(app)>-1"
-				ng-click="toggleSelection(app,platform.apps)"> {{app}}
+			<label> <input type="checkbox" name="filter.apps[]"
+				value="{{app}}" ng-checked="filter.apps.indexOf(app.resource)>-1"
+				ng-click="toggleSelection(app.resource,filter.apps)"> {{app.label}}
 			</label>
 		</div>
 	</div>
@@ -161,10 +169,10 @@
 		<div><strong>Trust Contribution</strong></div>
 		<div ng-repeat="contribution in trustContributions" class="checkbox">
 			<label> <input type="checkbox"
-				name="platform.trustContributions[]" value="{{contribution}}"
-				ng-checked="platform.trustContributions.indexOf(contribution)>-1"
-				ng-click="toggleSelection(contribution,platform.trustContributions)">
-				{{contribution}}
+				name="filter.trustContributions[]" value="{{contribution.resource}}"
+				ng-checked="filter.trustContributions.indexOf(contribution.resource)>-1"
+				ng-click="toggleSelection(contribution.resource,filter.trustContributions)">
+				{{contribution.label}}
 			</label>
 		</div>
 	</div>
@@ -172,10 +180,11 @@
 <div class="row row-margin">
 	<div class="col-md-2">
 		<div><strong>Type of Accessed Obj.</strong></div>
-		<select class="form-control" ng-model="platform.typeOfAccessedObject">
-				<option value="Functional">Functional</option>
-				<option value="Experiential">Experiential</option>
-				<option value="Mixed">Mixed</option>
+		<select class="form-control" ng-model="filter.typeOfAccessedObject">
+			<option value=""></option>
+			<option value="Functional">Functional</option>
+			<option value="Experiential">Experiential</option>
+			<option value="Mixed">Mixed</option>
 		</select>
 	</div>
 </div>
