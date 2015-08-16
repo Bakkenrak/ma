@@ -17,7 +17,8 @@
 	</div>
 	<div class="col-md-2">
 		<div><strong>Country of Launch</strong></div>
-		<input type="text" ng-model="filter.countryLaunch" class="form-control" />
+		<input type="text" class="form-control"	ng-model="filter.countryLaunch"
+						typeahead="country.resourceName as country.countryName + ' (' + country.countryCode + ')' for country in countries | orderBy: 'countryName' | containsFilter: $viewValue" />
 	</div>
 	<div class="col-md-2">
 		<div><strong>City of Launch</strong></div>
@@ -186,6 +187,10 @@
 			<option value="Experiential">Experiential</option>
 			<option value="Mixed">Mixed</option>
 		</select>
+	</div>
+	<div class="col-md-2">
+		<div><strong>Limit results</strong></div>
+		<input type="number" min="1" ng-model="filter.limit" class="form-control" />
 	</div>
 </div>
 

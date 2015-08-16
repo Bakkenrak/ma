@@ -3,7 +3,12 @@
 	
 	var d2sApp = angular.module("d2sApp");
 	
-	d2sApp.controller('queryCtrl', function ($scope, $rootScope, $http) {
+	d2sApp.controller('queryCtrl', function ($scope, $rootScope, $http, platformFactory) {
+		if (angular.isUndefined($rootScope.countries)) {
+			platformFactory.getCountries().success(function (data) {
+				$rootScope.countries = data.countries;
+			});
+		}
 		$scope.marketMediations = [ 
 		    { resource: "Profit_from_peer_consumers", label: "Profit from peer consumers" }, 
 		    { resource: "Profit_from_peer_providers", label: "Profit from peer providers" },
@@ -91,7 +96,7 @@
 			
 			//make sure d2s Prefix is available
 			var prefixMatch = $scope.query.match(new RegExp("(PREFIX[ ]+d2s:[ ]+<" + $scope.queryParts.d2sBase + ">)", "i"));
-			if (prefixMatch === null) {
+			if (!prefixMatch) {
 				$scope.query = "PREFIX d2s: <http://www.discover2share.net/d2s-ont/>\n" + $scope.query;
 			}
 			
@@ -128,6 +133,18 @@
 				$scope.arrayFilter(newValue.trustContributions, oldValue.trustContributions, $scope.queryParts.trustContribution);
 				// type of accessed object
 				$scope.simplePattern(newValue.typeOfAccessedObject, oldValue.typeOfAccessedObject, $scope.queryParts.typeOfAccessedObject);
+				
+				// limit
+				if (newValue.limit !== oldValue.limit) {
+					var lastBracket = $scope.query.lastIndexOf("}");
+					if (~lastBracket) {
+						var endPart = $scope.query.substr(lastBracket).replace(new RegExp("([ ]+LIMIT[ ]*[0-9]*)", "i"), "");
+						if (newValue.limit) {
+							endPart += " LIMIT " + newValue.limit;
+						}
+						$scope.query = $scope.query.substr(0, lastBracket) + endPart;
+					}
+				}
 			}
 			
 			$scope.computedQuery = $scope.query;
@@ -159,7 +176,7 @@
 			$scope.intermediatePattern(newValue.temporality, oldValue.temporality, $scope.queryParts.p2pSccPattern, $scope.queryParts.temporality, "?pattern");
 			// remove launch node statement if neither city nor country are requested
 			if ((newValue.p2pSccPattern !== oldValue.p2pSccPattern || newValue.temporality !== oldValue.temporality) &&
-					$scope.filter.p2pSccPattern === "" && $scope.filter.temporality === "") {
+					!$scope.filter.p2pSccPattern && !$scope.filter.temporality) {
 				$scope.removeLocationNode($scope.queryParts.p2pSccPattern);
 			}
 		};
@@ -171,7 +188,7 @@
 			$scope.intermediatePattern(newValue.geographicScope, oldValue.geographicScope, $scope.queryParts.integration, $scope.queryParts.geographicScope, "?integration");
 			// remove launch node statement if neither city nor country are requested
 			if ((newValue.marketOffering !== oldValue.marketOffering || newValue.geographicScope !== oldValue.geographicScope) &&
-					$scope.filter.marketOffering === "" && $scope.filter.geographicScope === "") {
+					!$scope.filter.marketOffering && !$scope.filter.geographicScope) {
 				$scope.removeLocationNode($scope.queryParts.integration);
 			}
 		};
@@ -183,7 +200,7 @@
 			$scope.intermediatePattern(newValue.cityLaunch, oldValue.cityLaunch, $scope.queryParts.launch, $scope.queryParts.city, "?launchLocation");
 			// remove launch node statement if neither city nor country are requested
 			if ((newValue.cityLaunch !== oldValue.cityLaunch || newValue.countryLaunch !== oldValue.countryLaunch) &&
-					$scope.filter.cityLaunch === "" && $scope.filter.countryLaunch === "") {
+					!$scope.filter.cityLaunch && !$scope.filter.countryLaunch) {
 				$scope.removeLocationNode($scope.queryParts.launch);
 			}
 			
@@ -192,7 +209,7 @@
 			// residence city
 			$scope.intermediatePattern(newValue.cityResidence, oldValue.cityResidence, $scope.queryParts.residence, $scope.queryParts.city, "?residenceLocation");
 			if ((newValue.cityResidence !== oldValue.cityResidence || newValue.countryResidence !== oldValue.countryResidence) &&
-					$scope.filter.cityResidence === "" && $scope.filter.countryResidence === "") {
+					!$scope.filter.cityResidence && !$scope.filter.countryResidence) {
 				$scope.removeLocationNode($scope.queryParts.launch);
 			}
 		};
@@ -221,7 +238,7 @@
 			
 			var regexp;
 			// remove old occurrence
-			if (oldVal !== "" && !angular.isUndefined(oldVal)) {
+			if (oldVal) {
 				regexp = "([ ]{0,4}\\" + firstVar + "[ ]+" + queryPart + "[ ]+";
 				if (isCustomUrl) {
 					regexp += "<" + oldVal + ">";
@@ -236,15 +253,15 @@
 				$scope.platformVar.closingBracket -= (sectionLength - section.length); // adjust closing bracket pointer
 			}
 			// create new occurrence
-			if (newVal !== "" && !angular.isUndefined(newVal)) {
+			if (newVal) {
 				regexp = "(\\" + firstVar + "[ ]+" + queryPart + "[ ]+";
 				if (isCustomUrl) {
 					regexp += "<" + newVal + ">)";
 				} else {
 					regexp += "(?:d2s:" + newVal + "|<" + $scope.queryParts.d2sBase + newVal + ">))";
 				}
-				var matches = section.match(new RegExp(regexp, "g")); // check if an expression matching the new value already exists
-				if (matches === null) { //otherwise add it
+				var match = section.match(new RegExp(regexp, "")); // check if an expression matching the new value already exists
+				if (!match) { //otherwise add it
 					var queryLength = $scope.query.length;
 					var queryEnd = $scope.query.substr(platformVar.closingBracket);
 					$scope.query = $scope.query.substr(0, platformVar.closingBracket) + "    " + firstVar + " " + queryPart;
@@ -266,7 +283,7 @@
 			var platformVar = $scope.platformVar || $scope.getPlatformVar(); // take platform variable from scope. Compute anew if not yet done
 			var locVar = $scope.getIntermediateVar(platformVar, queryPartIntermediate);
 			locationVar = locVar || locationVar;
-			if (newVal !== "" && locVar === null) {
+			if (newVal && !locVar) {
 				var queryLength = $scope.query.length;
 				$scope.query = $scope.query.substr(0, platformVar.closingBracket) + "    " + platformVar.name + " " + queryPartIntermediate + " " + locationVar + ".\n" + $scope.query.substr(platformVar.closingBracket);
 				$scope.platformVar.closingBracket += ($scope.query.length - queryLength); //adjust closing bracket pointer
@@ -283,11 +300,7 @@
 			// find/insert location variable
 			regexp = new RegExp("\\" + platformVar.name + "[ ]+" + queryPartLocation + "[ ]+(\\?[\\w]+)", "");
 			var match = regexp.exec(section);
-			if (match === null) { // add location statement if there is a new value that requires it
-				return null;
-			} else {
-				return match[1];
-			}
+			return match ? match[1] : null;
 		};
 		
 		$scope.getPlatformVar = function () {
@@ -359,7 +372,7 @@
 			
 			//launch
 			var locationVar = $scope.getIntermediateVar(platformVar, $scope.queryParts.launch);
-			if (locationVar !== null) {
+			if (locationVar) {
 				// city
 				$scope.filter.cityLaunch = $scope.findPattern($scope.queryParts.city, locationVar);
 				// country
@@ -368,7 +381,7 @@
 			
 			// residence
 			locationVar = $scope.getIntermediateVar(platformVar, $scope.queryParts.residence);
-			if (locationVar !== null) {
+			if (locationVar) {
 				// city
 				$scope.filter.cityResidence = $scope.findPattern($scope.queryParts.city, locationVar);
 				// country
@@ -394,7 +407,7 @@
 			
 			// integration
 			var integrationVar = $scope.getIntermediateVar(platformVar, $scope.queryParts.integration);
-			if (integrationVar !== null) {
+			if (integrationVar) {
 				// market offering
 				$scope.filter.marketOffering = $scope.findPattern($scope.queryParts.marketOffering, integrationVar);
 				// geographic scope
@@ -406,7 +419,7 @@
 			
 			// p2p scc pattern
 			var patternVar = $scope.getIntermediateVar(platformVar, $scope.queryParts.p2pSccPattern);
-			if (patternVar !== null) {
+			if (patternVar) {
 				// market offering
 				$scope.filter.p2pSccPattern = $scope.findPattern("rdf:type", patternVar);
 				// geographic scope
@@ -431,9 +444,19 @@
 			$scope.findPatternArray($scope.queryParts.trustContribution, $scope.filter.trustContributions);
 			
 			// type of accessed object
-			$scope.filter.typeOfAccessedObject = $scope.findPattern($scope.queryParts.typeOfAccessedObject)
+			$scope.filter.typeOfAccessedObject = $scope.findPattern($scope.queryParts.typeOfAccessedObject);
+			
+			
+			// limit
+			match = new RegExp("LIMIT[ ]*([0-9]*)", "i").exec($scope.query.substr($scope.query.lastIndexOf("}")));
+			if (match && !isNaN(match[1])) {
+				$scope.filter.limit = parseInt(match[1]);
+			}
 			
 			$scope.userChange = true; // signal that changes were invoked by the user to avoid an unnecessary run of the filter method
+			// force filter watch event for those cases where it would not have been triggered because no changes were made here
+			// this sets back $scope.userChange and thus avoids aborting the filter watch method when it is next rightfully executed
+			$scope.filter.trigger = !$scope.filter.trigger; 
 		});
 		
 		$scope.findPattern = function (queryPart, firstVar, isCustomUrl) {
@@ -448,7 +471,7 @@
 				regexp += "(?:d2s:(" + $scope.queryParts.anyResourceName + ")|<" + $scope.queryParts.d2sBase + "(" + $scope.queryParts.anyResourceName + ")>)";
 			}
 			var match = new RegExp(regexp, "").exec(section);
-			return (match !== null) ? match[1] || match[2] : "";
+			return match ? match[1] || match[2] : "";
 		};
 		
 		$scope.findPatternArray = function (queryPart, array) {
