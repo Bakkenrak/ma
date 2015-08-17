@@ -76,7 +76,6 @@
 			};
 		
 		$scope.yasrConfig = {
-				outputPlugins: ["error", "boolean", "platformLinks", "table", "rawResponse", "pivot", "gchart"],
 				persistency: {
 					results: {
 						key: null
