@@ -31,6 +31,11 @@ public interface OntologyApi {
 	@Produces("application/json")
 	public Map<String, Map<String, String>> getDescriptions();
 	
+	@Path("cities/")
+	@GET
+	@Produces("application/json")
+	public List<Map<String, String>> getAllCities();
+	
 	@Path("platforms/suggestions/new")
 	@POST
 	@Produces("application/json")

@@ -88,6 +88,11 @@
 		platformFactory.getCountries = function () {
 			return $http.get('resources/js/countries.json');
 		};
+		
+		platformFactory.getCities = function () {
+			return $http.get('api/ontology/cities');
+		};
+		
 		platformFactory.getLanguages = function () {
 			return $http.get('resources/js/languages.json');
 		};

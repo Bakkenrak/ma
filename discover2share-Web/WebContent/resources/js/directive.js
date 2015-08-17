@@ -85,20 +85,41 @@
 	});
 	
 	d2sApp.directive('cuYasr', function () {
-		return function (scope, element, attrs) {
+		function init(scope, element, attrs, ngModel) {
 			if (angular.isUndefined(YASR)) {
 				throw new Error('YASR library required.');
 			}
 			var config = scope.$eval(attrs.cuYasr);
-			if (angular.isUndefined(config) || config === null) {
-				config = {};
+			if (angular.isUndefined(config) || config === null) { // if no config object is provided
+				config = {}; // initialize empty object
 			}
-			if (!angular.isUndefined(scope.yasqe)) {
-				config.getUsedPrefixes = scope.yasqe.getPrefixesFromQuery;
+			if (!angular.isUndefined(scope.yasqe)) { // if YASQE object exists in current scope
+				config.getUsedPrefixes = scope.yasqe.getPrefixesFromQuery; // take prefixes
+		
+				scope.yasr = YASR(element[0], config); // initialize YASR
+				
+				scope.yasqe.options.sparql.callbacks.complete = function (data) { // when YASQE completes SPARQL query
+					scope.yasr.setResponse(data.responseJSON); // set response to YASR
+					
+					if (!ngModel) { // if an ng-model attribute is provided in the view
+						// Keep the ngModel in sync with changes from YASQE
+						var newValue = data.responseJSON;
+						if (newValue !== ngModel.$viewValue) {
+							scope.$evalAsync(function () {
+								ngModel.$setViewValue(newValue);
+							});
+						}
+					}
+				};
+			} else {
+				scope.yasr = YASR(element[0], config); // initialize YASR
 			}
-			scope.yasr = YASR(element[0], config);
-			if (!angular.isUndefined(scope.yasqe)) {
-				scope.yasqe.options.sparql.callbacks.complete = scope.yasr.setResponse;
+		}
+			
+		return { 
+			require: "?ngModel",
+			compile: function compile() {
+				return init;
 			}
 		};
 	});

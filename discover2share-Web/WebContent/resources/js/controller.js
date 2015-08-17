@@ -265,7 +265,7 @@
 			var currentYear = new Date().getFullYear();
 			var output = [];
 			for (var i = currentYear; i > 1989; i--) {
-				output.push(i--);
+				output.push(i);
 			}
 			return output;
 		};

@@ -288,4 +288,45 @@ public class OntologyServiceBean implements OntologyService {
 		return json;
 	}
 
+	@Override
+	public List<Map<String, String>> getAllCities() {
+		String sparqlQuery = "PREFIX d2s: <http://www.discover2share.net/d2s-ont/> "
+				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
+				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
+				+ "PREFIX dbpp: <http://dbpedia.org/property/> "
+				+ "SELECT ?resourceName ?name ?countryCode {"
+				+ "  ?resourceName rdf:type d2s:City."
+				+ "  ?resourceName rdfs:label ?name."
+				+ "  ?resourceName dbpp:locationCountry ?country."
+				+ "  ?country dbpp:countryCode ?countryCode.}";
+		
+		Query query = QueryFactory.create(sparqlQuery);
+		QueryExecution qexec = QueryExecutionFactory.sparqlService(ENDPOINT, query);
+		ResultSet results = qexec.execSelect();
+
+		List<Map<String, String>> output = new ArrayList<Map<String, String>>();
+		while (results.hasNext()) {
+			Map<String, String> current = new HashMap<String, String>();
+			QuerySolution result = results.next();
+			for (String var : results.getResultVars()) {
+				RDFNode node = result.get(var);
+				if (node == null)
+					continue;
+
+				if (node.isLiteral()) {
+					String literal = node.asLiteral().getString();
+					current.put(var, literal);
+				} else if (node.isResource()) {
+					String uri = node.asResource().getURI();
+					if (uri != null)
+						current.put(var, uri.substring(38));
+				}
+			}
+			output.add(current);
+		}
+
+		qexec.close();
+		return output;
+	}
+
 }

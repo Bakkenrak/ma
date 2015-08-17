@@ -3,12 +3,23 @@
 	
 	var d2sApp = angular.module("d2sApp");
 	
-	d2sApp.controller('queryCtrl', function ($scope, $rootScope, $http, platformFactory) {
+	d2sApp.controller('queryCtrl', function ($scope, $rootScope, $http, $timeout, platformFactory) {
 		if (angular.isUndefined($rootScope.countries)) {
 			platformFactory.getCountries().success(function (data) {
 				$rootScope.countries = data.countries;
 			});
 		}
+		if (angular.isUndefined($rootScope.cities)) {
+			platformFactory.getCities().success(function (data) {
+				$rootScope.cities = data;
+			});
+		}
+		if (angular.isUndefined($rootScope.languages)) {
+			platformFactory.getLanguages().success(function (data) {
+				$rootScope.languages = data.languages;
+			});
+		}
+		
 		$scope.marketMediations = [ 
 		    { resource: "Profit_from_peer_consumers", label: "Profit from peer consumers" }, 
 		    { resource: "Profit_from_peer_providers", label: "Profit from peer providers" },
@@ -30,6 +41,15 @@
 		    { resource: "Vouching", label: "Vouching" }, 
 		    { resource: "Value-added_services", label: "Value-added services" }
 		];
+		
+		$scope.getYears = function () {
+			var currentYear = new Date().getFullYear();
+			var output = [];
+			for (var i = currentYear; i > 1989; i--) {
+				output.push(i);
+			}
+			return output;
+		};
 		
 		$scope.toggleSelection = function (current, selected) {
 			var idx = selected.indexOf(current);
@@ -55,8 +75,32 @@
 				}
 			};
 		
+		$scope.yasrConfig = {
+				persistency: {
+					results: {
+						key: null
+					}
+				}
+			};
+		
 		$scope.queryParts = {
-				d2sBase: "http:\\/\\/www\\.discover2share\\.net\\/d2s-ont\\/",
+				bases: {
+					d2s: {
+						prefix: "d2s",
+						path: "http://www.discover2share.net/d2s-ont/",
+						pattern: "http:\\/\\/www\\.discover2share\\.net\\/d2s-ont\\/"
+					},
+					dbpp: {
+						prefix: "dbpp",
+						path: "http://dbpedia.org/property/",
+						pattern: "http:\\/\\/dbpedia\\.org\\/property\\/"
+					},
+					rdf: {
+						prefix: "rdf",
+						path: "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+						pattern: "http:\\/\\/www\\.w3\\.org\\/1999\\/02\\/22-rdf-syntax-ns#"
+					}
+				},
 				anyResourceName: "[^\\s}.]+",
 				trailingRemovableChars: "[^\\w]*?[ ]*\\.?[ ]*\\n?",
 				
@@ -94,11 +138,18 @@
 				return;
 			}
 			
-			//make sure d2s Prefix is available
-			var prefixMatch = $scope.query.match(new RegExp("(PREFIX[ ]+d2s:[ ]+<" + $scope.queryParts.d2sBase + ">)", "i"));
-			if (!prefixMatch) {
-				$scope.query = "PREFIX d2s: <http://www.discover2share.net/d2s-ont/>\n" + $scope.query;
+			//make sure prefixes are available
+			var queryLength = $scope.query.length;
+			angular.forEach($scope.queryParts.bases, function (base) {
+				if (!$scope.query.match(new RegExp("(PREFIX[ ]+" + base.prefix + ":[ ]+<" + base.pattern + ">)", "i"))) {
+					$scope.query = "PREFIX " + base.prefix + ": <" + base.path + ">\n" + $scope.query.replace(new RegExp("(PREFIX[ ]+" + base.prefix + ":[ ]+<.*?>[ ]*\n?)", "i"), "");
+				}
+			});
+			if ($scope.platformVar) {
+				$scope.platformVar.openingBracket += $scope.query.length - queryLength;
+				$scope.platformVar.closingBracket += $scope.query.length - queryLength;
 			}
+			
 			
 			if (!angular.isUndefined(oldValue)) {
 				// resource type
@@ -145,6 +196,18 @@
 						$scope.query = $scope.query.substr(0, lastBracket) + endPart;
 					}
 				}
+				//order by
+				if (newValue.orderBy !== oldValue.orderBy) {
+					var lastBracket = $scope.query.lastIndexOf("}");
+					if (~lastBracket) {
+						var endPart = $scope.query.substr(lastBracket + 1).replace(new RegExp("([ ]*ORDER BY[ ]*(?:\\?[\\w]+)?)", "i"), "");
+						if (newValue.orderBy) {
+							endPart = " ORDER BY " + $scope.filter.orderBy + endPart;
+						}
+						$scope.query = $scope.query.substr(0, lastBracket + 1) + endPart;
+					}
+				}
+				$scope.getAllVars();
 			}
 			
 			$scope.computedQuery = $scope.query;
@@ -157,7 +220,7 @@
 			// remove
 			var platformVar = $scope.platformVar || $scope.getPlatformVar();
 			
-			var regexp = new RegExp("([ ]{0,4}\\" + platformVar.name + "[ ]+" + queryPart + "[ ]+" + "(?:d2s:" + $scope.queryParts.anyResourceName + "|<" + $scope.queryParts.d2sBase + $scope.queryParts.anyResourceName + ">)" + $scope.queryParts.trailingRemovableChars + ")", "g");
+			var regexp = new RegExp("([ ]{0,4}\\" + platformVar.name + "[ ]+" + queryPart + "[ ]+" + "(?:d2s:" + $scope.queryParts.anyResourceName + "|<" + $scope.queryParts.bases.d2s.pattern + $scope.queryParts.anyResourceName + ">)" + $scope.queryParts.trailingRemovableChars + ")", "g");
 			var section = $scope.query.substr(platformVar.openingBracket, platformVar.closingBracket - platformVar.openingBracket);
 			var queryLength = $scope.query.length;
 			$scope.query = $scope.query.substr(0, platformVar.openingBracket) + section.replace(regexp, "") + $scope.query.substr(platformVar.closingBracket);
@@ -210,14 +273,14 @@
 			$scope.intermediatePattern(newValue.cityResidence, oldValue.cityResidence, $scope.queryParts.residence, $scope.queryParts.city, "?residenceLocation");
 			if ((newValue.cityResidence !== oldValue.cityResidence || newValue.countryResidence !== oldValue.countryResidence) &&
 					!$scope.filter.cityResidence && !$scope.filter.countryResidence) {
-				$scope.removeLocationNode($scope.queryParts.launch);
+				$scope.removeLocationNode($scope.queryParts.residence);
 			}
 		};
 		
 		$scope.removeLocationNode = function (queryPartLocation) {
 			var platformVar = $scope.platformVar || $scope.getPlatformVar();
 			
-			var regexp = new RegExp("(\\" + platformVar.name + "[ ]+" + queryPartLocation + "[ ]+\\?[\\w]+" + $scope.queryParts.trailingRemovableChars + ")", "g");
+			var regexp = new RegExp("([ ]{0,4}\\" + platformVar.name + "[ ]+" + queryPartLocation + "[ ]+\\?[\\w]+" + $scope.queryParts.trailingRemovableChars + ")", "g");
 			
 			// Cut out the query part in which the platform variable resides. All operations will be done in this section.
 			var section = $scope.query.substr(platformVar.openingBracket, platformVar.closingBracket - platformVar.openingBracket);
@@ -243,7 +306,7 @@
 				if (isCustomUrl) {
 					regexp += "<" + oldVal + ">";
 				} else {
-					regexp += "(?:d2s:" + oldVal + "|<" + $scope.queryParts.d2sBase + oldVal + ">)";
+					regexp += "(?:d2s:" + oldVal + "|<" + $scope.queryParts.bases.d2s.pattern + oldVal + ">)";
 				}
 				regexp += $scope.queryParts.trailingRemovableChars + ")";
 				var sectionLength = section.length;
@@ -258,7 +321,7 @@
 				if (isCustomUrl) {
 					regexp += "<" + newVal + ">)";
 				} else {
-					regexp += "(?:d2s:" + newVal + "|<" + $scope.queryParts.d2sBase + newVal + ">))";
+					regexp += "(?:d2s:" + newVal + "|<" + $scope.queryParts.bases.d2s.pattern + newVal + ">))";
 				}
 				var match = section.match(new RegExp(regexp, "")); // check if an expression matching the new value already exists
 				if (!match) { //otherwise add it
@@ -348,7 +411,12 @@
 			if (newValue === oldValue || $scope.computedQuery === $scope.query) { // if value hasn't changed or change was done programatically
 				return; // abort
 			}
+			$scope.computedQuery = ""; // reset to prevent this method from not triggering wrongfully when user makes and directly afterwards undoes a change
 			
+			$scope.setFilterFromQuery();
+		});
+		
+		$scope.setFilterFromQuery = function () {
 			var platformVar = $scope.getPlatformVar(); // find platform variable
 			// copy query section in which the platform variable resides
 			var section = $scope.query.substr(platformVar.openingBracket, platformVar.closingBracket - platformVar.openingBracket);
@@ -357,7 +425,7 @@
 			var match, count;
 			
 			// resource types
-			var regexp = new RegExp("\\" + platformVar.name + "[ ]+" + $scope.queryParts.resourceType + "[ ]+" + "(?:d2s:(" + $scope.queryParts.anyResourceName + ")|<" + $scope.queryParts.d2sBase + "(" + $scope.queryParts.anyResourceName + ")>)", "g");
+			var regexp = new RegExp("\\" + platformVar.name + "[ ]+" + $scope.queryParts.resourceType + "[ ]+" + "(?:d2s:(" + $scope.queryParts.anyResourceName + ")|<" + $scope.queryParts.bases.d2s.pattern + "(" + $scope.queryParts.anyResourceName + ")>)", "g");
 			count = 0;
 			while (match = regexp.exec(section)) {
 				$scope.filter.resourceType = match[1] || match[2];
@@ -392,15 +460,7 @@
 			$scope.filter.yearLaunch = $scope.findPattern($scope.queryParts.yearLaunch);
 			
 			// language
-			regexp = new RegExp("\\" + platformVar.name + "[ ]+" + $scope.queryParts.language + "[ ]+" + "(?:d2s:(" + $scope.queryParts.anyResourceName + ")|<" + $scope.queryParts.d2sBase + "(" + $scope.queryParts.anyResourceName + ")>)", "g");
-			count = 0;
-			while (match = regexp.exec(section)) {
-				$scope.filter.language = match[1] || match[2];
-				count++;
-			}
-			if (count === 0) {
-				$scope.filter.language = "";
-			}
+			$scope.filter.language = $scope.findPattern($scope.queryParts.language);
 			
 			// market mediation
 			$scope.findPatternArray($scope.queryParts.marketMediation, $scope.filter.marketMediations);
@@ -453,14 +513,17 @@
 				$scope.filter.limit = parseInt(match[1]);
 			}
 			
+			//order by
+			$scope.getAllVars();
+			
 			$scope.userChange = true; // signal that changes were invoked by the user to avoid an unnecessary run of the filter method
 			// force filter watch event for those cases where it would not have been triggered because no changes were made here
 			// this sets back $scope.userChange and thus avoids aborting the filter watch method when it is next rightfully executed
 			$scope.filter.trigger = !$scope.filter.trigger; 
-		});
+		};
 		
 		$scope.findPattern = function (queryPart, firstVar, isCustomUrl) {
-			var platformVar = $scope.getPlatformVar(); // find platform variable
+			var platformVar = $scope.platformVar || $scope.getPlatformVar(); // find platform variable
 			// copy query section in which the platform variable resides
 			var section = $scope.query.substr(platformVar.openingBracket, platformVar.closingBracket - platformVar.openingBracket);
 			firstVar = firstVar || platformVar.name;
@@ -468,18 +531,18 @@
 			if (isCustomUrl) {
 				regexp += "<(.+?)>";
 			} else {
-				regexp += "(?:d2s:(" + $scope.queryParts.anyResourceName + ")|<" + $scope.queryParts.d2sBase + "(" + $scope.queryParts.anyResourceName + ")>)";
+				regexp += "(?:d2s:(" + $scope.queryParts.anyResourceName + ")|<" + $scope.queryParts.bases.d2s.pattern + "(" + $scope.queryParts.anyResourceName + ")>)";
 			}
 			var match = new RegExp(regexp, "").exec(section);
 			return match ? match[1] || match[2] : "";
 		};
 		
 		$scope.findPatternArray = function (queryPart, array) {
-			var platformVar = $scope.getPlatformVar(); // find platform variable
+			var platformVar = $scope.platformVar || $scope.getPlatformVar(); // find platform variable
 			// copy query section in which the platform variable resides
 			var section = $scope.query.substr(platformVar.openingBracket, platformVar.closingBracket - platformVar.openingBracket);
 			
-			var regexp = new RegExp("\\" + platformVar.name + "[ ]+" + queryPart + "[ ]+" + "(?:d2s:(" + $scope.queryParts.anyResourceName + ")|<" + $scope.queryParts.d2sBase + "(" + $scope.queryParts.anyResourceName + ")>)", "g");
+			var regexp = new RegExp("\\" + platformVar.name + "[ ]+" + queryPart + "[ ]+" + "(?:d2s:(" + $scope.queryParts.anyResourceName + ")|<" + $scope.queryParts.bases.d2s.pattern + "(" + $scope.queryParts.anyResourceName + ")>)", "g");
 			array.length = 0;
 			var match;
 			while (match = regexp.exec(section)) {
@@ -487,9 +550,34 @@
 			}
 		};
 		
+		$scope.getAllVars = function () {
+			$scope.allVars = [];
+			var firstBracket = $scope.query.indexOf("{");
+			var lastBracket = $scope.query.lastIndexOf("}");
+			if (!~firstBracket || !~lastBracket) {
+				return;
+			}
+			var section = $scope.query.substr(firstBracket, lastBracket - firstBracket);
+			var regexp = new RegExp("[ ]*(\\?[\\w]+)", "g");
+			var match;
+			while (match = regexp.exec(section)) {
+				if (!~$scope.allVars.indexOf(match[1])) {
+					$scope.allVars.push(match[1]);
+				}
+			}
+		};
+		
+		$scope.setBasicQuery = function () {
+			$scope.query = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX d2s: <http://www.discover2share.net/d2s-ont/>\nPREFIX dbpp: <http://dbpedia.org/property/>\n\nSelect * WHERE {\n    ?platform rdf:type d2s:P2P_SCC_Platform.\n  	?platform rdfs:label ?label.\n} ORDER BY ?label";
+		}
+		
 		$scope.setAllDetailsQuery = function () {
 			$scope.query = "PREFIX d2s: <http://www.discover2share.net/d2s-ont/>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX dbpp: <http://dbpedia.org/property/>\nPREFIX dbpo: <http://dbpedia.org/ontology/>\nPREFIX owl: <http://www.w3.org/2002/07/owl#>\n\nSelect ?platform ?label ?url ?resourceType ?consumerInvolvement ?launchCityName ?launchCountryName ?yearLaunch ?residenceCityName ?residenceCountryName ?marketMediation ?offering ?geographicScope ?moneyFlow ?pattern ?temporality ?consumerism ?resourceOwner ?serviceDurationMin ?serviceDurationMax ?app ?trustContribution ?typeOfAccessedObject WHERE {\n    ?platform rdf:type d2s:P2P_SCC_Platform.\n    ?platform rdfs:label ?label.\n    ?platform dbpp:url ?url.\n    OPTIONAL {\n        ?platform d2s:has_resource_type ?rt.\n        ?rt rdfs:label ?resourceType.\n    }.\n    OPTIONAL {\n        ?platform d2s:has_consumer_involvement ?ci.\n        ?ci rdfs:label ?consumerInvolvement.\n    }.\n    OPTIONAL {\n        ?platform d2s:launched_in ?launch.\n        OPTIONAL {\n            ?launch dbpp:locationCity ?launchCity.\n            ?launchCity rdfs:label ?launchCityName.\n        }.\n        OPTIONAL {\n            ?launch dbpp:locationCountry ?launchCountry.\n            ?launchCountry rdfs:label ?launchCountryName.\n        }.\n    }. \n    OPTIONAL {\n        ?platform dbpp:launchYear ?yearLaunch.\n    }.\n    OPTIONAL {\n        ?platform d2s:operator_resides_in ?residence.\n        OPTIONAL {\n            ?residence dbpp:locationCity ?residenceCity.\n            ?residenceCity rdfs:label ?residenceCityName.\n        }.\n        OPTIONAL {\n            ?residence dbpp:locationCountry ?residenceCountry.\n            ?residenceCountry rdfs:label ?residenceCountryName.\n        }.\n    }.\n    OPTIONAL {\n        ?platform d2s:has_market_mediation ?me.\n        ?me rdfs:label ?marketMediation.\n    }.\n    OPTIONAL {\n        ?platform d2s:has_market_integration ?integration.\n        OPTIONAL {\n            ?integration d2s:markets_are ?of.\n            ?of rdfs:label ?offering.\n        }.\n        OPTIONAL {\n            ?integration d2s:has_scope ?sc.\n            ?sc rdfs:label ?geographicScope.\n        }.\n    }.\n    OPTIONAL {\n        ?platform d2s:has_money_flow ?mf.\n        ?mf rdfs:label ?moneyFlow.\n    }.\n    OPTIONAL {\n        ?platform d2s:has_p2p_scc_pattern ?patternNode.\n        ?patternNode rdf:type ?pa.\n        ?pa rdfs:label ?pattern.\n        OPTIONAL {\n            ?patternNode d2s:has_temporality ?te.\n            ?te rdfs:label ?temporality.\n        }.\n    }.\n    OPTIONAL {\n        ?platform d2s:promotes ?co.\n        ?co rdfs:label ?consumerism.\n    }.\n    OPTIONAL {\n        ?platform d2s:has_resource_owner ?ro.\n        ?ro rdfs:label ?resourceOwner.\n    }.\n    OPTIONAL {\n        ?platform d2s:min_service_duration ?serviceDurationMin.\n    }.\n    OPTIONAL {\n        ?platform d2s:max_service_duration ?serviceDurationMax.\n    }.\n    OPTIONAL {\n        ?platform d2s:has_app ?ap.\n        ?ap rdfs:label ?app.\n    }.\n    OPTIONAL {\n        ?platform d2s:has_trust_contribution ?tc.\n        ?tc rdfs:label ?trustContribution.\n    }.\n    OPTIONAL {\n        ?platform d2s:accessed_object_has_type ?ot.\n        ?ot rdfs:label ?typeOfAccessedObject.\n    }.\n} ORDER BY ?platform";
 		};
+
+		$timeout(function(){ // execute when the page is fully loaded
+		    $scope.setFilterFromQuery();
+		});
 	});
 	
 })();

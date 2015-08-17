@@ -23,5 +23,7 @@ public interface OntologyService {
 	public Platform getSuggestion(int id);
 
 	public String doQuery(String query);
+
+	public List<Map<String, String>> getAllCities();
 	
 }

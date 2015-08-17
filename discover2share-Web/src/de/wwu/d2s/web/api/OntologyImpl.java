@@ -50,4 +50,9 @@ public class OntologyImpl implements OntologyApi {
 		return ontologyService.doQuery(query);
 	}
 
+	@Override
+	public List<Map<String, String>> getAllCities() {
+		return ontologyService.getAllCities();
+	}
+
 }

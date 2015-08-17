@@ -18,43 +18,38 @@
 	<div class="col-md-2">
 		<div><strong>Country of Launch</strong></div>
 		<input type="text" class="form-control"	ng-model="filter.countryLaunch"
-						typeahead="country.resourceName as country.countryName + ' (' + country.countryCode + ')' for country in countries | orderBy: 'countryName' | containsFilter: $viewValue" />
+						typeahead="country.resourceName as country.countryName + ' (' + country.countryCode + ')' for country in countries | orderBy: 'countryName' | countryContainsFilter: $viewValue" />
 	</div>
 	<div class="col-md-2">
 		<div><strong>City of Launch</strong></div>
-		<input type="text" ng-model="filter.cityLaunch" class="form-control" />
+		<input type="text" class="form-control"	ng-model="filter.cityLaunch"
+						typeahead="city.resourceName as city.name + ' (' + city.countryCode + ')' for city in cities | orderBy: 'name' | cityContainsFilter: $viewValue"/>
 	</div>
 	<div class="col-md-2">
 		<div><strong>Country of Residence</strong></div>
-		<input type="text" ng-model="filter.countryResidence" class="form-control" />
+		<input type="text" class="form-control"	ng-model="filter.countryResidence"
+						typeahead="country.resourceName as country.countryName + ' (' + country.countryCode + ')' for country in countries | orderBy: 'countryName' | countryContainsFilter: $viewValue" />
 	</div>
 	<div class="col-md-2">
 		<div><strong>City of Residence</strong></div>
-		<input type="text" ng-model="filter.cityResidence" class="form-control" />
+		<input type="text" class="form-control"	ng-model="filter.cityResidence"
+						typeahead="city.resourceName as city.name + ' (' + city.countryCode + ')' for city in cities | orderBy: 'name' | cityContainsFilter: $viewValue"/>
 	</div>
 </div>
 <div class="row row-margin">
 	<div class="col-md-2">
 		<div><strong>Year of Launch</strong></div>
 		<select ng-model="filter.yearLaunch" class="form-control">
-			<option ng-repeat="year in getYears()" value="http://www.discover2share.net/d2s-ont/{{year}}">{{year}}</option>
-			<option value="2011">2011</option>
-			<option value="2012">2012</option>
-			<option value="2013">2013</option>
+			<option value=""></option>
+			<option ng-repeat="year in getYears()" value="{{year}}">{{year}}</option>
 		</select>
 	</div>
 	<div class="col-md-2">
 		<div><strong>Language</strong></div>
-		<select class="form-control" ng-model="filter.language" name="lang{{$index}}" cu-enter="addOption(platform.languageObjects)" cu-focuslast>
-			<option ng-repeat="l in languages" value="http://www.discover2share.net/d2s-ont/{{l.resourceName}}">{{l.name}}</option>
-			<option value="German">German</option>
-			<option value="Germani">Germani</option>
+		<select class="form-control" ng-model="filter.language" name="lang{{$index}}">
+			<option value=""></option>
+			<option ng-repeat="l in languages" value="{{l.resourceName}}">{{l.name}}</option>
 		</select>
-		<span class="input-group-btn" ng-if="platform.languageObjects.length>1">
-			<button type="button" class="btn btn-default" data-type="plus" data-field="lang{{$index}}" ng-click="platform.languageObjects.splice($index,1)">
-				<span class="glyphicon glyphicon-minus"></span>&nbsp;
-			</button>
-		</span>
 	</div>
 	<div class="col-md-2">
 		<div><strong>Market Mediation</strong></div>
@@ -192,11 +187,18 @@
 		<div><strong>Limit results</strong></div>
 		<input type="number" min="1" ng-model="filter.limit" class="form-control" />
 	</div>
+	<div class="col-md-2">
+		<div><strong>Order by</strong></div>
+		<select class="form-control" ng-model="filter.orderBy">
+			<option value=""></option>
+			<option ng-repeat="var in allVars" value="{{var}}">{{var}}</option>
+		</select>
+	</div>
 </div>
 
 <div class="row row-margin">
 	<button type="button" ng-click="setAllDetailsQuery()" class="btn btn-primary">Example query: All details</button>
-	<button type="button" ng-click="" class="btn btn-primary">Reset to basic query</button>
+	<button type="button" ng-click="setBasicQuery()" class="btn btn-primary">Reset to basic query</button>
 </div>
 
 <div class="row row-margin">
@@ -206,5 +208,5 @@
 
 <div class="row row-margin">
 	<h4><strong>Results:</strong></h4>
-	<div cu-yasr="yasrConfig" class="row"></div>
+	<div cu-yasr="yasrConfig" ng-model="results"></div>
 </div>
