@@ -1,172 +1,185 @@
 <h1>Query platforms</h1>
 
 <h4><strong>Build query using platform options:</strong></h4>
-<div class="row row-margin">
-	<div class="col-md-2">
-		<div><strong>Resource Type</strong></div>
-		<input type="text" class="form-control"	ng-model="filter.resourceType"
-						typeahead="rt.resourceName as rt.name for rt in resourceTypes | orderBy: 'name' | resourceContainsFilter: $viewValue" />
-	
+<div class="alert alert-info" role="alert" ng-if="platformVar === null">
+	The filters require the definition of a platform variable in the SPARQL query (e.g. <em>?platform rdf:type d2s:P2P_SCC_Platform.</em>)
+	<button type="button" class="btn btn-sm btn-primary" ng-click="insertPlatformVar()">Insert platform variable</button>
+</div> 
+<div class="topBottomBorder row-margin-15" cu-overlay="platformVar">
+	<div class="row row-margin-15">
+		<div class="col-md-3">
+			<div><strong>Resource Type</strong></div>
+			<input type="text" class="form-control"	ng-model="filter.resourceType"
+							typeahead="rt.resourceName as rt.name for rt in resourceTypes | orderBy: 'name' | resourceContainsFilter: $viewValue" />
+		
+		</div>
+		<div class="col-md-2">
+			<div><strong>Consumer Involvement</strong></div>
+			<select class="form-control" ng-model="filter.consumerInvolvement">
+				<option value=""></option>
+				<option value="Full_Service">Full-Service</option>
+				<option value="Self_Service">Self-Service</option>
+				<option value="In_Between">In-Between</option>
+			</select>
+		</div>
+		<div class="col-md-2">
+			<div><strong>Resource Owner</strong></div>
+			<select class="form-control" ng-model="filter.resourceOwner">
+					<option value=""></option>
+					<option value="Private">Private</option>
+					<option value="Business">Business</option>
+					<option value="Private_and_business">Private and business</option>
+			</select>
+		</div>
+		<div class="col-md-2">
+			<div><strong>Type of Accessed Obj.</strong></div>
+			<select class="form-control" ng-model="filter.typeOfAccessedObject">
+				<option value=""></option>
+				<option value="Functional">Functional</option>
+				<option value="Experiential">Experiential</option>
+				<option value="Mixed">Mixed</option>
+			</select>
+		</div>
+		<div class="col-md-3">
+			<div><strong>Language</strong></div>
+				<input type="text" class="form-control"	ng-model="filter.language"
+							typeahead="language.resourceName as language.name for language in languages | orderBy: 'name' | resourceContainsFilter: $viewValue" />
+		</div>
 	</div>
-	<div class="col-md-2">
-		<div><strong>Consumer Involvement</strong></div>
-		<select class="form-control" ng-model="filter.consumerInvolvement">
-			<option value=""></option>
-			<option value="Full_Service">Full-Service</option>
-			<option value="Self_Service">Self-Service</option>
-			<option value="In_Between">In-Between</option>
-		</select>
+	<div class="row row-margin-15">
+		<div class="col-md-3">
+			<div><strong>Country of Launch</strong></div>
+			<input type="text" class="form-control"	ng-model="filter.countryLaunch"
+							typeahead="country.resourceName as country.countryName + ' (' + country.countryCode + ')' for country in countries | orderBy: 'countryName' | countryContainsFilter: $viewValue" />
+		</div>
+		<div class="col-md-3">
+			<div><strong>City of Launch</strong></div>
+			<input type="text" class="form-control"	ng-model="filter.cityLaunch"
+							typeahead="city.resourceName as city.name + ' (' + city.countryCode + ')' for city in cities | orderBy: 'name' | resourceContainsFilter: $viewValue"/>
+		</div>
+		<div class="col-md-3">
+			<div><strong>Country of Residence</strong></div>
+			<input type="text" class="form-control"	ng-model="filter.countryResidence"
+							typeahead="country.resourceName as country.countryName + ' (' + country.countryCode + ')' for country in countries | orderBy: 'countryName' | countryContainsFilter: $viewValue" />
+		</div>
+		<div class="col-md-3">
+			<div><strong>City of Residence</strong></div>
+			<input type="text" class="form-control"	ng-model="filter.cityResidence"
+							typeahead="city.resourceName as city.name + ' (' + city.countryCode + ')' for city in cities | orderBy: 'name' | resourceContainsFilter: $viewValue"/>
+		</div>
 	</div>
-	<div class="col-md-2">
-		<div><strong>Country of Launch</strong></div>
-		<input type="text" class="form-control"	ng-model="filter.countryLaunch"
-						typeahead="country.resourceName as country.countryName + ' (' + country.countryCode + ')' for country in countries | orderBy: 'countryName' | countryContainsFilter: $viewValue" />
+	<div class="row">
+		<div class="col-md-2">
+			<div><strong>Year of Launch</strong></div>
+			<select ng-model="filter.yearLaunch" class="form-control">
+				<option value=""></option>
+				<option ng-repeat="year in getYears()" value="{{year}}">{{year}}</option>
+			</select>
+		</div>
+		<div class="col-md-2">
+			<div><strong>Service Duration Min.</strong></div>
+			<select class="form-control" ng-model="filter.serviceDurationMin">
+				<option value=""></option>
+				<option value="http://www.w3.org/2006/time#unitMinute">Minutes</option>
+				<option value="http://www.w3.org/2006/time#unitHour">Hours</option>
+				<option value="http://www.w3.org/2006/time#unitDay">Days</option>
+				<option value="http://www.w3.org/2006/time#unitWeek">Weeks</option>
+				<option value="http://www.w3.org/2006/time#unitMonth">Months</option>
+			</select>
+		</div>
+		<div class="col-md-2">
+			<div><strong>Service Duration Max.</strong></div>
+			<select class="form-control" ng-model="filter.serviceDurationMax">
+				<option value=""></option>
+				<option value="http://www.w3.org/2006/time#unitMinute">Minutes</option>
+				<option value="http://www.w3.org/2006/time#unitHour">Hours</option>
+				<option value="http://www.w3.org/2006/time#unitDay">Days</option>
+				<option value="http://www.w3.org/2006/time#unitWeek">Weeks</option>
+				<option value="http://www.w3.org/2006/time#unitMonth">Months</option>
+			</select>
+		</div>
+		<div class="col-md-2">
+			<div><strong>Money Flow</strong></div>
+			<select class="form-control" ng-model="filter.moneyFlow">
+				<option value=""></option>
+				<option value="C2C">C2C</option>
+				<option value="C2B2C">C2B2C</option>
+			</select>
+		</div>
+		<div class="col-md-2">
+			<div><strong>Integration</strong></div>
+			<p>
+				<select class="form-control" ng-model="filter.marketOffering">
+					<option value=""></option>
+					<option value="Integrated">Integrated</option>
+					<option value="Separated">Separated</option>
+				</select>
+			</p>
+			<p>
+				<select class="form-control" ng-model="filter.geographicScope">
+					<option value=""></option>
+					<option value="Neighbourhood-wide">Neighbourhood-wide</option>
+					<option value="City-wide">City-wide</option>
+					<option value="State-wide">State-wide</option>
+					<option value="Country-wide">Country-wide</option>
+					<option value="Region-wide">Region-wide</option>
+					<option value="Global">Global</option>
+				</select>
+			</p>
+		</div>
+		<div class="col-md-2">
+			<div><strong>P2P SCC Pattern</strong></div>
+			<p>
+				<select class="form-control" ng-model="filter.p2pSccPattern">
+					<option value=""></option>
+					<option value="Deferred">Deferred</option>
+					<option value="Immediate">Immediate</option>
+					<option value="Recurrent">Recurrent</option>
+				</select>
+			</p>
+			<p>
+				<select class="form-control" ng-model="filter.temporality">
+					<option value=""></option>
+					<option value="Once">Once</option>
+					<option value="Often">Often</option>
+				</select>
+			</p>
+		</div>
 	</div>
-	<div class="col-md-2">
-		<div><strong>City of Launch</strong></div>
-		<input type="text" class="form-control"	ng-model="filter.cityLaunch"
-						typeahead="city.resourceName as city.name + ' (' + city.countryCode + ')' for city in cities | orderBy: 'name' | resourceContainsFilter: $viewValue"/>
-	</div>
-	<div class="col-md-2">
-		<div><strong>Country of Residence</strong></div>
-		<input type="text" class="form-control"	ng-model="filter.countryResidence"
-						typeahead="country.resourceName as country.countryName + ' (' + country.countryCode + ')' for country in countries | orderBy: 'countryName' | countryContainsFilter: $viewValue" />
-	</div>
-	<div class="col-md-2">
-		<div><strong>City of Residence</strong></div>
-		<input type="text" class="form-control"	ng-model="filter.cityResidence"
-						typeahead="city.resourceName as city.name + ' (' + city.countryCode + ')' for city in cities | orderBy: 'name' | resourceContainsFilter: $viewValue"/>
-	</div>
-</div>
-<div class="row row-margin">
-	<div class="col-md-2">
-		<div><strong>Year of Launch</strong></div>
-		<select ng-model="filter.yearLaunch" class="form-control">
-			<option value=""></option>
-			<option ng-repeat="year in getYears()" value="{{year}}">{{year}}</option>
-		</select>
-	</div>
-	<div class="col-md-2">
-		<div><strong>Language</strong></div>
-		<select class="form-control" ng-model="filter.language" name="lang{{$index}}">
-			<option value=""></option>
-			<option ng-repeat="l in languages" value="{{l.resourceName}}">{{l.name}}</option>
-		</select>
-	</div>
-	<div class="col-md-2">
-		<div><strong>Market Mediation</strong></div>
-		<div ng-repeat="mediation in marketMediations" class="checkbox">
-			<label> <input type="checkbox" value="{{mediation.resource}}"
-				ng-checked="filter.marketMediations.indexOf(mediation.resource)>-1"
-				ng-click="toggleSelection(mediation.resource,filter.marketMediations)">
-				{{mediation.label}}
+	<div class="row row-margin-5">
+		<div class="col-md-12">
+			<strong>Promoted Consumerism:</strong>
+			<label ng-repeat="consumerism in consumerisms" class="checkbox-inline"> <input type="checkbox" name="consumerisms[]"
+					value="{{consumerism}}"
+					ng-checked="filter.consumerisms.indexOf(consumerism)>-1"
+					ng-click="toggleSelection(consumerism,filter.consumerisms)">
+					{{consumerism}}
 			</label>
 		</div>
 	</div>
-	<div class="col-md-2">
-		<div><strong>Integration</strong></div>
-		<p>
-			<select class="form-control" ng-model="filter.marketOffering">
-				<option value=""></option>
-				<option value="Integrated">Integrated</option>
-				<option value="Separated">Separated</option>
-			</select>
-		</p>
-		<p>
-			<select class="form-control" ng-model="filter.geographicScope">
-				<option value=""></option>
-				<option value="Neighbourhood-wide">Neighbourhood-wide</option>
-				<option value="City-wide">City-wide</option>
-				<option value="State-wide">State-wide</option>
-				<option value="Country-wide">Country-wide</option>
-				<option value="Region-wide">Region-wide</option>
-				<option value="Global">Global</option>
-			</select>
-		</p>
-	</div>
-	<div class="col-md-2">
-		<div><strong>Money Flow</strong></div>
-		<select class="form-control" ng-model="filter.moneyFlow">
-			<option value=""></option>
-			<option value="C2C">C2C</option>
-			<option value="C2B2C">C2B2C</option>
-		</select>
-	</div>
-	<div class="col-md-2">
-		<div><strong>P2P SCC Pattern</strong></div>
-		<p>
-			<select class="form-control" ng-model="filter.p2pSccPattern">
-				<option value=""></option>
-				<option value="Deferred">Deferred</option>
-				<option value="Immediate">Immediate</option>
-				<option value="Recurrent">Recurrent</option>
-			</select>
-		</p>
-		<p>
-			<select class="form-control" ng-model="filter.temporality">
-				<option value=""></option>
-				<option value="Once">Once</option>
-				<option value="Often">Often</option>
-			</select>
-		</p>
-	</div>
-</div>
-<div class="row row-margin">
-	<div class="col-md-2">
-		<div><strong>Promoted Consumerism</strong></div>
-		<div ng-repeat="consumerism in consumerisms" class="checkbox">
-			<label> <input type="checkbox" name="consumerisms[]"
-				value="{{consumerism}}"
-				ng-checked="filter.consumerisms.indexOf(consumerism)>-1"
-				ng-click="toggleSelection(consumerism,filter.consumerisms)">
-				{{consumerism}}
+	<div class="row row-margin-5">
+		<div class="col-md-12">
+			<strong>Market Mediation:</strong>
+			<label ng-repeat="mediation in marketMediations" class="checkbox-inline"> <input type="checkbox" value="{{mediation.resource}}"
+					ng-checked="filter.marketMediations.indexOf(mediation.resource)>-1"
+					ng-click="toggleSelection(mediation.resource,filter.marketMediations)">
+					{{mediation.label}}
 			</label>
 		</div>
 	</div>
-	<div class="col-md-2">
-		<div><strong>Resource Owner</strong></div>
-		<select class="form-control" ng-model="filter.resourceOwner">
-				<option value=""></option>
-				<option value="Private">Private</option>
-				<option value="Business">Business</option>
-				<option value="Private_and_business">Private and business</option>
-		</select>
-	</div>
-	<div class="col-md-2">
-		<div><strong>Service Duration Min.</strong></div>
-		<select class="form-control" ng-model="filter.serviceDurationMin">
-			<option value=""></option>
-			<option value="http://www.w3.org/2006/time#unitMinute">Minutes</option>
-			<option value="http://www.w3.org/2006/time#unitHour">Hours</option>
-			<option value="http://www.w3.org/2006/time#unitDay">Days</option>
-			<option value="http://www.w3.org/2006/time#unitWeek">Weeks</option>
-			<option value="http://www.w3.org/2006/time#unitMonth">Months</option>
-		</select>
-	</div>
-	<div class="col-md-2">
-		<div><strong>Service Duration Max.</strong></div>
-		<select class="form-control" ng-model="filter.serviceDurationMax">
-			<option value=""></option>
-			<option value="http://www.w3.org/2006/time#unitMinute">Minutes</option>
-			<option value="http://www.w3.org/2006/time#unitHour">Hours</option>
-			<option value="http://www.w3.org/2006/time#unitDay">Days</option>
-			<option value="http://www.w3.org/2006/time#unitWeek">Weeks</option>
-			<option value="http://www.w3.org/2006/time#unitMonth">Months</option>
-		</select>
-	</div>
-	<div class="col-md-2">
-		<div><strong>Smartphone Apps</strong></div>
-		<div ng-repeat="app in smartphoneApps" class="checkbox">
-			<label> <input type="checkbox" name="filter.apps[]"
+	<div class="row row-margin-5">
+		<div class="col-md-12">
+			<strong>Smartphone Apps:</strong>
+			<label ng-repeat="app in smartphoneApps" class="checkbox-inline"> <input type="checkbox" name="filter.apps[]"
 				value="{{app}}" ng-checked="filter.apps.indexOf(app.resource)>-1"
 				ng-click="toggleSelection(app.resource,filter.apps)"> {{app.label}}
 			</label>
 		</div>
 	</div>
-	<div class="col-md-2">
-		<div><strong>Trust Contribution</strong></div>
-		<div ng-repeat="contribution in trustContributions" class="checkbox">
-			<label> <input type="checkbox"
+	<div class="row row-margin-5">
+		<div class="col-md-12">
+			<strong>Trust Contribution:</strong>
+			<label ng-repeat="contribution in trustContributions" class="checkbox-inline"> <input type="checkbox"
 				name="filter.trustContributions[]" value="{{contribution.resource}}"
 				ng-checked="filter.trustContributions.indexOf(contribution.resource)>-1"
 				ng-click="toggleSelection(contribution.resource,filter.trustContributions)">
@@ -175,15 +188,11 @@
 		</div>
 	</div>
 </div>
-<div class="row row-margin">
-	<div class="col-md-2">
-		<div><strong>Type of Accessed Obj.</strong></div>
-		<select class="form-control" ng-model="filter.typeOfAccessedObject">
-			<option value=""></option>
-			<option value="Functional">Functional</option>
-			<option value="Experiential">Experiential</option>
-			<option value="Mixed">Mixed</option>
-		</select>
+<div class="row row-margin-5">
+	<div class="col-md-8">
+		<div>&nbsp;</div>
+		<button type="button" ng-click="setBasicQuery()" class="btn btn-primary">Reset to basic query</button>
+		<button type="button" ng-click="setAllDetailsQuery()" class="btn btn-primary">Set all details example query</button>
 	</div>
 	<div class="col-md-2">
 		<div><strong>Limit results</strong></div>
@@ -198,17 +207,12 @@
 	</div>
 </div>
 
-<div class="row row-margin">
-	<button type="button" ng-click="setAllDetailsQuery()" class="btn btn-primary">Example query: All details</button>
-	<button type="button" ng-click="setBasicQuery()" class="btn btn-primary">Reset to basic query</button>
-</div>
-
-<div class="row row-margin">
+<div class="row row-margin-15">
 	<h4><strong>Query:</strong></h4>
 	<div cu-yasqe="yasqeConfig" ng-model="query"></div>
 </div>
 
-<div class="row row-margin">
+<div class="row row-margin-15">
 	<h4><strong>Results:</strong></h4>
 	<div cu-yasr="yasrConfig" ng-model="results"></div>
 </div>

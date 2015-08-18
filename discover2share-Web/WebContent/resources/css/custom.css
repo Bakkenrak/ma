@@ -3,8 +3,11 @@
   display: none !important;
 }
 
-.row-margin {
+.row-margin-15 {
 	margin-bottom: 15px;
+}
+.row-margin-5 {
+	margin-bottom: 5px;
 }
 
 #detailTable tr td:nth-child(1) {
@@ -12,4 +15,18 @@
 }
 #detailTable tr td:nth-child(3) {
 	width: 50%;
+}
+
+.topBottomBorder {
+	border-top: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	padding-top: 5px;
+}
+
+.overlay {
+    background-color: white;
+    filter:alpha(opacity=50); /* IE */
+    opacity: 0.5; /* Safari, Opera */
+    -moz-opacity:0.50; /* FireFox */
+    z-index: 20;
 }

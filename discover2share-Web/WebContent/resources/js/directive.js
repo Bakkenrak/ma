@@ -148,5 +148,43 @@
 			}
 		};
 	});
+	
+	d2sApp.directive('cuOverlay', function ($timeout) {
+		return function (scope, element, attrs) {
+			if (attrs.cuOverlay) {				
+				var dim = element[0].getBoundingClientRect();
+				var overlay = angular.element(document.createElement("div"));
+				element.append(overlay);
+				$timeout(function() { // timeout to await the possible rendering of the browser scrollbar
+					overlay.css({
+						position: "absolute",
+						top: element[0].offsetTop + "px",
+						left: element[0].offsetLeft + "px",
+						width: element[0].offsetWidth + "px",
+						height: element[0].offsetHeight + "px",
+						display: scope.$eval(attrs.cuOverlay) ? "none" : "block"
+					});
+				});
+				overlay.addClass("overlay");
+				
+				angular.element(window).on("resize", function () {
+					overlay[0].style.top = element[0].offsetTop + "px";
+					overlay[0].style.left = element[0].offsetLeft + "px";
+					overlay[0].style.width = element[0].offsetWidth + "px";
+					overlay[0].style.height = element[0].offsetHeight + "px";
+				});
+				
+				scope.$watch(attrs.cuOverlay, function (newValue, oldValue) {
+					if(!newValue && newValue !== oldValue) {
+						overlay[0].style.display = "block";
+					} else {
+						overlay[0].style.display = "none";
+					}
+				});
+			} else {
+				throw new Error("Please provide a value for the cu-overlay directive.");
+			}
+		};
+	});
 
 })();

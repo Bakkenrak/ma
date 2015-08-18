@@ -205,7 +205,7 @@
 				if (newValue.orderBy !== oldValue.orderBy) {
 					var lastBracket = $scope.query.lastIndexOf("}");
 					if (~lastBracket) {
-						var endPart = $scope.query.substr(lastBracket + 1).replace(new RegExp("([ ]*ORDER BY[ ]*(?:\\?[\\w]+)?)", "i"), "");
+						var endPart = $scope.query.substr(lastBracket + 1).replace(new RegExp("([ ]*ORDER[ ]+BY[ ]*(?:\\?[\\w]+)?)", "i"), "");
 						if (newValue.orderBy) {
 							endPart = " ORDER BY " + $scope.filter.orderBy + endPart;
 						}
@@ -423,103 +423,106 @@
 		
 		$scope.setFilterFromQuery = function () {
 			var platformVar = $scope.getPlatformVar(); // find platform variable
-			// copy query section in which the platform variable resides
-			var section = $scope.query.substr(platformVar.openingBracket, platformVar.closingBracket - platformVar.openingBracket);
-			
-			// check for constraints matching any filters in the form
-			var match, count;
-			
-			// resource types
-			var regexp = new RegExp("\\" + platformVar.name + "[ ]+" + $scope.queryParts.resourceType + "[ ]+" + "(?:d2s:(" + $scope.queryParts.anyResourceName + ")|<" + $scope.queryParts.bases.d2s.pattern + "(" + $scope.queryParts.anyResourceName + ")>)", "g");
-			count = 0;
-			while (match = regexp.exec(section)) {
-				$scope.filter.resourceType = match[1] || match[2];
-				count++;
+			if (platformVar) {
+				// copy query section in which the platform variable resides
+				var section = $scope.query.substr(platformVar.openingBracket, platformVar.closingBracket - platformVar.openingBracket);
+				
+				// check for constraints matching any filters in the form
+				var match, count;
+				
+				// resource types
+				var regexp = new RegExp("\\" + platformVar.name + "[ ]+" + $scope.queryParts.resourceType + "[ ]+" + "(?:d2s:(" + $scope.queryParts.anyResourceName + ")|<" + $scope.queryParts.bases.d2s.pattern + "(" + $scope.queryParts.anyResourceName + ")>)", "g");
+				count = 0;
+				while (match = regexp.exec(section)) {
+					$scope.filter.resourceType = match[1] || match[2];
+					count++;
+				}
+				if (count === 0) {
+					$scope.filter.resourceType = "";
+				}
+				
+				// consumer involvement
+				$scope.filter.consumerInvolvement = $scope.findPattern($scope.queryParts.consumerInvolvement);
+				
+				//launch
+				var locationVar = $scope.getIntermediateVar(platformVar, $scope.queryParts.launch);
+				if (locationVar) {
+					// city
+					$scope.filter.cityLaunch = $scope.findPattern($scope.queryParts.city, locationVar);
+					// country
+					$scope.filter.countryLaunch = $scope.findPattern($scope.queryParts.country, locationVar);
+				}
+				
+				// residence
+				locationVar = $scope.getIntermediateVar(platformVar, $scope.queryParts.residence);
+				if (locationVar) {
+					// city
+					$scope.filter.cityResidence = $scope.findPattern($scope.queryParts.city, locationVar);
+					// country
+					$scope.filter.countryResidence = $scope.findPattern($scope.queryParts.country, locationVar);
+				}
+				
+				// year
+				$scope.filter.yearLaunch = $scope.findPattern($scope.queryParts.yearLaunch);
+				
+				// language
+				$scope.filter.language = $scope.findPattern($scope.queryParts.language);
+				
+				// market mediation
+				$scope.findPatternArray($scope.queryParts.marketMediation, $scope.filter.marketMediations);
+				
+				// integration
+				var integrationVar = $scope.getIntermediateVar(platformVar, $scope.queryParts.integration);
+				if (integrationVar) {
+					// market offering
+					$scope.filter.marketOffering = $scope.findPattern($scope.queryParts.marketOffering, integrationVar);
+					// geographic scope
+					$scope.filter.geographicScope = $scope.findPattern($scope.queryParts.geographicScope, integrationVar);
+				}
+				
+				// money flow
+				$scope.filter.moneyFlow = $scope.findPattern($scope.queryParts.moneyFlow);
+				
+				// p2p scc pattern
+				var patternVar = $scope.getIntermediateVar(platformVar, $scope.queryParts.p2pSccPattern);
+				if (patternVar) {
+					// market offering
+					$scope.filter.p2pSccPattern = $scope.findPattern("rdf:type", patternVar);
+					// geographic scope
+					$scope.filter.temporality = $scope.findPattern($scope.queryParts.temporality, patternVar);
+				}
+				
+				// consumerism
+				$scope.findPatternArray($scope.queryParts.consumerism, $scope.filter.consumerisms);
+				
+				// resource owner
+				$scope.filter.resourceOwner = $scope.findPattern($scope.queryParts.resourceOwner);
+				
+				// service duration min
+				$scope.filter.serviceDurationMin = $scope.findPattern($scope.queryParts.serviceDurationMin, undefined, true);
+				// service duration max
+				$scope.filter.serviceDurationMax = $scope.findPattern($scope.queryParts.serviceDurationMax, undefined, true);
+				
+				// smartphone apps
+				$scope.findPatternArray($scope.queryParts.app, $scope.filter.apps);
+				
+				// trust contribution
+				$scope.findPatternArray($scope.queryParts.trustContribution, $scope.filter.trustContributions);
+				
+				// type of accessed object
+				$scope.filter.typeOfAccessedObject = $scope.findPattern($scope.queryParts.typeOfAccessedObject);
 			}
-			if (count === 0) {
-				$scope.filter.resourceType = "";
-			}
-			
-			// consumer involvement
-			$scope.filter.consumerInvolvement = $scope.findPattern($scope.queryParts.consumerInvolvement);
-			
-			//launch
-			var locationVar = $scope.getIntermediateVar(platformVar, $scope.queryParts.launch);
-			if (locationVar) {
-				// city
-				$scope.filter.cityLaunch = $scope.findPattern($scope.queryParts.city, locationVar);
-				// country
-				$scope.filter.countryLaunch = $scope.findPattern($scope.queryParts.country, locationVar);
-			}
-			
-			// residence
-			locationVar = $scope.getIntermediateVar(platformVar, $scope.queryParts.residence);
-			if (locationVar) {
-				// city
-				$scope.filter.cityResidence = $scope.findPattern($scope.queryParts.city, locationVar);
-				// country
-				$scope.filter.countryResidence = $scope.findPattern($scope.queryParts.country, locationVar);
-			}
-			
-			// year
-			$scope.filter.yearLaunch = $scope.findPattern($scope.queryParts.yearLaunch);
-			
-			// language
-			$scope.filter.language = $scope.findPattern($scope.queryParts.language);
-			
-			// market mediation
-			$scope.findPatternArray($scope.queryParts.marketMediation, $scope.filter.marketMediations);
-			
-			// integration
-			var integrationVar = $scope.getIntermediateVar(platformVar, $scope.queryParts.integration);
-			if (integrationVar) {
-				// market offering
-				$scope.filter.marketOffering = $scope.findPattern($scope.queryParts.marketOffering, integrationVar);
-				// geographic scope
-				$scope.filter.geographicScope = $scope.findPattern($scope.queryParts.geographicScope, integrationVar);
-			}
-			
-			// money flow
-			$scope.filter.moneyFlow = $scope.findPattern($scope.queryParts.moneyFlow);
-			
-			// p2p scc pattern
-			var patternVar = $scope.getIntermediateVar(platformVar, $scope.queryParts.p2pSccPattern);
-			if (patternVar) {
-				// market offering
-				$scope.filter.p2pSccPattern = $scope.findPattern("rdf:type", patternVar);
-				// geographic scope
-				$scope.filter.temporality = $scope.findPattern($scope.queryParts.temporality, patternVar);
-			}
-			
-			// consumerism
-			$scope.findPatternArray($scope.queryParts.consumerism, $scope.filter.consumerisms);
-			
-			// resource owner
-			$scope.filter.resourceOwner = $scope.findPattern($scope.queryParts.resourceOwner);
-			
-			// service duration min
-			$scope.filter.serviceDurationMin = $scope.findPattern($scope.queryParts.serviceDurationMin, undefined, true);
-			// service duration max
-			$scope.filter.serviceDurationMax = $scope.findPattern($scope.queryParts.serviceDurationMax, undefined, true);
-			
-			// smartphone apps
-			$scope.findPatternArray($scope.queryParts.app, $scope.filter.apps);
-			
-			// trust contribution
-			$scope.findPatternArray($scope.queryParts.trustContribution, $scope.filter.trustContributions);
-			
-			// type of accessed object
-			$scope.filter.typeOfAccessedObject = $scope.findPattern($scope.queryParts.typeOfAccessedObject);
-			
 			
 			// limit
-			match = new RegExp("LIMIT[ ]*([0-9]*)", "i").exec($scope.query.substr($scope.query.lastIndexOf("}")));
-			if (match && !isNaN(match[1])) {
-				$scope.filter.limit = parseInt(match[1]);
+			var limit = new RegExp("LIMIT[ ]*([0-9]*)", "i").exec($scope.query.substr($scope.query.lastIndexOf("}")));
+			if (limit && !isNaN(limit[1])) {
+				$scope.filter.limit = parseInt(limit[1], 10);
 			}
 			
 			//order by
 			$scope.getAllVars();
+			var orderBy = new RegExp("[ ]*ORDER[ ]+BY[ ]*(\\?[\\w]+)", "i").exec($scope.query.substr($scope.query.lastIndexOf("}")));
+			$scope.filter.orderBy = orderBy ? orderBy[1] : "";
 			
 			$scope.userChange = true; // signal that changes were invoked by the user to avoid an unnecessary run of the filter method
 			// force filter watch event for those cases where it would not have been triggered because no changes were made here
@@ -573,11 +576,20 @@
 		};
 		
 		$scope.setBasicQuery = function () {
-			$scope.query = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX d2s: <http://www.discover2share.net/d2s-ont/>\nPREFIX dbpp: <http://dbpedia.org/property/>\n\nSelect * WHERE {\n    ?platform rdf:type d2s:P2P_SCC_Platform.\n  	?platform rdfs:label ?label.\n} ORDER BY ?label";
+			$scope.query = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX d2s: <http://www.discover2share.net/d2s-ont/>\nPREFIX dbpp: <http://dbpedia.org/property/>\n\nSelect * WHERE {\n    ?platform rdf:type d2s:P2P_SCC_Platform.\n  	?platform rdfs:label ?platformLabel.\n} ORDER BY ?platformLabel";
 		}
 		
 		$scope.setAllDetailsQuery = function () {
 			$scope.query = "PREFIX d2s: <http://www.discover2share.net/d2s-ont/>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX dbpp: <http://dbpedia.org/property/>\nPREFIX dbpo: <http://dbpedia.org/ontology/>\nPREFIX owl: <http://www.w3.org/2002/07/owl#>\n\nSelect ?platform ?label ?url ?resourceType ?consumerInvolvement ?launchCityName ?launchCountryName ?yearLaunch ?residenceCityName ?residenceCountryName ?marketMediation ?offering ?geographicScope ?moneyFlow ?pattern ?temporality ?consumerism ?resourceOwner ?serviceDurationMin ?serviceDurationMax ?app ?trustContribution ?typeOfAccessedObject WHERE {\n    ?platform rdf:type d2s:P2P_SCC_Platform.\n    ?platform rdfs:label ?label.\n    ?platform dbpp:url ?url.\n    OPTIONAL {\n        ?platform d2s:has_resource_type ?rt.\n        ?rt rdfs:label ?resourceType.\n    }.\n    OPTIONAL {\n        ?platform d2s:has_consumer_involvement ?ci.\n        ?ci rdfs:label ?consumerInvolvement.\n    }.\n    OPTIONAL {\n        ?platform d2s:launched_in ?launch.\n        OPTIONAL {\n            ?launch dbpp:locationCity ?launchCity.\n            ?launchCity rdfs:label ?launchCityName.\n        }.\n        OPTIONAL {\n            ?launch dbpp:locationCountry ?launchCountry.\n            ?launchCountry rdfs:label ?launchCountryName.\n        }.\n    }. \n    OPTIONAL {\n        ?platform dbpp:launchYear ?yearLaunch.\n    }.\n    OPTIONAL {\n        ?platform d2s:operator_resides_in ?residence.\n        OPTIONAL {\n            ?residence dbpp:locationCity ?residenceCity.\n            ?residenceCity rdfs:label ?residenceCityName.\n        }.\n        OPTIONAL {\n            ?residence dbpp:locationCountry ?residenceCountry.\n            ?residenceCountry rdfs:label ?residenceCountryName.\n        }.\n    }.\n    OPTIONAL {\n        ?platform d2s:has_market_mediation ?me.\n        ?me rdfs:label ?marketMediation.\n    }.\n    OPTIONAL {\n        ?platform d2s:has_market_integration ?integration.\n        OPTIONAL {\n            ?integration d2s:markets_are ?of.\n            ?of rdfs:label ?offering.\n        }.\n        OPTIONAL {\n            ?integration d2s:has_scope ?sc.\n            ?sc rdfs:label ?geographicScope.\n        }.\n    }.\n    OPTIONAL {\n        ?platform d2s:has_money_flow ?mf.\n        ?mf rdfs:label ?moneyFlow.\n    }.\n    OPTIONAL {\n        ?platform d2s:has_p2p_scc_pattern ?patternNode.\n        ?patternNode rdf:type ?pa.\n        ?pa rdfs:label ?pattern.\n        OPTIONAL {\n            ?patternNode d2s:has_temporality ?te.\n            ?te rdfs:label ?temporality.\n        }.\n    }.\n    OPTIONAL {\n        ?platform d2s:promotes ?co.\n        ?co rdfs:label ?consumerism.\n    }.\n    OPTIONAL {\n        ?platform d2s:has_resource_owner ?ro.\n        ?ro rdfs:label ?resourceOwner.\n    }.\n    OPTIONAL {\n        ?platform d2s:min_service_duration ?serviceDurationMin.\n    }.\n    OPTIONAL {\n        ?platform d2s:max_service_duration ?serviceDurationMax.\n    }.\n    OPTIONAL {\n        ?platform d2s:has_app ?ap.\n        ?ap rdfs:label ?app.\n    }.\n    OPTIONAL {\n        ?platform d2s:has_trust_contribution ?tc.\n        ?tc rdfs:label ?trustContribution.\n    }.\n    OPTIONAL {\n        ?platform d2s:accessed_object_has_type ?ot.\n        ?ot rdfs:label ?typeOfAccessedObject.\n    }.\n} ORDER BY ?platform";
+		};
+		
+		$scope.insertPlatformVar = function () {
+			var firstBracket = $scope.query.indexOf("{");
+			if (~firstBracket) {
+				$scope.query = $scope.query.substr(0, firstBracket + 1) + "\n    ?platform rdf:type d2s:P2P_SCC_Platform.\n    ?platform rdfs:label ?platformLabel.\n" + $scope.query.substr(firstBracket + 1);
+			} else {
+				$scope.query += "{\n    ?platform rdf:type d2s:P2P_SCC_Platform.\n    ?platform rdfs:label ?platformLabel.\n}";
+			}
 		};
 
 		$timeout(function(){ // execute when the page is fully loaded
