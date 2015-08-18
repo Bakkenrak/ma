@@ -109,8 +109,7 @@
 				var originalGetCell = YASR.plugins.table.defaults.getCellContent; // original YASR cell drawing method
 				YASR.plugins.table.defaults.getCellContent = function (yasr, plugin, bindings, sparqlVar, context) { // overwrite cell drawing
 					var newCell = originalGetCell(yasr, plugin, bindings, sparqlVar, context); // run original method
-					var platformVar = scope.platformVar || scope.getPlatformVar();
-					if ("?" + sparqlVar === platformVar.name) { // if current cell contains a value for the platform var
+					if ("?" + sparqlVar === scope.queryPlatformVar.name) { // if current cell contains a value for the platform var
 						var urlStart = newCell.indexOf("href") + 6;
 						newCell = newCell.substr(0, urlStart) + "platforms" + newCell.substr(urlStart + 37); // adjust link to platform's detail page
 					}
@@ -124,6 +123,8 @@
 				scope.yasr = YASR(element[0], config); // initialize YASR
 				
 				scope.yasqe.options.sparql.callbacks.complete = function (data) { // when YASQE completes SPARQL query
+					scope.queryPlatformVar = scope.platformVar || scope.getPlatformVar(); // save platform variable used at query time
+					
 					scope.yasr.setResponse(data.responseJSON); // set response to YASR (linking of YASR and YASQE)
 					
 					if (!ngModel) { // if an ng-model attribute is provided in the view
