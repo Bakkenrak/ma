@@ -25,5 +25,7 @@ public interface OntologyService {
 	public String doQuery(String query);
 
 	public List<Map<String, String>> getAllCities();
+
+	public List<Map<String, String>> getAllResourceTypes();
 	
 }

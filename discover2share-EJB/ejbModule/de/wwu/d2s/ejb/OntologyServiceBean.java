@@ -329,4 +329,42 @@ public class OntologyServiceBean implements OntologyService {
 		return output;
 	}
 
+	@Override
+	public List<Map<String, String>> getAllResourceTypes() {
+		String sparqlQuery = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
+				+ "PREFIX d2s: <http://www.discover2share.net/d2s-ont/>"
+				+ "Select ?resourceName ?name {"
+				+ "  ?resourceName rdfs:subClassOf d2s:Resource_Type."
+				+ "  ?resourceName rdfs:label ?name"
+				+ "}";
+		
+		Query query = QueryFactory.create(sparqlQuery);
+		QueryExecution qexec = QueryExecutionFactory.sparqlService(ENDPOINT, query);
+		ResultSet results = qexec.execSelect();
+
+		List<Map<String, String>> output = new ArrayList<Map<String, String>>();
+		while (results.hasNext()) {
+			Map<String, String> current = new HashMap<String, String>();
+			QuerySolution result = results.next();
+			for (String var : results.getResultVars()) {
+				RDFNode node = result.get(var);
+				if (node == null)
+					continue;
+
+				if (node.isLiteral()) {
+					String literal = node.asLiteral().getString();
+					current.put(var, literal);
+				} else if (node.isResource()) {
+					String uri = node.asResource().getURI();
+					if (uri != null)
+						current.put(var, uri.substring(38));
+				}
+			}
+			output.add(current);
+		}
+
+		qexec.close();
+		return output;
+	}
+
 }

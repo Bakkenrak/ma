@@ -19,6 +19,11 @@
 				$rootScope.languages = data.languages;
 			});
 		}
+		if (angular.isUndefined($rootScope.resourceTypes)) {
+			platformFactory.getResourceTypes().success(function (data) {
+				$rootScope.resourceTypes = data;
+			});
+		}
 		
 		$scope.marketMediations = [ 
 		    { resource: "Profit_from_peer_consumers", label: "Profit from peer consumers" }, 

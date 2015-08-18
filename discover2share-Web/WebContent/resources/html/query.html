@@ -4,7 +4,9 @@
 <div class="row row-margin">
 	<div class="col-md-2">
 		<div><strong>Resource Type</strong></div>
-		<input type="text" ng-model="filter.resourceType" class="form-control" />
+		<input type="text" class="form-control"	ng-model="filter.resourceType"
+						typeahead="rt.resourceName as rt.name for rt in resourceTypes | orderBy: 'name' | resourceContainsFilter: $viewValue" />
+	
 	</div>
 	<div class="col-md-2">
 		<div><strong>Consumer Involvement</strong></div>
@@ -23,7 +25,7 @@
 	<div class="col-md-2">
 		<div><strong>City of Launch</strong></div>
 		<input type="text" class="form-control"	ng-model="filter.cityLaunch"
-						typeahead="city.resourceName as city.name + ' (' + city.countryCode + ')' for city in cities | orderBy: 'name' | cityContainsFilter: $viewValue"/>
+						typeahead="city.resourceName as city.name + ' (' + city.countryCode + ')' for city in cities | orderBy: 'name' | resourceContainsFilter: $viewValue"/>
 	</div>
 	<div class="col-md-2">
 		<div><strong>Country of Residence</strong></div>
@@ -33,7 +35,7 @@
 	<div class="col-md-2">
 		<div><strong>City of Residence</strong></div>
 		<input type="text" class="form-control"	ng-model="filter.cityResidence"
-						typeahead="city.resourceName as city.name + ' (' + city.countryCode + ')' for city in cities | orderBy: 'name' | cityContainsFilter: $viewValue"/>
+						typeahead="city.resourceName as city.name + ' (' + city.countryCode + ')' for city in cities | orderBy: 'name' | resourceContainsFilter: $viewValue"/>
 	</div>
 </div>
 <div class="row row-margin">

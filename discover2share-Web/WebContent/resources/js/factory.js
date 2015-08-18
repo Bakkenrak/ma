@@ -97,6 +97,10 @@
 			return $http.get('resources/js/languages.json');
 		};
 		
+		platformFactory.getResourceTypes = function () {
+			return $http.get('api/ontology/resourceTypes');
+		};
+				
 		platformFactory.getAllPlatforms = function () {
 			return $http.get('api/ontology/platforms');
 		};

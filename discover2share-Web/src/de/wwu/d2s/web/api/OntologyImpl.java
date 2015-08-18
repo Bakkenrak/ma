@@ -55,4 +55,9 @@ public class OntologyImpl implements OntologyApi {
 		return ontologyService.getAllCities();
 	}
 
+	@Override
+	public List<Map<String, String>> getAllResourceTypes() {
+		return ontologyService.getAllResourceTypes();
+	}
+
 }

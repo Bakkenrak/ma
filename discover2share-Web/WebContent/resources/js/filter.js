@@ -19,7 +19,7 @@
 		};
 	});
 	
-	d2sApp.filter('cityContainsFilter', function () {
+	d2sApp.filter('resourceContainsFilter', function () {
 	    return function (items, searchText) {
 			var filtered = [];
 			angular.forEach(items, function (item) {
