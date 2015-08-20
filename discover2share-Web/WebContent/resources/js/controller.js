@@ -192,6 +192,11 @@
 				$rootScope.languages = data.languages;
 			});
 		}
+		if (angular.isUndefined($rootScope.resourceTypes)) { // if resource types weren't retrieved in this app before
+			platformFactory.getResourceTypes().success(function (data) {
+				$rootScope.resourceTypes = data;
+			});
+		}
 
 		$scope.platform = {
 			resourceTypeObjects : [ {} ],

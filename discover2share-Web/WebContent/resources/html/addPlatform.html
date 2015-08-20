@@ -22,8 +22,9 @@
 			<td><strong>Resource Types:</strong></td>
 			<td>
 				<p ng-repeat="type in platform.resourceTypeObjects" ng-class="{'input-group' : platform.resourceTypeObjects.length>1}">
-					<input type="text" class="form-control" ng-model="type.label"
-						name="rt{{$index}}" cu-enter="addOption(platform.resourceTypeObjects)" cu-focuslast /> 
+					<input type="text" class="form-control"	ng-model="type.label" name="rt{{$index}}" cu-focuslast
+							typeahead="rt.name as rt.name for rt in resourceTypes | orderBy: 'name' | resourceContainsFilter: $viewValue" />
+		
 					<span ng-if="platform.resourceTypeObjects.length>1" class="input-group-btn">
 						<button type="button" class="btn btn-default" data-type="plus"
 							data-field="rt{{$index}}"
