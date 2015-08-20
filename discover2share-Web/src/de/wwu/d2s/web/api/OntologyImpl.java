@@ -31,8 +31,13 @@ public class OntologyImpl implements OntologyApi {
 	}
 
 	@Override
-	public void createPlatform(Platform platform) {
-		ontologyService.createPlatform(platform);
+	public void addSuggestion(Platform platform) {
+		ontologyService.addSuggestion(platform);
+	}
+	
+	@Override
+	public void directAddSuggestion(Platform platform) {
+		ontologyService.directAddSuggestion(platform);
 	}
 
 	@Override
@@ -58,6 +63,11 @@ public class OntologyImpl implements OntologyApi {
 	@Override
 	public List<Map<String, String>> getAllResourceTypes() {
 		return ontologyService.getAllResourceTypes();
+	}
+
+	@Override
+	public void deleteSuggestion(int id) {
+		ontologyService.deleteSuggestion(id);
 	}
 
 }

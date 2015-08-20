@@ -252,7 +252,12 @@ public class OntologyServiceBean implements OntologyService {
 	}
 	
 	@Override
-	public void createPlatform(Platform platform){
+	public void addSuggestion(Platform platform){
+		em.persist(platform);
+	}
+	
+	@Override
+	public void directAddSuggestion(Platform platform){
 		em.persist(platform);
 	}
 
@@ -365,6 +370,13 @@ public class OntologyServiceBean implements OntologyService {
 
 		qexec.close();
 		return output;
+	}
+
+	@Override
+	public void deleteSuggestion(int id) {
+		Platform p = em.find(Platform.class, id);
+		if (p != null) 
+			em.remove(p);
 	}
 
 }

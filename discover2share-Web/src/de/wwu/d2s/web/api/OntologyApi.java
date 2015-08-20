@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -41,11 +42,15 @@ public interface OntologyApi {
 	@Produces("application/json")
 	public List<Map<String, String>> getAllResourceTypes();
 	
-	@Path("platforms/suggestions/new")
+	@Path("platforms/suggestions/add")
 	@POST
-	@Produces("application/json")
 	@Consumes("application/json")
-	public void createPlatform(Platform platform);
+	public void addSuggestion(Platform platform);
+	
+	@Path("platforms/suggestions/directAdd")
+	@POST
+	@Consumes("application/json")
+	public void directAddSuggestion(Platform platform);
 	
 	@Path("platforms/suggestions/")
 	@GET
@@ -58,6 +63,11 @@ public interface OntologyApi {
 	@Produces("application/json")
 	@RolesAllowed(value={"admin", "mod"})
 	public Platform getSuggestion(@PathParam("id") int id);
+	
+	@Path("platforms/suggestions/{id}")
+	@DELETE
+	@RolesAllowed(value={"admin", "mod"})
+	public void deleteSuggestion(@PathParam("id") int id);
 	
 	@Path("query/")
 	@POST

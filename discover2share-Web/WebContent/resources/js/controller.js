@@ -168,7 +168,7 @@
 		
 		$scope.removeSuggestion = function () {
 			platformFactory.removeSuggestion($scope.platform.id).success(function (data, status) {
-				if (status === 200) {
+				if (status === 200 || status === 204) {
 					$location.path("suggestions/");
 				}
 			});

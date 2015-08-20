@@ -130,7 +130,7 @@
 		};
 		
 		platformFactory.removeSuggestion = function (id) {
-			//return $http.delete('api/ontology/platforms/suggestions/' + id);
+			return $http.delete('api/ontology/platforms/suggestions/' + id);
 		};
 		
 		platformFactory.getGeoData = function (geoUrl) {
