@@ -1,6 +1,7 @@
 package de.wwu.d2s.ejb;
 
 import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
@@ -23,14 +24,18 @@ import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.query.ResultSetFormatter;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.RDFNode;
+import com.hp.hpl.jena.update.UpdateExecutionFactory;
+import com.hp.hpl.jena.update.UpdateFactory;
 
 import de.wwu.d2s.jpa.Platform;
+import de.wwu.d2s.util.OntologyWriter;
 
 @Stateless
 public class OntologyServiceBean implements OntologyService {
 	
 	private static final String ONTOLOGYURL = "http://localhost:3030/d2s-ont";
 	private static final String ENDPOINT = ONTOLOGYURL + "/query";
+	private static final String UPDATEENDPOINT = "http://localhost:3030/Testify/update";  // TODO ONTOLOGYURL + "/update";
 	
 	
 	@PersistenceContext
@@ -258,7 +263,17 @@ public class OntologyServiceBean implements OntologyService {
 	
 	@Override
 	public void directAddSuggestion(Platform platform){
-		em.persist(platform);
+		Platform p = new Platform();
+		p.setLabel("bla");
+		
+		OntologyWriter o = new OntologyWriter();
+		OntModel model = o.constructPlatform(platform);
+		
+		OutputStream baos = new ByteArrayOutputStream();
+		model.write(baos, "N-TRIPLE"); // transform data in ontology model into triples
+		String query = "INSERT DATA { " + baos.toString() + "}"; // build insert query
+		UpdateExecutionFactory.createRemote(UpdateFactory.create(query), UPDATEENDPOINT).execute(); // execute update to endpoint
+		
 	}
 
 	@Override

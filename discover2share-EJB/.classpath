@@ -33,5 +33,10 @@
 	<classpathentry kind="lib" path="/discover2share-Web/WebContent/WEB-INF/lib/slf4j-log4j12-1.7.6.jar"/>
 	<classpathentry kind="lib" path="/discover2share-Web/WebContent/WEB-INF/lib/xercesImpl-2.11.0.jar"/>
 	<classpathentry kind="lib" path="/discover2share-Web/WebContent/WEB-INF/lib/xml-apis-1.4.01.jar"/>
+	<classpathentry kind="lib" path="/discover2share-Web/WebContent/WEB-INF/lib/org.json-20120521.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.dependency" value="../lib"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

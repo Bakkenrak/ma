@@ -126,7 +126,7 @@
 		};
 		
 		platformFactory.directAddPlatformSuggestion = function (platform) {
-			return $http.post('api/ontology/platforms/suggestions/addDirect', platform);
+			return $http.post('api/ontology/platforms/suggestions/directAdd', platform);
 		};
 		
 		platformFactory.removeSuggestion = function (id) {
