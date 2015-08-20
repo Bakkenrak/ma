@@ -42,31 +42,55 @@ public class AlexaParser {
 
 	private static Logger log;
 
-	private static Map<String, Resource> countryIndex = new HashMap<String, Resource>();
+	private Map<String, Resource> countryIndex = new HashMap<String, Resource>();
 
-	private static String ENDPOINT = "http://localhost:3030/Testify/update"; // SPARQL Update Endpoint to insert triples into
+	private final static String ENDPOINT = "http://localhost:3030/d2s-ont/update"; // SPARQL Update Endpoint to insert triples into
 	// JSON file containing all countries of the ontology
-	private static String COUNTRIESJSON = "http://localhost:8080/discover2share-Web/resources/js/countries.json"; 
+	private final static String COUNTRIESJSON = "http://localhost:8080/discover2share-Web/resources/js/countries.json"; 
 
 	// ontology namespaces
 	private final static String D2S = "http://www.discover2share.net/d2s-ont/";
 	private final static String DBPP = "http://dbpedia.org/property/";
 	private final static String RDF = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
 	private final static String DCT = "http://purl.org/dc/terms/";
-
+	
+	private OntModel ontologyModel;
+	private Property rdfType;
+	private Resource userDistributionClass;
+	private Property usedIn;
+	private Property date;
+	private Property percentage;
+	private Property locationCountry;
+	
 	public static void main(String[] args) {
 		log = Logger.getLogger(AlexaParser.class.getName()); // instantiate logger
+		
+		AlexaParser ax = new AlexaParser(null);
+		OntModel ontModel = ax.alterOntologyModel();
 
+		log.info("Inserting new triples into Triplestore");
+		OutputStream baos = new ByteArrayOutputStream();
+		ontModel.write(baos, "N-TRIPLE"); // transform data in ontology model into triples
+		String query = "INSERT DATA { " + baos.toString() + "}"; // build insert query
+		UpdateExecutionFactory.createRemote(UpdateFactory.create(query), ENDPOINT).execute(); // execute update to endpoint
+		log.info("Done");
+	}
+	
+	public AlexaParser(OntModel ontModel) {
 		// Ontology Model to create new data in
-		OntModel ontologyModel = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM);
+		if(ontModel != null)
+			ontologyModel = ontModel;
+		else
+			ontologyModel = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM);
+		
 		// instantiate commonly used Properties and Resource
-		Property rdfType = ontologyModel.createProperty(RDF + "type");
-		Resource userDistributionClass = ontologyModel.createResource(D2S + "User_Distribution");
-		Property usedIn = ontologyModel.createProperty(D2S + "used_in");
-		Property date = ontologyModel.createProperty(DCT + "date");
-		Property percentage = ontologyModel.createProperty(D2S + "user_percentage");
-		Property locationCountry = ontologyModel.createProperty(DBPP + "locationCountry");
-
+		rdfType = ontologyModel.createProperty(RDF + "type");
+		userDistributionClass = ontologyModel.createResource(D2S + "User_Distribution");
+		usedIn = ontologyModel.createProperty(D2S + "used_in");
+		date = ontologyModel.createProperty(DCT + "date");
+		percentage = ontologyModel.createProperty(D2S + "user_percentage");
+		locationCountry = ontologyModel.createProperty(DBPP + "locationCountry");
+		
 		JSONArray countries;
 		try { // retrieve list of countries from JSON file
 			countries = JsonReader.readJsonFromUrl(COUNTRIESJSON).getJSONArray("countries");
@@ -79,7 +103,9 @@ public class AlexaParser {
 			log.error("Error retrieving countries from JSON. Aborting...");
 			return;
 		}
-
+	}
+	
+	public OntModel alterOntologyModel() {
 		int success = 0;
 		OntologyService ontologyService = new OntologyServiceBean();
 		List<Platform> platforms = ontologyService.getAllPlatforms(); // retrieve all platforms from the ontology
@@ -107,13 +133,8 @@ public class AlexaParser {
 			}
 		}
 		log.info("Found user distribution data for " + success + " out of " + platforms.size() + " platforms.");
-
-		log.info("Inserting new triples into Triplestore");
-		OutputStream baos = new ByteArrayOutputStream();
-		ontologyModel.write(baos, "N-TRIPLE"); // transform data in ontology model into triples
-		String query = "INSERT DATA { " + baos.toString() + "}"; // build insert query
-		UpdateExecutionFactory.createRemote(UpdateFactory.create(query), ENDPOINT).execute(); // execute update to endpoint
-		log.info("Done");
+		
+		return ontologyModel;
 	}
 
 	/**
