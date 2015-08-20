@@ -3,6 +3,11 @@
 </h1>
 
 <table id="detailTable" class="table table-bordered">
+	<tr ng-if="platform.description">
+		<td><strong>Description:</strong></td>
+		<td>{{platform.description}}</td>
+		<td></td>
+	</tr>
 	<tr>
 		<td><strong>Resource Type:</strong></td>
 		<td><div ng-repeat="resourceType in platform.resourceTypes">{{resourceType}}</div></td>
@@ -230,7 +235,7 @@
 	</tr>
 </table>
 <div class="col-md-12" ng-if="loggedIn() && isSuggestion">
-	<button type="button" ng-click="addToOntology()" class="btn btn-primary">Add to ontology</button>&nbsp;
+	<button type="button" ng-click="saveSuggestion()" class="btn btn-primary">Add to ontology</button>&nbsp;
 	<button type="button" ng-click="editSuggestion()" class="btn btn-success">Edit Suggestion</button>&nbsp;
 	<button type="button" ng-click="removeSuggestion()" class="btn btn-danger">Delete Suggestion</button>
 </div>

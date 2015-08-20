@@ -18,7 +18,7 @@ public interface OntologyService {
 	
 	public void addSuggestion(Platform platform);
 	
-	public void directAddSuggestion(Platform platform);
+	public void directSaveSuggestion(Platform platform);
 	
 	public List<Platform> getAllSuggestions();
 
@@ -31,5 +31,7 @@ public interface OntologyService {
 	public List<Map<String, String>> getAllResourceTypes();
 
 	public void deleteSuggestion(int id);
+
+	public void saveSuggestion(int id);
 	
 }

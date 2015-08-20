@@ -36,8 +36,8 @@ public class OntologyImpl implements OntologyApi {
 	}
 	
 	@Override
-	public void directAddSuggestion(Platform platform) {
-		ontologyService.directAddSuggestion(platform);
+	public void directSaveSuggestion(Platform platform) {
+		ontologyService.directSaveSuggestion(platform);
 	}
 
 	@Override
@@ -68,6 +68,11 @@ public class OntologyImpl implements OntologyApi {
 	@Override
 	public void deleteSuggestion(int id) {
 		ontologyService.deleteSuggestion(id);
+	}
+
+	@Override
+	public void saveSuggestion(int id) {
+		ontologyService.saveSuggestion(id);
 	}
 
 }

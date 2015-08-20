@@ -3,6 +3,7 @@ package de.wwu.d2s.transformation;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
@@ -66,7 +67,7 @@ public class AlexaParser {
 		log = Logger.getLogger(AlexaParser.class.getName()); // instantiate logger
 		
 		AlexaParser ax = new AlexaParser(null);
-		OntModel ontModel = ax.alterOntologyModel();
+		OntModel ontModel = ax.alterOntologyModel(true, null);
 
 		log.info("Inserting new triples into Triplestore");
 		OutputStream baos = new ByteArrayOutputStream();
@@ -105,10 +106,18 @@ public class AlexaParser {
 		}
 	}
 	
-	public OntModel alterOntologyModel() {
+	public OntModel alterOntologyModel(boolean allPlatforms, Platform p) {
 		int success = 0;
-		OntologyService ontologyService = new OntologyServiceBean();
-		List<Platform> platforms = ontologyService.getAllPlatforms(); // retrieve all platforms from the ontology
+		List<Platform> platforms;
+		if(allPlatforms){ // if all platforms in the ontology are to be parsed
+			OntologyService ontologyService = new OntologyServiceBean();
+			platforms = ontologyService.getAllPlatforms(); // retrieve all platforms from the ontology
+		} else if (p != null) { // if a specific platform is given to parse
+			platforms = new ArrayList<Platform>();
+			platforms.add(p);
+		} else {
+			return null;
+		}
 		for (Platform platform : platforms) { // for each platform
 			Map<String, Double> userData = parseAlexa(platform.getUrl()); // parse user distribution data from Alexa
 			if (userData == null) {

@@ -173,6 +173,14 @@
 				}
 			});
 		};
+		
+		$scope.saveSuggestion = function () {
+			platformFactory.savePlatformSuggestion($scope.platform.id).success(function (data, status) {
+				if (status === 200 || status === 204) {
+					$location.path("suggestions/");
+				}
+			});
+		};
 	});
 
 	d2sApp.controller('addPlatformCtrl', function ($scope, $rootScope, platformFactory, authFactory) {
@@ -333,8 +341,8 @@
 					}).map(function (i) {
 						return i.resourceName;
 					});
-			if ($scope.directAdd) {
-				platformFactory.directAddPlatformSuggestion($scope.platform);
+			if ($scope.directSave) {
+				platformFactory.directSavePlatformSuggestion($scope.platform);
 			} else {
 				platformFactory.addPlatformSuggestion($scope.platform);
 			}

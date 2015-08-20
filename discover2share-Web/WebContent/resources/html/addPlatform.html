@@ -93,7 +93,7 @@
 			<td><strong>Year of launch:</strong></td>
 			<td><select ng-model="platform.yearLaunch" class="form-control">
 					<option ng-repeat="year in getYears()"
-						value="http://www.discover2share.net/d2s-ont/{{year}}">{{year}}</option>
+						value="{{year}}">{{year}}</option>
 			</select></td>
 			<td></td>
 		</tr>
@@ -324,11 +324,11 @@
 			<td><strong>Service Duration Minimum:</strong></td>
 			<td><select class="form-control"
 				ng-model="platform.serviceDurationMin">
-					<option value="http://www.w3.org/2006/time#unitMinute">Minutes</option>
-					<option value="http://www.w3.org/2006/time#unitHour">Hours</option>
-					<option value="http://www.w3.org/2006/time#unitDay">Days</option>
-					<option value="http://www.w3.org/2006/time#unitWeek">Weeks</option>
-					<option value="http://www.w3.org/2006/time#unitMonth">Months</option>
+					<option value="Minutes">Minutes</option>
+					<option value="Hours">Hours</option>
+					<option value="Days">Days</option>
+					<option value="Weeks">Weeks</option>
+					<option value="Months">Months</option>
 			</select></td>
 			<td></td>
 		</tr>
@@ -336,11 +336,11 @@
 			<td><strong>Service Duration Maximum:</strong></td>
 			<td><select class="form-control"
 				ng-model="platform.serviceDurationMax">
-					<option value="http://www.w3.org/2006/time#unitMinute">Minutes</option>
-					<option value="http://www.w3.org/2006/time#unitHour">Hours</option>
-					<option value="http://www.w3.org/2006/time#unitDay">Days</option>
-					<option value="http://www.w3.org/2006/time#unitWeek">Weeks</option>
-					<option value="http://www.w3.org/2006/time#unitMonth">Months</option>
+					<option value="Minutes">Minutes</option>
+					<option value="Hours">Hours</option>
+					<option value="Days">Days</option>
+					<option value="Weeks">Weeks</option>
+					<option value="Months">Months</option>
 			</select></td>
 			<td></td>
 		</tr>
@@ -411,7 +411,7 @@
 	</table>
 	<div class="col-md-6">
 		<input type="submit" value="Submit new platform" class="btn btn-primary" />&nbsp;
-		<label class="checkbox-inline" ng-if="loggedIn()"><input type="checkbox" ng-model="$parent.directAdd" />Skip review and add to ontology right away</label>
+		<label class="checkbox-inline" ng-if="loggedIn()"><input type="checkbox" ng-model="$parent.directSave" />Skip review and add to ontology right away</label>
 	</div>
 	
 </form>

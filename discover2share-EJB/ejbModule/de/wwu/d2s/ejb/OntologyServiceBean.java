@@ -262,10 +262,7 @@ public class OntologyServiceBean implements OntologyService {
 	}
 	
 	@Override
-	public void directAddSuggestion(Platform platform){
-		Platform p = new Platform();
-		p.setLabel("bla");
-		
+	public void directSaveSuggestion(Platform platform) {
 		OntologyWriter o = new OntologyWriter();
 		OntModel model = o.constructPlatform(platform);
 		
@@ -273,7 +270,6 @@ public class OntologyServiceBean implements OntologyService {
 		model.write(baos, "N-TRIPLE"); // transform data in ontology model into triples
 		String query = "INSERT DATA { " + baos.toString() + "}"; // build insert query
 		UpdateExecutionFactory.createRemote(UpdateFactory.create(query), UPDATEENDPOINT).execute(); // execute update to endpoint
-		
 	}
 
 	@Override
@@ -392,6 +388,15 @@ public class OntologyServiceBean implements OntologyService {
 		Platform p = em.find(Platform.class, id);
 		if (p != null) 
 			em.remove(p);
+	}
+
+	@Override
+	public void saveSuggestion(int id) {
+		Platform p = em.find(Platform.class, id);
+		if(p != null) {
+			directSaveSuggestion(p);
+		}
+		//em.remove(p); TODO uncomment
 	}
 
 }

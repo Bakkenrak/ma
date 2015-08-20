@@ -47,10 +47,10 @@ public interface OntologyApi {
 	@Consumes("application/json")
 	public void addSuggestion(Platform platform);
 	
-	@Path("platforms/suggestions/directAdd")
+	@Path("platforms/suggestions/directSave")
 	@POST
 	@Consumes("application/json")
-	public void directAddSuggestion(Platform platform);
+	public void directSaveSuggestion(Platform platform);
 	
 	@Path("platforms/suggestions/")
 	@GET
@@ -68,6 +68,11 @@ public interface OntologyApi {
 	@DELETE
 	@RolesAllowed(value={"admin", "mod"})
 	public void deleteSuggestion(@PathParam("id") int id);
+	
+	@Path("platforms/suggestions/save/{id}")
+	@GET
+	@RolesAllowed(value={"admin", "mod"})
+	public void saveSuggestion(@PathParam("id") int id);
 	
 	@Path("query/")
 	@POST
