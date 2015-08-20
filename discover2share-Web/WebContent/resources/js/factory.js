@@ -122,7 +122,15 @@
 		};
 		
 		platformFactory.addPlatformSuggestion = function (platform) {
-			return $http.post('api/ontology/platforms/suggestions/new', platform);
+			return $http.post('api/ontology/platforms/suggestions/add', platform);
+		};
+		
+		platformFactory.directAddPlatformSuggestion = function (platform) {
+			return $http.post('api/ontology/platforms/suggestions/addDirect', platform);
+		};
+		
+		platformFactory.removeSuggestion = function (id) {
+			//return $http.delete('api/ontology/platforms/suggestions/' + id);
 		};
 		
 		platformFactory.getGeoData = function (geoUrl) {

@@ -128,7 +128,8 @@
 		$scope.filteredPlatforms = $scope.platforms = platforms.data;
 	});
 
-	d2sApp.controller('platformDetailCtrl', function ($scope, platformFactory, $rootScope, platform) {
+	d2sApp.controller('platformDetailCtrl', function ($scope, $route, platformFactory, authFactory, $rootScope, $location, platform) {
+		$scope.isSuggestion = $route.current.$$route.isSuggestion;
 		if (!angular.isUndefined(platform)) {
 			$scope.platform = platform.data;
 
@@ -160,9 +161,21 @@
 				$rootScope.descriptions = data;
 			});
 		}
+		
+		$scope.loggedIn = function () {
+			return authFactory.isAuthenticated();
+		};
+		
+		$scope.removeSuggestion = function () {
+			platformFactory.removeSuggestion($scope.platform.id).success(function (data, status) {
+				if (status === 200) {
+					$location.path("suggestions/");
+				}
+			});
+		};
 	});
 
-	d2sApp.controller('addPlatformCtrl', function ($scope, $rootScope, platformFactory) {
+	d2sApp.controller('addPlatformCtrl', function ($scope, $rootScope, platformFactory, authFactory) {
 		// retrieve dimension comments and labels (only once)
 		if (angular.isUndefined($rootScope.descriptions)) {
 			platformFactory.getDescriptions().success(function (data) {
@@ -271,7 +284,7 @@
 		};
 
 		$scope.marketMediations = [	"Profit from peer consumers", "Profit from peer providers",	"Profit from both", "Indirect profit",
-				"Profit from advertisement", "Profit from user data" ];
+				"Profit from advertisement", "Profit from user data", "Per transaction", "Per listing", "Membership fee" ];
 		$scope.consumerisms = [ "None", "Social", "Environmental", "Economic" ];
 		$scope.smartphoneApps = [ "Android app", "iOS app",	"Windows Phone app" ];
 		$scope.trustContributions = [ "Provider ratings", "Provider and consumer ratings", "Referral", "Vouching", "Value-added services" ];
@@ -315,7 +328,15 @@
 					}).map(function (i) {
 						return i.resourceName;
 					});
-			platformFactory.addPlatformSuggestion($scope.platform);
+			if ($scope.directAdd) {
+				platformFactory.directAddPlatformSuggestion($scope.platform);
+			} else {
+				platformFactory.addPlatformSuggestion($scope.platform);
+			}
+		};
+		
+		$scope.loggedIn = function () {
+			return authFactory.isAuthenticated();
 		};
 	});
 

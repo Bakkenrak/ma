@@ -175,6 +175,16 @@
 							<li><strong>{{descriptions["Profit_from_user_data"]["label"]}}:</strong>
 								{{descriptions["Profit_from_user_data"]["comment"]}}</li>
 						</ul></li>
+					<li>Additional attributes
+						<ul>
+							<li><strong>{{descriptions["Per_transaction"]["label"]}}:</strong>
+								{{descriptions["Per_transaction"]["comment"]}}</li>
+							<li><strong>{{descriptions["Per_listing"]["label"]}}:</strong>
+								{{descriptions["Per_listing"]["comment"]}}</li>
+							<li><strong>{{descriptions["Membership_fee"]["label"]}}:</strong>
+								{{descriptions["Membership_fee"]["comment"]}}</li>
+						</ul>
+					</li>
 				</ul></td>
 		</tr>
 		<tr>
@@ -398,6 +408,9 @@
 				</ul></td>
 		</tr>
 	</table>
-	<input type="submit" value="Submit new platform"
-		class="btn btn-primary" />
+	<div class="col-md-6">
+		<input type="submit" value="Submit new platform" class="btn btn-primary" />&nbsp;
+		<label class="checkbox-inline" ng-if="loggedIn()"><input type="checkbox" ng-model="$parent.directAdd" />Skip review and add to ontology right away</label>
+	</div>
+	
 </form>

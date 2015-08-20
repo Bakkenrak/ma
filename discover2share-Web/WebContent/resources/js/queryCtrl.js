@@ -34,7 +34,10 @@
 		    { resource: "Profit_from_both", label: "Profit from both" },
 		    { resource: "Indirect_profit", label: "Indirect profit" },
 		    { resource: "Profit_from_advertisement", label: "Profit from advertisement" },
-		    { resource: "Profit_from_user data", label: "Profit from user data" }
+		    { resource: "Profit_from_user data", label: "Profit from user data" },
+		    { resource: "Per_transaction", label: "Per transaction" },
+		    { resource: "Per_listing", label: "Per listing" },
+		    { resource: "Membership_fee", label: "Membership fee" }
 		];
 		$scope.consumerisms = [ "None", "Social", "Environmental", "Economic" ];
 		$scope.smartphoneApps = [ 

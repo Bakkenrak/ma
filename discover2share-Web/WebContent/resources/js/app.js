@@ -32,7 +32,8 @@
 			templateUrl: 'resources/html/platformDetails.html',
 			resolve: {
 				platform: getPlatform
-			}
+			},
+			isSuggestion: false
 		}).when('/suggestions', {
 			controller: 'platformsCtrl',
 			templateUrl: 'resources/html/suggestions.html',
@@ -44,7 +45,8 @@
 			templateUrl: 'resources/html/platformDetails.html',
 			resolve: {
 				platform: getSuggestion
-			}
+			},
+			isSuggestion: true
 		}).when('/add', {
 			controller: 'addPlatformCtrl',
 			templateUrl: 'resources/html/addPlatform.html'
