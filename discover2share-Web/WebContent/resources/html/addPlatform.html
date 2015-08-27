@@ -20,27 +20,76 @@
 		</tr>
 		<tr>
 			<td><strong>Resource Types:</strong></td>
-			<td>
-				<p ng-repeat="type in platform.resourceTypeObjects" ng-class="{'input-group' : platform.resourceTypeObjects.length>1}">
-					<input type="text" class="form-control"	ng-model="type.label" name="rt{{$index}}" cu-focuslast
-							typeahead="rt.name as rt.name for rt in resourceTypes | orderBy: 'name' | resourceContainsFilter: $viewValue" />
-		
-					<span ng-if="platform.resourceTypeObjects.length>1" class="input-group-btn">
-						<button type="button" class="btn btn-default" data-type="plus"
-							data-field="rt{{$index}}"
-							ng-click="platform.resourceTypeObjects.splice($index,1)">
-							<span class="glyphicon glyphicon-minus"></span>&nbsp;
-						</button>
-					</span>
-				</p>
+			<td ng-controller="resourceTypeCtrl">
+				<div ng-repeat="type in $parent.platform.resourceTypeObjects" class="row-margin-15"> 
+					<div ng-class="{'input-group' : $parent.platform.resourceTypeObjects.length>1}" class="row-margin-5">
+						<input type="text" class="form-control"	ng-model="type.label" name="rt{{$index}}" cu-focuslast
+								typeahead="rt.name as rt.name for rt in resourceTypes | orderBy: 'name' | resourceContainsFilter: $viewValue" />
+			
+						<span ng-if="$parent.platform.resourceTypeObjects.length>1" class="input-group-btn">
+							<button type="button" class="btn btn-default" data-type="plus"
+								data-field="rt{{$index}}"
+								ng-click="$parent.platform.resourceTypeObjects.splice($index,1)">
+								<span class="glyphicon glyphicon-minus"></span>&nbsp;
+							</button>
+						</span>
+					</div>
+					<button type="button" class="btn btn-xs btn-default" ng-click="openModal(type, 'lg')" ng-disabled="!type.label">Add/Remove external resources</button>
+				    <span class="label label-info" ng-if="type.externals">{{type.externals.length}} selected</span>
+				    <script type="text/ng-template" id="myModalContent.html">
+        					<div class="modal-header">
+            					<h4 class="modal-title">Select concepts to enrich the definition of your resource type</h4>
+        					</div>
+        					<div class="modal-body">
+								<div class="alert alert-warning" role="alert" ng-if="!isNew"><strong>Careful!</strong> You have selected a resource type that is already defined in the ontology. A selection of further external resources is thus not necessary. If you want to create a new resource type, please give it a different name.</div>
+								<div class="form-inline row-margin-15">								
+									<label>Search for concepts:</label>
+									<input type="text" class="form-control" ng-model="searchTerm" ng-change="retrieveExternal(searchTerm)" />
+								</div>
+								<tabset>
+									<tab>
+										<tab-heading>DBPedia resources <span class="badge">{{dbpediaResources.length}}</span></tab-heading>
+										<em>Add by double clicking</em>
+										<select size="10" class="form-control row-margin-15" ng-model="currentUri" ng-options="resource.uri for resource in dbpediaResources | orderBy: 'uri'" ng-dblclick="addDbpediaConcept(currentUri)"></select>
+										<div>
+											<strong>Description - <a href="{{currentUri.uri}}" target="blank">{{currentUri.label}}</a>:</strong>
+											{{currentUri.description}}
+										</div>
+									</tab>
+									<tab heading="Custom"><br />
+										<form name="customForm">
+											<label>Enter a concept URI:</label> <em>http(s)://...</em>
+											<input type="url" name="customUrl" class="form-control row-margin-5" ng-model="customUri" pattern="http[s]?:\/\/(?:www.)?[\w-]+\.[\w]{2,3}.*" />
+											<button type="button" class="btn btn-sm btn-primary" ng-click="addCustomConcept(customUri)" ng-disabled="!customUri || !customForm.customUrl.$valid">Add</button>
+										</form>
+									</tab>
+								</tabset>
+								<hr />
+            					<strong>Selected:</strong>
+								<ul>
+									<li ng-repeat="resource in selected" title="{{resource.description}}">
+										{{resource.uri}}
+										<button type="button" class="btn btn-xs btn-danger" ng-click="selected.splice($index,1)">
+											<span class="glyphicon glyphicon-minus"></span>&nbsp;
+										</button>
+									</li>
+								</ul>
+        					</div>
+        					<div class="modal-footer">
+            					<button class="btn btn-primary" type="button" ng-click="close()">Close</button>
+        					</div>
+    				</script>
+				</div>
 				<button type="button" class="btn btn-default btn-sm pull-right"
-					ng-click="addOption(platform.resourceTypeObjects)">
+					ng-click="addOption($parent.platform.resourceTypeObjects)">
 					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 					Add another type
 				</button>
 			</td>
 			<td><strong>{{descriptions["Resource_Type"]["label"]}}:</strong>
-				{{descriptions["Resource_Type"]["comment"]}}</td>
+				{{descriptions["Resource_Type"]["comment"]}}
+				<div><em>Help adding more meaning to a resource type if you don't choose a proposed one: Add external ontological concepts that describe the type!</em></div>
+			</td>
 		</tr>
 		<tr>
 			<td><strong>Consumer Involvement:</strong></td>

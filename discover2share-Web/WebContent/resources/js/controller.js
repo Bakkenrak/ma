@@ -200,11 +200,6 @@
 				$rootScope.languages = data.languages;
 			});
 		}
-		if (angular.isUndefined($rootScope.resourceTypes)) { // if resource types weren't retrieved in this app before
-			platformFactory.getResourceTypes().success(function (data) {
-				$rootScope.resourceTypes = data;
-			});
-		}
 
 		$scope.platform = {
 			resourceTypeObjects : [ {} ],
@@ -323,10 +318,6 @@
 			}
 		};
 
-		$scope.addOption = function (array) {
-			array.push({});
-		};
-
 		$scope.submit = function () {
 			$scope.platform.resourceTypes = $scope.platform.resourceTypeObjects
 					.filter(function (i) {
@@ -350,6 +341,115 @@
 		
 		$scope.loggedIn = function () {
 			return authFactory.isAuthenticated();
+		};
+	});
+	
+	d2sApp.controller('resourceTypeCtrl', function ($scope, $rootScope, $timeout, platformFactory, $modal, $log) {
+		if (angular.isUndefined($rootScope.resourceTypes)) { // if resource types weren't retrieved in this app before
+			platformFactory.getResourceTypes().success(function (data) {
+				$rootScope.resourceTypes = data;
+			});
+		}
+		
+		$scope.addOption = function (array) {
+			array.push({});
+		};
+		
+		$scope.openModal = function (resourceType, size) {
+		    var modalInstance = $modal.open({
+		    	animation: true,
+		    	templateUrl: 'myModalContent.html',
+		    	controller: 'resourceModalCtrl',
+		    	size: size,
+		    	resolve: {
+		    		resourceType: function () {
+		    			return resourceType;
+		    		}
+		    	}
+		    });
+	
+		    modalInstance.result.then(function (selected) {
+		    	resourceType.externals = selected;
+		    });
+		};
+	});
+	
+	d2sApp.controller('resourceModalCtrl', function ($scope, $modalInstance, $timeout, resourceFactory, resourceType) {		
+		$scope.dbpediaResources = [];
+		$scope.selected = (resourceType.externals && resourceType.externals.length > 0) ? resourceType.externals : [];
+		$scope.searchTerm = resourceType.label;
+
+		$scope.close = function () {
+			$modalInstance.close($scope.selected);
+		};
+		
+		$scope.checkNew = function (label) {
+			if (!label) {
+				return false;
+			}
+			var labelLower = label.toLowerCase();
+			var isNew = true;
+			$scope.resourceTypes.forEach(function (type) {
+				if (type.name.toLowerCase() === labelLower || type.resourceName.toLowerCase() === labelLower) {
+					isNew = false;
+				}
+			});
+			return isNew;
+		};
+		
+		$scope.isNew = $scope.checkNew(resourceType.label);
+		
+		var _timeout;
+		$scope.retrieveExternal = function (value, delay) {
+			if (isNaN(delay) || delay < 0) {
+				delay = 500;
+			}
+			if (_timeout) { //if there is already a timeout in process cancel it
+				$timeout.cancel(_timeout);
+			}
+			if (value) {
+				_timeout = $timeout(function () {
+					resourceFactory.dbpedia(value).success(function (data, status) {
+						$scope.dbpediaResources.length = 0;
+						if (data && data.results) {
+							$scope.dbpediaResources = data.results;
+						}
+					});
+				    _timeout = null;
+				}, delay); // call with a delay
+			} else {
+				$scope.dbpediaResources.length = 0;
+			}
+		};
+
+		$scope.retrieveExternal($scope.searchTerm, 0); // on modal startup
+		
+		$scope.addConcept = function (resource) {
+			var duplicate = false;
+			$scope.selected.forEach(function (item) {
+				if (angular.equals(item, resource)) {
+					duplicate = true;
+				}
+			});
+			if (!duplicate) {
+				$scope.selected.push(resource);
+			}
+		};
+		
+		$scope.addDbpediaConcept = function (resource) {
+			$scope.addConcept({
+				uri: resource.uri,
+				description: resource.description
+			});
+		};
+		
+		$scope.addCustomConcept = function (uri) {
+			if (uri) {
+				$scope.addConcept({
+					uri: uri,
+					description: ""
+				});
+			}
 		};
 	});
 
