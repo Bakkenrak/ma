@@ -202,8 +202,7 @@
 		}
 
 		$scope.platform = {
-			resourceTypeObjects : [ {} ],
-			resourceTypes : [],
+			resourceTypes : [ {} ],
 			languageObjects : [ {} ],
 			languages : [],
 			launchCountryItem : {},
@@ -319,11 +318,9 @@
 		};
 
 		$scope.submit = function () {
-			$scope.platform.resourceTypes = $scope.platform.resourceTypeObjects
+			$scope.platform.resourceTypes = $scope.platform.resourceTypes
 					.filter(function (i) {
 						return !angular.isUndefined(i.label);
-					}).map(function (i) {
-						return i.label;
 					});
 			
 			$scope.platform.languages = $scope.platform.languageObjects
@@ -438,7 +435,7 @@
 		
 		$scope.addDbpediaConcept = function (resource) {
 			$scope.addConcept({
-				uri: resource.uri,
+				resource: resource.uri,
 				description: resource.description
 			});
 		};
@@ -446,7 +443,7 @@
 		$scope.addCustomConcept = function (uri) {
 			if (uri) {
 				$scope.addConcept({
-					uri: uri,
+					resource: uri,
 					description: ""
 				});
 			}

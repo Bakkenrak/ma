@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -16,6 +17,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -36,10 +38,8 @@ public class Platform implements Serializable {
 	private String url;
 	private String description;
 
-	@ElementCollection(fetch=FetchType.EAGER)
-	@CollectionTable(joinColumns = @JoinColumn(name = "id"))
-	@Column(name = "resourceType")
-	private Set<String> resourceTypes = new HashSet<String>();
+	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	private Set<ResourceType> resourceTypes = new HashSet<ResourceType>();
 
 	@ElementCollection(fetch=FetchType.EAGER)
 	@CollectionTable(joinColumns = @JoinColumn(name = "id"))
@@ -193,8 +193,10 @@ public class Platform implements Serializable {
 
 
 	private void addResourceType(String val) {
-		if(!resourceTypes.contains(val))
-			resourceTypes.add(val);
+		ResourceType rt = new ResourceType();
+		rt.setLabel(val);
+		if(!resourceTypes.contains(rt))
+			resourceTypes.add(rt);
 	}
 
 	private void addConsumerism(String val) {
@@ -259,11 +261,11 @@ public class Platform implements Serializable {
 		this.description = description;
 	}
 
-	public Set<String> getResourceTypes() {
+	public Set<ResourceType> getResourceTypes() {
 		return resourceTypes;
 	}
 
-	public void setResourceTypes(Set<String> resourceTypes) {
+	public void setResourceTypes(Set<ResourceType> resourceTypes) {
 		this.resourceTypes = resourceTypes;
 	}
 

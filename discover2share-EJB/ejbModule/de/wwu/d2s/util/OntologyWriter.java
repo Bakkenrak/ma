@@ -25,6 +25,7 @@ import com.hp.hpl.jena.rdf.model.Resource;
 
 import de.wwu.d2s.jpa.GeoUnit;
 import de.wwu.d2s.jpa.Platform;
+import de.wwu.d2s.jpa.ResourceType;
 
 /**
  * Transforms P2P SCC platform objects into instances of the Discover2Share ontology.
@@ -87,11 +88,13 @@ public class OntologyWriter {
 	private Property owlSameAs;
 	private Property dbppLanguage;
 	private Property rdfsComment;
+	private Property rdfsSubClassOf;
+	private Property rdfsSeeAlso;
 
 	// resources available centrally for all methods and platforms to only require one instantiation
 	private Resource yearClass;
 	private Resource cityClass;
-	private Resource resourceType;
+	private Resource resourceTypeClass;
 	private Resource threeDPrinters;
 	private Resource accommodations;
 	private Resource accommodationsFlatmate;
@@ -224,13 +227,15 @@ public class OntologyWriter {
 		owlSameAs = ontologyModel.createProperty(OWL + "sameAs");
 		dbppLanguage = ontologyModel.createProperty(DBPP + "language");
 		rdfsComment = ontologyModel.createProperty(RDFS + "comment");
+		rdfsSubClassOf = ontologyModel.createProperty(RDFS + "subClassOf");
+		rdfsSeeAlso = ontologyModel.createProperty(RDFS + "seeAlso");
 
 		log.info("Defining D2S classes/instances.");
 		// create resources once in the beginning to use for every platform
 		yearClass = ontologyModel.createResource(D2S + "Year");
 		cityClass = ontologyModel.createResource(D2S + "City");
 
-		resourceType = ontologyModel.createResource(D2S + "Resource_Type");
+		resourceTypeClass = ontologyModel.createResource(D2S + "Resource_Type");
 		threeDPrinters = ontologyModel.createResource(D2S + "3d_printers");
 		accommodations = ontologyModel.createResource(D2S + "Accommodations");
 		accommodationsFlatmate = ontologyModel.createResource(D2S + "Accommodations_flatmate");
@@ -403,90 +408,96 @@ public class OntologyWriter {
 	 * @param set
 	 *            Platform's resource type as defined in the excel table.
 	 */
-	private void resourceTypeDimension(Set<String> set) {
+	private void resourceTypeDimension(Set<ResourceType> set) {
 		if (set == null || set.isEmpty())
 			return;
 
-		for (String resourceType : set) {
-			resourceType = resourceType.toLowerCase();
-			if (resourceType.equals(resourceTypes[0])) {
+		for (ResourceType resourceType : set) {
+			String resourceTypeLabel = resourceType.getLabel().toLowerCase();
+			if(resourceTypeLabel.isEmpty())
+				continue;
+			
+			if (resourceTypeLabel.equals(resourceTypes[0])) {
 				platformResource.addProperty(hasResourceType, threeDPrinters);
-			} else if (resourceType.equals(resourceTypes[1])) {
+			} else if (resourceTypeLabel.equals(resourceTypes[1])) {
 				platformResource.addProperty(hasResourceType, accommodations);
-			} else if (resourceType.equals(resourceTypes[2])) {
+			} else if (resourceTypeLabel.equals(resourceTypes[2])) {
 				platformResource.addProperty(hasResourceType, accommodationsFlatmate);
-			} else if (resourceType.equals(resourceTypes[3])) {
+			} else if (resourceTypeLabel.equals(resourceTypes[3])) {
 				platformResource.addProperty(hasResourceType, adventureAndOutdoorRelatedResources);
-			} else if (resourceType.equals(resourceTypes[4])) {
+			} else if (resourceTypeLabel.equals(resourceTypes[4])) {
 				platformResource.addProperty(hasResourceType, boats);
-			} else if (resourceType.equals(resourceTypes[5])) {
+			} else if (resourceTypeLabel.equals(resourceTypes[5])) {
 				platformResource.addProperty(hasResourceType, books);
-			} else if (resourceType.equals(resourceTypes[6])) {
+			} else if (resourceTypeLabel.equals(resourceTypes[6])) {
 				platformResource.addProperty(hasResourceType, cameras);
-			} else if (resourceType.equals(resourceTypes[7])) {
+			} else if (resourceTypeLabel.equals(resourceTypes[7])) {
 				platformResource.addProperty(hasResourceType, campingVehicles);
-			} else if (resourceType.equals(resourceTypes[8])) {
+			} else if (resourceTypeLabel.equals(resourceTypes[8])) {
 				platformResource.addProperty(hasResourceType, cargoBicycles);
-			} else if (resourceType.equals(resourceTypes[9])) {
+			} else if (resourceTypeLabel.equals(resourceTypes[9])) {
 				platformResource.addProperty(hasResourceType, carsRide);
-			} else if (resourceType.equals(resourceTypes[10])) {
+			} else if (resourceTypeLabel.equals(resourceTypes[10])) {
 				platformResource.addProperty(hasResourceType, carsTaxi);
-			} else if (resourceType.equals(resourceTypes[11])) {
+			} else if (resourceTypeLabel.equals(resourceTypes[11])) {
 				platformResource.addProperty(hasResourceType, carsRent);
-			} else if (resourceType.equals(resourceTypes[12])) {
+			} else if (resourceTypeLabel.equals(resourceTypes[12])) {
 				platformResource.addProperty(hasResourceType, carsTaxiBussesRide);
-			} else if (resourceType.equals(resourceTypes[13])) {
+			} else if (resourceTypeLabel.equals(resourceTypes[13])) {
 				platformResource.addProperty(hasResourceType, clothing);
-			} else if (resourceType.equals(resourceTypes[14])) {
+			} else if (resourceTypeLabel.equals(resourceTypes[14])) {
 				platformResource.addProperty(hasResourceType, dogs);
-			} else if (resourceType.equals(resourceTypes[15])) {
+			} else if (resourceTypeLabel.equals(resourceTypes[15])) {
 				platformResource.addProperty(hasResourceType, foodDining);
-			} else if (resourceType.equals(resourceTypes[16])) {
+			} else if (resourceTypeLabel.equals(resourceTypes[16])) {
 				platformResource.addProperty(hasResourceType, foodSelfGrown);
-			} else if (resourceType.equals(resourceTypes[17])) {
+			} else if (resourceTypeLabel.equals(resourceTypes[17])) {
 				platformResource.addProperty(hasResourceType, jets);
-			} else if (resourceType.equals(resourceTypes[18])) {
+			} else if (resourceTypeLabel.equals(resourceTypes[18])) {
 				platformResource.addProperty(hasResourceType, land);
-			} else if (resourceType.equals(resourceTypes[19])) {
+			} else if (resourceTypeLabel.equals(resourceTypes[19])) {
 				platformResource.addProperty(hasResourceType, laundryMachines);
-			} else if (resourceType.equals(resourceTypes[20])) {
+			} else if (resourceTypeLabel.equals(resourceTypes[20])) {
 				platformResource.addProperty(hasResourceType, media);
-			} else if (resourceType.equals(resourceTypes[21])) {
+			} else if (resourceTypeLabel.equals(resourceTypes[21])) {
 				platformResource.addProperty(hasResourceType, miscellaneous);
-			} else if (resourceType.equals(resourceTypes[22])) {
+			} else if (resourceTypeLabel.equals(resourceTypes[22])) {
 				platformResource.addProperty(hasResourceType, miscellaneousCombined);
-			} else if (resourceType.equals(resourceTypes[23])) {
+			} else if (resourceTypeLabel.equals(resourceTypes[23])) {
 				platformResource.addProperty(hasResourceType, motorizedVehicles);
-			} else if (resourceType.equals(resourceTypes[24])) {
+			} else if (resourceTypeLabel.equals(resourceTypes[24])) {
 				platformResource.addProperty(hasResourceType, nonMotorizedSportGear);
-			} else if (resourceType.equals(resourceTypes[25])) {
+			} else if (resourceTypeLabel.equals(resourceTypes[25])) {
 				platformResource.addProperty(hasResourceType, parkingSpaces);
-			} else if (resourceType.equals(resourceTypes[26])) {
+			} else if (resourceTypeLabel.equals(resourceTypes[26])) {
 				platformResource.addProperty(hasResourceType, retailSpaces);
-			} else if (resourceType.equals(resourceTypes[27])) {
+			} else if (resourceTypeLabel.equals(resourceTypes[27])) {
 				platformResource.addProperty(hasResourceType, spaces);
-			} else if (resourceType.equals(resourceTypes[28])) {
+			} else if (resourceTypeLabel.equals(resourceTypes[28])) {
 				platformResource.addProperty(hasResourceType, sportFacilities);
-			} else if (resourceType.equals(resourceTypes[29])) {
+			} else if (resourceTypeLabel.equals(resourceTypes[29])) {
 				platformResource.addProperty(hasResourceType, storageSpaces);
-			} else if (resourceType.equals(resourceTypes[30])) {
+			} else if (resourceTypeLabel.equals(resourceTypes[30])) {
 				platformResource.addProperty(hasResourceType, tools);
-			} else if (resourceType.equals(resourceTypes[31])) {
+			} else if (resourceTypeLabel.equals(resourceTypes[31])) {
 				platformResource.addProperty(hasResourceType, transporters);
-			} else if (resourceType.equals(resourceTypes[32])) {
+			} else if (resourceTypeLabel.equals(resourceTypes[32])) {
 				platformResource.addProperty(hasResourceType, venues);
-			} else if (resourceType.equals(resourceTypes[33])) {
+			} else if (resourceTypeLabel.equals(resourceTypes[33])) {
 				platformResource.addProperty(hasResourceType, WiFiRouters);
-			} else if (resourceType.equals(resourceTypes[34])) {
+			} else if (resourceTypeLabel.equals(resourceTypes[34])) {
 				platformResource.addProperty(hasResourceType, workSpaces);
-			} else { // if no similarity found
-				/*
-				 * TODO value = Character.toUpperCase(value.charAt(0)) + value.substring(1); try { // create new resource type. Remove illegal charcters from
-				 * used in the desciptions name Resource newType = ontologyModel.createResource(D2S + new File(value).toURI().toURL());
-				 * newType.addProperty(rdfType, resourceType); newType.addProperty(rdfsLabel, value); platformResource.addProperty(hasResourceType, newType);
-				 * log.info("New resource type '" + value + "' created."); } catch (Exception e) { log.warn("Could not identify resource type '" + value +
-				 * "' nor create a new one."); }
-				 */
+			} else { // if it's a new Resource Type
+				Resource newResourceType = ontologyModel.createResource(D2S + resourceType.getLabel().replace(" ", "_").replace("[", "%5B").replace("]", "%5D").replace("/", "_").replace(",", "_").replace("\"", ""));
+				newResourceType.addProperty(rdfsSubClassOf, resourceTypeClass);
+				newResourceType.addProperty(rdfsLabel, resourceType.getLabel());
+				for (ResourceType external : resourceType.getExternals()) {
+					if (external.getResource() != null && !external.getResource().isEmpty()) {
+						Resource newExternal = ontologyModel.createResource(external.getResource());
+						newResourceType.addProperty(rdfsSeeAlso, newExternal);
+					}
+				}
+				platformResource.addProperty(hasResourceType, newResourceType);
 			}
 		}
 	}

@@ -21,15 +21,15 @@
 		<tr>
 			<td><strong>Resource Types:</strong></td>
 			<td ng-controller="resourceTypeCtrl">
-				<div ng-repeat="type in $parent.platform.resourceTypeObjects" class="row-margin-15"> 
-					<div ng-class="{'input-group' : $parent.platform.resourceTypeObjects.length>1}" class="row-margin-5">
+				<div ng-repeat="type in $parent.platform.resourceTypes" class="row-margin-15"> 
+					<div ng-class="{'input-group' : $parent.platform.resourceTypes.length>1}" class="row-margin-5">
 						<input type="text" class="form-control"	ng-model="type.label" name="rt{{$index}}" cu-focuslast
 								typeahead="rt.name as rt.name for rt in resourceTypes | orderBy: 'name' | resourceContainsFilter: $viewValue" />
 			
-						<span ng-if="$parent.platform.resourceTypeObjects.length>1" class="input-group-btn">
+						<span ng-if="$parent.platform.resourceTypes.length>1" class="input-group-btn">
 							<button type="button" class="btn btn-default" data-type="plus"
 								data-field="rt{{$index}}"
-								ng-click="$parent.platform.resourceTypeObjects.splice($index,1)">
+								ng-click="$parent.platform.resourceTypes.splice($index,1)">
 								<span class="glyphicon glyphicon-minus"></span>&nbsp;
 							</button>
 						</span>
@@ -68,7 +68,7 @@
             					<strong>Selected:</strong>
 								<ul>
 									<li ng-repeat="resource in selected" title="{{resource.description}}">
-										{{resource.uri}}
+										{{resource.resource}}
 										<button type="button" class="btn btn-xs btn-danger" ng-click="selected.splice($index,1)">
 											<span class="glyphicon glyphicon-minus"></span>&nbsp;
 										</button>
@@ -81,7 +81,7 @@
     				</script>
 				</div>
 				<button type="button" class="btn btn-default btn-sm pull-right"
-					ng-click="addOption($parent.platform.resourceTypeObjects)">
+					ng-click="addOption($parent.platform.resourceTypes)">
 					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 					Add another type
 				</button>
