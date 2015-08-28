@@ -135,13 +135,22 @@
 
 	d2sApp.controller('platformDetailCtrl', function ($scope, $route, platformFactory, authFactory, $rootScope, $location, toaster, platform) {
 		$scope.isSuggestion = $route.current.$$route.isSuggestion;
-		if (!angular.isUndefined(platform)) {
-			$scope.platform = platform.data;
-
-			// retrieve launchYear label
-			if (!angular.isUndefined($scope.platform.yearLaunch)) {
-				$scope.platform.yearLaunchName = $scope.platform.yearLaunch.replace("http://www.discover2share.net/d2s-ont/", "");
+		
+		if (platform.status === 204) {
+			if ($scope.isSuggestion) {
+				toaster.pop("error", "Error!", "No suggestion found with ID " + $route.current.params.id + ".");
+				$location.path("suggestions/");
+			} else {
+				toaster.pop("error", "Error!", "No platform found with URI " + $route.current.params.platform + ".");
+				$location.path("platforms/");
 			}
+		}
+		
+		$scope.platform = platform.data;
+
+		// retrieve launchYear label
+		if (!angular.isUndefined($scope.platform.yearLaunch)) {
+			$scope.platform.yearLaunchName = $scope.platform.yearLaunch.replace("http://www.discover2share.net/d2s-ont/", "");
 		}
 
 		$scope.timeConverter = function (owlTime) {
@@ -498,6 +507,10 @@
 				});
 			}
 		};
+	});
+	
+	d2sApp.controller('editPlatformCtrl', function ($scope, $rootScope, toaster) {
+		
 	});
 
 })();

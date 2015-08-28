@@ -195,7 +195,10 @@ public class OntologyServiceBean implements OntologyService {
 		QueryExecution qexec = QueryExecutionFactory.sparqlService(ENDPOINT, query);
 		ResultSet results = qexec.execSelect();
 
-		Platform platform = new Platform();
+		Platform platform = null;
+		if (results.hasNext())
+			platform = new Platform();
+		
 		while (results.hasNext()) {
 			QuerySolution result = results.next();
 			for (String var : results.getResultVars()) {
