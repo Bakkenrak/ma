@@ -55,10 +55,12 @@
 	d2sApp.factory('authHttpInterceptor', function ($rootScope, $injector, $cookieStore) {
 		var authHttpInterceptor = {
 			request: function ($request) {
-				var authFactory = $injector.get('authFactory');
-				if (authFactory.isAuthenticated()) {
-					$request.headers['auth-id'] = authFactory.getAuthData().username;
-					$request.headers['auth-token'] = authFactory.getAuthData().authToken;
+				if ($request.url.substr(0, 3) === "api") { // attach auth only to api calls
+					var authFactory = $injector.get('authFactory');
+					if (authFactory.isAuthenticated()) {
+						$request.headers['auth-id'] = authFactory.getAuthData().username;
+						$request.headers['auth-token'] = authFactory.getAuthData().authToken;
+					}
 				}
 				return $request;
 			},
