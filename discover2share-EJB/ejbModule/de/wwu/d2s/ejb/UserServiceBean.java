@@ -34,9 +34,13 @@ public class UserServiceBean implements UserService {
 	}
 
 	@Override
-	public void saveNew(User user) {
+	public User saveNew(User user) {
+		List<User> results = em.createQuery("SELECT u FROM User u WHERE u.username = '" + user.getUsername() + "'", User.class).getResultList();
+		if(!results.isEmpty())
+			return null;
 		user.hashOwnPassword();
 		em.persist(user);
+		return user;
 	}
 
 	@Override

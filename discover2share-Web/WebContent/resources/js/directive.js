@@ -95,7 +95,7 @@
 	 * Binds the result set to the ng-model value if given.
 	 * Links to a YASQE instance if existing in the scope.
 	 */
-	d2sApp.directive('cuYasr', function () {
+	d2sApp.directive('cuYasr', function (toaster) {
 		function init(scope, element, attrs, ngModel) {
 			if (angular.isUndefined(YASR)) {
 				throw new Error('YASR library required.');
@@ -122,18 +122,28 @@
 		
 				scope.yasr = YASR(element[0], config); // initialize YASR
 				
-				scope.yasqe.options.sparql.callbacks.complete = function (data) { // when YASQE completes SPARQL query
+				scope.yasqe.options.sparql.callbacks.complete = function (response) { // when YASQE completes SPARQL query
 					scope.queryPlatformVar = scope.platformVar || scope.getPlatformVar(); // save platform variable used at query time
 					
-					scope.yasr.setResponse(data.responseJSON); // set response to YASR (linking of YASR and YASQE)
-					
-					if (!ngModel) { // if an ng-model attribute is provided in the view
-						// Keep the ngModel in sync with changes in the result set
-						var newValue = data.responseJSON;
-						if (newValue !== ngModel.$viewValue) {
+					if (response.status >= 400) { // if an error occured
+						toaster.pop('error', 'Code ' + response.status, 'There was an error processing this SPARQL query: ' + response.responseJSON.error);
+						
+						if (ngModel) { // reset ngModel if supplied for this directive
 							scope.$evalAsync(function () {
-								ngModel.$setViewValue(newValue);
+								ngModel.$setViewValue(null);
 							});
+						}
+					} else {
+						scope.yasr.setResponse(response.responseJSON); // set response to YASR (linking of YASR and YASQE)
+						
+						if (ngModel) { // if an ng-model attribute is provided in the view
+							// Keep the ngModel in sync with changes in the result set
+							var newValue = response.responseJSON;
+							if (newValue !== ngModel.$viewValue) {
+								scope.$evalAsync(function () {
+									ngModel.$setViewValue(newValue);
+								});
+							}
 						}
 					}
 				};

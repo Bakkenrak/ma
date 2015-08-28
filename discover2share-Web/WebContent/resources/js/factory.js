@@ -52,7 +52,7 @@
 	 *
 	 *	derived from: http://www.aschua.de/blog/pairing-angularjs-and-javaee-for-authentication/ (02/07/2015)
 	 */
-	d2sApp.factory('authHttpInterceptor', function ($rootScope, $injector, $cookieStore) {
+	d2sApp.factory('authHttpInterceptor', function ($rootScope, $injector, $cookieStore, toaster) {
 		var authHttpInterceptor = {
 			request: function ($request) {
 				if ($request.url.substr(0, 3) === "api") { // attach auth only to api calls

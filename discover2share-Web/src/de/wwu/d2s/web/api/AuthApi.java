@@ -8,6 +8,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
 
 import de.wwu.d2s.dto.AuthAccessElement;
 import de.wwu.d2s.dto.AuthLoginElement;
@@ -26,5 +27,5 @@ public interface AuthApi {
     @POST
     @Path("register")
     @RolesAllowed(value={"admin"})
-    public User registerUser(@Context HttpServletRequest request, User user);
+    public Response registerUser(@Context HttpServletRequest request, User user);
 }

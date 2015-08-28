@@ -7,6 +7,7 @@ import javax.ejb.Stateless;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
 
 import de.wwu.d2s.dto.AuthAccessElement;
 import de.wwu.d2s.dto.AuthLoginElement;
@@ -47,8 +48,9 @@ public class AuthImpl implements AuthApi {
     }
 
 	@Override
-	public User registerUser(HttpServletRequest request, User user) {
-		userService.saveNew(user);
-		return user;
+	public Response registerUser(HttpServletRequest request, User user) {
+		if (userService.saveNew(user) == null)
+			return Response.status(Response.Status.CONFLICT).entity("{\"error\":\"A user with the name '" + user.getUsername() + "' already exists.\"}").build();
+		return Response.status(Response.Status.OK).entity(user).build();
 	}
 }

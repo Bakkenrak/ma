@@ -1,7 +1,7 @@
 (function () {
 	'use strict';
 
-	var d2sApp = angular.module('d2sApp', ['ngRoute', 'ngCookies', 'ui.bootstrap']);
+	var d2sApp = angular.module('d2sApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'toaster']);
 	
 	d2sApp.config(function ($routeProvider, $locationProvider) {
 		
@@ -60,7 +60,7 @@
 			controller: 'loginCtrl',
 			templateUrl: 'resources/html/login.html'
 		}).when('/logout', {
-			templateUrl: 'resources/html/logout.html'
+			redirectTo: '/'
 		}).otherwise({ 
 			templateUrl: 'resources/html/404.html'
 		});

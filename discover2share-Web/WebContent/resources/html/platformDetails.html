@@ -14,7 +14,8 @@
 			<div ng-repeat="resourceType in platform.resourceTypes">{{resourceType.label}}
 				<ul ng-if="resourceType.externals.length>0">
 					<li ng-repeat="external in resourceType.externals" title="{{external.description}}">
-						<a href="{{external.resource}}" target="blank">{{external.resource}}</a>
+						<a href="{{external.resource}}" target="blank" ng-if="external.label">{{external.label}}</a>
+						<a href="{{external.resource}}" target="blank" ng-if="!external.label">{{external.resource}}</a>
 					</li>
 				</ul>
 			</div>

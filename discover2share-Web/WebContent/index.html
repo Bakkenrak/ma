@@ -6,6 +6,7 @@
 
 <link rel="stylesheet" href="./resources/css/bootstrap.min.css" />
 <link rel="stylesheet" href="./resources/css/custom.css" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/angularjs-toaster/0.4.15/toaster.min.css" rel="stylesheet" />
 <link href='http://cdn.jsdelivr.net/yasqe/2.6.1/yasqe.min.css' rel='stylesheet' type='text/css'/>
 <link href='http://cdn.jsdelivr.net/yasr/2.6.0/yasr.min.css' rel='stylesheet' type='text/css'/>
 
@@ -42,6 +43,9 @@
 		</div>
 		</nav>
 	</div>
+	
+	<toaster-container></toaster-container>
+	
 	<div class="row">
 		<div class="container" ng-view="true"></div>
 	</div>
@@ -59,6 +63,7 @@
 		type="text/javascript"></script>
 	<script src="resources/js/ui-bootstrap-tpls-0.13.0.min.js"
 		type="text/javascript"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angularjs-toaster/0.4.15/toaster.min.js"></script>
 	<script src="resources/js/app.js" type="text/javascript"></script>
 	<script src="resources/js/filter.js" type="text/javascript"></script>
 	<script src="resources/js/factory.js" type="text/javascript"></script>

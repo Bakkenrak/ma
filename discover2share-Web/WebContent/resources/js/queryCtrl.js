@@ -6,24 +6,36 @@
 	/**
 	 * Controller for the query builder form.
 	 */
-	d2sApp.controller('queryCtrl', function ($scope, $rootScope, $http, $timeout, platformFactory) {
+	d2sApp.controller('queryCtrl', function ($scope, $rootScope, $http, $timeout, platformFactory, toaster) {
 		if (angular.isUndefined($rootScope.countries)) { // if countries weren't retrieved in this app before
-			platformFactory.getCountries().success(function (data) {
+			platformFactory.getCountries().success(function (data, status) {
+				if (status >= 400) {
+					toaster.pop('error', 'Code ' + status, 'There was an error retrieving the list of countries.');
+				}
 				$rootScope.countries = data.countries;
 			});
 		}
 		if (angular.isUndefined($rootScope.cities)) { // if cities weren't retrieved in this app before
-			platformFactory.getCities().success(function (data) {
+			platformFactory.getCities().success(function (data, status) {
+				if (status >= 400) {
+					toaster.pop('error', 'Code ' + status, 'There was an error retrieving the list of cities from the ontology.');
+				}
 				$rootScope.cities = data;
 			});
 		}
 		if (angular.isUndefined($rootScope.languages)) { // if languages weren't retrieved in this app before
-			platformFactory.getLanguages().success(function (data) {
+			platformFactory.getLanguages().success(function (data, status) {
+				if (status >= 400) {
+					toaster.pop('error', 'Code ' + status, 'There was an error retrieving the list of languages.');
+				}
 				$rootScope.languages = data.languages;
 			});
 		}
 		if (angular.isUndefined($rootScope.resourceTypes)) { // if resource types weren't retrieved in this app before
-			platformFactory.getResourceTypes().success(function (data) {
+			platformFactory.getResourceTypes().success(function (data, status) {
+				if (status >= 400) {
+					toaster.pop('error', 'Code ' + status, 'There was an error retrieving the list of resource types from the ontology.');
+				}
 				$rootScope.resourceTypes = data;
 			});
 		}

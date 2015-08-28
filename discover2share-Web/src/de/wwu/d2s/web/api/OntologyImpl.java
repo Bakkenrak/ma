@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.ws.rs.core.Response;
 
 import de.wwu.d2s.ejb.OntologyService;
 import de.wwu.d2s.jpa.Platform;
@@ -51,8 +52,14 @@ public class OntologyImpl implements OntologyApi {
 	}
 
 	@Override
-	public String doQuery(String query) {
-		return ontologyService.doQuery(query);
+	public Response doQuery(String query) {
+		Map<String, String> result = ontologyService.doQuery(query);
+		if (result.containsKey("success"))
+			return Response.status(Response.Status.OK).entity(result.get("success")).build();
+		else if (result.containsKey("error"))
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(result).build();
+		else
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 	}
 
 	@Override

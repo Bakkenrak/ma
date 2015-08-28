@@ -3,8 +3,7 @@
 
 	var d2sApp = angular.module('d2sApp');
 
-	d2sApp.controller('headerController', function ($scope, $rootScope,
-			$location, $cookieStore, authFactory) {
+	d2sApp.controller('headerController', function ($scope, $rootScope,	$location, $cookieStore, authFactory, toaster) {
 		// listener for route change
 		$rootScope.$on('$locationChangeSuccess', function (event) {
 			$scope.currentTab = $location.path().substr(1); // set scope variable to current route
@@ -20,6 +19,7 @@
 
 		$scope.logout = function () {
 			authFactory.logout();
+			toaster.pop('success', 'Logged out!', 'You were logged out successfully.');
 		};
 	});
 
@@ -40,12 +40,13 @@
 		});
 	});
 
-	d2sApp.controller('loginCtrl', function ($scope, $location, authFactory) {
+	d2sApp.controller('loginCtrl', function ($scope, $location, authFactory, toaster) {
 		$scope.loggedOut = false;
 
 		if ($location.path().substr(1) === "logout") {
 			authFactory.logout();
 			$scope.loggedOut = true;
+			toaster.pop('info', 'Logged out!', 'You were logged out successfully.');
 		}
 
 		$scope.user = {
@@ -64,6 +65,7 @@
 						authFactory.setAuthData(data);
 						$scope.loginFailed = false;
 						$location.path("/");
+						toaster.pop('success', 'Logged in!', 'Welcome back, ' + $scope.user.username + '.');
 					}
 				}).error(function () {
 					$scope.loginFailed = true;
@@ -86,6 +88,9 @@
 						$scope.registerFailed = (status !== 200);
 						$scope.registerSuccess = (status === 200);
 						$scope.user = {};
+						if ($scope.registerFailed) {
+							$scope.errorMessage = data.error;
+						}
 					}).error(function () {
 						$scope.registerFailed = true;
 						$scope.registerSuccess = false;
@@ -128,7 +133,7 @@
 		$scope.filteredPlatforms = $scope.platforms = platforms.data;
 	});
 
-	d2sApp.controller('platformDetailCtrl', function ($scope, $route, platformFactory, authFactory, $rootScope, $location, platform) {
+	d2sApp.controller('platformDetailCtrl', function ($scope, $route, platformFactory, authFactory, $rootScope, $location, toaster, platform) {
 		$scope.isSuggestion = $route.current.$$route.isSuggestion;
 		if (!angular.isUndefined(platform)) {
 			$scope.platform = platform.data;
@@ -157,7 +162,10 @@
 
 		// retrieve dimension comments and labels (only once)
 		if (angular.isUndefined($rootScope.descriptions)) {
-			platformFactory.getDescriptions().success(function (data) {
+			platformFactory.getDescriptions().success(function (data, status) {
+				if (status >= 400) {
+					toaster.pop('error', 'Code ' + status, 'There was an error retrieving descriptions from the ontology.');
+				}
 				$rootScope.descriptions = data;
 			});
 		}
@@ -170,6 +178,9 @@
 			platformFactory.removeSuggestion($scope.platform.id).success(function (data, status) {
 				if (status === 200 || status === 204) {
 					$location.path("suggestions/");
+					toaster.pop('success', 'Suggestion removed!', 'The suggestion for platform ' + $scope.platform.label + ' was successfully removed.');
+				} else {
+					toaster.pop('success', 'Code ' + status, 'Sorry, there was an error removing the suggestion for platform ' + $scope.platform.label + '.');
 				}
 			});
 		};
@@ -178,25 +189,37 @@
 			platformFactory.savePlatformSuggestion($scope.platform.id).success(function (data, status) {
 				if (status === 200 || status === 204) {
 					$location.path("suggestions/");
+					toaster.pop('success', 'Suggestion added!', 'The suggestion for platform ' + $scope.platform.label + ' was successfully added to the ontology.');
+				} else {
+					toaster.pop('success', 'Code ' + status, 'Sorry, there was an error adding the suggestion for platform ' + $scope.platform.label + ' to the ontology.');
 				}
 			});
 		};
 	});
 
-	d2sApp.controller('addPlatformCtrl', function ($scope, $rootScope, platformFactory, authFactory) {
+	d2sApp.controller('addPlatformCtrl', function ($scope, $rootScope, platformFactory, authFactory, toaster) {
 		// retrieve dimension comments and labels (only once)
 		if (angular.isUndefined($rootScope.descriptions)) {
-			platformFactory.getDescriptions().success(function (data) {
+			platformFactory.getDescriptions().success(function (data, status) {
+				if (status >= 400) {
+					toaster.pop('error', 'Code ' + status, 'There was an error retrieving descriptions from the ontology.');
+				}
 				$rootScope.descriptions = data;
 			});
 		}
 		if (angular.isUndefined($rootScope.countries)) {
-			platformFactory.getCountries().success(function (data) {
+			platformFactory.getCountries().success(function (data, status) {
+				if (status >= 400) {
+					toaster.pop('error', 'Code ' + status, 'There was an error retrieving the list of countries.');
+				}
 				$rootScope.countries = data.countries;
 			});
 		}
 		if (angular.isUndefined($rootScope.languages)) {
-			platformFactory.getLanguages().success(function (data) {
+			platformFactory.getLanguages().success(function (data, status) {
+				if (status >= 400) {
+					toaster.pop('error', 'Code ' + status, 'There was an error retrieving the list of languages.');
+				}
 				$rootScope.languages = data.languages;
 			});
 		}
@@ -267,6 +290,11 @@
 			}
 			return platformFactory.findCity($scope.platform.launchCity.search, $scope.platform.launchCountry.item.countryCode)
 					.then(function (response) {
+						if (response.status !== 200) {
+							toaster.pop('error', 'Code ' + response.status, 'There was an error connecting to the GeoNames database.');
+						} else if (response.data.totalResultsCount === 0) {
+							toaster.pop('error', 'City not found!', 'Couldn\'t find a city \'' + $scope.platform.launchCity.search + '\' in ' + $scope.platform.launchCountry.label + '.');
+						}
 						return response.data.geonames;
 					});
 		};
@@ -277,6 +305,11 @@
 			}
 			return platformFactory.findCity($scope.platform.residenceCity.search, $scope.platform.residenceCountry.item.countryCode)
 					.then(function (response) {
+						if (response.status !== 200) {
+							toaster.pop('error', 'Code ' + response.status, 'There was an error connecting to the GeoNames database.');
+						} else if (response.data.totalResultsCount === 0) {
+							toaster.pop('error', 'City not found!', 'Couldn\'t find a city \'' + $scope.platform.residenceCity.search + '\' in ' + $scope.platform.residenceCountry.label + '.');
+						}
 						return response.data.geonames;
 					});
 		};
@@ -316,6 +349,10 @@
 				selected.push(current); //add current selection to array
 			}
 		};
+		
+		$scope.addOption = function (array) {
+			array.push({});
+		};
 
 		$scope.submit = function () {
 			$scope.platform.resourceTypes = $scope.platform.resourceTypes
@@ -330,9 +367,17 @@
 						return i.resourceName;
 					});
 			if ($scope.directSave) {
-				platformFactory.directSavePlatformSuggestion($scope.platform);
+				platformFactory.directSavePlatformSuggestion($scope.platform).success(function (data, status) {
+					if (status >= 400) {
+						toaster.pop('error', 'Code ' + status, 'There was an error saving this suggestion.');
+					}
+				});
 			} else {
-				platformFactory.addPlatformSuggestion($scope.platform);
+				platformFactory.addPlatformSuggestion($scope.platform).success(function (data, status) {
+					if (status >= 400) {
+						toaster.pop('error', 'Code ' + status, 'There was an error adding this suggestion.');
+					}
+				});
 			}
 		};
 		
@@ -341,37 +386,38 @@
 		};
 	});
 	
-	d2sApp.controller('resourceTypeCtrl', function ($scope, $rootScope, $timeout, platformFactory, $modal, $log) {
+	d2sApp.controller('resourceTypeCtrl', function ($scope, $rootScope, $timeout, platformFactory, $modal, toaster) {
 		if (angular.isUndefined($rootScope.resourceTypes)) { // if resource types weren't retrieved in this app before
-			platformFactory.getResourceTypes().success(function (data) {
+			platformFactory.getResourceTypes().success(function (data, status) {
+				if (status >= 400) {
+					toaster.pop('error', 'Code ' + status, 'There was an error retrieving available resource types from the ontology.');
+				}
 				$rootScope.resourceTypes = data;
 			});
 		}
 		
-		$scope.addOption = function (array) {
-			array.push({});
-		};
+		// $scope.addOption method is inherited from parent scope (addPlatformCtrl)
 		
 		$scope.openModal = function (resourceType, size) {
-		    var modalInstance = $modal.open({
-		    	animation: true,
-		    	templateUrl: 'myModalContent.html',
-		    	controller: 'resourceModalCtrl',
-		    	size: size,
-		    	resolve: {
-		    		resourceType: function () {
-		    			return resourceType;
-		    		}
-		    	}
-		    });
+			var modalInstance = $modal.open({
+				animation: true,
+				templateUrl: 'myModalContent.html',
+				controller: 'resourceModalCtrl',
+				size: size,
+				resolve: {
+					resourceType: function () {
+						return resourceType;
+					}
+				}
+			});
 	
-		    modalInstance.result.then(function (selected) {
-		    	resourceType.externals = selected;
-		    });
+			modalInstance.result.then(function (selected) {
+				resourceType.externals = selected;
+			});
 		};
 	});
 	
-	d2sApp.controller('resourceModalCtrl', function ($scope, $modalInstance, $timeout, resourceFactory, resourceType) {		
+	d2sApp.controller('resourceModalCtrl', function ($scope, $modalInstance, $timeout, resourceFactory, toaster, resourceType) {		
 		$scope.dbpediaResources = [];
 		$scope.selected = (resourceType.externals && resourceType.externals.length > 0) ? resourceType.externals : [];
 		$scope.searchTerm = resourceType.label;
@@ -407,6 +453,9 @@
 			if (value) {
 				_timeout = $timeout(function () {
 					resourceFactory.dbpedia(value).success(function (data, status) {
+						if (status >= 400) {
+							toaster.pop('error', 'Code ' + status, 'There was an error retrieving resources from DBPedia.');
+						}
 						$scope.dbpediaResources.length = 0;
 						if (data && data.results) {
 							$scope.dbpediaResources = data.results;
@@ -435,6 +484,7 @@
 		
 		$scope.addDbpediaConcept = function (resource) {
 			$scope.addConcept({
+				label: resource.label,
 				resource: resource.uri,
 				description: resource.description
 			});

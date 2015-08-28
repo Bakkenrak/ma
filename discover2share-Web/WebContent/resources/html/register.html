@@ -1,6 +1,6 @@
 <div class=row>
 	<div ng-show="registerFailed" class="alert alert-danger" role="alert">
-		<strong>Registration failed!</strong> Please try again.
+		<strong>Registration failed!</strong> {{errorMessage}}<br />Please try again.
 	</div>
 
 	<div ng-show="registerSuccess" class="alert alert-success" role="alert">

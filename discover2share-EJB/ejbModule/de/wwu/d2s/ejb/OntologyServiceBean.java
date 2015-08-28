@@ -283,7 +283,7 @@ public class OntologyServiceBean implements OntologyService {
 	}
 
 	@Override
-	public String doQuery(String query) {
+	public Map<String, String> doQuery(String query) {
 		if(query.substring(0, 6).equals("query="))
 			query = query.substring(6);
 		try {
@@ -292,16 +292,22 @@ public class OntologyServiceBean implements OntologyService {
 			e.printStackTrace();
 		}
 		
-		Query sparqlQuery = QueryFactory.create(query);
-		QueryExecution qexec = QueryExecutionFactory.sparqlService(ENDPOINT, sparqlQuery);
-		ResultSet results = qexec.execSelect();
-
-		ByteArrayOutputStream b = new ByteArrayOutputStream();
-		ResultSetFormatter.outputAsJSON(b, results);
-		String json = b.toString();
-		
-		qexec.close();
-		return json;
+		Map<String, String> output = new HashMap<String, String>();
+		try {
+			Query sparqlQuery = QueryFactory.create(query);
+			QueryExecution qexec = QueryExecutionFactory.sparqlService(ENDPOINT, sparqlQuery);
+			ResultSet results = qexec.execSelect();
+			ByteArrayOutputStream b = new ByteArrayOutputStream();
+			ResultSetFormatter.outputAsJSON(b, results);
+			String json = b.toString();
+			
+			qexec.close();
+			
+			output.put("success", json);
+		} catch(Exception e) {
+			output.put("error", e.getMessage());
+		}
+		return output;
 	}
 
 	@Override
