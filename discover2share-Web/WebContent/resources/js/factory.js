@@ -52,7 +52,7 @@
 	 *
 	 *	derived from: http://www.aschua.de/blog/pairing-angularjs-and-javaee-for-authentication/ (02/07/2015)
 	 */
-	d2sApp.factory('authHttpInterceptor', function ($rootScope, $injector, $cookieStore, toaster) {
+	d2sApp.factory('authHttpInterceptor', function ($rootScope, $injector, $cookieStore) {
 		var authHttpInterceptor = {
 			request: function ($request) {
 				if ($request.url.substr(0, 3) === "api") { // attach auth only to api calls
@@ -145,15 +145,15 @@
 		};
 		
 		platformFactory.findCity = function (cityName, country) {
-			var query = "http://api.geonames.org/searchJSON?username=discover2share&maxRows=10&featureClass=P&q=" + cityName;
-			if (!angular.isUndefined(country) && country !== "") {
+			var query = "http://api.geonames.org/searchJSON?username=discover2share&maxRows=10&featureClass=P&q=" + encodeURIComponent(cityName);
+			if (country) {
 				query = query + "&country=" + country;
 			}
 			return $http.jsonp(query + "&callback=JSON_CALLBACK");
 		};
 		
 		platformFactory.findCountry = function (countryName) {
-			var query = "http://api.geonames.org/searchJSON?username=discover2share&maxRows=10&featureClass=A&isNameRequired&q=" + countryName;
+			var query = "http://api.geonames.org/searchJSON?username=discover2share&maxRows=10&featureClass=A&isNameRequired&q=" + encodeURIComponent(countryName);
 			return $http.get(query);
 		};
 		

@@ -119,9 +119,15 @@
 						typeahead="country.countryName + ' (' + country.countryCode + ')' for country in countries | orderBy: 'countryName' | countryContainsFilter: $viewValue"
 						typeahead-on-select="launchCountrySelected($item)"
 						typeahead-editable="false" />
-				</p> <a href="{{platform.launchCountry.geonames}}" target="_blank"
-				ng-show="platform.launchCountry.item.countryId">{{platform.launchCountry.label}}
-					({{platform.launchCountry.item.countryCode}})</a></td>
+				</p>
+				<div ng-show="platform.launchCountry.geonames">
+					<a href="{{platform.launchCountry.geonames}}" target="_blank">{{platform.launchCountry.label}}
+							({{platform.launchCountry.countryCode}})</a>
+					<button type="button" class="btn btn-xs btn-danger" ng-click="platform.launchCountry = null">
+						<span class="glyphicon glyphicon-remove"></span>
+					</button>
+				</div>
+			</td>
 			<td></td>
 		</tr>
 		<tr>
@@ -132,10 +138,16 @@
 						typeahead="(city.toponymName + ', ' + city.adminName1 + ' (' + city.countryCode + ')') for city in findLaunchCity()"
 						typeahead-wait-ms="750"
 						typeahead-on-select="launchCitySelected($item)" />
-				</p> <a href="{{platform.launchCity.geonames}}" target="_blank"
-				ng-show="platform.launchCity.label">{{platform.launchCity.label}},
-					{{platform.launchCity.item.adminName1}}
-					({{platform.launchCity.item.countryCode}})</a></td>
+				</p>
+				<div ng-show="platform.launchCity.geonames">
+					<a href="{{platform.launchCity.geonames}}" target="_blank">{{platform.launchCity.label}}, 
+							{{platform.launchCity.adminName1}}
+							({{platform.launchCity.countryCode}})</a>
+					<button type="button" class="btn btn-xs btn-danger" ng-click="platform.launchCity = null">
+						<span class="glyphicon glyphicon-remove"></span>
+					</button>
+				</div>
+			</td>
 			<td></td>
 		</tr>
 		<tr>
@@ -155,9 +167,15 @@
 						typeahead="country.countryName + ' (' + country.countryCode + ')' for country in countries | orderBy: 'countryName' | countryContainsFilter: $viewValue"
 						typeahead-on-select="residenceCountrySelected($item)"
 						typeahead-editable="false" />
-				</p> <a href="{{platform.residenceCountry.geonames}}" target="_blank"
-				ng-show="platform.residenceCountry.item.countryId">{{platform.residenceCountry.label}}
-					({{platform.residenceCountry.item.countryCode}})</a></td>
+				</p>
+				<div ng-show="platform.residenceCountry.geonames">
+					<a href="{{platform.residenceCountry.geonames}}" target="_blank">{{platform.residenceCountry.label}}
+							({{platform.residenceCountry.countryCode}})</a>
+					<button type="button" class="btn btn-xs btn-danger" ng-click="platform.residenceCountry = null">
+						<span class="glyphicon glyphicon-remove"></span>
+					</button>
+				</div>
+			</td>
 			<td></td>
 		</tr>
 		<tr>
@@ -169,10 +187,16 @@
 						typeahead="(city.toponymName + ', ' + city.adminName1 + ' (' + city.countryCode + ')') for city in findResidenceCity()"
 						typeahead-wait-ms="750"
 						typeahead-on-select="residenceCitySelected($item)" />
-				</p> <a href="{{platform.residenceCity.geonames}}" target="_blank"
-				ng-show="platform.residenceCity.label">{{platform.residenceCity.label}},
-					{{platform.residenceCity.item.adminName1}}
-					({{platform.residenceCity.item.countryCode}})</a></td>
+				</p> 
+				<div ng-show="platform.residenceCity.geonames">
+					<a href="{{platform.residenceCity.geonames}}" target="_blank">{{platform.residenceCity.label}}, 
+							{{platform.residenceCity.adminName1}}
+							({{platform.residenceCity.countryCode}})</a>
+					<button type="button" class="btn btn-xs btn-danger" ng-click="platform.residenceCity = null">
+						<span class="glyphicon glyphicon-remove"></span>
+					</button>
+				</div>
+			</td>
 			<td></td>
 		</tr>
 		<tr>

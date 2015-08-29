@@ -14,6 +14,10 @@ public class GeoUnit implements Serializable{
 	
 	private String label;
 	
+	private String countryCode;
+
+	private String adminName1;
+	
 	public GeoUnit(){}
 
 	public String getGeonames() {
@@ -38,6 +42,22 @@ public class GeoUnit implements Serializable{
 
 	public void setLabel(String label) {
 		this.label = label;
+	}
+
+	public String getCountryCode() {
+		return countryCode;
+	}
+
+	public void setCountryCode(String countryCode) {
+		this.countryCode = countryCode;
+	}
+
+	public String getAdminName1() {
+		return adminName1;
+	}
+
+	public void setAdminName1(String adminName1) {
+		this.adminName1 = adminName1;
 	}
 
 }

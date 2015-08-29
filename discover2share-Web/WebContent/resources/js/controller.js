@@ -189,7 +189,7 @@
 					$location.path("suggestions/");
 					toaster.pop('success', 'Suggestion removed!', 'The suggestion for platform ' + $scope.platform.label + ' was successfully removed.');
 				} else {
-					toaster.pop('success', 'Code ' + status, 'Sorry, there was an error removing the suggestion for platform ' + $scope.platform.label + '.');
+					toaster.pop('error', 'Code ' + status, 'Sorry, there was an error removing the suggestion for platform ' + $scope.platform.label + '.');
 				}
 			});
 		};
@@ -200,13 +200,13 @@
 					$location.path("suggestions/");
 					toaster.pop('success', 'Suggestion added!', 'The suggestion for platform ' + $scope.platform.label + ' was successfully added to the ontology.');
 				} else {
-					toaster.pop('success', 'Code ' + status, 'Sorry, there was an error adding the suggestion for platform ' + $scope.platform.label + ' to the ontology.');
+					toaster.pop('error', 'Code ' + status, 'Sorry, there was an error adding the suggestion for platform ' + $scope.platform.label + ' to the ontology.');
 				}
 			});
 		};
 	});
 
-	d2sApp.controller('addPlatformCtrl', function ($scope, $rootScope, platformFactory, authFactory, toaster) {
+	d2sApp.controller('addPlatformCtrl', function ($scope, $rootScope, platformFactory, authFactory, toaster, platform) {
 		// retrieve dimension comments and labels (only once)
 		if (angular.isUndefined($rootScope.descriptions)) {
 			platformFactory.getDescriptions().success(function (data, status) {
@@ -232,8 +232,21 @@
 				$rootScope.languages = data.languages;
 			});
 		}
+		
+		if (platform) { //if edit view, transform data for use in the form
+			platform = platform.data;
+			platform.languageObjects = [];
+			platform.languages.forEach(function (language) {
+				platform.languageObjects.push({
+					resourceName: language
+				});
+			});
+			if (platform.languageObjects.length === 0) {
+				platform.languageObjects.push({});
+			}
+		}
 
-		$scope.platform = {
+		$scope.platform = platform || {
 			resourceTypes : [ {} ],
 			languageObjects : [ {} ],
 			languages : [],
@@ -249,75 +262,103 @@
 		};
 
 		$scope.launchCitySelected = function (item) {
-			$scope.platform.launchCity.search = "";
-			$scope.platform.launchCity.item = item;
-			$scope.platform.launchCity.geonames = "http://www.geonames.org/" + item.geonameId;
-			$scope.platform.launchCity.label = item.toponymName;
-			if (!angular.isUndefined($scope.platform.launchCountry.item) && 
-					$scope.platform.launchCity.item.countryCode !== $scope.platform.launchCountry.item.countryCode) {
-				console.log("Selected launch city is not situated in the selected country.");
+			$scope.platform.launchCity = {
+					search: "",
+					item: item,
+					geonames: "http://www.geonames.org/" + item.geonameId,
+					label: item.toponymName,
+					adminName1: item.adminName1,
+					countryCode: item.countryCode
+				};
+			if (!$scope.platform.launchCountry || $scope.platform.launchCountry.countryCode !== $scope.platform.launchCity.countryCode) {
+				$scope.platform.launchCountry = {
+						search: "",
+						geonames: "http://www.geonames.org/" + item.countryId,
+						label: item.countryName,
+						countryCode: item.countryCode
+					};
+				toaster.pop("info", "Launch country adjusted!", "Selected launch city was not situated in the previously selected country. It was adjusted accordingly.");
 			}
 		};
 		
 		$scope.residenceCitySelected = function (item) {
-			$scope.platform.residenceCity.search = "";
-			$scope.platform.residenceCity.item = item;
-			$scope.platform.residenceCity.geonames = "http://www.geonames.org/"	+ item.geonameId;
-			$scope.platform.residenceCity.label = item.toponymName;
-			if (!angular.isUndefined($scope.platform.residenceCountry.item)	&& 
-					$scope.platform.residenceCity.item.countryCode !== $scope.platform.residenceCountry.item.countryCode) {
-				console.log("Selected residence city is not situated in the selected country.");
+			$scope.platform.residenceCity = {
+					search: "",
+					item: item,
+					geonames: "http://www.geonames.org/" + item.geonameId,
+					label: item.toponymName,
+					adminName1: item.adminName1,
+					countryCode: item.countryCode
+				};
+			if (!$scope.platform.residenceCountry || $scope.platform.residenceCountry.countryCode !== $scope.platform.residenceCity.countryCode) {
+				$scope.platform.residenceCountry = {
+						search: "",
+						geonames: "http://www.geonames.org/" + item.countryId,
+						label: item.countryName,
+						countryCode: item.countryCode
+					};
+				toaster.pop("info", "Residence country adjusted!", "Selected residence city was not situated in the previously selected country. It was adjusted accordingly.");
 			}
 		};
 		
 		$scope.launchCountrySelected = function (item) {
-			$scope.platform.launchCountry.search = "";
-			$scope.platform.launchCountry.item = item;
-			$scope.platform.launchCountry.geonames = "http://www.geonames.org/"	+ item.countryId;
-			$scope.platform.launchCountry.label = item.countryName;
+			$scope.platform.launchCountry = {
+					search: "",
+					item: item,
+					geonames: "http://www.geonames.org/" + item.countryId,
+					label: item.countryName,
+					countryCode: item.countryCode
+				};
 			if (!angular.isUndefined($scope.platform.launchCity.item) && 
 					$scope.platform.launchCity.item.countryCode !== $scope.platform.launchCountry.item.countryCode) {
-				console.log("Selected launch city is not situated in the selected country.");
+				toaster.pop("warning", "Warning!", "Selected launch city is not situated in the selected country.");
 			}
 		};
 		
 		$scope.residenceCountrySelected = function (item) {
-			$scope.platform.residenceCountry.search = "";
-			$scope.platform.residenceCountry.item = item;
-			$scope.platform.residenceCountry.geonames = "http://www.geonames.org/" + item.countryId;
-			$scope.platform.residenceCountry.label = item.countryName;
+			$scope.platform.residenceCountry = {
+					search: "",
+					item: item,
+					geonames: "http://www.geonames.org/" + item.countryId,
+					label: item.countryName,
+					countryCode: item.countryCode
+				};
 			if (!angular.isUndefined($scope.platform.residenceCity.item) && 
 					$scope.platform.residenceCity.item.countryCode !== $scope.platform.residenceCountry.item.countryCode) {
-				console.log("Selected residence city is not situated in the selected country.");
+				toaster.pop("warning", "Warning!", "Selected residence city is not situated in the selected country.");
 			}
 		};
 
 		// triggered when the search term input changes
 		$scope.findLaunchCity = function () {
-			if ($scope.platform.launchCity.search === "") {
+			if (!$scope.platform.launchCity || $scope.platform.launchCity.search === "") {
 				return;
 			}
-			return platformFactory.findCity($scope.platform.launchCity.search, $scope.platform.launchCountry.item.countryCode)
+			return platformFactory.findCity($scope.platform.launchCity.search, $scope.platform.launchCountry ? $scope.platform.launchCountry.countryCode : null)
 					.then(function (response) {
 						if (response.status !== 200) {
 							toaster.pop('error', 'Code ' + response.status, 'There was an error connecting to the GeoNames database.');
 						} else if (response.data.totalResultsCount === 0) {
-							toaster.pop('error', 'City not found!', 'Couldn\'t find a city \'' + $scope.platform.launchCity.search + '\' in ' + $scope.platform.launchCountry.label + '.');
+							var message = 'Couldn\'t find a city \'' + $scope.platform.launchCity.search + '\'';
+							message += ($scope.platform.launchCountry && $scope.platform.launchCountry.label) ?  'in ' + $scope.platform.launchCountry.label + '.' : '.';
+							toaster.pop('warning', 'City not found!', message);
 						}
 						return response.data.geonames;
 					});
 		};
 		
 		$scope.findResidenceCity = function () {
-			if ($scope.platform.residenceCity.search === "") {
+			if (!$scope.platform.residenceCity || $scope.platform.residenceCity.search === "") {
 				return;
 			}
-			return platformFactory.findCity($scope.platform.residenceCity.search, $scope.platform.residenceCountry.item.countryCode)
+			return platformFactory.findCity($scope.platform.residenceCity.search, $scope.platform.residenceCountry ? $scope.platform.residenceCountry.countryCode : null)
 					.then(function (response) {
 						if (response.status !== 200) {
 							toaster.pop('error', 'Code ' + response.status, 'There was an error connecting to the GeoNames database.');
 						} else if (response.data.totalResultsCount === 0) {
-							toaster.pop('error', 'City not found!', 'Couldn\'t find a city \'' + $scope.platform.residenceCity.search + '\' in ' + $scope.platform.residenceCountry.label + '.');
+							var message = 'Couldn\'t find a city \'' + $scope.platform.residenceCity.search + '\'';
+							message += ($scope.platform.residenceCountry && $scope.platform.residenceCountry.label) ?  'in ' + $scope.platform.residenceCountry.label + '.' : '.';
+							toaster.pop('warning', 'City not found!', message);
 						}
 						return response.data.geonames;
 					});
@@ -509,8 +550,43 @@
 		};
 	});
 	
-	d2sApp.controller('editPlatformCtrl', function ($scope, $rootScope, toaster) {
+	d2sApp.controller('editPlatformCtrl', function ($scope, $rootScope, toaster, platformFactory, platform) {
+		// retrieve dimension comments and labels (only once)
+		if (angular.isUndefined($rootScope.descriptions)) {
+			platformFactory.getDescriptions().success(function (data, status) {
+				if (status >= 400) {
+					toaster.pop('error', 'Code ' + status, 'There was an error retrieving descriptions from the ontology.');
+				}
+				$rootScope.descriptions = data;
+			});
+		}
+		if (angular.isUndefined($rootScope.countries)) {
+			platformFactory.getCountries().success(function (data, status) {
+				if (status >= 400) {
+					toaster.pop('error', 'Code ' + status, 'There was an error retrieving the list of countries.');
+				}
+				$rootScope.countries = data.countries;
+			});
+		}
+		if (angular.isUndefined($rootScope.languages)) {
+			platformFactory.getLanguages().success(function (data, status) {
+				if (status >= 400) {
+					toaster.pop('error', 'Code ' + status, 'There was an error retrieving the list of languages.');
+				}
+				$rootScope.languages = data.languages;
+			});
+		}
+		$scope.getYears = function () {
+			var currentYear = new Date().getFullYear();
+			var output = [];
+			for (var i = currentYear; i > 1989; i--) {
+				output.push(i);
+			}
+			return output;
+		};
 		
+		$scope.platform = platform.data;
+		console.log($scope.platform);
 	});
 
 })();
