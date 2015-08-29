@@ -17,6 +17,9 @@
 		var getSuggestion = function ($route, platformFactory) {
 			return platformFactory.getSuggestion($route.current.params.id);
 		};
+		var getLanguages = function (platformFactory) {
+			return platformFactory.getLanguages();
+		};
 		
 		$routeProvider.when('/', {
 			controller: 'indexCtrl',
@@ -27,6 +30,14 @@
 			resolve: {
 				platforms: getAllPlatforms
 			}
+		}).when('/platforms/edit/:platform', {
+			controller: 'addEditPlatformCtrl',
+			templateUrl: 'resources/html/addEditPlatform.html',
+			resolve: {
+				platform: getPlatform,
+				languages: getLanguages
+			},
+			isSuggestion: false
 		}).when('/platforms/:platform', {
 			controller: 'platformDetailCtrl',
 			templateUrl: 'resources/html/platformDetails.html',
@@ -40,6 +51,14 @@
 			resolve: {
 				platforms: getAllSuggestions
 			}
+		}).when('/suggestions/edit/:id', {
+			controller: 'addEditPlatformCtrl',
+			templateUrl: 'resources/html/addEditPlatform.html',
+			resolve: {
+				platform: getSuggestion,
+				languages: getLanguages
+			},
+			isSuggestion: true
 		}).when('/suggestions/:id', {
 			controller: 'platformDetailCtrl',
 			templateUrl: 'resources/html/platformDetails.html',
@@ -48,8 +67,12 @@
 			},
 			isSuggestion: true
 		}).when('/add', {
-			controller: 'addPlatformCtrl',
-			templateUrl: 'resources/html/addPlatform.html'
+			controller: 'addEditPlatformCtrl',
+			templateUrl: 'resources/html/addEditPlatform.html',
+			resolve: {
+				platform: function () {},
+				languages: getLanguages
+			}
 		}).when('/query', {
 			controller: 'queryCtrl',
 			templateUrl: 'resources/html/query.html'

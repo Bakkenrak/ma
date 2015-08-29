@@ -99,7 +99,12 @@
 		};
 	});
 
-	d2sApp.controller('platformsCtrl', function ($scope, platforms) {
+	d2sApp.controller('platformsCtrl', function ($scope, $location, toaster, platforms) {
+		if (platforms.status === 401) {
+			toaster.pop("error", "Unauthorized!", "You need to be logged in to access the information on that page.");
+			$location.path("login/");
+		}
+		
 		$scope.pagination = {
 			itemsPerPage : 25
 		};
@@ -135,7 +140,7 @@
 
 	d2sApp.controller('platformDetailCtrl', function ($scope, $route, platformFactory, authFactory, $rootScope, $location, toaster, platform) {
 		$scope.isSuggestion = $route.current.$$route.isSuggestion;
-		
+				
 		if (platform.status === 204) {
 			if ($scope.isSuggestion) {
 				toaster.pop("error", "Error!", "No suggestion found with ID " + $route.current.params.id + ".");
@@ -144,6 +149,9 @@
 				toaster.pop("error", "Error!", "No platform found with URI " + $route.current.params.platform + ".");
 				$location.path("platforms/");
 			}
+		} else if (platform.status === 401) {
+			toaster.pop("error", "Unauthorized!", "You need to be logged in to access the information on that page.");
+			$location.path("login/");
 		}
 		
 		$scope.platform = platform.data;
@@ -206,7 +214,20 @@
 		};
 	});
 
-	d2sApp.controller('addPlatformCtrl', function ($scope, $rootScope, platformFactory, authFactory, toaster, platform) {
+	d2sApp.controller('addEditPlatformCtrl', function ($scope, $rootScope, $location, $timeout, platformFactory, authFactory, toaster, platform, languages) {
+		if (platform && platform.status === 401) {
+			toaster.pop("error", "Unauthorized!", "You need to be logged in to view the information on that page.");
+			$location.path("login/");
+		} else if (platform && platform.status > 400) {
+			toaster.pop("error", "Code " + platform.status, "There was an error retrieving the platform information.");
+		}
+		
+		
+		if (languages && languages.status >= 400) {
+			toaster.pop("error", "Code " + languages.status, "There was an error retrieving the list of languages.");
+		} else {
+			$rootScope.languages = languages.data.languages;
+		}
 		// retrieve dimension comments and labels (only once)
 		if (angular.isUndefined($rootScope.descriptions)) {
 			platformFactory.getDescriptions().success(function (data, status) {
@@ -224,26 +245,21 @@
 				$rootScope.countries = data.countries;
 			});
 		}
-		if (angular.isUndefined($rootScope.languages)) {
-			platformFactory.getLanguages().success(function (data, status) {
-				if (status >= 400) {
-					toaster.pop('error', 'Code ' + status, 'There was an error retrieving the list of languages.');
-				}
-				$rootScope.languages = data.languages;
-			});
-		}
 		
 		if (platform) { //if edit view, transform data for use in the form
 			platform = platform.data;
 			platform.languageObjects = [];
 			platform.languages.forEach(function (language) {
 				platform.languageObjects.push({
-					resourceName: language
+					resourceName: " " + language // add a space that can be later removed to deal with a weird model binding bug
 				});
 			});
-			if (platform.languageObjects.length === 0) {
-				platform.languageObjects.push({});
-			}
+			$timeout(function () { // after the page is loaded
+				$scope.platform.languageObjects.forEach(function (item) { // from each language object
+					item.resourceName = item.resourceName.substr(1); // remove previously added space to produce a change Angular registers
+				});
+				$scope.$apply(); // apply the change - only now will the language select boxes be set correctly...
+			});
 		}
 
 		$scope.platform = platform || {
