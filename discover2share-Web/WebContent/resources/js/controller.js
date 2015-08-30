@@ -220,6 +220,17 @@
 		$scope.editPlatform = function () {
 			$location.path("platforms/edit/" + $route.current.params.platform);
 		};
+		
+		$scope.removePlatform = function () {
+			platformFactory.removePlatform($route.current.params.platform).success(function (data, status) {
+				if (status === 200 || status === 204) {
+					$location.path("platforms/");
+					toaster.pop('success', 'Platform removed!', 'The platform ' + $scope.platform.label + ' was successfully removed from the ontology.');
+				} else {
+					toaster.pop('error', 'Code ' + status, 'Sorry, there was an error removing the platform ' + $scope.platform.label + ' from the ontology.');
+				}
+			});
+		};
 	});
 
 	d2sApp.controller('addEditPlatformCtrl', function ($scope, $rootScope, $route, $location, $timeout, platformFactory, authFactory, toaster, platform, languages) {

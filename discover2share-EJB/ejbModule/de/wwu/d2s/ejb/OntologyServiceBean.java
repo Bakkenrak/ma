@@ -330,7 +330,7 @@ public class OntologyServiceBean implements OntologyService {
 	}
 	
 	@Override
-	public void removePlatform(String id) {
+	public void removePlatform(String id) { //TODO remove everything
 		String query = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
 						+ "PREFIX d2s: <http://www.discover2share.net/d2s-ont/> "
 						+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "

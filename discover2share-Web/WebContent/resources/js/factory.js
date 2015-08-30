@@ -111,6 +111,10 @@
 			return $http.get('api/ontology/platforms/' + platform);
 		};
 		
+		platformFactory.removePlatform = function (id) {
+			return $http.delete('api/ontology/platforms/' + id);
+		};
+		
 		platformFactory.getDescriptions = function () {
 			return $http.get('api/ontology/descriptions');
 		};
