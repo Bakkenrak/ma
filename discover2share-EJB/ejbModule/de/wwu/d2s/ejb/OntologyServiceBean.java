@@ -97,6 +97,7 @@ public class OntologyServiceBean implements OntologyService {
 				+ "PREFIX dbpp: <http://dbpedia.org/property/> " 
 				+ "PREFIX dbpo: <http://dbpedia.org/ontology/> "
 				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#> "
+				+ "PREFIX dct: <http://purl.org/dc/terms/> "
 				+ "Select * " + "WHERE { "
 				+ getPlatformQuery(name)
 				+ "}";
@@ -179,7 +180,7 @@ public class OntologyServiceBean implements OntologyService {
 		OntologyWriter o = new OntologyWriter();
 		OntModel model;
 		if (platform.getEditFor() != null && !platform.getEditFor().isEmpty()) {
-			removePlatform(platform.getEditFor());
+			removePlatform(platform.getEditFor(), false);
 			model = o.constructPlatform(platform, platform.getEditFor());
 		} else {
 			model = o.constructPlatform(platform);
@@ -330,7 +331,11 @@ public class OntologyServiceBean implements OntologyService {
 	}
 	
 	@Override
-	public void removePlatform(String id) { //TODO remove everything
+	public void removePlatform(String id) {
+		removePlatform(id, true);
+	}
+	
+	private void removePlatform(String id, boolean removeCompletely) { //TODO remove everything
 		String query = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
 						+ "PREFIX d2s: <http://www.discover2share.net/d2s-ont/> "
 						+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
@@ -338,29 +343,24 @@ public class OntologyServiceBean implements OntologyService {
 						+ "PREFIX dbpp: <http://dbpedia.org/property/> "
 						+ "PREFIX dbpo: <http://dbpedia.org/ontology/> "
 						+ "PREFIX owl: <http://www.w3.org/2002/07/owl#> "
-						+ "DELETE { "
-						+ "d2s:" + id + " rdf:type d2s:P2P_SCC_Platform . "
+						+ "PREFIX dct: <http://purl.org/dc/terms/> "
+						+ "DELETE { ";
+		if (removeCompletely) {
+			query += "d2s:" + id + " ?a ?b. "
+						+ "d2s:" + id + " d2s:used_in ?userDistribution. "
+						+ "?userDistribution dbpp:locationCountry ?userCountry. "
+						+ "?userDistribution d2s:user_percentage ?userPercentage. "
+						+ "?userDistribution dct:date ?distributionDate. ";
+		} else {
+			query += "d2s:" + id + " rdf:type d2s:P2P_SCC_Platform . "
 						+ "d2s:" + id + " rdfs:label ?label . "
 						+ "d2s:" + id + " dbpp:url ?url . "
 						+ "d2s:" + id + " rdfs:comment ?description . "
 						+ "d2s:" + id + " d2s:has_resource_type ?rt . "
 						+ "d2s:" + id + " d2s:has_consumer_involvement ?ci . "
-						+ "d2s:" + id + " d2s:launched_in ?launch . "
-						+ "?launch dbpp:locationCity ?launchCity . "
-						+ "?launch dbpp:locationCountry ?launchCountry . "
 						+ "d2s:" + id + " dbpp:launchYear ?yearLaunch . "
-						+ "d2s:" + id + " d2s:operator_resides_in ?residence . "
-						+ "?residence dbpp:locationCity ?residenceCity . "
-						+ "?residence dbpp:locationCountry ?residenceCountry . "
 						+ "d2s:" + id + " d2s:has_market_mediation ?me . "
-						+ "d2s:" + id + " d2s:has_market_integration ?integration . "
-						+ "?integration rdf:type d2s:Market_Integration . "
-						+ "?integration d2s:markets_are ?of . "
-						+ "?integration d2s:has_scope ?sc . "
 						+ "d2s:" + id + " d2s:has_money_flow ?mf . "
-						+ "d2s:" + id + " d2s:has_p2p_scc_pattern ?patternNode . "
-						+ "?patternNode rdf:type ?pa . "
-						+ "?patternNode d2s:has_temporality ?te . "
 						+ "d2s:" + id + " d2s:promotes ?co . "
 						+ "d2s:" + id + " d2s:has_resource_owner ?ro . "
 						+ "d2s:" + id + " d2s:min_service_duration ?serviceDurationMin . "
@@ -368,10 +368,29 @@ public class OntologyServiceBean implements OntologyService {
 						+ "d2s:" + id + " d2s:has_app ?ap . "
 						+ "d2s:" + id + " d2s:has_trust_contribution ?tc . "
 						+ "d2s:" + id + " d2s:accessed_object_has_type ?ot . "
-						+ "d2s:" + id + " dbpp:language ?lang . "
-						+ "} WHERE { "
-						+ getPlatformQuery(id)
-						+ "}";
+						+ "d2s:" + id + " dbpp:language ?lang . ";
+		}
+		query += "d2s:" + id + " d2s:launched_in ?launch . "
+					+ "?launch dbpp:locationCity ?launchCity . "
+					+ "?launch dbpp:locationCountry ?launchCountry . "
+					+ "d2s:" + id + " d2s:operator_resides_in ?residence . "
+					+ "?residence dbpp:locationCity ?residenceCity . "
+					+ "?residence dbpp:locationCountry ?residenceCountry . "
+					+ "d2s:" + id + " d2s:has_market_integration ?integration . "
+					+ "?integration rdf:type d2s:Market_Integration . "
+					+ "?integration d2s:markets_are ?of . "
+					+ "?integration d2s:has_scope ?sc . "
+					+ "d2s:" + id + " d2s:has_p2p_scc_pattern ?patternNode . "
+					+ "?patternNode rdf:type ?pa . "
+					+ "?patternNode d2s:has_temporality ?te . "
+					+ "} WHERE { ";
+		
+		if (removeCompletely) {
+			query += "d2s:" + id + " ?a ?b. ";
+		}
+		
+		query += getPlatformQuery(id)
+					+ "}";
 		
 		UpdateExecutionFactory.createRemote(UpdateFactory.create(query), UPDATEENDPOINT).execute(); // execute update to endpoint
 	}
@@ -475,6 +494,12 @@ public class OntologyServiceBean implements OntologyService {
 				+ " OPTIONAL { d2s:"
 				+ name 
 				+ " dbpp:language ?lang."
-				+ " ?lang rdfs:label ?language }.";
+				+ " ?lang rdfs:label ?language }."
+				+ " OPTIONAL { d2s:"
+				+ name 
+				+ " d2s:used_in ?userDistribution."
+				+ " ?userDistribution dbpp:locationCountry ?userCountry."
+				+ " ?userDistribution d2s:user_percentage ?userPercentage."
+				+ " ?userDistribution dct:date ?distributionDate. }.";
 	}
 }
