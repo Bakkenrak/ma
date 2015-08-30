@@ -88,4 +88,9 @@ public class OntologyImpl implements OntologyApi {
 		ontologyService.editSuggestion(platform);
 	}
 
+	@Override
+	public void removePlatform(String id) {
+		ontologyService.removePlatform(id);
+	}
+
 }

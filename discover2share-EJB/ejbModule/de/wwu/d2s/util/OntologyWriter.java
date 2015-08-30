@@ -84,6 +84,7 @@ public class OntologyWriter {
 	private Property operatorResidesIn;
 	private Property locationCity;
 	private Property locationCountry;
+	private Property hasTrustContribution;
 	private Property hasApp;
 	private Property owlSameAs;
 	private Property dbppLanguage;
@@ -141,6 +142,8 @@ public class OntologyWriter {
 	private Resource immediatePattern;
 	private Resource recurrentPattern;
 	private Resource indirectProfit;
+	private Resource profitFromUserData;
+	private Resource profitFromAdvertisement;
 	private Resource profitFromBoth;
 	private Resource profitFromPeerConsumers;
 	private Resource profitFromPeerProviders;
@@ -177,6 +180,11 @@ public class OntologyWriter {
 	private Resource androidApp;
 	private Resource iOSApp;
 	private Resource windowsPhoneApp;
+	private Resource providerRatings;
+	private Resource providerAndConsumerRatings;
+	private Resource referral;
+	private Resource vouching;
+	private Resource valueAddedServices;
 
 	/**
 	 * Instantiates the new ontology model and most resources and properties
@@ -224,6 +232,7 @@ public class OntologyWriter {
 		locationCity = ontologyModel.createProperty(DBPP + "locationCity");
 		locationCountry = ontologyModel.createProperty(DBPP + "locationCountry");
 		hasApp = ontologyModel.createProperty(D2S + "has_app");
+		hasTrustContribution = ontologyModel.createProperty(D2S + "has_trust_contribution");
 		owlSameAs = ontologyModel.createProperty(OWL + "sameAs");
 		dbppLanguage = ontologyModel.createProperty(DBPP + "language");
 		rdfsComment = ontologyModel.createProperty(RDFS + "comment");
@@ -286,6 +295,8 @@ public class OntologyWriter {
 		recurrentPattern = ontologyModel.createResource(D2S + "Recurrent");
 
 		indirectProfit = ontologyModel.createResource(D2S + "Indirect_Profit");
+		profitFromUserData = ontologyModel.createResource(D2S + "Profit_from_user_data");
+		profitFromAdvertisement = ontologyModel.createResource(D2S + "Profit_from_advertisement");
 		profitFromBoth = ontologyModel.createResource(D2S + "Profit_from_both");
 		profitFromPeerConsumers = ontologyModel.createResource(D2S + "Profit_from_peer_consumers");
 		profitFromPeerProviders = ontologyModel.createResource(D2S + "Profit_from_peer_providers");
@@ -329,6 +340,12 @@ public class OntologyWriter {
 		androidApp = ontologyModel.createResource(D2S + "Android_app");
 		iOSApp = ontologyModel.createResource(D2S + "iOS_app");
 		windowsPhoneApp = ontologyModel.createResource(D2S + "Windows_Phone_app");
+		
+		providerRatings = ontologyModel.createResource(D2S + "Provider_ratings");
+		providerAndConsumerRatings = ontologyModel.createResource(D2S + "Provider_and_consumer_ratings");
+		referral = ontologyModel.createResource(D2S + "Referral");
+		vouching = ontologyModel.createResource(D2S + "Vouching");
+		valueAddedServices = ontologyModel.createResource(D2S + "Value-added_services");
 	}
 
 	/**
@@ -353,9 +370,13 @@ public class OntologyWriter {
 	 * Calls all necessary steps required to construct the D2S representation of a platform.
 	 */
 	public OntModel constructPlatform(Platform platform) {
+		return constructPlatform(platform, null);
+	}
+	
+	public OntModel constructPlatform(Platform platform, String id) {
 		this.platform = platform;
 
-		initializePlatform();
+		initializePlatform(id);
 
 		resourceTypeDimension(platform.getResourceTypes());
 		sustainableConsumerismDimension(platform.getConsumerisms());
@@ -373,6 +394,7 @@ public class OntologyWriter {
 		locationDimension(platform.getResidenceCity(), platform.getResidenceCountry(), operatorResidesIn);
 		smartphoneAppDimension(platform.getApps());
 		userDistributionDimension();
+		trustContributionDimension(platform.getTrustContributions());
 		languageDimension(platform.getLanguages());
 
 		return ontologyModel;
@@ -381,9 +403,13 @@ public class OntologyWriter {
 	/**
 	 * Creates the ontology Resource of type d2s:P2P_SCC_Platform representing the platform. Label and URL are added as properties.
 	 */
-	private void initializePlatform() {
+	private void initializePlatform(String id) {
 		// Create new platform instance
-		platformResource = ontologyModel.createResource(D2S + "platform_" + getPlatformId());
+		if (id == null) {
+			platformResource = ontologyModel.createResource(D2S + "platform_" + getPlatformId());
+		} else {
+			platformResource = ontologyModel.createResource(D2S + id);
+		}
 		// Set type
 		platformResource.addProperty(rdfType, p2pSccPlatformClass);
 		// add rdfs:label property
@@ -491,10 +517,12 @@ public class OntologyWriter {
 				Resource newResourceType = ontologyModel.createResource(D2S + resourceType.getLabel().replace(" ", "_").replace("[", "%5B").replace("]", "%5D").replace("/", "_").replace(",", "_").replace("\"", ""));
 				newResourceType.addProperty(rdfsSubClassOf, resourceTypeClass);
 				newResourceType.addProperty(rdfsLabel, resourceType.getLabel());
-				for (ResourceType external : resourceType.getExternals()) {
-					if (external.getResource() != null && !external.getResource().isEmpty()) {
-						Resource newExternal = ontologyModel.createResource(external.getResource());
-						newResourceType.addProperty(rdfsSeeAlso, newExternal);
+				if (resourceType.getExternals() != null) {
+					for (ResourceType external : resourceType.getExternals()) {
+						if (external.getResource() != null && !external.getResource().isEmpty()) {
+							Resource newExternal = ontologyModel.createResource(external.getResource());
+							newResourceType.addProperty(rdfsSeeAlso, newExternal);
+						}
 					}
 				}
 				platformResource.addProperty(hasResourceType, newResourceType);
@@ -566,7 +594,8 @@ public class OntologyWriter {
 	}
 
 	private String[] mediationValues = { "profit from both", "profit from both peer consumers and peer providers", "indirect profit",
-			"profit from peer consumers", "profit from peer providers", "per transaction", "per listing", "membership fee" };
+			"profit from peer consumers", "profit from peer providers", "profit from user data", "profit from advertisement", 
+			"per transaction", "per listing", "membership fee" };
 
 	/**
 	 * Creates a link between the platform resource an its value for the market mediation dimension.
@@ -589,10 +618,14 @@ public class OntologyWriter {
 			else if (mediation.equals(mediationValues[4]))
 				platformResource.addProperty(hasMarketMediation, profitFromPeerProviders);
 			else if (mediation.equals(mediationValues[5]))
-				platformResource.addProperty(hasMarketMediation, perTransaction);
+				platformResource.addProperty(hasMarketMediation, profitFromUserData);
 			else if (mediation.equals(mediationValues[6]))
-				platformResource.addProperty(hasMarketMediation, perListing);
+				platformResource.addProperty(hasMarketMediation, profitFromAdvertisement);
 			else if (mediation.equals(mediationValues[7]))
+				platformResource.addProperty(hasMarketMediation, perTransaction);
+			else if (mediation.equals(mediationValues[8]))
+				platformResource.addProperty(hasMarketMediation, perListing);
+			else if (mediation.equals(mediationValues[9]))
 				platformResource.addProperty(hasMarketMediation, membershipFee);
 		}
 	}
@@ -710,7 +743,7 @@ public class OntologyWriter {
 			platformResource.addProperty(hasConsumerInvolvement, inBetween);
 	}
 
-	private String[] moneyFlowValues = { "c2c", "c2b2c", "free" };
+	private String[] moneyFlowValues = { "c2c", "consumer to consumer", "c2b2c", "consumer to business to consumer", "free" };
 
 	/**
 	 * Creates a link between the platform resource an its value for the money flow dimension.
@@ -723,11 +756,11 @@ public class OntologyWriter {
 			return;
 		value = value.toLowerCase();
 
-		if (value.equals(moneyFlowValues[0]))
+		if (value.equals(moneyFlowValues[0]) || value.equals(moneyFlowValues[1]))
 			platformResource.addProperty(hasMoneyFlow, c2c);
-		else if (value.equals(moneyFlowValues[1]))
+		else if (value.equals(moneyFlowValues[2]) || value.equals(moneyFlowValues[3]))
 			platformResource.addProperty(hasMoneyFlow, c2b2c);
-		else if (value.equals(moneyFlowValues[2]))
+		else if (value.equals(moneyFlowValues[4]))
 			platformResource.addProperty(hasMoneyFlow, free);
 	}
 
@@ -805,14 +838,15 @@ public class OntologyWriter {
 		if (platform.getYearLaunch() == null || platform.getYearLaunch().isEmpty())
 			return;
 
+		String yearString = platform.getYearLaunch().replace("http://www.discover2share.net/d2s-ont/", "");
 		try {
 			String sparqlQuery = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " + "PREFIX d2s: <http://www.discover2share.net/d2s-ont/> "
-					+ "ask  {d2s:" + platform.getYearLaunch() + " rdf:type d2s:Year}";
+					+ "ask  {d2s:" + yearString + " rdf:type d2s:Year}";
 
 			Query query = QueryFactory.create(sparqlQuery);
 			QueryExecution qexec = QueryExecutionFactory.sparqlService(ENDPOINT, query);
 
-			int year = Integer.parseInt(platform.getYearLaunch());
+			int year = Integer.parseInt(yearString);
 			Resource launchYearResource;
 			if (!qexec.execAsk()) { // when no instance for this year has been created before
 				launchYearResource = ontologyModel.createResource(D2S + year); // create new resource
@@ -826,9 +860,9 @@ public class OntologyWriter {
 
 			platformResource.addProperty(launchYear, launchYearResource); // connect platform and year instance
 		} catch (NumberFormatException e) {
-			log.warn("Year launch is not a proper number. Is: '" + platform.getYearLaunch() + "'");
+			log.warn("Year launch is not a proper number. Is: '" + yearString + "'");
 		} catch (Exception e) {
-			log.warn("Error querying the Ontology for an existing Resource with the URI d2s:" + platform.getYearLaunch());
+			log.warn("Error querying the Ontology for an existing Resource with the URI d2s:" + yearString);
 		}
 	}
 
@@ -933,12 +967,34 @@ public class OntologyWriter {
 			return;
 
 		for (String app : set) {
+			app = app.toLowerCase();
 			if (app.equals(smartphoneApps[0]))
 				platformResource.addProperty(hasApp, androidApp);
 			else if (app.equals(smartphoneApps[1]))
 				platformResource.addProperty(hasApp, iOSApp);
 			else if (app.equals(smartphoneApps[2]))
 				platformResource.addProperty(hasApp, windowsPhoneApp);
+		}
+	}
+	
+	private String[] trustContributions = { "provider ratings", "provider and consumer ratings", "referral", "vouching", "value-added services" };
+	
+	private void trustContributionDimension(Set<String> set) {
+		if (set == null || set.isEmpty())
+			return;
+		
+		for (String trustContribution : set) {
+			trustContribution = trustContribution.toLowerCase();
+			if (trustContribution.equals(trustContributions[0]))
+				platformResource.addProperty(hasTrustContribution, providerRatings);
+			else if (trustContribution.equals(trustContributions[1]))
+				platformResource.addProperty(hasTrustContribution, providerAndConsumerRatings);
+			else if (trustContribution.equals(trustContributions[2]))
+				platformResource.addProperty(hasTrustContribution, referral);
+			else if (trustContribution.equals(trustContributions[3]))
+				platformResource.addProperty(hasTrustContribution, vouching);
+			else if (trustContribution.equals(trustContributions[4]))
+				platformResource.addProperty(hasTrustContribution, valueAddedServices);
 		}
 	}
 

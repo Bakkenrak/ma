@@ -18,6 +18,7 @@
 					<td><strong>Platform</strong></td>
 					<td><strong>URL</strong></td>
 					<td><strong>Resource Type</strong></td>
+					<td><strong>Type</strong></td>
 					<td><strong>Added</strong></td>
 				</tr>
 			</thead>
@@ -25,7 +26,11 @@
 				<tr ng-repeat="platform in paginatedPlatforms | orderBy: 'label'">
 					<td><a href="suggestions/{{platform.id}}">{{platform.label}}</a></td>
 					<td><a target="blank" href="{{platform.url}}">{{platform.url}}</a></td>
-					<td>{{platform.resourceType}}</td>
+					<td><span ng-repeat="resourceType in platform.resourceTypes">{{resourceType.label}}<span ng-if="!$last">, </span></span></td>
+					<td>
+						<a ng-if="platform.editFor" href="platforms/{{platform.editFor}}" class="label label-primary">Change suggestion</a>
+						<span ng-if="!platform.editFor" class="label label-primary">New platform suggestion</span>
+					</td>
 					<td>{{platform.created | date: 'short'}}</td>
 				</tr>
 			</tbody>

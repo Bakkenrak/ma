@@ -488,9 +488,25 @@
 					$scope.platform.editFor = $route.current.params.platform;
 					
 					if ($scope.directSave) { // admin has selected direct application of changes to the ontology
-						
+						platformFactory.directSavePlatformSuggestion($scope.platform).success(function (data, status) {
+							if (status === 200 || status === 204) {
+								toaster.pop('success', 'Change persisted!', 'The platform change was successfully applied to the ontology.');
+								$location.path("platforms/" + $scope.platform.editFor);
+							}
+							if (status >= 400) {
+								toaster.pop('error', 'Code ' + status, 'There was an error adding this change suggestion.');
+							}
+						});
 					} else { // no direct application to ontology -> save suggestion for review
-						
+						platformFactory.addPlatformSuggestion($scope.platform).success(function (data, status) {
+							if (status === 200 || status === 204) {
+								toaster.pop('success', 'Change suggestion added!', 'The platform change suggestion was successfully added for review by a moderator.');
+								$location.path("platforms/" + $route.current.params.platform);
+							}
+							if (status >= 400) {
+								toaster.pop('error', 'Code ' + status, 'There was an error adding this change suggestion.');
+							}
+						});
 					}
 				} else { //editing a suggestion
 					platformFactory.editPlatformSuggestion($scope.platform).success(function (data, status) {

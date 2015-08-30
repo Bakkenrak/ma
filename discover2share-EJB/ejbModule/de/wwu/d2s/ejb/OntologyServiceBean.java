@@ -35,7 +35,7 @@ public class OntologyServiceBean implements OntologyService {
 	
 	private static final String ONTOLOGYURL = "http://localhost:3030/d2s-ont";
 	private static final String ENDPOINT = ONTOLOGYURL + "/query";
-	private static final String UPDATEENDPOINT = "http://localhost:3030/Testify/update";  // TODO ONTOLOGYURL + "/update";
+	private static final String UPDATEENDPOINT = ONTOLOGYURL + "/update";
 	
 	
 	@PersistenceContext
@@ -43,9 +43,6 @@ public class OntologyServiceBean implements OntologyService {
 
 	@Override
 	public List<Platform> getAllPlatforms() {
-
-		String sparqlEndpoint = "http://localhost:3030/d2s-ont/query";
-
 		String sparqlQuery = "PREFIX d2s: <http://www.discover2share.net/d2s-ont/> "
 				+ "PREFIX dbpp: <http://dbpedia.org/property/> "
 				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
@@ -58,7 +55,7 @@ public class OntologyServiceBean implements OntologyService {
 				+ "ORDER BY ?resourceName";
 
 		Query query = QueryFactory.create(sparqlQuery);
-		QueryExecution qexec = QueryExecutionFactory.sparqlService(sparqlEndpoint, query);
+		QueryExecution qexec = QueryExecutionFactory.sparqlService(ENDPOINT, query);
 		ResultSet results = qexec.execSelect();
 
 		List<Platform> platforms = new ArrayList<Platform>();
@@ -100,98 +97,9 @@ public class OntologyServiceBean implements OntologyService {
 				+ "PREFIX dbpp: <http://dbpedia.org/property/> " 
 				+ "PREFIX dbpo: <http://dbpedia.org/ontology/> "
 				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#> "
-				+ "Select * " + "WHERE { " + "  d2s:"
-				+ name
-				+ " rdf:type d2s:P2P_SCC_Platform ."
-				+ "  d2s:"
-				+ name
-				+ " rdfs:label ?label ."
-				+ "  d2s:"
-				+ name
-				+ " dbpp:url ?url ."
-				+ " OPTIONAL {  d2s:"
-				+ name
-				+ " d2s:has_resource_type ?rt ."
-				+ "  ?rt rdfs:label ?resourceType } ."
-				+ " OPTIONAL {  d2s:"
-				+ name
-				+ " d2s:has_consumer_involvement ?ci ."
-				+ "  ?ci rdfs:label ?consumerInvolvement } ."
-				+ " OPTIONAL {  d2s:"
-				+ name
-				+ " d2s:launched_in ?launch ."
-				+ " OPTIONAL {  ?launch dbpp:locationCity ?launchCity."
-				+ "				?launchCity rdfs:label ?launchCityName."
-				+ "				{?launchCity owl:sameAs ?launchCityGeonames."
-				+ "				 FILTER(STRSTARTS(STR(?launchCityGeonames), 'http://www.geonames.org/'))} } ."
-				+ " OPTIONAL {  ?launch dbpp:locationCountry ?launchCountry."
-				+ "				?launchCountry rdfs:label ?launchCountryName."
-				+ "				?launchCountry dbpp:countryCode ?launchCountryCode."
-				+ "				{?launchCountry owl:sameAs ?launchCountryGeonames."
-				+ "				 FILTER(STRSTARTS(STR(?launchCountryGeonames), 'http://www.geonames.org/'))} } }."
-				+ " OPTIONAL {  d2s:"
-				+ name
-				+ " dbpp:launchYear ?yearLaunch } ."
-				+ " OPTIONAL {  d2s:"
-				+ name
-				+ " d2s:operator_resides_in ?residence ."
-				+ " OPTIONAL {  ?residence dbpp:locationCity ?residenceCity."
-				+ "				?residenceCity rdfs:label ?residenceCityName."
-				+ "				{?residenceCity owl:sameAs ?residenceCityGeonames."
-				+ "				 FILTER(STRSTARTS(STR(?residenceCityGeonames), 'http://www.geonames.org/'))} } ."
-				+ " OPTIONAL {  ?residence dbpp:locationCountry ?residenceCountry."
-				+ "				?residenceCountry rdfs:label ?residenceCountryName."
-				+ "				?residenceCountry dbpp:countryCode ?residenceCountryCode."
-				+ "				{?residenceCountry owl:sameAs ?residenceCountryGeonames."
-				+ "				 FILTER(STRSTARTS(STR(?residenceCountryGeonames), 'http://www.geonames.org/'))} } } ."
-				+ " OPTIONAL {  d2s:"
-				+ name
-				+ " d2s:has_market_mediation ?me ."
-				+ "  ?me rdfs:label ?marketMediation } ."
-				+ " OPTIONAL {  d2s:"
-				+ name
-				+ " d2s:has_market_integration ?integration  ."
-				+ " OPTIONAL {  ?integration d2s:markets_are ?of ."
-				+ "  ?of rdfs:label ?offering } ."
-				+ " OPTIONAL {  ?integration d2s:has_scope ?sc ."
-				+ "  ?sc rdfs:label ?geographicScope } }."
-				+ " OPTIONAL {  d2s:"
-				+ name
-				+ " d2s:has_money_flow ?mf ."
-				+ "  ?mf rdfs:label ?moneyFlow } ."
-				+ " OPTIONAL {  d2s:"
-				+ name
-				+ " d2s:has_p2p_scc_pattern ?patternNode ."
-				+ "  ?patternNode rdf:type ?pa ."
-				+ "  ?pa rdfs:label ?pattern } ."
-				+ " OPTIONAL {  ?patternNode d2s:has_temporality ?te ."
-				+ "  ?te rdfs:label ?temporality } ."
-				+ " OPTIONAL {  d2s:"
-				+ name
-				+ " d2s:promotes ?co ."
-				+ "  ?co rdfs:label ?consumerism } ."
-				+ " OPTIONAL {  d2s:"
-				+ name
-				+ " d2s:has_resource_owner ?ro ."
-				+ "  ?ro rdfs:label ?resourceOwner } ."
-				+ " OPTIONAL {  d2s:"
-				+ name
-				+ " d2s:min_service_duration ?serviceDurationMin } ."
-				+ " OPTIONAL {  d2s:"
-				+ name
-				+ " d2s:max_service_duration ?serviceDurationMax } ."
-				+ " OPTIONAL {  d2s:"
-				+ name
-				+ " d2s:has_app ?ap ."
-				+ "  ?ap rdfs:label ?app } ."
-				+ " OPTIONAL { d2s:"
-				+ name
-				+ " d2s:has_trust_contribution ?tc ."
-				+ "  ?tc rdfs:label ?trustContribution } ."
-				+ " OPTIONAL {  d2s:"
-				+ name
-				+ " d2s:accessed_object_has_type ?ot ." 
-				+ "  ?ot rdfs:label ?typeOfAccessedObject } ." + "}";
+				+ "Select * " + "WHERE { "
+				+ getPlatformQuery(name)
+				+ "}";
 
 		Query query = QueryFactory.create(sparqlQuery);
 		QueryExecution qexec = QueryExecutionFactory.sparqlService(ENDPOINT, query);
@@ -269,7 +177,13 @@ public class OntologyServiceBean implements OntologyService {
 	@Override
 	public void directSaveSuggestion(Platform platform) {
 		OntologyWriter o = new OntologyWriter();
-		OntModel model = o.constructPlatform(platform);
+		OntModel model;
+		if (platform.getEditFor() != null && !platform.getEditFor().isEmpty()) {
+			removePlatform(platform.getEditFor());
+			model = o.constructPlatform(platform, platform.getEditFor());
+		} else {
+			model = o.constructPlatform(platform);
+		}
 		
 		OutputStream baos = new ByteArrayOutputStream();
 		model.write(baos, "N-TRIPLE"); // transform data in ontology model into triples
@@ -413,5 +327,154 @@ public class OntologyServiceBean implements OntologyService {
 	@Override
 	public void editSuggestion(Platform platform) {
 		em.merge(platform);
+	}
+	
+	@Override
+	public void removePlatform(String id) {
+		String query = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
+						+ "PREFIX d2s: <http://www.discover2share.net/d2s-ont/> "
+						+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
+						+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
+						+ "PREFIX dbpp: <http://dbpedia.org/property/> "
+						+ "PREFIX dbpo: <http://dbpedia.org/ontology/> "
+						+ "PREFIX owl: <http://www.w3.org/2002/07/owl#> "
+						+ "DELETE { "
+						+ "d2s:" + id + " rdf:type d2s:P2P_SCC_Platform . "
+						+ "d2s:" + id + " rdfs:label ?label . "
+						+ "d2s:" + id + " dbpp:url ?url . "
+						+ "d2s:" + id + " rdfs:comment ?description . "
+						+ "d2s:" + id + " d2s:has_resource_type ?rt . "
+						+ "d2s:" + id + " d2s:has_consumer_involvement ?ci . "
+						+ "d2s:" + id + " d2s:launched_in ?launch . "
+						+ "?launch dbpp:locationCity ?launchCity . "
+						+ "?launch dbpp:locationCountry ?launchCountry . "
+						+ "d2s:" + id + " dbpp:launchYear ?yearLaunch . "
+						+ "d2s:" + id + " d2s:operator_resides_in ?residence . "
+						+ "?residence dbpp:locationCity ?residenceCity . "
+						+ "?residence dbpp:locationCountry ?residenceCountry . "
+						+ "d2s:" + id + " d2s:has_market_mediation ?me . "
+						+ "d2s:" + id + " d2s:has_market_integration ?integration . "
+						+ "?integration rdf:type d2s:Market_Integration . "
+						+ "?integration d2s:markets_are ?of . "
+						+ "?integration d2s:has_scope ?sc . "
+						+ "d2s:" + id + " d2s:has_money_flow ?mf . "
+						+ "d2s:" + id + " d2s:has_p2p_scc_pattern ?patternNode . "
+						+ "?patternNode rdf:type ?pa . "
+						+ "?patternNode d2s:has_temporality ?te . "
+						+ "d2s:" + id + " d2s:promotes ?co . "
+						+ "d2s:" + id + " d2s:has_resource_owner ?ro . "
+						+ "d2s:" + id + " d2s:min_service_duration ?serviceDurationMin . "
+						+ "d2s:" + id + " d2s:max_service_duration ?serviceDurationMax . "
+						+ "d2s:" + id + " d2s:has_app ?ap . "
+						+ "d2s:" + id + " d2s:has_trust_contribution ?tc . "
+						+ "d2s:" + id + " d2s:accessed_object_has_type ?ot . "
+						+ "d2s:" + id + " dbpp:language ?lang . "
+						+ "} WHERE { "
+						+ getPlatformQuery(id)
+						+ "}";
+		
+		UpdateExecutionFactory.createRemote(UpdateFactory.create(query), UPDATEENDPOINT).execute(); // execute update to endpoint
+	}
+
+	private String getPlatformQuery(String name) {
+		return "d2s:"
+				+ name
+				+ " rdf:type d2s:P2P_SCC_Platform ."
+				+ "  d2s:"
+				+ name
+				+ " rdfs:label ?label ."
+				+ "  d2s:"
+				+ name
+				+ " dbpp:url ?url ."
+				+ " OPTIONAL { d2s:"
+				+ name
+				+ " rdfs:comment ?description. }."
+				+ " OPTIONAL {  d2s:"
+				+ name
+				+ " d2s:has_resource_type ?rt ."
+				+ "  ?rt rdfs:label ?resourceType } ."
+				+ " OPTIONAL {  d2s:"
+				+ name
+				+ " d2s:has_consumer_involvement ?ci ."
+				+ "  ?ci rdfs:label ?consumerInvolvement } ."
+				+ " OPTIONAL {  d2s:"
+				+ name
+				+ " d2s:launched_in ?launch ."
+				+ " OPTIONAL {  ?launch dbpp:locationCity ?launchCity."
+				+ "				?launchCity rdfs:label ?launchCityName."
+				+ "				{?launchCity owl:sameAs ?launchCityGeonames."
+				+ "				 FILTER(STRSTARTS(STR(?launchCityGeonames), 'http://www.geonames.org/'))} } ."
+				+ " OPTIONAL {  ?launch dbpp:locationCountry ?launchCountry."
+				+ "				?launchCountry rdfs:label ?launchCountryName."
+				+ "				?launchCountry dbpp:countryCode ?launchCountryCode."
+				+ "				{?launchCountry owl:sameAs ?launchCountryGeonames."
+				+ "				 FILTER(STRSTARTS(STR(?launchCountryGeonames), 'http://www.geonames.org/'))} } }."
+				+ " OPTIONAL {  d2s:"
+				+ name
+				+ " dbpp:launchYear ?yearLaunch } ."
+				+ " OPTIONAL {  d2s:"
+				+ name
+				+ " d2s:operator_resides_in ?residence ."
+				+ " OPTIONAL {  ?residence dbpp:locationCity ?residenceCity."
+				+ "				?residenceCity rdfs:label ?residenceCityName."
+				+ "				{?residenceCity owl:sameAs ?residenceCityGeonames."
+				+ "				 FILTER(STRSTARTS(STR(?residenceCityGeonames), 'http://www.geonames.org/'))} } ."
+				+ " OPTIONAL {  ?residence dbpp:locationCountry ?residenceCountry."
+				+ "				?residenceCountry rdfs:label ?residenceCountryName."
+				+ "				?residenceCountry dbpp:countryCode ?residenceCountryCode."
+				+ "				{?residenceCountry owl:sameAs ?residenceCountryGeonames."
+				+ "				 FILTER(STRSTARTS(STR(?residenceCountryGeonames), 'http://www.geonames.org/'))} } } ."
+				+ " OPTIONAL {  d2s:"
+				+ name
+				+ " d2s:has_market_mediation ?me ."
+				+ "  ?me rdfs:label ?marketMediation } ."
+				+ " OPTIONAL {  d2s:"
+				+ name
+				+ " d2s:has_market_integration ?integration  ."
+				+ " OPTIONAL {  ?integration d2s:markets_are ?of ."
+				+ "  ?of rdfs:label ?offering } ."
+				+ " OPTIONAL {  ?integration d2s:has_scope ?sc ."
+				+ "  ?sc rdfs:label ?geographicScope } }."
+				+ " OPTIONAL {  d2s:"
+				+ name
+				+ " d2s:has_money_flow ?mf ."
+				+ "  ?mf rdfs:label ?moneyFlow } ."
+				+ " OPTIONAL {  d2s:"
+				+ name
+				+ " d2s:has_p2p_scc_pattern ?patternNode ."
+				+ "  ?patternNode rdf:type ?pa ."
+				+ "  ?pa rdfs:label ?pattern  ."
+				+ " OPTIONAL {  ?patternNode d2s:has_temporality ?te ."
+				+ "  ?te rdfs:label ?temporality } }."
+				+ " OPTIONAL {  d2s:"
+				+ name
+				+ " d2s:promotes ?co ."
+				+ "  ?co rdfs:label ?consumerism } ."
+				+ " OPTIONAL {  d2s:"
+				+ name
+				+ " d2s:has_resource_owner ?ro ."
+				+ "  ?ro rdfs:label ?resourceOwner } ."
+				+ " OPTIONAL {  d2s:"
+				+ name
+				+ " d2s:min_service_duration ?serviceDurationMin } ."
+				+ " OPTIONAL {  d2s:"
+				+ name
+				+ " d2s:max_service_duration ?serviceDurationMax } ."
+				+ " OPTIONAL {  d2s:"
+				+ name
+				+ " d2s:has_app ?ap ."
+				+ "  ?ap rdfs:label ?app } ."
+				+ " OPTIONAL { d2s:"
+				+ name
+				+ " d2s:has_trust_contribution ?tc ."
+				+ "  ?tc rdfs:label ?trustContribution } ."
+				+ " OPTIONAL {  d2s:"
+				+ name
+				+ " d2s:accessed_object_has_type ?ot ." 
+				+ "  ?ot rdfs:label ?typeOfAccessedObject }."
+				+ " OPTIONAL { d2s:"
+				+ name 
+				+ " dbpp:language ?lang."
+				+ " ?lang rdfs:label ?language }.";
 	}
 }

@@ -1,7 +1,8 @@
+<a ng-if="platform.editFor" href="platforms/{{platform.editFor}}" class="label label-primary pull-right">Change suggestion</a>
+<span ng-if="!platform.editFor" class="label label-primary pull-right">New platform suggestion</span>
 <h1>
 	<a href="{{platform.url}}" target="blank">{{platform.label}}</a>
 </h1>
-
 <table id="detailTable" class="table table-bordered">
 	<tr ng-if="platform.description">
 		<td><strong>Description:</strong></td>

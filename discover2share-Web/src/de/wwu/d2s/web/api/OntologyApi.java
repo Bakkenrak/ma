@@ -28,6 +28,10 @@ public interface OntologyApi {
 	@Produces("application/json")
 	public Platform getPlatform(@PathParam("platform") String url);
 	
+	@Path("platforms/{platform}")
+	@DELETE
+	public void removePlatform(@PathParam("platform") String url);
+	
 	@Path("descriptions/")
 	@GET
 	@Produces("application/json")
