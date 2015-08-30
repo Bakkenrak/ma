@@ -214,14 +214,23 @@
 		};
 	});
 
-	d2sApp.controller('addEditPlatformCtrl', function ($scope, $rootScope, $location, $timeout, platformFactory, authFactory, toaster, platform, languages) {
-		if (platform && platform.status === 401) {
-			toaster.pop("error", "Unauthorized!", "You need to be logged in to view the information on that page.");
-			$location.path("login/");
-		} else if (platform && platform.status > 400) {
-			toaster.pop("error", "Code " + platform.status, "There was an error retrieving the platform information.");
+	d2sApp.controller('addEditPlatformCtrl', function ($scope, $rootScope, $route, $location, $timeout, platformFactory, authFactory, toaster, platform, languages) {
+		if ($route.current.$$route.isEdit) {
+			if (platform.status === 204) {
+				if ($route.current.$$route.isSuggestion) {
+					toaster.pop("error", "Not found!", "No suggestion with this ID found.");
+					$location.path("suggestions/");
+				} else {
+					toaster.pop("error", "Not found!", "No platform with this ID found.");
+					$location.path("platforms/");
+				}
+			} else if (platform.status === 401) {
+				toaster.pop("error", "Unauthorized!", "You need to be logged in to view the information on that page.");
+				$location.path("login/");
+			} else if (platform.status > 400) {
+				toaster.pop("error", "Code " + platform.status, "There was an error retrieving the platform information.");
+			}
 		}
-		
 		
 		if (languages && languages.status >= 400) {
 			toaster.pop("error", "Code " + languages.status, "There was an error retrieving the list of languages.");
@@ -248,6 +257,7 @@
 		
 		if (platform) { //if edit view, transform data for use in the form
 			platform = platform.data;
+			platform.yearLaunch = " " + platform.yearLaunch;
 			platform.languageObjects = [];
 			platform.languages.forEach(function (language) {
 				platform.languageObjects.push({
@@ -258,6 +268,7 @@
 				$scope.platform.languageObjects.forEach(function (item) { // from each language object
 					item.resourceName = item.resourceName.substr(1); // remove previously added space to produce a change Angular registers
 				});
+				$scope.platform.yearLaunch = $scope.platform.yearLaunch.substr(1);
 				$scope.$apply(); // apply the change - only now will the language select boxes be set correctly...
 			});
 		}
@@ -434,12 +445,18 @@
 					});
 			if ($scope.directSave) {
 				platformFactory.directSavePlatformSuggestion($scope.platform).success(function (data, status) {
+					if (status === 200 || status === 204) {
+						toaster.pop('success', 'Platform added!', 'The new platform was successfully added to the ontology.');
+					}
 					if (status >= 400) {
 						toaster.pop('error', 'Code ' + status, 'There was an error saving this suggestion.');
 					}
 				});
 			} else {
 				platformFactory.addPlatformSuggestion($scope.platform).success(function (data, status) {
+					if (status === 200 || status === 204) {
+						toaster.pop('success', 'Platform suggestion added!', 'The new platform suggestion was successfully added for review by a moderator.');
+					}
 					if (status >= 400) {
 						toaster.pop('error', 'Code ' + status, 'There was an error adding this suggestion.');
 					}

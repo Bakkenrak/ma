@@ -37,7 +37,8 @@
 				platform: getPlatform,
 				languages: getLanguages
 			},
-			isSuggestion: false
+			isSuggestion: false,
+			isEdit: true
 		}).when('/platforms/:platform', {
 			controller: 'platformDetailCtrl',
 			templateUrl: 'resources/html/platformDetails.html',
@@ -58,7 +59,8 @@
 				platform: getSuggestion,
 				languages: getLanguages
 			},
-			isSuggestion: true
+			isSuggestion: true,
+			isEdit: true
 		}).when('/suggestions/:id', {
 			controller: 'platformDetailCtrl',
 			templateUrl: 'resources/html/platformDetails.html',

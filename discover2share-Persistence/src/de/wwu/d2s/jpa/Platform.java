@@ -152,6 +152,10 @@ public class Platform implements Serializable {
 			case "launchCountryName":
 				launchCountry.setLabel(val);
 				break;
+			case "launchCountryCode":
+				launchCountry.setCountryCode(val);
+				launchCity.setCountryCode(val);
+				break;
 			case "launchCity":
 				launchCity.setResource(val);
 				break;
@@ -169,6 +173,10 @@ public class Platform implements Serializable {
 				break;
 			case "residenceCountryName":
 				residenceCountry.setLabel(val);
+				break;
+			case "residenceCountryCode":
+				residenceCountry.setCountryCode(val);
+				residenceCity.setCountryCode(val);
 				break;
 			case "residenceCity":
 				residenceCity.setResource(val);
@@ -322,7 +330,19 @@ public class Platform implements Serializable {
 	}
 
 	public void setServiceDurationMin(String serviceDurationMin) {
-		this.serviceDurationMin = serviceDurationMin;
+		if (serviceDurationMin.equals("http://www.w3.org/2006/time#unitMinute")) {
+			this.serviceDurationMin = "Minutes";
+		} else if (serviceDurationMin.equals("http://www.w3.org/2006/time#unitHour")) {
+			this.serviceDurationMin = "Hours";
+		} else if (serviceDurationMin.equals("http://www.w3.org/2006/time#unitDay")) {
+			this.serviceDurationMin = "Days";
+		} else if (serviceDurationMin.equals("http://www.w3.org/2006/time#unitWeek")) {
+			this.serviceDurationMin = "Weeks";
+		} else if (serviceDurationMin.equals("http://www.w3.org/2006/time#unitMonth")) {
+			this.serviceDurationMin = "Months";
+		} else {
+			this.serviceDurationMin = serviceDurationMin;
+		}
 	}
 
 	public String getServiceDurationMax() {
@@ -330,7 +350,19 @@ public class Platform implements Serializable {
 	}
 
 	public void setServiceDurationMax(String serviceDurationMax) {
-		this.serviceDurationMax = serviceDurationMax;
+		if (serviceDurationMax.equals("http://www.w3.org/2006/time#unitMinute")) {
+			this.serviceDurationMax = "Minutes";
+		} else if (serviceDurationMax.equals("http://www.w3.org/2006/time#unitHour")) {
+			this.serviceDurationMax = "Hours";
+		} else if (serviceDurationMax.equals("http://www.w3.org/2006/time#unitDay")) {
+			this.serviceDurationMax = "Days";
+		} else if (serviceDurationMax.equals("http://www.w3.org/2006/time#unitWeek")) {
+			this.serviceDurationMax = "Weeks";
+		} else if (serviceDurationMax.equals("http://www.w3.org/2006/time#unitMonth")) {
+			this.serviceDurationMax = "Months";
+		} else {
+			this.serviceDurationMax = serviceDurationMax;
+		}
 	}
 
 	public String getConsumerInvolvement() {

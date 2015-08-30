@@ -126,6 +126,7 @@ public class OntologyServiceBean implements OntologyService {
 				+ "				 FILTER(STRSTARTS(STR(?launchCityGeonames), 'http://www.geonames.org/'))} } ."
 				+ " OPTIONAL {  ?launch dbpp:locationCountry ?launchCountry."
 				+ "				?launchCountry rdfs:label ?launchCountryName."
+				+ "				?launchCountry dbpp:countryCode ?launchCountryCode."
 				+ "				{?launchCountry owl:sameAs ?launchCountryGeonames."
 				+ "				 FILTER(STRSTARTS(STR(?launchCountryGeonames), 'http://www.geonames.org/'))} } }."
 				+ " OPTIONAL {  d2s:"
@@ -140,6 +141,7 @@ public class OntologyServiceBean implements OntologyService {
 				+ "				 FILTER(STRSTARTS(STR(?residenceCityGeonames), 'http://www.geonames.org/'))} } ."
 				+ " OPTIONAL {  ?residence dbpp:locationCountry ?residenceCountry."
 				+ "				?residenceCountry rdfs:label ?residenceCountryName."
+				+ "				?residenceCountry dbpp:countryCode ?residenceCountryCode."
 				+ "				{?residenceCountry owl:sameAs ?residenceCountryGeonames."
 				+ "				 FILTER(STRSTARTS(STR(?residenceCountryGeonames), 'http://www.geonames.org/'))} } } ."
 				+ " OPTIONAL {  d2s:"
@@ -282,6 +284,7 @@ public class OntologyServiceBean implements OntologyService {
 
 	@Override
 	public Platform getSuggestion(int id) {
+		Platform x = em.find(Platform.class, id);
 		return em.find(Platform.class, id);
 	}
 

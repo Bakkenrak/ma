@@ -95,8 +95,8 @@
 			<td><strong>Consumer Involvement:</strong></td>
 			<td><select class="form-control"
 				ng-model="platform.consumerInvolvement">
-					<option value="Full-Service">Full-Service</option>
-					<option value="Self-Service">Self-Service</option>
+					<option value="Full-service">Full-service</option>
+					<option value="Self-service">Self-service</option>
 					<option value="In-Between">In-Between</option>
 			</select></td>
 			<td><strong>{{descriptions["Consumer_Involvement"]["label"]}}:</strong>
@@ -113,7 +113,7 @@
 		<tr>
 			<td><strong>Country of launch:</strong></td>
 			<td><p>
-					<input type="text" class="form-control"
+					<input type="text" class="form-control input-sm"
 						placeholder="Search country..."
 						ng-model="platform.launchCountry.search"
 						typeahead="country.countryName + ' (' + country.countryCode + ')' for country in countries | orderBy: 'countryName' | countryContainsFilter: $viewValue"
@@ -133,15 +133,15 @@
 		<tr>
 			<td><strong>City of launch:</strong></td>
 			<td><p>
-					<input type="text" class="form-control"
+					<input type="text" class="form-control input-sm"
 						placeholder="Search city..." ng-model="platform.launchCity.search"
 						typeahead="(city.toponymName + ', ' + city.adminName1 + ' (' + city.countryCode + ')') for city in findLaunchCity()"
 						typeahead-wait-ms="750"
 						typeahead-on-select="launchCitySelected($item)" />
 				</p>
 				<div ng-show="platform.launchCity.geonames">
-					<a href="{{platform.launchCity.geonames}}" target="_blank">{{platform.launchCity.label}}, 
-							{{platform.launchCity.adminName1}}
+					<a href="{{platform.launchCity.geonames}}" target="_blank">{{platform.launchCity.label}} 
+					<span ng-show="platform.launchCity.adminName1">, {{platform.launchCity.adminName1}}</span>
 							({{platform.launchCity.countryCode}})</a>
 					<button type="button" class="btn btn-xs btn-danger" ng-click="platform.launchCity = null">
 						<span class="glyphicon glyphicon-remove"></span>
@@ -154,14 +154,14 @@
 			<td><strong>Year of launch:</strong></td>
 			<td><select ng-model="platform.yearLaunch" class="form-control">
 					<option ng-repeat="year in getYears()"
-						value="{{year}}">{{year}}</option>
+						value="http://www.discover2share.net/d2s-ont/{{year}}">{{year}}</option>
 			</select></td>
 			<td></td>
 		</tr>
 		<tr>
 			<td><strong>Country of residence:</strong></td>
 			<td><p>
-					<input type="text" class="form-control"
+					<input type="text" class="form-control input-sm"
 						placeholder="Search country..."
 						ng-model="platform.residenceCountry.search"
 						typeahead="country.countryName + ' (' + country.countryCode + ')' for country in countries | orderBy: 'countryName' | countryContainsFilter: $viewValue"
@@ -181,7 +181,7 @@
 		<tr>
 			<td><strong>City of residence:</strong></td>
 			<td><p>
-					<input type="text" class="form-control"
+					<input type="text" class="form-control input-sm"
 						placeholder="Search city..."
 						ng-model="platform.residenceCity.search"
 						typeahead="(city.toponymName + ', ' + city.adminName1 + ' (' + city.countryCode + ')') for city in findResidenceCity()"
@@ -189,8 +189,8 @@
 						typeahead-on-select="residenceCitySelected($item)" />
 				</p> 
 				<div ng-show="platform.residenceCity.geonames">
-					<a href="{{platform.residenceCity.geonames}}" target="_blank">{{platform.residenceCity.label}}, 
-							{{platform.residenceCity.adminName1}}
+					<a href="{{platform.residenceCity.geonames}}" target="_blank">{{platform.residenceCity.label}}
+							<span ng-show="platform.residenceCity.adminName1">, {{platform.residenceCity.adminName1}}</span>
 							({{platform.residenceCity.countryCode}})</a>
 					<button type="button" class="btn btn-xs btn-danger" ng-click="platform.residenceCity = null">
 						<span class="glyphicon glyphicon-remove"></span>
@@ -304,8 +304,8 @@
 		<tr>
 			<td><strong>Money Flow:</strong></td>
 			<td><select class="form-control" ng-model="platform.moneyFlow">
-					<option value="C2C">C2C</option>
-					<option value="C2B2C">C2B2C</option>
+					<option value="Consumer to consumer">Consumer to consumer</option>
+					<option value="Consumer to business to consumer">Consumer to business to consumer</option>
 			</select></td>
 			<td><strong>{{descriptions["Money_Flow"]["label"]}}:</strong>
 				{{descriptions["Money_Flow"]["comment"]}}
@@ -380,7 +380,7 @@
 				ng-model="platform.resourceOwner">
 					<option value="Private">Private</option>
 					<option value="Business">Business</option>
-					<option value="Private_and_business">Private and business</option>
+					<option value="Private and business">Private and business</option>
 			</select></td>
 			<td><strong>{{descriptions["Resource_Owner"]["label"]}}:</strong>
 				{{descriptions["Resource_Owner"]["comment"]}}
