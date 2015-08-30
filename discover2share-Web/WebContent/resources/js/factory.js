@@ -139,6 +139,10 @@
 			return $http.delete('api/ontology/platforms/suggestions/' + id);
 		};
 		
+		platformFactory.editPlatformSuggestion = function (platform) {
+			return $http.post('api/ontology/platforms/suggestions/edit', platform);
+		};
+		
 		platformFactory.getGeoData = function (geoUrl) {
 			var geoId = geoUrl.replace("http://www.geonames.org/", "");
 			return $http.jsonp('http://api.geonames.org/getJSON?username=discover2share&geonameId=' + geoId + "&callback=JSON_CALLBACK");

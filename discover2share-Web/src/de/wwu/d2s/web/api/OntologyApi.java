@@ -53,6 +53,11 @@ public interface OntologyApi {
 	@Consumes("application/json")
 	public void directSaveSuggestion(Platform platform);
 	
+	@Path("platforms/suggestions/edit")
+	@POST
+	@Consumes("application/json")
+	public void editSuggestion(Platform platform);
+	
 	@Path("platforms/suggestions/")
 	@GET
 	@Produces("application/json")

@@ -33,5 +33,7 @@ public interface OntologyService {
 	public void deleteSuggestion(int id);
 
 	public void saveSuggestion(int id);
+
+	public void editSuggestion(Platform platform);
 	
 }

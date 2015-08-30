@@ -83,4 +83,9 @@ public class OntologyImpl implements OntologyApi {
 		ontologyService.saveSuggestion(id);
 	}
 
+	@Override
+	public void editSuggestion(Platform platform) {
+		ontologyService.editSuggestion(platform);
+	}
+
 }

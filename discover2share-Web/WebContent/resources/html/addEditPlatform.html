@@ -484,7 +484,7 @@
 	</table>
 	<div class="col-md-10">
 		<input type="submit" value="{{submitBtnText}}" class="btn btn-primary" />&nbsp;
-		<label class="checkbox-inline" ng-if="loggedIn()"><input type="checkbox" ng-model="$parent.directSave" />Skip review and add to ontology right away</label>
+		<label class="checkbox-inline" ng-if="!isSuggestion && loggedIn()"><input type="checkbox" ng-model="$parent.directSave" />Skip review and add to ontology right away</label>
 	</div>
 	
 </form>

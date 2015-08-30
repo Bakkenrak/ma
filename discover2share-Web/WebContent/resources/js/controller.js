@@ -462,28 +462,46 @@
 						return i.resourceName;
 					});
 			
-			if ($scope.isEdit && !$scope.isSuggestion) {
-				$scope.platform.editFor = $route.current.params.platform;
-			}
 			
-			if ($scope.directSave) {
-				platformFactory.directSavePlatformSuggestion($scope.platform).success(function (data, status) {
-					if (status === 200 || status === 204) {
-						toaster.pop('success', 'Platform added!', 'The new platform was successfully added to the ontology.');
+			if (!$scope.isEdit) { // adding a new suggestion
+				if ($scope.directSave) { // admin has selected direct addition to the ontology
+					platformFactory.directSavePlatformSuggestion($scope.platform).success(function (data, status) {
+						if (status === 200 || status === 204) {
+							toaster.pop('success', 'Platform added!', 'The new platform was successfully added to the ontology.');
+						}
+						if (status >= 400) {
+							toaster.pop('error', 'Code ' + status, 'There was an error saving this suggestion.');
+						}
+					});
+				} else { // no direct addition to ontology -> save suggestion for review
+					platformFactory.addPlatformSuggestion($scope.platform).success(function (data, status) {
+						if (status === 200 || status === 204) {
+							toaster.pop('success', 'Platform suggestion added!', 'The new platform suggestion was successfully added for review by a moderator.');
+						}
+						if (status >= 400) {
+							toaster.pop('error', 'Code ' + status, 'There was an error adding this suggestion.');
+						}
+					});
+				}
+			} else { // editing
+				if (!$scope.isSuggestion) { // editing an ontology platform
+					$scope.platform.editFor = $route.current.params.platform;
+					
+					if ($scope.directSave) { // admin has selected direct application of changes to the ontology
+						
+					} else { // no direct application to ontology -> save suggestion for review
+						
 					}
-					if (status >= 400) {
-						toaster.pop('error', 'Code ' + status, 'There was an error saving this suggestion.');
-					}
-				});
-			} else {
-				platformFactory.addPlatformSuggestion($scope.platform).success(function (data, status) {
-					if (status === 200 || status === 204) {
-						toaster.pop('success', 'Platform suggestion added!', 'The new platform suggestion was successfully added for review by a moderator.');
-					}
-					if (status >= 400) {
-						toaster.pop('error', 'Code ' + status, 'There was an error adding this suggestion.');
-					}
-				});
+				} else { //editing a suggestion
+					platformFactory.editPlatformSuggestion($scope.platform).success(function (data, status) {
+						if (status === 200 || status === 204) {
+							toaster.pop('success', 'Platform suggestion edited!', 'The platform suggestion was successfully edited.');
+						}
+						if (status >= 400) {
+							toaster.pop('error', 'Code ' + status, 'There was an error editing this suggestion.');
+						}
+					});
+				}
 			}
 		};
 		

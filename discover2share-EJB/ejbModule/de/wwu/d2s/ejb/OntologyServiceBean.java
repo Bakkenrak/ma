@@ -284,7 +284,6 @@ public class OntologyServiceBean implements OntologyService {
 
 	@Override
 	public Platform getSuggestion(int id) {
-		Platform x = em.find(Platform.class, id);
 		return em.find(Platform.class, id);
 	}
 
@@ -411,4 +410,8 @@ public class OntologyServiceBean implements OntologyService {
 		//em.remove(p); TODO uncomment
 	}
 
+	@Override
+	public void editSuggestion(Platform platform) {
+		em.merge(platform);
+	}
 }
