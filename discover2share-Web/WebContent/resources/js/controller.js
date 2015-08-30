@@ -212,12 +212,22 @@
 				}
 			});
 		};
+		
+		$scope.editSuggestion = function () {
+			$location.path("suggestions/edit/" + $route.current.params.id);
+		};
+		
+		$scope.editPlatform = function () {
+			$location.path("platforms/edit/" + $route.current.params.platform);
+		};
 	});
 
 	d2sApp.controller('addEditPlatformCtrl', function ($scope, $rootScope, $route, $location, $timeout, platformFactory, authFactory, toaster, platform, languages) {
-		if ($route.current.$$route.isEdit) {
+		$scope.isEdit = $route.current.$$route.isEdit;
+		$scope.isSuggestion = $route.current.$$route.isSuggestion;
+		if ($scope.isEdit) {
 			if (platform.status === 204) {
-				if ($route.current.$$route.isSuggestion) {
+				if ($scope.isSuggestion) {
 					toaster.pop("error", "Not found!", "No suggestion with this ID found.");
 					$location.path("suggestions/");
 				} else {
@@ -230,6 +240,14 @@
 			} else if (platform.status > 400) {
 				toaster.pop("error", "Code " + platform.status, "There was an error retrieving the platform information.");
 			}
+
+			if ($scope.isSuggestion) {
+				$scope.submitBtnText = "Save changes to platform suggestion";
+			} else {
+				$scope.submitBtnText = "Submit platform change suggestion";
+			}
+		} else {
+			$scope.submitBtnText = "Submit new platform suggestion";
 		}
 		
 		if (languages && languages.status >= 400) {
@@ -443,6 +461,11 @@
 					}).map(function (i) {
 						return i.resourceName;
 					});
+			
+			if ($scope.isEdit && !$scope.isSuggestion) {
+				$scope.platform.editFor = $route.current.params.platform;
+			}
+			
 			if ($scope.directSave) {
 				platformFactory.directSavePlatformSuggestion($scope.platform).success(function (data, status) {
 					if (status === 200 || status === 204) {

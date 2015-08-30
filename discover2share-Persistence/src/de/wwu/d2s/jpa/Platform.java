@@ -1,10 +1,8 @@
 package de.wwu.d2s.jpa;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -32,6 +30,8 @@ public class Platform implements Serializable {
 	private int id;
 
 	private Date created;
+	
+	private String editFor;
 
 	private String resourceName;
 	private String label;
@@ -252,6 +252,16 @@ public class Platform implements Serializable {
 	public void setLabel(String label) {
 		this.label = label;
 	}
+
+	public String getEditFor() {
+		return editFor;
+	}
+
+
+	public void setEditFor(String editFor) {
+		this.editFor = editFor;
+	}
+
 
 	public String getUrl() {
 		return url;
