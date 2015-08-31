@@ -9,13 +9,13 @@
 	<div class="row row-margin-15">
 		<div class="col-md-3">
 			<div><strong>Resource Type</strong></div>
-			<input type="text" class="form-control"	ng-model="filter.resourceType"
+			<input type="text" class="form-control input-sm"	ng-model="filter.resourceType"
 							typeahead="rt.resourceName as rt.name for rt in resourceTypes | orderBy: 'name' | resourceContainsFilter: $viewValue" />
 		
 		</div>
 		<div class="col-md-2">
 			<div><strong>Consumer Involvement</strong></div>
-			<select class="form-control" ng-model="filter.consumerInvolvement">
+			<select class="form-control input-sm" ng-model="filter.consumerInvolvement">
 				<option value=""></option>
 				<option value="Full_Service">Full-Service</option>
 				<option value="Self_Service">Self-Service</option>
@@ -24,7 +24,7 @@
 		</div>
 		<div class="col-md-2">
 			<div><strong>Resource Owner</strong></div>
-			<select class="form-control" ng-model="filter.resourceOwner">
+			<select class="form-control input-sm" ng-model="filter.resourceOwner">
 					<option value=""></option>
 					<option value="Private">Private</option>
 					<option value="Business">Business</option>
@@ -33,7 +33,7 @@
 		</div>
 		<div class="col-md-2">
 			<div><strong>Type of Accessed Obj.</strong></div>
-			<select class="form-control" ng-model="filter.typeOfAccessedObject">
+			<select class="form-control input-sm" ng-model="filter.typeOfAccessedObject">
 				<option value=""></option>
 				<option value="Functional">Functional</option>
 				<option value="Experiential">Experiential</option>
@@ -42,43 +42,48 @@
 		</div>
 		<div class="col-md-3">
 			<div><strong>Language</strong></div>
-				<input type="text" class="form-control"	ng-model="filter.language"
+				<input type="text" class="form-control input-sm"	ng-model="filter.language"
 							typeahead="language.resourceName as language.name for language in languages | orderBy: 'name' | resourceContainsFilter: $viewValue" />
 		</div>
 	</div>
 	<div class="row row-margin-15">
-		<div class="col-md-3">
-			<div><strong>Country of Launch</strong></div>
-			<input type="text" class="form-control"	ng-model="filter.countryLaunch"
-							typeahead="country.resourceName as country.countryName + ' (' + country.countryCode + ')' for country in countries | orderBy: 'countryName' | countryContainsFilter: $viewValue" />
-		</div>
-		<div class="col-md-3">
-			<div><strong>City of Launch</strong></div>
-			<input type="text" class="form-control"	ng-model="filter.cityLaunch"
-							typeahead="city.resourceName as city.name + ' (' + city.countryCode + ')' for city in cities | orderBy: 'name' | resourceContainsFilter: $viewValue"/>
-		</div>
-		<div class="col-md-3">
-			<div><strong>Country of Residence</strong></div>
-			<input type="text" class="form-control"	ng-model="filter.countryResidence"
-							typeahead="country.resourceName as country.countryName + ' (' + country.countryCode + ')' for country in countries | orderBy: 'countryName' | countryContainsFilter: $viewValue" />
-		</div>
-		<div class="col-md-3">
-			<div><strong>City of Residence</strong></div>
-			<input type="text" class="form-control"	ng-model="filter.cityResidence"
-							typeahead="city.resourceName as city.name + ' (' + city.countryCode + ')' for city in cities | orderBy: 'name' | resourceContainsFilter: $viewValue"/>
-		</div>
-	</div>
-	<div class="row">
 		<div class="col-md-2">
 			<div><strong>Year of Launch</strong></div>
-			<select ng-model="filter.yearLaunch" class="form-control">
+			<select ng-model="filter.yearLaunch" class="form-control input-sm">
 				<option value=""></option>
 				<option ng-repeat="year in getYears()" value="{{year}}">{{year}}</option>
 			</select>
 		</div>
 		<div class="col-md-2">
+			<div><strong>Country of Launch</strong></div>
+			<input type="text" class="form-control input-sm"	ng-model="filter.countryLaunch"
+							typeahead="country.resourceName as country.countryName + ' (' + country.countryCode + ')' for country in countries | orderBy: 'countryName' | countryContainsFilter: $viewValue" />
+		</div>
+		<div class="col-md-2">
+			<div><strong>City of Launch</strong></div>
+			<input type="text" class="form-control input-sm"	ng-model="filter.cityLaunch"
+							typeahead="city.resourceName as city.name + ' (' + city.countryCode + ')' for city in cities | orderBy: 'name' | resourceContainsFilter: $viewValue"/>
+		</div>
+		<div class="col-md-2">
+			<div><strong>Country of Residence</strong></div>
+			<input type="text" class="form-control input-sm"	ng-model="filter.countryResidence"
+							typeahead="country.resourceName as country.countryName + ' (' + country.countryCode + ')' for country in countries | orderBy: 'countryName' | countryContainsFilter: $viewValue" />
+		</div>
+		<div class="col-md-2">
+			<div><strong>City of Residence</strong></div>
+			<input type="text" class="form-control input-sm"	ng-model="filter.cityResidence"
+							typeahead="city.resourceName as city.name + ' (' + city.countryCode + ')' for city in cities | orderBy: 'name' | resourceContainsFilter: $viewValue"/>
+		</div>
+		<div class="col-md-2">
+			<div><strong>Used in country</strong></div>
+			<input type="text" class="form-control input-sm"	ng-model="filter.usedIn"
+							typeahead="country.resourceName as country.countryName + ' (' + country.countryCode + ')' for country in countries | orderBy: 'countryName' | countryContainsFilter: $viewValue" />
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-2">
 			<div><strong>Service Duration Min.</strong></div>
-			<select class="form-control" ng-model="filter.serviceDurationMin">
+			<select class="form-control input-sm" ng-model="filter.serviceDurationMin">
 				<option value=""></option>
 				<option value="http://www.w3.org/2006/time#unitMinute">Minutes</option>
 				<option value="http://www.w3.org/2006/time#unitHour">Hours</option>
@@ -89,7 +94,7 @@
 		</div>
 		<div class="col-md-2">
 			<div><strong>Service Duration Max.</strong></div>
-			<select class="form-control" ng-model="filter.serviceDurationMax">
+			<select class="form-control input-sm" ng-model="filter.serviceDurationMax">
 				<option value=""></option>
 				<option value="http://www.w3.org/2006/time#unitMinute">Minutes</option>
 				<option value="http://www.w3.org/2006/time#unitHour">Hours</option>
@@ -100,7 +105,7 @@
 		</div>
 		<div class="col-md-2">
 			<div><strong>Money Flow</strong></div>
-			<select class="form-control" ng-model="filter.moneyFlow">
+			<select class="form-control input-sm" ng-model="filter.moneyFlow">
 				<option value=""></option>
 				<option value="C2C">C2C</option>
 				<option value="C2B2C">C2B2C</option>
@@ -109,14 +114,14 @@
 		<div class="col-md-2">
 			<div><strong>Integration</strong></div>
 			<p>
-				<select class="form-control" ng-model="filter.marketOffering">
+				<select class="form-control input-sm" ng-model="filter.marketOffering">
 					<option value=""></option>
 					<option value="Integrated">Integrated</option>
 					<option value="Separated">Separated</option>
 				</select>
 			</p>
 			<p>
-				<select class="form-control" ng-model="filter.geographicScope">
+				<select class="form-control input-sm" ng-model="filter.geographicScope">
 					<option value=""></option>
 					<option value="Neighbourhood-wide">Neighbourhood-wide</option>
 					<option value="City-wide">City-wide</option>
@@ -130,7 +135,7 @@
 		<div class="col-md-2">
 			<div><strong>P2P SCC Pattern</strong></div>
 			<p>
-				<select class="form-control" ng-model="filter.p2pSccPattern">
+				<select class="form-control input-sm" ng-model="filter.p2pSccPattern">
 					<option value=""></option>
 					<option value="Deferred">Deferred</option>
 					<option value="Immediate">Immediate</option>
@@ -138,7 +143,7 @@
 				</select>
 			</p>
 			<p>
-				<select class="form-control" ng-model="filter.temporality">
+				<select class="form-control input-sm" ng-model="filter.temporality">
 					<option value=""></option>
 					<option value="Once">Once</option>
 					<option value="Often">Often</option>
@@ -191,16 +196,16 @@
 <div class="row row-margin-5">
 	<div class="col-md-8">
 		<div>&nbsp;</div>
-		<button type="button" ng-click="setBasicQuery()" class="btn btn-primary">Reset to basic query</button>
-		<button type="button" ng-click="setAllDetailsQuery()" class="btn btn-primary">Set all details example query (too large to execute in its entirety)</button>
+		<button type="button" ng-click="setBasicQuery()" class="btn btn-sm btn-primary">Reset to basic query</button>
+		<button type="button" ng-click="setAllDetailsQuery()" class="btn btn-sm btn-primary">Set all details example query (too large to execute in its entirety)</button>
 	</div>
 	<div class="col-md-2">
 		<div><strong>Limit results</strong></div>
-		<input type="number" min="1" ng-model="filter.limit" class="form-control" />
+		<input type="number" min="1" ng-model="filter.limit" class="form-control input-sm" />
 	</div>
 	<div class="col-md-2">
 		<div><strong>Order by</strong></div>
-		<select class="form-control" ng-model="filter.orderBy">
+		<select class="form-control input-sm" ng-model="filter.orderBy">
 			<option value=""></option>
 			<option ng-repeat="var in allVars" value="{{var}}">{{var}}</option>
 		</select>

@@ -159,40 +159,42 @@
 		};
 	});
 	
+	/**
+	 * Blocks the respective DOM element with a transparent overlay if the given expression evaluates as false.
+	 */
 	d2sApp.directive('cuOverlay', function ($timeout) {
 		return function (scope, element, attrs) {
-			if (attrs.cuOverlay) {				
-				var dim = element[0].getBoundingClientRect();
-				var overlay = angular.element(document.createElement("div"));
-				element.append(overlay);
-				$timeout(function() { // timeout to await the possible rendering of the browser scrollbar
-					overlay.css({
-						position: "absolute",
-						top: element[0].offsetTop + "px",
+			if (attrs.cuOverlay) { // if expression provided
+				var overlay = angular.element(document.createElement("div")); // create overlay div in DOM
+				element.append(overlay); //append it to the element to overlay
+				$timeout(function () { // timeout to await the possible rendering of the browser scrollbar
+					overlay.css({ // set CSS of the overlay
+						position: "absolute", // needs absolute positioning to effectively overlay an element
+						top: element[0].offsetTop + "px", // take dimensions from the element to overlay
 						left: element[0].offsetLeft + "px",
 						width: element[0].offsetWidth + "px",
 						height: element[0].offsetHeight + "px",
-						display: scope.$eval(attrs.cuOverlay) ? "none" : "block"
+						display: scope.$eval(attrs.cuOverlay) ? "none" : "block" // display overlay only if given expression is false
 					});
 				});
-				overlay.addClass("overlay");
+				overlay.addClass("overlay"); // add a CSS class to overlay for extra formatting
 				
-				angular.element(window).on("resize", function () {
+				angular.element(window).on("resize", function () { // adjust dimensions on window resizing
 					overlay[0].style.top = element[0].offsetTop + "px";
 					overlay[0].style.left = element[0].offsetLeft + "px";
 					overlay[0].style.width = element[0].offsetWidth + "px";
 					overlay[0].style.height = element[0].offsetHeight + "px";
 				});
 				
-				scope.$watch(attrs.cuOverlay, function (newValue, oldValue) {
-					if(!newValue && newValue !== oldValue) {
+				scope.$watch(attrs.cuOverlay, function (newValue, oldValue) { // watch the given value
+					if (!newValue && newValue !== oldValue) { // display overlay if the value equals false
 						overlay[0].style.display = "block";
 					} else {
 						overlay[0].style.display = "none";
 					}
 				});
 			} else {
-				throw new Error("Please provide a value for the cu-overlay directive.");
+				throw new Error("Please provide a value or expression for the cu-overlay directive.");
 			}
 		};
 	});
