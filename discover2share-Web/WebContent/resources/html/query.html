@@ -1,10 +1,6 @@
 <h1>Query platforms</h1>
 
 <h4><strong>Build query using platform options:</strong></h4>
-<div class="alert alert-info" role="alert" ng-if="platformVar === null">
-	The filters require the definition of a platform variable in the SPARQL query (e.g. <em>?platform rdf:type d2s:P2P_SCC_Platform.</em>)
-	<button type="button" class="btn btn-sm btn-primary" ng-click="insertPlatformVar()">Insert platform variable</button>
-</div> 
 <div class="topBottomBorder row-margin-15" cu-overlay="platformVar">
 	<div class="row row-margin-15">
 		<div class="col-md-3">
@@ -190,6 +186,14 @@
 				ng-click="toggleSelection(contribution.resource,filter.trustContributions)">
 				{{contribution.label}}
 			</label>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		<div class="alert alert-info" role="alert" ng-if="platformVar === null">
+			The filters require the definition of a platform variable in the SPARQL query (e.g. <em>?platform rdf:type d2s:P2P_SCC_Platform.</em>)
+			<button type="button" class="btn btn-sm btn-primary" ng-click="insertPlatformVar()">Insert platform variable</button>
 		</div>
 	</div>
 </div>
