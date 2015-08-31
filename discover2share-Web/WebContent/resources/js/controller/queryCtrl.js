@@ -150,7 +150,8 @@
 				serviceDurationMax: "d2s:max_service_duration",
 				app: "d2s:has_app",
 				trustContribution: "d2s:has_trust_contribution",
-				typeOfAccessedObject: "d2s:accessed_object_has_type"
+				typeOfAccessedObject: "d2s:accessed_object_has_type",
+				userDistribution: "d2s:used_in"
 			};
 		
 		$scope.$watch('filter', function (newValue, oldValue) { // triggered when a user changes any input on the form elements
@@ -209,6 +210,8 @@
 			$scope.arrayFilter(newValue.trustContributions, oldValue.trustContributions, $scope.queryParts.trustContribution);
 			// type of accessed object
 			$scope.simplePattern(newValue.typeOfAccessedObject, oldValue.typeOfAccessedObject, $scope.queryParts.typeOfAccessedObject);
+			// user distribution
+			$scope.userDistributionFilter(newValue, oldValue);
 			
 			var lastBracket, endPart;
 			// limit
@@ -243,7 +246,7 @@
 		
 		// apply input changes on a dimension's form elements to the query
 		$scope.arrayFilter = function (newValue, oldValue, queryPart) {
-			if (angular.equals(newValue, oldValue)) { // abort if no changes were made in thi dimension
+			if (angular.equals(newValue, oldValue)) { // abort if no changes were made in this dimension
 				return;
 			}
 			// retrieve platform variable
@@ -287,6 +290,16 @@
 			if ((newValue.marketOffering !== oldValue.marketOffering || newValue.geographicScope !== oldValue.geographicScope) &&
 					!$scope.filter.marketOffering && !$scope.filter.geographicScope) {
 				$scope.removeIntermediateNode($scope.queryParts.integration);
+			}
+		};
+		
+		// takes care of input changes to the user distribution dimension form elements
+		$scope.userDistributionFilter = function (newValue, oldValue) {
+			// market offering
+			$scope.intermediatePattern(newValue.usedIn, oldValue.usedIn, $scope.queryParts.userDistribution, $scope.queryParts.country, "?userDistribution");
+			// remove user distribution node statement if no country is selected
+			if (newValue.usedIn !== oldValue.usedIn && !newValue.usedIn) {
+				$scope.removeIntermediateNode($scope.queryParts.userDistribution);
 			}
 		};
 		

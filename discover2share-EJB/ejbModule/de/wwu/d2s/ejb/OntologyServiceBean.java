@@ -335,7 +335,7 @@ public class OntologyServiceBean implements OntologyService {
 		removePlatform(id, true);
 	}
 	
-	private void removePlatform(String id, boolean removeCompletely) { //TODO remove everything
+	private void removePlatform(String id, boolean removeCompletely) {
 		String query = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
 						+ "PREFIX d2s: <http://www.discover2share.net/d2s-ont/> "
 						+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "

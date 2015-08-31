@@ -14,7 +14,7 @@
 
 </head>
 <body>
-	<div id="header" class="row" ng-controller="headerController">
+	<div id="header" class="row" ng-controller="headerCtrl">
 		<nav class="navbar navbar-default">
 		<div class="container">
 			<div class="navbar-header">
@@ -64,11 +64,25 @@
 	<script src="resources/js/ui-bootstrap-tpls-0.13.0.min.js"
 		type="text/javascript"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/angularjs-toaster/0.4.15/toaster.min.js"></script>
+	
 	<script src="resources/js/app.js" type="text/javascript"></script>
 	<script src="resources/js/filter.js" type="text/javascript"></script>
-	<script src="resources/js/factory.js" type="text/javascript"></script>
 	<script src="resources/js/directive.js" type="text/javascript"></script>
-	<script src="resources/js/controller.js" type="text/javascript"></script>
-	<script src="resources/js/queryCtrl.js" type="text/javascript"></script>
+	
+	<script src="resources/js/controller/addEditPlatformCtrl.js" type="text/javascript"></script>
+	<script src="resources/js/controller/headerCtrl.js" type="text/javascript"></script>
+	<script src="resources/js/controller/indexCtrl.js" type="text/javascript"></script>
+	<script src="resources/js/controller/loginCtrl.js" type="text/javascript"></script>
+	<script src="resources/js/controller/platformDetailCtrl.js" type="text/javascript"></script>
+	<script src="resources/js/controller/platformsCtrl.js" type="text/javascript"></script>
+	<script src="resources/js/controller/queryCtrl.js" type="text/javascript"></script>
+	<script src="resources/js/controller/registrationCtrl.js" type="text/javascript"></script>
+	<script src="resources/js/controller/resourceModalCtrl.js" type="text/javascript"></script>
+	<script src="resources/js/controller/resourceTypeCtrl.js" type="text/javascript"></script>
+	
+	<script src="resources/js/factory/authFactory.js" type="text/javascript"></script>
+	<script src="resources/js/factory/authHttpInterceptor.js" type="text/javascript"></script>
+	<script src="resources/js/factory/platformFactory.js" type="text/javascript"></script>
+	<script src="resources/js/factory/resourceFactory.js" type="text/javascript"></script>
 </body>
 </html>
