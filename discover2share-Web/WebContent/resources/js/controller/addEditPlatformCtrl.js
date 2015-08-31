@@ -293,6 +293,7 @@
 					platformFactory.editPlatformSuggestion($scope.platform).success(function (data, status) {
 						if (status === 200 || status === 204) {
 							toaster.pop('success', 'Platform suggestion edited!', 'The platform suggestion was successfully edited.');
+							$location.path("suggestions/" + $route.current.params.id);
 						}
 						if (status >= 400) {
 							toaster.pop('error', 'Code ' + status, 'There was an error editing this suggestion.');

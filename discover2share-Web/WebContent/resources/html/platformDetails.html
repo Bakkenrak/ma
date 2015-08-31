@@ -1,5 +1,5 @@
-<a ng-if="platform.editFor" href="platforms/{{platform.editFor}}" class="label label-primary pull-right">Change suggestion</a>
-<span ng-if="!platform.editFor" class="label label-primary pull-right">New platform suggestion</span>
+<a ng-if="isSuggestion && platform.editFor" href="platforms/{{platform.editFor}}" class="label label-primary pull-right">Change suggestion</a>
+<span ng-if="isSuggestion && !platform.editFor" class="label label-primary pull-right">New platform suggestion</span>
 <h1>
 	<a href="{{platform.url}}" target="blank">{{platform.label}}</a>
 </h1>
@@ -20,13 +20,23 @@
 					</li>
 				</ul>
 			</div>
+			<div ng-if="checkChange(platform.resourceTypes, originalPlatform.resourceTypes, 'label')">
+				<hr />
+				<span ng-repeat="resourceType in originalPlatform.resourceTypes" title="former value"><em><s>{{resourceType.label}}<span ng-if="!$last">, </span></s></em></span>
+			</div>
 		</td>
 		<td><strong>{{descriptions["Resource_Type"]["label"]}}:</strong>
 			{{descriptions["Resource_Type"]["comment"]}}</td>
 	</tr>
 	<tr>
 		<td><strong>Consumer Involvement:</strong></td>
-		<td>{{platform.consumerInvolvement}}</td>
+		<td>
+			{{platform.consumerInvolvement}}
+			<div ng-if="checkChange(platform.consumerInvolvement, originalPlatform.consumerInvolvement)">
+				<hr>
+				<em><s title="former value">{{originalPlatform.consumerInvolvement}}<span ng-hide="originalPlatform.consumerInvolvement">undefined</span></s></em>
+			</div>
+		</td>
 		<td><strong>{{descriptions["Consumer_Involvement"]["label"]}}:</strong>
 			{{descriptions["Consumer_Involvement"]["comment"]}}
 			<ul>
@@ -41,14 +51,29 @@
 	<tr>
 		<td><strong>Place of launch:</strong></td>
 		<td><a target="blank" href="{{platform.launchCity.geonames}}">{{platform.launchCity.label}}</a><span
-			ng-if="platform.residenceCity!==null">, </span><a target="blank"
+			ng-if="platform.launchCity!==null">, </span><a target="blank"
 			href="{{platform.launchCountry.geonames}}">{{platform.launchCountry.label}}</a>
+			
+			<div ng-if="checkChange(platform.launchCity, originalPlatform.launchCity, 'label') || checkChange(platform.launchCountry, originalPlatform.launchCountry, 'label')">
+				<hr />
+				<em><s title="former value">
+					<a target="blank" href="{{originalPlatform.launchCity.geonames}}">{{originalPlatform.launchCity.label}}</a>
+					<span ng-if="originalPlatform.launchCity">, </span>
+					<a target="blank" href="{{originalPlatform.launchCountry.geonames}}">{{originalPlatform.launchCountry.label}}</a>
+					<span ng-if="!originalPlatform.launchCity && !originalPlatform.launchCountry">undefined</span>
+				</s></em>
+			</div>
 		</td>
 		<td></td>
 	</tr>
 	<tr>
 		<td><strong>Year of launch:</strong></td>
-		<td>{{platform.yearLaunchName}}</td>
+		<td>{{platform.yearLaunchName}}
+			<div ng-if="checkChange(platform.yearLaunch, originalPlatform.yearLaunch)">
+				<hr>
+				<em><s title="former value">{{originalPlatform.yearLaunchName}}<span ng-hide="originalPlatform.yearLaunch">undefined</span></s></em>
+			</div>
+		</td>
 		<td></td>
 	</tr>
 	<tr>
@@ -56,17 +81,41 @@
 		<td><a target="blank" href="{{platform.residenceCity.geonames}}">{{platform.residenceCity.label}}</a><span
 			ng-if="platform.residenceCity">, </span><a target="blank"
 			href="{{platform.residenceCountry.geonames}}">{{platform.residenceCountry.label}}</a>
+
+			<div ng-if="checkChange(platform.residenceCity, originalPlatform.residenceCity, 'label') || checkChange(platform.residenceCountry, originalPlatform.residenceCountry, 'label')">
+				<hr />
+				<em><s title="former value">
+					<a target="blank" href="{{originalPlatform.residenceCity.geonames}}">{{originalPlatform.residenceCity.label}}</a>
+					<span ng-if="originalPlatform.residenceCity">, </span>
+					<a target="blank" href="{{originalPlatform.residenceCountry.geonames}}">{{originalPlatform.residenceCountry.label}}</a>
+					<span ng-if="!originalPlatform.residenceCity && !originalPlatform.residenceCountry">undefined</span>
+				</s></em>
+			</div>
 		</td>
 		<td></td>
 	</tr>
 	<tr>
 		<td><strong>Languages:</strong></td>
-		<td><div ng-repeat="language in platform.languages">{{language}}</div></td>
+		<td>
+			<div ng-repeat="language in platform.languages">{{language}}</div>
+			<div ng-if="checkChange(platform.languages, originalPlatform.languages)">
+				<hr />
+				<span ng-repeat="language in originalPlatform.languages" title="former value"><em><s>{{language}}<span ng-if="!$last">, </span></s></em></span>
+				<span ng-if="originalPlatform.languages.length === 0"><em><s>undefined</s></em></span>
+			</div>
+		</td>
 		<td></td>
 	</tr>
 	<tr>
 		<td><strong>Market Mediation:</strong></td>
-		<td><div ng-repeat="mediation in platform.marketMediations">{{mediation}}</div></td>
+		<td>
+			<div ng-repeat="mediation in platform.marketMediations">{{mediation}}</div>
+			<div ng-if="checkChange(platform.marketMediations, originalPlatform.marketMediations)">
+				<hr />
+				<span ng-repeat="mediation in originalPlatform.marketMediations" title="former value"><em><s>{{mediation}}<span ng-if="!$last">, </span></s></em></span>
+				<span ng-if="originalPlatform.marketMediations.length === 0"><em><s>undefined</s></em></span>
+			</div>
+		</td>
 		<td><strong>{{descriptions["Market_Mediation"]["label"]}}:</strong>
 			{{descriptions["Market_Mediation"]["comment"]}}
 			<ul>
@@ -100,7 +149,17 @@
 		<td><strong>Integration:</strong></td>
 		<td>{{platform.offering}}<span
 			ng-if="platform.offering!==null && platform.geographicScope!==null">,
-		</span> {{platform.geographicScope}}
+			</span> {{platform.geographicScope}}
+			
+			<div ng-if="checkChange(platform.offering, originalPlatform.offering) || checkChange(platform.geographicScope, originalPlatform.geographicScope)">
+				<hr />
+				<em><s title="former value">
+					{{originalPlatform.offering}}
+					<span ng-if="originalPlatform.offering && originalPlatform.geographicScope">, </span>
+					{{originalPlatform.geographicScope}}
+					<span ng-if="!originalPlatform.offering && !originalPlatform.geographicScope">undefined</span>
+				</s></em>
+			</div>
 		</td>
 		<td>
 			<p>
@@ -126,7 +185,12 @@
 	</tr>
 	<tr>
 		<td><strong>Money Flow:</strong></td>
-		<td>{{platform.moneyFlow}}</td>
+		<td>{{platform.moneyFlow}}
+			<div ng-if="checkChange(platform.moneyFlow, originalPlatform.moneyFlow)">
+				<hr>
+				<em><s title="former value">{{originalPlatform.moneyFlow}}<span ng-hide="originalPlatform.moneyFlow">undefined</span></s></em>
+			</div>
+		</td>
 		<td><strong>{{descriptions["Money_Flow"]["label"]}}:</strong>
 			{{descriptions["Money_Flow"]["comment"]}}
 			<ul>
@@ -140,7 +204,16 @@
 		<td><strong>P2P SCC Pattern:</strong></td>
 		<td>{{platform.pattern}}<span
 			ng-if="platform.pattern!==null && platform.temporality!==null">,
-		</span>{{platform.temporality}}
+			</span>{{platform.temporality}}
+			<div ng-if="checkChange(platform.pattern, originalPlatform.pattern) || checkChange(platform.temporality, originalPlatform.temporality)">
+				<hr />
+				<em><s title="former value">
+					{{originalPlatform.pattern}}
+					<span ng-if="originalPlatform.pattern && originalPlatform.temporality">, </span>
+					{{originalPlatform.temporality}}
+					<span ng-if="!originalPlatform.pattern && !originalPlatform.temporality">undefined</span>
+				</s></em>
+			</div>
 		</td>
 		<td><strong>{{descriptions["P2P_SCC_Pattern"]["label"]}}:</strong>
 			{{descriptions["P2P_SCC_Pattern"]["comment"]}}
@@ -162,7 +235,14 @@
 	</tr>
 	<tr>
 		<td><strong>Promoted Consumerism:</strong></td>
-		<td><div ng-repeat="consumerism in platform.consumerisms">{{consumerism}}</div></td>
+		<td>
+			<div ng-repeat="consumerism in platform.consumerisms">{{consumerism}}</div>
+			<div ng-if="checkChange(platform.consumerisms, originalPlatform.consumerisms)">
+				<hr />
+				<span ng-repeat="consumerism in originalPlatform.consumerisms" title="former value"><em><s>{{consumerism}}<span ng-if="!$last">, </span></s></em></span>
+				<span ng-if="originalPlatform.consumerisms.length === 0"><em><s>undefined</s></em></span>
+			</div>
+		</td>
 		<td><strong>{{descriptions["Sustainable_Consumerism"]["label"]}}:</strong>
 			{{descriptions["Sustainable_Consumerism"]["comment"]}}
 			<ul>
@@ -178,7 +258,12 @@
 	</tr>
 	<tr>
 		<td><strong>Resource Owner:</strong></td>
-		<td>{{platform.resourceOwner}}</td>
+		<td>{{platform.resourceOwner}}
+			<div ng-if="checkChange(platform.resourceOwner, originalPlatform.resourceOwner)">
+				<hr>
+				<em><s title="former value">{{originalPlatform.resourceOwner}}<span ng-hide="originalPlatform.resourceOwner">undefined</span></s></em>
+			</div>
+		</td>
 		<td><strong>{{descriptions["Resource_Owner"]["label"]}}:</strong>
 			{{descriptions["Resource_Owner"]["comment"]}}
 			<ul>
@@ -195,11 +280,26 @@
 		<td>{{timeConverter(platform.serviceDurationMin)}}<span
 			ng-if="platform.serviceDurationMin!==null && platform.serviceDurationMax!==null">
 				to </span>{{timeConverter(platform.serviceDurationMax)}}
+			<div ng-if="checkChange(platform.serviceDurationMin, originalPlatform.serviceDurationMin) || checkChange(platform.serviceDurationMax, originalPlatform.serviceDurationMax)">
+				<hr />
+				<em><s title="former value">
+					{{originalPlatform.serviceDurationMin}}
+					<span ng-if="originalPlatform.serviceDurationMin && originalPlatform.serviceDurationMax"> to </span>
+					{{originalPlatform.serviceDurationMax}}
+					<span ng-if="!originalPlatform.serviceDurationMin && !originalPlatform.serviceDurationMax">undefined</span>
+				</s></em>
+			</div>
 		</td>
 	</tr>
 	<tr>
 		<td><strong>Smartphone Apps:</strong></td>
-		<td><div ng-repeat="app in platform.apps">{{app}}</div></td>
+		<td><div ng-repeat="app in platform.apps">{{app}}</div>
+			<div ng-if="checkChange(platform.apps, originalPlatform.apps)">
+				<hr />
+				<span ng-repeat="app in originalPlatform.apps" title="former value"><em><s>{{app}}<span ng-if="!$last">, </span></s></em></span>
+				<span ng-if="originalPlatform.apps.length === 0"><em><s>undefined</s></em></span>
+			</div>
+		</td>
 		<td><strong>{{descriptions["Smartphone_App"]["label"]}}:</strong>
 			{{descriptions["Smartphone_App"]["comment"]}}
 			<ul>
@@ -213,7 +313,13 @@
 	</tr>
 	<tr>
 		<td><strong>Trust Contribution:</strong></td>
-		<td><div ng-repeat="trustContribution in platform.trustContributions">{{trustContribution}}</div></td>
+		<td><div ng-repeat="trustContribution in platform.trustContributions">{{trustContribution}}</div>
+			<div ng-if="checkChange(platform.trustContributions, originalPlatform.trustContributions)">
+				<hr />
+				<span ng-repeat="trustContribution in originalPlatform.trustContributions" title="former value"><em><s>{{trustContribution}}<span ng-if="!$last">, </span></s></em></span>
+				<span ng-if="originalPlatform.trustContributions.length === 0"><em><s>undefined</s></em></span>
+			</div>
+		</td>
 		<td><strong>{{descriptions["Trust_Contribution"]["label"]}}:</strong>
 			{{descriptions["Trust_Contribution"]["comment"]}}
 			<ul>
@@ -231,7 +337,12 @@
 	</tr>
 	<tr>
 		<td><strong>Type of Accessed Object:</strong></td>
-		<td>{{platform.typeOfAccessedObject}}</td>
+		<td>{{platform.typeOfAccessedObject}}
+			<div ng-if="checkChange(platform.typeOfAccessedObject, originalPlatform.typeOfAccessedObject)">
+				<hr>
+				<em><s title="former value">{{originalPlatform.typeOfAccessedObject}}<span ng-hide="originalPlatform.typeOfAccessedObject">undefined</span></s></em>
+			</div>
+		</td>
 		<td><strong>{{descriptions["Type_of_Accessed_Object"]["label"]}}:</strong>
 			{{descriptions["Type_of_Accessed_Object"]["comment"]}}
 			<ul>
