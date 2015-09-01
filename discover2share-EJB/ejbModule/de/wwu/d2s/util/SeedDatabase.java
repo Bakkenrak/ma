@@ -16,15 +16,15 @@ import de.wwu.d2s.jpa.User;
 @Singleton
 @Startup
 public class SeedDatabase {
-	
+
 	@PersistenceContext
 	EntityManager em;
-	
+
 	@PostConstruct
-	public void init(){
-		//check whether the admin user exists
+	public void init() {
+		// check whether the admin user exists
 		List<User> results = em.createQuery("SELECT u FROM User u WHERE u.username = 'sa'", User.class).getResultList();
-		if(results.isEmpty()){ //if not, create
+		if (results.isEmpty()) { // if not, create
 			User u = new User();
 			u.setUsername("sa");
 			u.setAuthRole("admin");
@@ -32,6 +32,6 @@ public class SeedDatabase {
 			u.hashOwnPassword();
 			em.persist(u);
 		}
-			
+
 	}
 }

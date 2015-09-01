@@ -53,40 +53,39 @@ public class OntologyServiceBean implements OntologyService {
 				+ " ?resourceName dbpp:url ?url."
 				+ " OPTIONAL{ ?resourceName d2s:has_resource_type ?rt ." 
 				+ " 		  ?rt rdfs:label ?resourceType }." + "}"
-				+ "ORDER BY ?resourceName";
+				+ "ORDER BY ?resourceName"; // ordered by the platforms' resource names
 
-		Query query = QueryFactory.create(sparqlQuery);
-		QueryExecution qexec = QueryExecutionFactory.sparqlService(ENDPOINT, query);
-		ResultSet results = qexec.execSelect();
+		Query query = QueryFactory.create(sparqlQuery); // construct query
+		QueryExecution qexec = QueryExecutionFactory.sparqlService(ENDPOINT, query); // query endpoint
+		ResultSet results = qexec.execSelect(); // execute
 
 		List<Platform> platforms = new ArrayList<Platform>();
 		Platform currentPlatform = new Platform();
-		while (results.hasNext()) {
+		while (results.hasNext()) { // for each result row
 			QuerySolution result = results.next();
 			
-			if(result.get("resourceName").asResource().getURI()!=currentPlatform.getResourceName()){
-				currentPlatform = new Platform();
-				platforms.add(currentPlatform);
+			// if current row describes a different platform than before
+			if(result.get("resourceName").asResource().getURI() != currentPlatform.getResourceName()){
+				currentPlatform = new Platform(); // create new platform object
+				platforms.add(currentPlatform); // add to output list
 			}
 			
-			for (String var : results.getResultVars()) {
-				RDFNode node = result.get(var);
+			for (String var : results.getResultVars()) { // for every variable in the result set
+				RDFNode node = result.get(var); // receive RDF node for the current variable
 				if (node == null)
-					continue;
+					continue; // skip if node is null
 
-				if (node.isLiteral()) {
-					String literal = node.asLiteral().getString();
-					currentPlatform.set(var, literal);
-				} else if (node.isResource()) {
-					String uri = node.asResource().getURI();
+				if (node.isLiteral()) { // if node is literal
+					String literal = node.asLiteral().getString(); // extract string representation
+					currentPlatform.set(var, literal); // set in platform object
+				} else if (node.isResource()) { // if node is resource
+					String uri = node.asResource().getURI(); // get its URI
 					if (uri != null)
-						currentPlatform.set(var, uri);
+						currentPlatform.set(var, uri); // set in platform object
 				}
 			}
 		}
-
 		qexec.close();
-
 		return platforms;
 	}
 
@@ -103,46 +102,46 @@ public class OntologyServiceBean implements OntologyService {
 				+ getPlatformQuery(name)
 				+ "}";
 
-		Query query = QueryFactory.create(sparqlQuery);
-		QueryExecution qexec = QueryExecutionFactory.sparqlService(ENDPOINT, query);
-		ResultSet results = qexec.execSelect();
+		Query query = QueryFactory.create(sparqlQuery); // construct query
+		QueryExecution qexec = QueryExecutionFactory.sparqlService(ENDPOINT, query); // query endpoint
+		ResultSet results = qexec.execSelect(); // execute
 
 		Platform platform = null;
-		if (results.hasNext())
-			platform = new Platform();
+		if (results.hasNext()) // if there are any results
+			platform = new Platform(); // instantiate new platform object
 		
-		while (results.hasNext()) {
+		while (results.hasNext()) { // iterate through results
 			QuerySolution result = results.next();
-			for (String var : results.getResultVars()) {
-				RDFNode node = result.get(var);
+			for (String var : results.getResultVars()) { // for every variable in the result set
+				RDFNode node = result.get(var); // receive RDF node for the current variable
 				if (node == null)
-					continue;
+					continue; // skip if node is null
 
-				if (node.isLiteral()) {
-					String literal = node.asLiteral().getString();
-					platform.set(var, literal);
-				} else if (node.isResource()) {
-					String uri = node.asResource().getURI();
+				if (node.isLiteral()) { // if node is literal
+					String literal = node.asLiteral().getString(); // extract string representation
+					platform.set(var, literal); // set in platform object
+				} else if (node.isResource()) { // if node is resource
+					String uri = node.asResource().getURI(); // get its URI
 					if (uri != null)
-						platform.set(var, uri);
+						platform.set(var, uri); // set in platform object
 				}
 			}
 		}
-
 		qexec.close();
 		return platform;
 	}
 
 	@Override
 	public Map<String, Map<String, String>> getDescriptions() {
-		// create a model using reasoner
+		// create a model using inference reasoner
 		OntModel model1 = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_MICRO_RULE_INF);
-		java.util.logging.Logger.getLogger("org.apache.jena.riot").setLevel(Level.SEVERE); // avoid unnecessary warnings
-		// read the ontology file
+		
+		java.util.logging.Logger.getLogger("org.apache.jena.riot").setLevel(Level.SEVERE); // disable unnecessary warnings
+		// read the ontology, transform into model
 		model1.read(ONTOLOGYURL, "Turtle");
-		java.util.logging.Logger.getLogger("org.apache.jena.riot").setLevel(Level.ALL);
+		java.util.logging.Logger.getLogger("org.apache.jena.riot").setLevel(Level.ALL); // reset to normal logging
 
-		// Create a new query
+		// Create a new query to find all (transitive) subclasses of P2P_SCC_Dimension
 		String queryString = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
 				+ "PREFIX d2s: <http://www.discover2share.net/d2s-ont/> " 
 				+ "SELECT * " 
@@ -152,23 +151,21 @@ public class OntologyServiceBean implements OntologyService {
 				+ "  ?c rdfs:comment ?comment." 
 				+ "}";
 		Query query = QueryFactory.create(queryString);
-		QueryExecution qe = QueryExecutionFactory.create(query, model1);
+		QueryExecution qe = QueryExecutionFactory.create(query, model1); // query model
 		ResultSet results = qe.execSelect();
 		
 		Map<String, Map<String, String>> output = new HashMap<String, Map<String, String>>();
-		while(results.hasNext()){
-			Map<String, String> row = new HashMap<String, String>();
+		while(results.hasNext()){ // iterate through result set
+			Map<String, String> row = new HashMap<String, String>(); // each row represented as a map
 			
 			QuerySolution result = results.nextSolution();
+			// retrieve the current dimension class's URI
 			String c = result.getResource("c").getURI().replace("http://www.discover2share.net/d2s-ont/", "");
-			row.put("label", result.getLiteral("label").getString());
-			row.put("comment", result.getLiteral("comment").getString());
-			
-			output.put(c, row);
+			row.put("label", result.getLiteral("label").getString()); // put its label in the row map
+			row.put("comment", result.getLiteral("comment").getString()); // put its description in the row map
+			output.put(c, row); // put into output map, identify by the dimension class's URI
 		}
-
 		qe.close();
-
 		return output;
 	}
 	
@@ -176,11 +173,11 @@ public class OntologyServiceBean implements OntologyService {
 	public Map<String, String> addSuggestion(Platform platform){
 		Map<String, String> output = new HashMap<String, String>();
 		try {
-			em.persist(platform);
-			em.flush();
-			output.put("success", platform.getExternalId());
+			em.persist(platform); // save platform suggestion object in relational database
+			em.flush(); // makes sure that an ID is auto-generated and set in the object
+			output.put("success", platform.getExternalId()); // return map containing the newly generated external ID
 		} catch (Exception e) {
-			output.put("error", e.getMessage());
+			output.put("error", e.getMessage()); // return error message if something went wrong
 		}
 		return output;
 	}
@@ -189,11 +186,11 @@ public class OntologyServiceBean implements OntologyService {
 	public void directSaveSuggestion(Platform platform) {
 		OntologyWriter o = new OntologyWriter();
 		OntModel model;
-		if (platform.getEditFor() != null && !platform.getEditFor().isEmpty()) {
-			removePlatform(platform.getEditFor(), false);
-			model = o.constructPlatform(platform, platform.getEditFor());
+		if (platform.getEditFor() != null && !platform.getEditFor().isEmpty()) { // if it's an edit suggestion for a platform in the ontology
+			removePlatform(platform.getEditFor(), false); // remove this first from the ontology, but not possible non-standard triples referencing it
+			model = o.constructPlatform(platform, platform.getEditFor()); // construct an ontology model of the platform using the old ID
 		} else {
-			model = o.constructPlatform(platform);
+			model = o.constructPlatform(platform); // construct an ontology model of the platform (will use a completely new ID)
 		}
 		
 		OutputStream baos = new ByteArrayOutputStream();
@@ -204,20 +201,20 @@ public class OntologyServiceBean implements OntologyService {
 
 	@Override
 	public List<Platform> getAllSuggestions() {
-		return em.createQuery("from Platform", Platform.class).getResultList();
+		return em.createQuery("from Platform", Platform.class).getResultList(); // get all suggestions in the database
 	}
 
 	@Override
 	public Platform getSuggestion(int id) {
-		return em.find(Platform.class, id);
+		return em.find(Platform.class, id); // get suggestion with the given ID from the database
 	}
 
 	@Override
 	public Map<String, String> doQuery(String query) {
-		if(query.substring(0, 6).equals("query="))
+		if(query.substring(0, 6).equals("query=")) // cut off possible leading 'query=' marker
 			query = query.substring(6);
-		try {
-			query = URLDecoder.decode(query, "UTF-8");
+		try { // query will be in application/x-www-form-urlencoded format
+			query = URLDecoder.decode(query, "UTF-8"); // convert to UTF-8 to avoid querying errors
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
@@ -225,17 +222,15 @@ public class OntologyServiceBean implements OntologyService {
 		Map<String, String> output = new HashMap<String, String>();
 		try {
 			Query sparqlQuery = QueryFactory.create(query);
-			QueryExecution qexec = QueryExecutionFactory.sparqlService(ENDPOINT, sparqlQuery);
+			QueryExecution qexec = QueryExecutionFactory.sparqlService(ENDPOINT, sparqlQuery); // query endpoint
 			ResultSet results = qexec.execSelect();
 			ByteArrayOutputStream b = new ByteArrayOutputStream();
-			ResultSetFormatter.outputAsJSON(b, results);
-			String json = b.toString();
-			
+			ResultSetFormatter.outputAsJSON(b, results); // format result set as JSON in byte stream
+			String json = b.toString(); // create string from JSON byte stream
 			qexec.close();
-			
-			output.put("success", json);
+			output.put("success", json); // output json string
 		} catch(Exception e) {
-			output.put("error", e.getMessage());
+			output.put("error", e.getMessage()); // output error message if something went wrong
 		}
 		return output;
 	}
@@ -253,30 +248,29 @@ public class OntologyServiceBean implements OntologyService {
 				+ "  ?country dbpp:countryCode ?countryCode.}";
 		
 		Query query = QueryFactory.create(sparqlQuery);
-		QueryExecution qexec = QueryExecutionFactory.sparqlService(ENDPOINT, query);
+		QueryExecution qexec = QueryExecutionFactory.sparqlService(ENDPOINT, query); // query endpoint
 		ResultSet results = qexec.execSelect();
 
 		List<Map<String, String>> output = new ArrayList<Map<String, String>>();
-		while (results.hasNext()) {
-			Map<String, String> current = new HashMap<String, String>();
+		while (results.hasNext()) { // for each row in the result set
+			Map<String, String> current = new HashMap<String, String>(); // map representing the row
 			QuerySolution result = results.next();
-			for (String var : results.getResultVars()) {
-				RDFNode node = result.get(var);
+			for (String var : results.getResultVars()) { // for every variable in the result set
+				RDFNode node = result.get(var); // receive RDF node for the current variable
 				if (node == null)
-					continue;
+					continue; // skip if node is null
 
-				if (node.isLiteral()) {
-					String literal = node.asLiteral().getString();
-					current.put(var, literal);
-				} else if (node.isResource()) {
-					String uri = node.asResource().getURI();
+				if (node.isLiteral()) { // if node is literal
+					String literal = node.asLiteral().getString(); // extract string representation
+					current.put(var, literal); // put into row map
+				} else if (node.isResource()) { // if node is resource
+					String uri = node.asResource().getURI(); // get its URI
 					if (uri != null)
-						current.put(var, uri.substring(38));
+						current.put(var, uri.substring(38)); // put into row map
 				}
 			}
 			output.add(current);
 		}
-
 		qexec.close();
 		return output;
 	}
@@ -295,58 +289,57 @@ public class OntologyServiceBean implements OntologyService {
 		ResultSet results = qexec.execSelect();
 
 		List<Map<String, String>> output = new ArrayList<Map<String, String>>();
-		while (results.hasNext()) {
-			Map<String, String> current = new HashMap<String, String>();
+		while (results.hasNext()) { // for each row in the result set
+			Map<String, String> current = new HashMap<String, String>(); // map representing the row
 			QuerySolution result = results.next();
-			for (String var : results.getResultVars()) {
-				RDFNode node = result.get(var);
+			for (String var : results.getResultVars()) { // for every variable in the result set
+				RDFNode node = result.get(var); // receive RDF node for the current variable
 				if (node == null)
-					continue;
+					continue; // skip if node is null
 
-				if (node.isLiteral()) {
-					String literal = node.asLiteral().getString();
-					current.put(var, literal);
-				} else if (node.isResource()) {
-					String uri = node.asResource().getURI();
+				if (node.isLiteral()) { // if node is literal
+					String literal = node.asLiteral().getString(); // extract string representation
+					current.put(var, literal); // put into row map
+				} else if (node.isResource()) { // if node is resource
+					String uri = node.asResource().getURI(); // get its URI
 					if (uri != null)
-						current.put(var, uri.substring(38));
+						current.put(var, uri.substring(38)); // put into row map
 				}
 			}
 			output.add(current);
 		}
-
 		qexec.close();
 		return output;
 	}
 
 	@Override
 	public void deleteSuggestion(int id) {
-		Platform p = em.find(Platform.class, id);
-		if (p != null) 
-			em.remove(p);
+		Platform p = em.find(Platform.class, id); // find suggestion with the given database
+		if (p != null) // if found
+			em.remove(p); // delete
 	}
 
 	@Override
 	public void saveSuggestion(int id) {
-		Platform p = em.find(Platform.class, id);
-		if(p != null) {
-			directSaveSuggestion(p);
+		Platform p = em.find(Platform.class, id); // find suggestion with the given ID in the database
+		if(p != null) { // if found
+			directSaveSuggestion(p); // add to ontology
+			em.remove(p); // remove suggestion from database
 		}
-		em.remove(p);
 	}
 
 	@Override
-	public void editSuggestion(Platform platform) {
-		em.merge(platform);
+	public void editSuggestion(Platform suggestion) {
+		em.merge(suggestion); // update the given suggestion in the database
 	}
 	
 	@Override
-	public void removePlatform(String id) {
-		removePlatform(id, true);
+	public void removePlatform(String uri) {
+		removePlatform(uri, true); // remove the platform with the given URI including all possible additional triples referencing it
 	}
 	
 	private void removePlatform(String id, boolean removeCompletely) {
-		String query = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
+		String query = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " // build delete query
 						+ "PREFIX d2s: <http://www.discover2share.net/d2s-ont/> "
 						+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
 						+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
@@ -355,13 +348,14 @@ public class OntologyServiceBean implements OntologyService {
 						+ "PREFIX owl: <http://www.w3.org/2002/07/owl#> "
 						+ "PREFIX dct: <http://purl.org/dc/terms/> "
 						+ "DELETE { ";
-		if (removeCompletely) {
-			query += "d2s:" + id + " ?a ?b. "
-						+ "d2s:" + id + " d2s:used_in ?userDistribution. "
+		if (removeCompletely) { // if platform is to be deleted completely
+			query += "d2s:" + id + " ?a ?b. " // delete all statements with the platform as subject
+						+ "?c ?d d2s:" + id + ". " // or object
+						+ "d2s:" + id + " d2s:used_in ?userDistribution. " // also remove user distribution info
 						+ "?userDistribution dbpp:locationCountry ?userCountry. "
 						+ "?userDistribution d2s:user_percentage ?userPercentage. "
 						+ "?userDistribution dct:date ?distributionDate. ";
-		} else {
+		} else { // remove the standard triples of a platform description that are otherwise already caught with the 'd2s:... ?a ?b' statement when removing completely
 			query += "d2s:" + id + " rdf:type d2s:P2P_SCC_Platform . "
 						+ "d2s:" + id + " rdfs:label ?label . "
 						+ "d2s:" + id + " dbpp:url ?url . "
@@ -380,7 +374,7 @@ public class OntologyServiceBean implements OntologyService {
 						+ "d2s:" + id + " d2s:accessed_object_has_type ?ot . "
 						+ "d2s:" + id + " dbpp:language ?language . ";
 		}
-		query += "d2s:" + id + " d2s:launched_in ?launch . "
+		query += "d2s:" + id + " d2s:launched_in ?launch . " // remove dimension info that uses intermediate nodes
 					+ "?launch dbpp:locationCity ?launchCity . "
 					+ "?launch dbpp:locationCountry ?launchCountry . "
 					+ "d2s:" + id + " d2s:operator_resides_in ?residence . "
@@ -393,18 +387,23 @@ public class OntologyServiceBean implements OntologyService {
 					+ "d2s:" + id + " d2s:has_p2p_scc_pattern ?patternNode . "
 					+ "?patternNode rdf:type ?pa . "
 					+ "?patternNode d2s:has_temporality ?te . "
-					+ "} WHERE { ";
+					+ "} WHERE { "; // construct where clause
 		
 		if (removeCompletely) {
-			query += "d2s:" + id + " ?a ?b. ";
+			query += "d2s:" + id + " ?a ?b. " // find all triples with the platform as subject
+					+ "?c ?d d2s:" + id + ". "; // or object
 		}
 		
-		query += getPlatformQuery(id)
+		query += getPlatformQuery(id) // append 'all details' query for the current platform
 					+ "}";
 		
 		UpdateExecutionFactory.createRemote(UpdateFactory.create(query), UPDATEENDPOINT).execute(); // execute update to endpoint
 	}
 
+	/**
+	 * @param name URI of the platform
+	 * @return Query that returns all standard information for the platform with the given URI
+	 */
 	private String getPlatformQuery(String name) {
 		return "d2s:"
 				+ name
@@ -513,16 +512,18 @@ public class OntologyServiceBean implements OntologyService {
 	}
 
 	@Override
-	public Platform getSuggestionExternal(String id) {
+	public Platform getSuggestionExternal(String id) { 
+		// find and return the platform with the given external ID
 		return em.createQuery("SELECT p FROM Platform p WHERE p.externalId = '" + id + "'", Platform.class).getSingleResult();
 	}
 
 	@Override
 	public boolean editSuggestionExternal(String id, Platform platform) {
+		// check if the ID parameter actually fits the platform object's externalID and check if a suggestion with that ID can be found in the database
 		if (id.equals(platform.getExternalId()) && getSuggestionExternal(id) != null) {
-			em.merge(platform);
-			return true;
+			em.merge(platform); // update suggestion in the database
+			return true; // success
 		}
-		return false;
+		return false; // no success
 	}
 }

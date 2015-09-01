@@ -11,10 +11,6 @@ import de.wwu.d2s.dto.AuthAccessElement;
 import de.wwu.d2s.dto.AuthLoginElement;
 import de.wwu.d2s.jpa.User;
 
-/**
- * Provides methods for user authorization.
- * Derived from: http://www.aschua.de/blog/pairing-angularjs-and-javaee-for-authentication/ (02/07/2015)
- */
 @Stateless
 public class AuthServiceBean implements AuthService {
 	 
@@ -25,7 +21,8 @@ public class AuthServiceBean implements AuthService {
     public int isAuthorized(String username, String authToken, Set<String> rolesAllowed) {
     	if(username == null || authToken == null)
     		return NO_SESSION; //no token provided
-    				
+    	
+    	// find user by username and auth token
     	User user = userService.findByUsernameAndAuthToken(username, authToken);
         if (user == null)
         	return NO_SESSION; //no session with the given user and token at all
@@ -38,14 +35,16 @@ public class AuthServiceBean implements AuthService {
     }
 	
     @Override
-    public AuthAccessElement login(AuthLoginElement loginElement) {	
+    public AuthAccessElement login(AuthLoginElement loginElement) {
+    	// find user by username and password
     	User user = userService.findByUsernameAndPassword(loginElement.getUsername(), loginElement.getPassword());
-        if (user != null) {
-            user.setAuthToken(UUID.randomUUID().toString());
+        if (user != null) { // if a user is found
+            user.setAuthToken(UUID.randomUUID().toString()); // generate random auth token
             user.setAuthDate(new Date());
-            userService.update(user);
+            userService.update(user); // save changed user object to database
+            // return auth info
             return new AuthAccessElement(loginElement.getUsername(), user.getAuthToken(), user.getAuthRole());
         }
-        return null;
+        return null; // no user found
     }
 }

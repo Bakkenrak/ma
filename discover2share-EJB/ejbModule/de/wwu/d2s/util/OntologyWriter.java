@@ -340,7 +340,7 @@ public class OntologyWriter {
 		androidApp = ontologyModel.createResource(D2S + "Android_app");
 		iOSApp = ontologyModel.createResource(D2S + "iOS_app");
 		windowsPhoneApp = ontologyModel.createResource(D2S + "Windows_Phone_app");
-		
+
 		providerRatings = ontologyModel.createResource(D2S + "Provider_ratings");
 		providerAndConsumerRatings = ontologyModel.createResource(D2S + "Provider_and_consumer_ratings");
 		referral = ontologyModel.createResource(D2S + "Referral");
@@ -359,7 +359,7 @@ public class OntologyWriter {
 			JSONArray a = json.getJSONArray("countries"); // retrieved object contains an array at the key "countries"
 			for (int i = 0; i < a.length(); i++) { // for each country
 				JSONObject o = a.getJSONObject(i);
-				countryIndex.put(o.getString("countryId"), o.getString("resourceName"));
+				countryIndex.put(o.getString("countryId"), o.getString("resourceName")); // put an entry into the map
 			}
 		} catch (IOException | JSONException e) {
 			e.printStackTrace();
@@ -367,16 +367,19 @@ public class OntologyWriter {
 	}
 
 	/**
-	 * Calls all necessary steps required to construct the D2S representation of a platform.
+	 * Calls all necessary steps required to construct the D2S representation of a platform. With a new URI for the platform.
 	 */
 	public OntModel constructPlatform(Platform platform) {
 		return constructPlatform(platform, null);
 	}
-	
-	public OntModel constructPlatform(Platform platform, String id) {
+
+	/**
+	 * Calls all necessary steps required to construct the D2S representation of a platform. With the given URI.
+	 */
+	public OntModel constructPlatform(Platform platform, String uri) {
 		this.platform = platform;
 
-		initializePlatform(id);
+		initializePlatform(uri);
 
 		resourceTypeDimension(platform.getResourceTypes());
 		sustainableConsumerismDimension(platform.getConsumerisms());
@@ -440,9 +443,9 @@ public class OntologyWriter {
 
 		for (ResourceType resourceType : set) {
 			String resourceTypeLabel = resourceType.getLabel().toLowerCase();
-			if(resourceTypeLabel.isEmpty())
+			if (resourceTypeLabel.isEmpty())
 				continue;
-			
+
 			if (resourceTypeLabel.equals(resourceTypes[0])) {
 				platformResource.addProperty(hasResourceType, threeDPrinters);
 			} else if (resourceTypeLabel.equals(resourceTypes[1])) {
@@ -514,7 +517,9 @@ public class OntologyWriter {
 			} else if (resourceTypeLabel.equals(resourceTypes[34])) {
 				platformResource.addProperty(hasResourceType, workSpaces);
 			} else { // if it's a new Resource Type
-				Resource newResourceType = ontologyModel.createResource(D2S + resourceType.getLabel().replace(" ", "_").replace("[", "%5B").replace("]", "%5D").replace("/", "_").replace(",", "_").replace("\"", ""));
+				Resource newResourceType = ontologyModel.createResource(D2S
+						+ resourceType.getLabel().replace(" ", "_").replace("[", "%5B").replace("]", "%5D").replace("/", "_").replace(",", "_")
+								.replace("\"", ""));
 				newResourceType.addProperty(rdfsSubClassOf, resourceTypeClass);
 				newResourceType.addProperty(rdfsLabel, resourceType.getLabel());
 				if (resourceType.getExternals() != null) {
@@ -594,8 +599,8 @@ public class OntologyWriter {
 	}
 
 	private String[] mediationValues = { "profit from both", "profit from both peer consumers and peer providers", "indirect profit",
-			"profit from peer consumers", "profit from peer providers", "profit from user data", "profit from advertisement", 
-			"per transaction", "per listing", "membership fee" };
+			"profit from peer consumers", "profit from peer providers", "profit from user data", "profit from advertisement", "per transaction", "per listing",
+			"membership fee" };
 
 	/**
 	 * Creates a link between the platform resource an its value for the market mediation dimension.
@@ -954,7 +959,7 @@ public class OntologyWriter {
 	 */
 	private void userDistributionDimension() {
 		// parse the countries the platform is used in from its Alexa page
-		//ontologyModel = new AlexaParser(ontologyModel).alterOntologyModel(false, platform); TODO
+		// ontologyModel = new AlexaParser(ontologyModel).alterOntologyModel(false, platform); TODO
 	}
 
 	private String[] smartphoneApps = { "android app", "ios app", "windows phone app" };
@@ -976,13 +981,13 @@ public class OntologyWriter {
 				platformResource.addProperty(hasApp, windowsPhoneApp);
 		}
 	}
-	
+
 	private String[] trustContributions = { "provider ratings", "provider and consumer ratings", "referral", "vouching", "value-added services" };
-	
+
 	private void trustContributionDimension(Set<String> set) {
 		if (set == null || set.isEmpty())
 			return;
-		
+
 		for (String trustContribution : set) {
 			trustContribution = trustContribution.toLowerCase();
 			if (trustContribution.equals(trustContributions[0]))

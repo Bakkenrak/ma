@@ -2,7 +2,6 @@ package de.wwu.d2s.web.api;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
