@@ -43,7 +43,8 @@
 			controller: 'platformDetailCtrl',
 			templateUrl: 'resources/html/platformDetails.html',
 			resolve: {
-				platform: getPlatform
+				platform: getPlatform,
+				languages: getLanguages
 			},
 			isSuggestion: false
 		}).when('/suggestions', {
@@ -65,7 +66,8 @@
 			controller: 'platformDetailCtrl',
 			templateUrl: 'resources/html/platformDetails.html',
 			resolve: {
-				platform: getSuggestion
+				platform: getSuggestion,
+				languages: getLanguages
 			},
 			isSuggestion: true
 		}).when('/add', {

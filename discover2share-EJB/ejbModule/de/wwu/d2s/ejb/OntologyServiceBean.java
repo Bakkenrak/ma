@@ -368,7 +368,7 @@ public class OntologyServiceBean implements OntologyService {
 						+ "d2s:" + id + " d2s:has_app ?ap . "
 						+ "d2s:" + id + " d2s:has_trust_contribution ?tc . "
 						+ "d2s:" + id + " d2s:accessed_object_has_type ?ot . "
-						+ "d2s:" + id + " dbpp:language ?lang . ";
+						+ "d2s:" + id + " dbpp:language ?language . ";
 		}
 		query += "d2s:" + id + " d2s:launched_in ?launch . "
 					+ "?launch dbpp:locationCity ?launchCity . "
@@ -493,8 +493,7 @@ public class OntologyServiceBean implements OntologyService {
 				+ "  ?ot rdfs:label ?typeOfAccessedObject }."
 				+ " OPTIONAL { d2s:"
 				+ name 
-				+ " dbpp:language ?lang."
-				+ " ?lang rdfs:label ?language }."
+				+ " dbpp:language ?language.}."
 				+ " OPTIONAL { d2s:"
 				+ name 
 				+ " d2s:used_in ?userDistribution."

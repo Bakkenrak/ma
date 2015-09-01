@@ -3,7 +3,7 @@
 
 	var d2sApp = angular.module('d2sApp');
 
-	d2sApp.controller('platformDetailCtrl', function ($scope, $route, platformFactory, authFactory, $rootScope, $location, toaster, platform) {
+	d2sApp.controller('platformDetailCtrl', function ($scope, $route, platformFactory, authFactory, $rootScope, $location, toaster, platform, languages) {
 		$scope.isSuggestion = $route.current.$$route.isSuggestion;
 				
 		if (platform.status === 204) {
@@ -20,6 +20,26 @@
 		}
 		
 		$scope.platform = platform.data;
+		
+		if (languages) { // retrieve labels for language resources
+			languages = languages.data.languages;
+				
+			$scope.platform.languageLabels = [];
+			$scope.platform.languages.forEach(function (language) {
+				var match = false;
+				var resourceName = language.replace("http://www.discover2share.net/d2s-ont/", "");
+				for (var i = 0; i < languages.length; i++) {
+					if (languages[i].resourceName === resourceName) {
+						$scope.platform.languageLabels.push(languages[i].name);
+						match = true;
+						break;
+					}
+				}
+				if (!match) {
+					$scope.platform.languageLabels.push(language);
+				}
+			});
+		}
 
 		// retrieve launchYear label
 		if ($scope.platform.yearLaunch) {

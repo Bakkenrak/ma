@@ -97,7 +97,7 @@
 	<tr>
 		<td><strong>Languages:</strong></td>
 		<td>
-			<div ng-repeat="language in platform.languages">{{language}}</div>
+			<div ng-repeat="language in platform.languageLabels">{{language}}</div>
 			<div ng-if="checkChange(platform.languages, originalPlatform.languages)">
 				<hr />
 				<span ng-repeat="language in originalPlatform.languages" title="former value"><em><s>{{language}}<span ng-if="!$last">, </span></s></em></span>
