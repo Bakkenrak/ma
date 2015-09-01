@@ -540,6 +540,11 @@
 				$scope.findPatternArray($scope.queryParts.trustContribution, $scope.filter.trustContributions);
 				// type of accessed object
 				$scope.filter.typeOfAccessedObject = $scope.findPattern($scope.queryParts.typeOfAccessedObject);
+				// user distribution
+				var userDistributionVar = $scope.getIntermediateVar(platformVar, $scope.queryParts.userDistribution);
+				if (userDistributionVar) {
+					$scope.filter.usedIn = $scope.findPattern($scope.queryParts.country, userDistributionVar);
+				}
 			}
 			
 			// limit

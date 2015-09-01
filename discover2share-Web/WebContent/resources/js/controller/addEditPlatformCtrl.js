@@ -249,6 +249,7 @@
 					platformFactory.directSavePlatformSuggestion($scope.platform).success(function (data, status) {
 						if (status === 200 || status === 204) {
 							toaster.pop('success', 'Platform added!', 'The new platform was successfully added to the ontology.');
+							$location.path("platforms/");
 						}
 						if (status >= 400) {
 							toaster.pop('error', 'Code ' + status, 'There was an error saving this suggestion.');

@@ -51,7 +51,7 @@
 	<tr>
 		<td><strong>Place of launch:</strong></td>
 		<td><a target="blank" href="{{platform.launchCity.geonames}}">{{platform.launchCity.label}}</a><span
-			ng-if="platform.launchCity!==null">, </span><a target="blank"
+			ng-if="platform.launchCity.label">, </span><a target="blank"
 			href="{{platform.launchCountry.geonames}}">{{platform.launchCountry.label}}</a>
 			
 			<div ng-if="checkChange(platform.launchCity, originalPlatform.launchCity, 'label') || checkChange(platform.launchCountry, originalPlatform.launchCountry, 'label')">
@@ -79,7 +79,7 @@
 	<tr>
 		<td><strong>Place of residence:</strong></td>
 		<td><a target="blank" href="{{platform.residenceCity.geonames}}">{{platform.residenceCity.label}}</a><span
-			ng-if="platform.residenceCity">, </span><a target="blank"
+			ng-if="platform.residenceCity.label">, </span><a target="blank"
 			href="{{platform.residenceCountry.geonames}}">{{platform.residenceCountry.label}}</a>
 
 			<div ng-if="checkChange(platform.residenceCity, originalPlatform.residenceCity, 'label') || checkChange(platform.residenceCountry, originalPlatform.residenceCountry, 'label')">
