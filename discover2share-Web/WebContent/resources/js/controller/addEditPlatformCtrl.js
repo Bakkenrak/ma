@@ -24,7 +24,7 @@
 				toaster.pop("error", "Code " + platform.status, "There was an error retrieving the platform information.");
 			}
 
-			if ($scope.isSuggestion && $scope.isExternal) {
+			if ($scope.isSuggestion || $scope.isExternal) {
 				$scope.submitBtnText = "Save changes to platform suggestion";
 			} else {
 				$scope.submitBtnText = "Submit platform change suggestion";
