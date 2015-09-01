@@ -30,6 +30,7 @@ public interface OntologyApi {
 	
 	@Path("platforms/{platform}")
 	@DELETE
+	@RolesAllowed(value={"admin", "mod"})
 	public void removePlatform(@PathParam("platform") String url);
 	
 	@Path("descriptions/")
@@ -50,16 +51,18 @@ public interface OntologyApi {
 	@Path("platforms/suggestions/add")
 	@POST
 	@Consumes("application/json")
-	public void addSuggestion(Platform platform);
+	public Response addSuggestion(Platform platform);
 	
 	@Path("platforms/suggestions/directSave")
 	@POST
 	@Consumes("application/json")
+	@RolesAllowed(value={"admin", "mod"})
 	public void directSaveSuggestion(Platform platform);
 	
 	@Path("platforms/suggestions/edit")
 	@POST
 	@Consumes("application/json")
+	@RolesAllowed(value={"admin", "mod"})
 	public void editSuggestion(Platform platform);
 	
 	@Path("platforms/suggestions/")
@@ -83,6 +86,16 @@ public interface OntologyApi {
 	@GET
 	@RolesAllowed(value={"admin", "mod"})
 	public void saveSuggestion(@PathParam("id") int id);
+	
+	@Path("external/{id}")
+	@GET
+	@Produces("application/json")
+	public Platform getSuggestionExternal(@PathParam("id") String id);
+	
+	@Path("external/{id}")
+	@POST
+	@Consumes("application/json")
+	public Response editSuggestionExternal(@PathParam("id") String id, Platform platform);
 	
 	@Path("query/")
 	@POST

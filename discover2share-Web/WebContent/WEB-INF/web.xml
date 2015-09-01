@@ -22,6 +22,7 @@
 		<url-pattern>/query</url-pattern>
 		<url-pattern>/login</url-pattern>
 		<url-pattern>/register</url-pattern>
+		<url-pattern>/external/*</url-pattern>
 	</servlet-mapping>
 
 	<!-- API route config -->

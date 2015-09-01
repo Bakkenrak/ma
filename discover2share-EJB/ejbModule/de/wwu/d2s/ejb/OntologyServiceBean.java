@@ -171,8 +171,16 @@ public class OntologyServiceBean implements OntologyService {
 	}
 	
 	@Override
-	public void addSuggestion(Platform platform){
-		em.persist(platform);
+	public Map<String, String> addSuggestion(Platform platform){
+		Map<String, String> output = new HashMap<String, String>();
+		try {
+			em.persist(platform);
+			em.flush();
+			output.put("success", platform.getExternalId());
+		} catch (Exception e) {
+			output.put("error", e.getMessage());
+		}
+		return output;
 	}
 	
 	@Override
@@ -322,7 +330,7 @@ public class OntologyServiceBean implements OntologyService {
 		if(p != null) {
 			directSaveSuggestion(p);
 		}
-		//em.remove(p); TODO uncomment
+		em.remove(p);
 	}
 
 	@Override
@@ -500,5 +508,19 @@ public class OntologyServiceBean implements OntologyService {
 				+ " ?userDistribution dbpp:locationCountry ?userCountry."
 				+ " ?userDistribution d2s:user_percentage ?userPercentage."
 				+ " ?userDistribution dct:date ?distributionDate. }.";
+	}
+
+	@Override
+	public Platform getSuggestionExternal(String id) {
+		return em.createQuery("SELECT p FROM Platform p WHERE p.externalId = '" + id + "'", Platform.class).getSingleResult();
+	}
+
+	@Override
+	public boolean editSuggestionExternal(String id, Platform platform) {
+		if (id.equals(platform.getExternalId()) && getSuggestionExternal(id) != null) {
+			em.merge(platform);
+			return true;
+		}
+		return false;
 	}
 }

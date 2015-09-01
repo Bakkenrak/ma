@@ -47,6 +47,10 @@
 			return $http.get('api/ontology/platforms/suggestions/' + id);
 		};
 		
+		platformFactory.getSuggestionExternal = function (id) {
+			return $http.get('api/ontology/external/' + id);
+		};
+		
 		platformFactory.addPlatformSuggestion = function (platform) {
 			return $http.post('api/ontology/platforms/suggestions/add', platform);
 		};
@@ -65,6 +69,10 @@
 		
 		platformFactory.editPlatformSuggestion = function (platform) {
 			return $http.post('api/ontology/platforms/suggestions/edit', platform);
+		};
+		
+		platformFactory.editPlatformSuggestionExternal = function (id, platform) {
+			return $http.post('api/ontology/external/' + id, platform);
 		};
 		
 		platformFactory.getGeoData = function (geoUrl) {

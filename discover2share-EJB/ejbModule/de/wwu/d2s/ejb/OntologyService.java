@@ -16,7 +16,7 @@ public interface OntologyService {
 	
 	public Map<String, Map<String, String>> getDescriptions();
 	
-	public void addSuggestion(Platform platform);
+	public Map<String, String> addSuggestion(Platform platform);
 	
 	public void directSaveSuggestion(Platform platform);
 	
@@ -37,5 +37,9 @@ public interface OntologyService {
 	public void editSuggestion(Platform platform);
 
 	public void removePlatform(String id);
+
+	public Platform getSuggestionExternal(String id);
+
+	public boolean editSuggestionExternal(String id, Platform platform);
 	
 }

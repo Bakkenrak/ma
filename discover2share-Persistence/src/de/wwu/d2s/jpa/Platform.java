@@ -1,6 +1,8 @@
 package de.wwu.d2s.jpa;
 
 import java.io.Serializable;
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -29,6 +31,8 @@ public class Platform implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 
+	private String externalId;
+	
 	private Date created;
 	
 	private String editFor;
@@ -235,6 +239,10 @@ public class Platform implements Serializable {
 	@PrePersist
 	protected void onCreate() {
 		created = new Date();
+		
+		// generate a random string as an external ID
+		SecureRandom random = new SecureRandom();
+		externalId = new BigInteger(130, random).toString(32);
 	}
 
 	public int getId() {
@@ -244,6 +252,16 @@ public class Platform implements Serializable {
 	public void setId(int id) {
 		this.id = id;
 	}
+
+	public String getExternalId() {
+		return externalId;
+	}
+
+
+	public void setExternalId(String externalId) {
+		this.externalId = externalId;
+	}
+
 
 	public String getLabel() {
 		return label;
@@ -340,6 +358,9 @@ public class Platform implements Serializable {
 	}
 
 	public void setServiceDurationMin(String serviceDurationMin) {
+		if (serviceDurationMin == null || !serviceDurationMin.isEmpty())
+			return;
+		
 		if (serviceDurationMin.equals("http://www.w3.org/2006/time#unitMinute")) {
 			this.serviceDurationMin = "Minutes";
 		} else if (serviceDurationMin.equals("http://www.w3.org/2006/time#unitHour")) {
@@ -360,6 +381,9 @@ public class Platform implements Serializable {
 	}
 
 	public void setServiceDurationMax(String serviceDurationMax) {
+		if (serviceDurationMax == null || !serviceDurationMax.isEmpty())
+			return;
+		
 		if (serviceDurationMax.equals("http://www.w3.org/2006/time#unitMinute")) {
 			this.serviceDurationMax = "Minutes";
 		} else if (serviceDurationMax.equals("http://www.w3.org/2006/time#unitHour")) {

@@ -17,6 +17,9 @@
 		var getSuggestion = function ($route, platformFactory) {
 			return platformFactory.getSuggestion($route.current.params.id);
 		};
+		var getSuggestionExternal = function ($route, platformFactory) {
+			return platformFactory.getSuggestionExternal($route.current.params.id);
+		};
 		var getLanguages = function (platformFactory) {
 			return platformFactory.getLanguages();
 		};
@@ -70,6 +73,16 @@
 				languages: getLanguages
 			},
 			isSuggestion: true
+		}).when('/external/:id', {
+			controller: 'addEditPlatformCtrl',
+			templateUrl: 'resources/html/addEditPlatform.html',
+			resolve: {
+				platform: getSuggestionExternal,
+				languages: getLanguages
+			},
+			isSuggestion: true,
+			isExternal: true,
+			isEdit: true
 		}).when('/add', {
 			controller: 'addEditPlatformCtrl',
 			templateUrl: 'resources/html/addEditPlatform.html',

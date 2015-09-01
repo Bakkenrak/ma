@@ -33,8 +33,14 @@ public class OntologyImpl implements OntologyApi {
 	}
 
 	@Override
-	public void addSuggestion(Platform platform) {
-		ontologyService.addSuggestion(platform);
+	public Response addSuggestion(Platform platform) {
+		Map<String, String> result = ontologyService.addSuggestion(platform);
+		if (result.containsKey("success"))
+			return Response.status(Response.Status.OK).entity(result).build();
+		else if (result.containsKey("error"))
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(result).build();
+		else
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 	}
 	
 	@Override
@@ -91,6 +97,19 @@ public class OntologyImpl implements OntologyApi {
 	@Override
 	public void removePlatform(String id) {
 		ontologyService.removePlatform(id);
+	}
+
+	@Override
+	public Platform getSuggestionExternal(String id) {
+		return ontologyService.getSuggestionExternal(id);
+	}
+
+	@Override
+	public Response editSuggestionExternal(String id, Platform platform) {
+		if (ontologyService.editSuggestionExternal(id, platform))
+			return Response.status(Response.Status.NO_CONTENT).build();
+		else
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 	}
 
 }

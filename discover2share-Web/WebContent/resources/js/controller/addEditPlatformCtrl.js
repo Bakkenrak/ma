@@ -3,9 +3,11 @@
 
 	var d2sApp = angular.module('d2sApp');
 
-	d2sApp.controller('addEditPlatformCtrl', function ($scope, $rootScope, $route, $location, $timeout, platformFactory, authFactory, toaster, platform, languages) {
+	d2sApp.controller('addEditPlatformCtrl', function ($scope, $rootScope, $route, $location, $timeout, $modal, platformFactory, authFactory, toaster, platform, languages) {
 		$scope.isEdit = $route.current.$$route.isEdit;
 		$scope.isSuggestion = $route.current.$$route.isSuggestion;
+		$scope.isExternal = $route.current.$$route.isExternal;
+		
 		if ($scope.isEdit) {
 			if (platform.status === 204) {
 				if ($scope.isSuggestion) {
@@ -22,7 +24,7 @@
 				toaster.pop("error", "Code " + platform.status, "There was an error retrieving the platform information.");
 			}
 
-			if ($scope.isSuggestion) {
+			if ($scope.isSuggestion && $scope.isExternal) {
 				$scope.submitBtnText = "Save changes to platform suggestion";
 			} else {
 				$scope.submitBtnText = "Submit platform change suggestion";
@@ -257,11 +259,29 @@
 					});
 				} else { // no direct addition to ontology -> save suggestion for review
 					platformFactory.addPlatformSuggestion($scope.platform).success(function (data, status) {
-						if (status === 200 || status === 204) {
-							toaster.pop('success', 'Platform suggestion added!', 'The new platform suggestion was successfully added for review by a moderator.');
+						if (status === 200 || status === 204) {	
+							if ($scope.loggedIn()) {
+								toaster.pop('success', 'Platform suggestion added!', 'The new platform suggestion was successfully added for review by a moderator.');
+								$location.path("platforms/");
+							} else {
+								var modalInstance = $modal.open({
+								    animation: true,
+								    templateUrl: 'editExternalModal.html',
+								    controller: 'ModalInstanceCtrl',
+								    resolve: {
+								        externalId: function () {
+								        	return data.success;
+								        }
+								    }
+							    });
+	
+							    modalInstance.result.then(function () {
+							    	$location.path("platforms/");
+							    });
+							}
 						}
 						if (status >= 400) {
-							toaster.pop('error', 'Code ' + status, 'There was an error adding this suggestion.');
+							toaster.pop('error', 'Code ' + status, 'There was an error adding this suggestion: ' + data.error);
 						}
 					});
 				}
@@ -282,30 +302,66 @@
 					} else { // no direct application to ontology -> save suggestion for review
 						platformFactory.addPlatformSuggestion($scope.platform).success(function (data, status) {
 							if (status === 200 || status === 204) {
-								toaster.pop('success', 'Change suggestion added!', 'The platform change suggestion was successfully added for review by a moderator.');
-								$location.path("platforms/" + $route.current.params.platform);
+								if ($scope.loggedIn()) {
+									toaster.pop('success', 'Change suggestion added!', 'The platform change suggestion was successfully added for review by a moderator.');
+									$location.path("platforms/");
+								} else {
+									var modalInstance = $modal.open({
+									    animation: true,
+									    templateUrl: 'editExternalModal.html',
+									    controller: 'ModalInstanceCtrl',
+									    resolve: {
+									        externalId: function () {
+									        	return data.success;
+									        }
+									    }
+								    });
+		
+								    modalInstance.result.then(function () {
+								    	$location.path("platforms/");
+								    });
+								}
 							}
 							if (status >= 400) {
-								toaster.pop('error', 'Code ' + status, 'There was an error adding this change suggestion.');
+								toaster.pop('error', 'Code ' + status, 'There was an error adding this change suggestion: ' + data.error);
 							}
 						});
 					}
 				} else { //editing a suggestion
-					platformFactory.editPlatformSuggestion($scope.platform).success(function (data, status) {
-						if (status === 200 || status === 204) {
-							toaster.pop('success', 'Platform suggestion edited!', 'The platform suggestion was successfully edited.');
-							$location.path("suggestions/" + $route.current.params.id);
-						}
-						if (status >= 400) {
-							toaster.pop('error', 'Code ' + status, 'There was an error editing this suggestion.');
-						}
-					});
+					if ($scope.isExternal) { // external editing a suggestion
+						platformFactory.editPlatformSuggestionExternal($route.current.params.id, $scope.platform).success(function (data, status) {
+							if (status === 200 || status === 204) {
+								toaster.pop('success', 'Platform suggestion edited!', 'The platform suggestion was successfully edited.');
+								$location.path("/");
+							}
+							if (status >= 400) {
+								toaster.pop('error', 'Code ' + status, 'There was an error editing this suggestion.');
+							}
+						});
+					} else { // mod or admin editing a suggestion
+						platformFactory.editPlatformSuggestion($scope.platform).success(function (data, status) {
+							if (status === 200 || status === 204) {
+								toaster.pop('success', 'Platform suggestion edited!', 'The platform suggestion was successfully edited.');
+								$location.path("suggestions/" + $route.current.params.id);
+							}
+							if (status >= 400) {
+								toaster.pop('error', 'Code ' + status, 'There was an error editing this suggestion.');
+							}
+						});
+					}
 				}
 			}
 		};
 		
 		$scope.loggedIn = function () {
 			return authFactory.isAuthenticated();
+		};
+	});
+	
+	d2sApp.controller('ModalInstanceCtrl', function ($scope, $modalInstance, $location, $route, externalId) {
+		$scope.internalUrl = "external/" + externalId;
+		$scope.ok = function () {
+		    $modalInstance.close();
 		};
 	});
 	

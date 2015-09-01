@@ -496,3 +496,18 @@
 	</div>
 	
 </form>
+
+<script type="text/ng-template" id="editExternalModal.html">
+        <div class="modal-header">
+            <h4 class="modal-title">Platform suggestion added!</h4>
+        </div>
+        <div class="modal-body">
+        	<p>The new platform suggestion was successfully added for review by a moderator.</p>
+			<p>While your suggestion has not yet been added to the ontology or removed, you can edit it under the following sub-address:<br/>
+				<a href="{{internalUrl}}" target="blank">{{internalUrl}}</a>
+			</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+        </div>
+    </script>
