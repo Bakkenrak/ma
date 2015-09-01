@@ -1,15 +1,23 @@
-<form ng-submit="submit()">
+<form name="addEditForm" ng-submit="addEditForm.$valid && submit()">
 	<table id="detailTable" class="table table-bordered">
 		<tr>
 			<td><strong>Name:</strong></td>
-			<td><input type="text" class="form-control"
-				ng-model="platform.label" /></td>
+			<td>
+				<div class="form-group" ng-class="{'has-error' : addEditForm.nameInput.$invalid && !addEditForm.nameInput.$pristine }">
+					<input name="nameInput" type="text" class="form-control" ng-model="platform.label" required />
+					<span ng-show="addEditForm.nameInput.$invalid && !addEditForm.nameInput.$pristine" class="help-block">Enter a name.</span>
+				</div>
+			</td>
 			<td></td>
 		</tr>
 		<tr>
 			<td><strong>URL:</strong></td>
-			<td><input type="text" class="form-control"
-				ng-model="platform.url" /></td>
+			<td>
+				<div class="form-group" ng-class="{'has-error' : addEditForm.urlInput.$invalid && !addEditForm.urlInput.$pristine }">
+					<input name="urlInput" type="text" class="form-control" ng-model="platform.url" pattern="http[s]?:\/\/(?:www.)?[\w-]+\.[\w]{2,3}.*" required />
+					<span ng-show="addEditForm.urlInput.$invalid && !addEditForm.urlInput.$pristine" class="help-block">Enter a valid URL starting with <em>http(s)://</em></span>
+				</div>
+			</td>
 			<td></td>
 		</tr>
 		<tr>
@@ -22,17 +30,18 @@
 			<td><strong>Resource Types:</strong></td>
 			<td ng-controller="resourceTypeCtrl">
 				<div ng-repeat="type in $parent.platform.resourceTypes" class="row-margin-15"> 
-					<div ng-class="{'input-group' : $parent.platform.resourceTypes.length>1}" class="row-margin-5">
-						<input type="text" class="form-control"	ng-model="type.label" name="rt{{$index}}" cu-focuslast
-								typeahead="rt.name as rt.name for rt in resourceTypes | orderBy: 'name' | resourceContainsFilter: $viewValue" />
-			
-						<span ng-if="$parent.platform.resourceTypes.length>1" class="input-group-btn">
-							<button type="button" class="btn btn-default" data-type="plus"
-								data-field="rt{{$index}}"
-								ng-click="$parent.platform.resourceTypes.splice($index,1)">
-								<span class="glyphicon glyphicon-minus"></span>&nbsp;
-							</button>
-						</span>
+					<div class="form-group" ng-class="{'has-error' : addEditForm['rt' + $index].$invalid && !addEditForm['rt' + $index].$pristine }">
+						<div ng-class="{'input-group' : $parent.platform.resourceTypes.length>1}" class="row-margin-5">
+							<input type="text" class="form-control"	ng-model="type.label" name="rt{{$index}}" cu-focuslast
+									typeahead="rt.name as rt.name for rt in resourceTypes | orderBy: 'name' | resourceContainsFilter: $viewValue" required />
+							<span ng-if="$parent.platform.resourceTypes.length>1" class="input-group-btn">
+								<button type="button" class="btn btn-default" data-type="plus"
+									data-field="rt{{$index}}"
+									ng-click="$parent.platform.resourceTypes.splice($index,1)">
+									<span class="glyphicon glyphicon-minus"></span>&nbsp;
+								</button>
+							</span>
+						</div>
 					</div>
 					<button type="button" class="btn btn-xs btn-default" ng-click="openModal(type, 'lg')" ng-disabled="!type.label">Add/Remove external resources</button>
 				    <span class="label label-info" ng-if="type.externals">{{type.externals.length}} selected</span>
@@ -59,6 +68,7 @@
 									<tab heading="Custom"><br />
 										<form name="customForm">
 											<label>Enter a concept URI:</label> <em>http(s)://...</em>
+											<div class="form-group" ng-class="{'has-error' : customForm.customUrl.$invalid && !customForm.customUrl.$pristine }"
 											<input type="url" name="customUrl" class="form-control row-margin-5" ng-model="customUri" pattern="http[s]?:\/\/(?:www.)?[\w-]+\.[\w]{2,3}.*" />
 											<button type="button" class="btn btn-sm btn-primary" ng-click="addCustomConcept(customUri)" ng-disabled="!customUri || !customForm.customUrl.$valid">Add</button>
 										</form>
