@@ -9,12 +9,14 @@
 			$location.path("login/");
 		}
 		
-		platforms.data.forEach(function (platform) {		
-			platform.resourceTypesJoined = $filter('orderBy')(platform.resourceTypes, 'label')
-												.map(function (item) {
-													return item.label;
-												}).join(", ");
-		});
+		if (platforms.data) {
+			platforms.data.forEach(function (platform) {		
+				platform.resourceTypesJoined = $filter('orderBy')(platform.resourceTypes, 'label')
+													.map(function (item) {
+														return item.label;
+													}).join(", ");
+			});
+		}
 		
 		$scope.pagination = {
 			itemsPerPage : 25

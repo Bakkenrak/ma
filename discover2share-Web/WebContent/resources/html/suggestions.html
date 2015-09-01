@@ -43,7 +43,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="platform in paginatedPlatforms | orderBy: 'label'">
+				<tr ng-repeat="platform in paginatedPlatforms track by platform.id | orderBy: 'label'">
 					<td><a href="suggestions/{{platform.id}}">{{platform.label}}</a></td>
 					<td><a target="blank" href="{{platform.url}}">{{platform.url}}</a></td>
 					<td><span ng-repeat="resourceType in platform.resourceTypes">{{resourceType.label}}<span ng-if="!$last">, </span></span></td>
