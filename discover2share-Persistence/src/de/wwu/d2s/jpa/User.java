@@ -11,7 +11,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class User implements java.io.Serializable {
 	private static final long serialVersionUID = -7399509240684000311L;
 
@@ -21,6 +24,7 @@ public class User implements java.io.Serializable {
 
 	private String username;
 	private String password;
+	private String oldPassword;
 	private String authToken;
 	private String authRole;
 	private Date authDate;
@@ -90,6 +94,14 @@ public class User implements java.io.Serializable {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getOldPassword() {
+		return oldPassword;
+	}
+
+	public void setOldPassword(String oldPassword) {
+		this.oldPassword = oldPassword;
 	}
 
 	public String getAuthToken() {

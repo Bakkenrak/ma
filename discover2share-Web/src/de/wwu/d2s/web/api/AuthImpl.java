@@ -1,6 +1,8 @@
 package de.wwu.d2s.web.api;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -48,9 +50,38 @@ public class AuthImpl implements AuthApi {
     }
 
 	@Override
-	public Response registerUser(HttpServletRequest request, User user) {
+	public Response registerUser(User user) {
 		if (userService.saveNew(user) == null)
 			return Response.status(Response.Status.CONFLICT).entity("{\"error\":\"A user with the name '" + user.getUsername() + "' already exists.\"}").build();
-		return Response.status(Response.Status.OK).entity(user).build();
+		return Response.status(Response.Status.OK).build();
+	}
+
+	@Override
+	public Response changePassword(User user) {
+		if(userService.changePassword(user))
+			return Response.status(Response.Status.NO_CONTENT).build();
+		else 
+			return Response.status(Response.Status.UNAUTHORIZED).build();
+	}
+
+	@Override
+	public Response deleteOwnAccount(AuthLoginElement user) {
+		if(userService.deleteOwnAccount(user))
+			return Response.status(Response.Status.NO_CONTENT).build();
+		else 
+			return Response.status(Response.Status.UNAUTHORIZED).build();
+	}
+
+	@Override
+	public List<AuthAccessElement> getUsers() {
+		return userService.getUsers();
+	}
+
+	@Override
+	public Response deleteAccount(User user) {
+		if (userService.deleteAccount(user))
+			return Response.status(Response.Status.NO_CONTENT).build();
+		else 
+			return Response.status(Response.Status.UNAUTHORIZED).build();
 	}
 }

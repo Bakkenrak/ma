@@ -1,0 +1,65 @@
+<h2>Account management</h2>
+<div class="row row-margin-15">
+	<div class="col-md-4">
+		<h4>Change my password:</h4>
+		
+		<form name="changePwForm" ng-submit="changePwForm.$valid && changePassword()">
+			<div class="form-group" ng-class="{'has-error' : changePwForm.oldPwInput.$invalid && !changePwForm.oldPwInput.$pristine }">
+				<label for="oldPwInput">Old password</label> <input type="password"
+					class="form-control" id="oldPwInput" name="oldPwInput" ng-model="user.oldPassword" required />
+				<p ng-show="changePwForm.oldPwInput.$invalid && !changePwForm.oldPwInput.$pristine" class="help-block">Enter the current password.</p>
+			</div>
+			<div class="form-group" ng-class="{'has-error' : !changePwForm.newPwInput.$pristine && (changePwForm.newPwInput.$invalid || user.oldPassword === user.password) }">
+				<label for="newPwInput">New password</label> <input type="password"
+					class="form-control" id="newPwInput" name="newPwInput" ng-model="user.password" required ng-minlength=6 />
+				<p ng-show="changePwForm.newPwInput.$invalid && !changePwForm.newPwInput.$pristine" class="help-block">Enter a password of at least six characters.</p>
+				<p ng-show="!changePwForm.newPwInput.$pristine && user.oldPassword === user.password" class="help-block">Old and new password are the same.</p>
+			</div>
+			<div class="form-group" ng-class="{'has-error' : !changePwForm.newPwInput.$pristine && user.password!==user.passwordConfirm }">
+				<label for="newPwInput2">Confirm password</label> <input
+					type="password" class="form-control" id="newPwInput2" name="newPwInput2"
+					ng-model="user.passwordConfirm" required />
+				<p ng-show="!changePwForm.newPwInput.$pristine && user.password!==user.passwordConfirm" class="help-block">The entered passwords do not match.</p>
+			</div>
+			<button type="submit" class="btn btn-default" ng-disabled="!changePwForm.$valid">Save</button>
+		</form>
+	</div>
+	<div class="col-md-4 col-md-offset-2">
+		<h4>Delete my account:</h4>
+		<form name="deleteForm" ng-submit="deleteForm.$valid && deleteOwnAccount()">
+			<div class="form-group" ng-class="{'has-error' : deleteForm.oldPwInput.$invalid && !deleteForm.oldPwInput.$pristine }">
+				<label for="oldPwInput">Confirm with your password</label> <input type="password"
+					class="form-control" name="oldPwInput" ng-model="deleteUser.password" required />
+				<p ng-show="deleteForm.oldPwInput.$invalid && !deleteForm.oldPwInput.$pristine" class="help-block">Enter the current password.</p>
+			</div>
+			<button type="submit" class="btn btn-default" ng-disabled="!deleteForm.$valid">Delete</button>
+		</form>
+	</div>
+</div>
+<div class="row" ng-if="user.authRole == 'admin'">
+	<div class="col-md-4 col-md-offset-6">
+		<h4>Users in the system:</h4>
+		<table class="table table-striped table-condensed table-bordered">
+			<thead>
+				<tr>
+					<td><strong>User</strong></td>
+					<td><strong>Role</strong></td>
+					<td></td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="user in users">
+					<td>{{user.username}}</td>
+					<td>
+						<span ng-if="user.authRole === 'admin'">Administrator</span>
+						<span ng-if="user.authRole === 'mod'">Moderator</span>
+					</td>
+					<td><button class="btn btn-xs btn-danger" ng-click="deleteAccount(user)">Delete</button></td>
+				</tr>
+				<tr ng-show="!users || users.length === 0">
+					<td colspan="3"><em>Currently no other users in the system.</em></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

@@ -96,6 +96,9 @@
 		}).when('/register', {
 			controller: 'registrationCtrl',
 			templateUrl: 'resources/html/register.html'
+		}).when('/account', {
+			controller: 'accountCtrl',
+			templateUrl: 'resources/html/account.html'
 		}).when('/login', {
 			controller: 'loginCtrl',
 			templateUrl: 'resources/html/login.html'

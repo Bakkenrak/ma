@@ -20,6 +20,22 @@
 		authFactory.register = function (user) {
 			return $http.post('api/auth/register', user);
 		};
+		
+		authFactory.getUsers = function () {
+			return $http.get('api/auth/users');
+		};
+		
+		authFactory.changePassword = function (user) {
+			return $http.post('api/auth/changePassword', user);
+		};
+		
+		authFactory.deleteOwnAccount = function (user) {
+			return $http.post('api/auth/deleteOwnAccount', user);
+		};
+		
+		authFactory.deleteAccount = function (user) {
+			return $http.post('api/auth/deleteAccount', user);
+		}
 
 		authFactory.setAuthData = function (authData) {
 			$cookieStore.put('authData', {

@@ -14,8 +14,8 @@
 				delete $scope.user.passwordConfirm;
 				authFactory.register($scope.user)
 					.success(function (data, status) {
-						$scope.registerFailed = (status !== 200);
-						$scope.registerSuccess = (status === 200);
+						$scope.registerFailed = (status !== 200 && status !== 204);
+						$scope.registerSuccess = (status === 200 || status === 204);
 						$scope.user = {};
 						if ($scope.registerFailed) {
 							$scope.errorMessage = data.error;
