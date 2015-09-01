@@ -140,8 +140,7 @@
 						typeahead-on-select="launchCitySelected($item)" />
 				</p>
 				<div ng-show="platform.launchCity.geonames">
-					<a href="{{platform.launchCity.geonames}}" target="_blank">{{platform.launchCity.label}} 
-					<span ng-show="platform.launchCity.adminName1">, {{platform.launchCity.adminName1}}</span>
+					<a href="{{platform.launchCity.geonames}}" target="_blank">{{platform.launchCity.label}}<span ng-show="platform.launchCity.adminName1">, {{platform.launchCity.adminName1}}</span>
 							({{platform.launchCity.countryCode}})</a>
 					<button type="button" class="btn btn-xs btn-danger" ng-click="platform.launchCity = null">
 						<span class="glyphicon glyphicon-remove"></span>
@@ -189,8 +188,7 @@
 						typeahead-on-select="residenceCitySelected($item)" />
 				</p> 
 				<div ng-show="platform.residenceCity.geonames">
-					<a href="{{platform.residenceCity.geonames}}" target="_blank">{{platform.residenceCity.label}}
-							<span ng-show="platform.residenceCity.adminName1">, {{platform.residenceCity.adminName1}}</span>
+					<a href="{{platform.residenceCity.geonames}}" target="_blank">{{platform.residenceCity.label}}<span ng-show="platform.residenceCity.adminName1">, {{platform.residenceCity.adminName1}}</span>
 							({{platform.residenceCity.countryCode}})</a>
 					<button type="button" class="btn btn-xs btn-danger" ng-click="platform.residenceCity = null">
 						<span class="glyphicon glyphicon-remove"></span>
