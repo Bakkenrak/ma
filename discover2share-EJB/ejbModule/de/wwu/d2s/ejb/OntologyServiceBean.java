@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -136,9 +137,10 @@ public class OntologyServiceBean implements OntologyService {
 	public Map<String, Map<String, String>> getDescriptions() {
 		// create a model using reasoner
 		OntModel model1 = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_MICRO_RULE_INF);
-
+		java.util.logging.Logger.getLogger("org.apache.jena.riot").setLevel(Level.SEVERE); // avoid unnecessary warnings
 		// read the ontology file
 		model1.read(ONTOLOGYURL, "Turtle");
+		java.util.logging.Logger.getLogger("org.apache.jena.riot").setLevel(Level.ALL);
 
 		// Create a new query
 		String queryString = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
