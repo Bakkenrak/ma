@@ -6,7 +6,7 @@
 		<pre ng-hide="filteredPlatforms.length>0">No items found.</pre>
 	</div>
 	<div class="col-md-3 col-md-offset-7">
-		<input type="text" ng-model="searchTerm" placeholder="Search" class="form-control" />
+		<input type="text" ng-model="searchTerm" placeholder="Search name or resource types..." class="form-control" />
 	</div>
 </div>
 
@@ -15,16 +15,31 @@
 		<table class="table table-striped table-hover">
 			<thead>
 				<tr>
-					<td><strong>Platform</strong></td>
-					<td><strong>URL</strong></td>
-					<td><strong>Resource Type</strong></td>
+					<td><strong>
+						<a href="#" ng-click="changeOrderBy('label')">Platform 
+							<span ng-if="orderBy.attribute === 'label'" class="glyphicon pull-right" 
+								ng-class="{'glyphicon-chevron-up': !orderBy.reverse, 'glyphicon-chevron-down': orderBy.reverse}" aria-hidden="true"></span>
+						</a></strong>
+					</td>
+					<td><strong>
+						<a href="#" ng-click="changeOrderBy('url')">URL 
+							<span ng-if="orderBy.attribute === 'url'" class="glyphicon pull-right" 
+								ng-class="{'glyphicon-chevron-up': !orderBy.reverse, 'glyphicon-chevron-down': orderBy.reverse}" aria-hidden="true"></span>
+						</a></strong>
+					</td>
+					<td><strong>
+						<a href="#" ng-click="changeOrderBy('resourceTypesJoined')">Resource Types 
+							<span ng-if="orderBy.attribute === 'resourceTypesJoined'" class="glyphicon pull-right" 
+								ng-class="{'glyphicon-chevron-up': !orderBy.reverse, 'glyphicon-chevron-down': orderBy.reverse}" aria-hidden="true"></span>
+						</a></strong>
+					</td>
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="platform in paginatedPlatforms | orderBy: 'label'">
+				<tr ng-repeat="platform in paginatedPlatforms">
 					<td><a href="platforms/{{platform.resourceName.substring(38)}}">{{platform.label}}</a></td>
 					<td><a target="blank" href="{{platform.url}}">{{platform.url}}</a></td>
-					<td><span ng-repeat="resourceType in platform.resourceTypes">{{resourceType.label}} <span ng-if="!$last">, </span></span></td>
+					<td>{{platform.resourceTypesJoined}}</td>
 				</tr>
 			</tbody>
 		</table>
