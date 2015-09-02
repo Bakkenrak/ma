@@ -3,4 +3,4 @@ discover2share, discover2share-EJB, discover2share-Persistence and discover2shar
 
 discover2share-scripts contains additional scripts, e.g. the Excel to RDF transformation and an Alexa user distribution parser.
 
-The projects partly depend on each other.
+The scripts project depends on the discover2share-EJB and discover2share-Persistence projects.
