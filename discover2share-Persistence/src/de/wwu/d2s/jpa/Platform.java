@@ -357,10 +357,7 @@ public class Platform implements Serializable {
 		return serviceDurationMin;
 	}
 
-	public void setServiceDurationMin(String serviceDurationMin) {
-		if (serviceDurationMin == null || !serviceDurationMin.isEmpty())
-			return;
-		
+	public void setServiceDurationMin(String serviceDurationMin) {		
 		if (serviceDurationMin.equals("http://www.w3.org/2006/time#unitMinute")) {
 			this.serviceDurationMin = "Minutes";
 		} else if (serviceDurationMin.equals("http://www.w3.org/2006/time#unitHour")) {
@@ -380,10 +377,7 @@ public class Platform implements Serializable {
 		return serviceDurationMax;
 	}
 
-	public void setServiceDurationMax(String serviceDurationMax) {
-		if (serviceDurationMax == null || !serviceDurationMax.isEmpty())
-			return;
-		
+	public void setServiceDurationMax(String serviceDurationMax) {		
 		if (serviceDurationMax.equals("http://www.w3.org/2006/time#unitMinute")) {
 			this.serviceDurationMax = "Minutes";
 		} else if (serviceDurationMax.equals("http://www.w3.org/2006/time#unitHour")) {
