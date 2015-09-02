@@ -47,14 +47,14 @@ public class AlexaParser {
 
 	private final static String ENDPOINT = "http://localhost:3030/d2s-ont/update"; // SPARQL Update Endpoint to insert triples into
 	// JSON file containing all countries of the ontology
-	private final static String COUNTRIESJSON = "http://localhost:8080/discover2share-Web/resources/js/countries.json"; 
+	private final static String COUNTRIESJSON = "http://localhost:8080/discover2share-Web/resources/js/countries.json";
 
 	// ontology namespaces
 	private final static String D2S = "http://www.discover2share.net/d2s-ont/";
 	private final static String DBPP = "http://dbpedia.org/property/";
 	private final static String RDF = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
 	private final static String DCT = "http://purl.org/dc/terms/";
-	
+
 	private OntModel ontologyModel;
 	private Property rdfType;
 	private Resource userDistributionClass;
@@ -62,12 +62,12 @@ public class AlexaParser {
 	private Property date;
 	private Property percentage;
 	private Property locationCountry;
-	
+
 	public static void main(String[] args) {
 		log = Logger.getLogger(AlexaParser.class.getName()); // instantiate logger
-		
+
 		AlexaParser ax = new AlexaParser(null);
-		OntModel ontModel = ax.alterOntologyModel(true, null);
+		OntModel ontModel = ax.alterOntologyModel(true, null); // have a new ontology model created and info from alexa added to it
 
 		log.info("Inserting new triples into Triplestore");
 		OutputStream baos = new ByteArrayOutputStream();
@@ -76,14 +76,15 @@ public class AlexaParser {
 		UpdateExecutionFactory.createRemote(UpdateFactory.create(query), ENDPOINT).execute(); // execute update to endpoint
 		log.info("Done");
 	}
-	
+
 	public AlexaParser(OntModel ontModel) {
 		// Ontology Model to create new data in
-		if(ontModel != null)
+		if (ontModel != null)
 			ontologyModel = ontModel;
 		else
-			ontologyModel = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM);
-		
+			// if no model is provided
+			ontologyModel = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM); // create new one
+
 		// instantiate commonly used Properties and Resource
 		rdfType = ontologyModel.createProperty(RDF + "type");
 		userDistributionClass = ontologyModel.createResource(D2S + "User_Distribution");
@@ -91,7 +92,7 @@ public class AlexaParser {
 		date = ontologyModel.createProperty(DCT + "date");
 		percentage = ontologyModel.createProperty(D2S + "user_percentage");
 		locationCountry = ontologyModel.createProperty(DBPP + "locationCountry");
-		
+
 		JSONArray countries;
 		try { // retrieve list of countries from JSON file
 			countries = JsonReader.readJsonFromUrl(COUNTRIESJSON).getJSONArray("countries");
@@ -105,22 +106,32 @@ public class AlexaParser {
 			return;
 		}
 	}
-	
+
+	/**
+	 * Parses the respective Alexa page for every platform in the ontology or a specific given platform. If user country information is found, it is added to
+	 * the ontology model.
+	 * 
+	 * @param allPlatforms
+	 *            Boolean determining whether to parse all platforms in the ontology
+	 * @param p
+	 *            Specific platform to parse Alexa info for.
+	 * @return The ontology model or null if not all platforms are to be parsed and no specific platform is provided
+	 */
 	public OntModel alterOntologyModel(boolean allPlatforms, Platform p) {
 		int success = 0;
 		List<Platform> platforms;
-		if(allPlatforms){ // if all platforms in the ontology are to be parsed
+		if (allPlatforms) { // if all platforms in the ontology are to be parsed
 			OntologyService ontologyService = new OntologyServiceBean();
 			platforms = ontologyService.getAllPlatforms(); // retrieve all platforms from the ontology
 		} else if (p != null) { // if a specific platform is given to parse
-			platforms = new ArrayList<Platform>();
-			platforms.add(p);
+			platforms = new ArrayList<Platform>(); // new empty list
+			platforms.add(p); // with only this one platform
 		} else {
 			return null;
 		}
 		for (Platform platform : platforms) { // for each platform
 			Map<String, Double> userData = parseAlexa(platform.getUrl()); // parse user distribution data from Alexa
-			if (userData == null) {
+			if (userData == null) { // if no user distribution was found on the platform's respective Alexa page
 				log.info("No user distribution information found on Alexa for " + platform.getLabel());
 			} else {
 				// create platform resource in ontology model
@@ -138,11 +149,11 @@ public class AlexaParser {
 						node.addProperty(locationCountry, country); // link the country
 					}
 				}
-				++success;
+				++success; // count successes for log output
 			}
 		}
 		log.info("Found user distribution data for " + success + " out of " + platforms.size() + " platforms.");
-		
+
 		return ontologyModel;
 	}
 
@@ -172,7 +183,7 @@ public class AlexaParser {
 			// if "data-table-nodata" is not among the table's classes, data is available
 			if (!cssClass.contains("data-table-nodata")) {
 				// parse table rows
-				DomNodeList<HtmlElement> countryTableRows = countryTable.getHtmlElementsByTagName("tbody").get(0).getElementsByTagName("tr"); 
+				DomNodeList<HtmlElement> countryTableRows = countryTable.getHtmlElementsByTagName("tbody").get(0).getElementsByTagName("tr");
 
 				Map<String, Double> tableData = new HashMap<String, Double>(); // map to output
 

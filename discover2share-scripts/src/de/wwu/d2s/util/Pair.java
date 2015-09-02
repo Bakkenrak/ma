@@ -1,5 +1,11 @@
 package de.wwu.d2s.util;
 
+/**
+ * Utility class to hold two objects of arbitrary type.
+ * 
+ * @param <E>
+ * @param <F>
+ */
 public class Pair<E, F> {
 
 	private E first;

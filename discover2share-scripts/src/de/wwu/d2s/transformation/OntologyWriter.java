@@ -346,8 +346,7 @@ public class OntologyWriter {
 				map.put("countryId", o.getString("countryId"));
 				map.put("countryName", o.getString("countryName"));
 				map.put("countryCode", o.getString("countryCode"));
-				map.put("resourceName",
-						o.getString("countryName").replace(" ", "_").replace("[", "%5B").replace("]", "%5D"));
+				map.put("resourceName",o.getString("resourceName"));
 				countryIndex.put(o.getString("countryCode"), map);
 			}
 		} catch (IOException | JSONException e) {
@@ -374,11 +373,11 @@ public class OntologyWriter {
 		}
 
 		int nrPlatforms = platforms.size();
-		for (int i = 0; i < nrPlatforms; i++) {
+		for (int i = 0; i < nrPlatforms; i++) { // for each platform in the provided list
 			currentPlatform = platforms.get(i);
 
 			log.info("Creating '" + currentPlatform.getName() + "' platform (" + (i + 1) + "/" + nrPlatforms + ")");
-			constructPlatform();
+			constructPlatform(); // construct an ontological representation
 		}
 
 		try (OutputStream out = new FileOutputStream(outputFile)) {
@@ -450,8 +449,9 @@ public class OntologyWriter {
 		if (value.isEmpty())
 			return;
 
-		if (value.equals(resourceTypes[0])) {
-			platformResource.addProperty(hasResourceType, threeDPrinters);
+		// compare given value with each possible resource type
+		if (value.equals(resourceTypes[0])) { 
+			platformResource.addProperty(hasResourceType, threeDPrinters); // add resource type via property when matched
 		} else if (value.equals(resourceTypes[1])) {
 			platformResource.addProperty(hasResourceType, accommodations);
 		} else if (value.equals(resourceTypes[2])) {
