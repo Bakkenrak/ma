@@ -267,10 +267,7 @@
 								        }
 								    }
 							    });
-	
-							    modalInstance.result.then(function () {
-							    	$location.path("platforms/");
-							    });
+							    $location.path("platforms/");
 							}
 						}
 						if (status >= 400) {
@@ -310,9 +307,7 @@
 									    }
 								    });
 		
-								    modalInstance.result.then(function () {
-								    	$location.path("platforms/");
-								    });
+								    $location.path("platforms/");
 								}
 							}
 							if (status >= 400) {
@@ -351,7 +346,7 @@
 		};
 	});
 	
-	d2sApp.controller('ModalInstanceCtrl', function ($scope, $modalInstance, $location, $route, externalId) {
+	d2sApp.controller('ModalInstanceCtrl', function ($scope, $modalInstance, externalId) {
 		$scope.internalUrl = "external/" + externalId;
 		$scope.ok = function () {
 		    $modalInstance.close();
