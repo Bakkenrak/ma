@@ -1,10 +1,11 @@
 (function () {
 	'use strict';
-
+	
+	// initialize the angular module d2sApp
 	var d2sApp = angular.module('d2sApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'toaster']);
 	
 	d2sApp.config(function ($routeProvider, $locationProvider) {
-		
+		// Resolve methods calling platform factory methods
 		var getAllPlatforms = function (platformFactory) {
 			return platformFactory.getAllPlatforms();
 		};
@@ -24,6 +25,7 @@
 			return platformFactory.getLanguages();
 		};
 		
+		// App routing
 		$routeProvider.when('/', {
 			controller: 'indexCtrl',
 			templateUrl: 'resources/html/index.html'
@@ -40,7 +42,7 @@
 				platform: getPlatform,
 				languages: getLanguages
 			},
-			isSuggestion: false,
+			isSuggestion: false, // set additional parameters
 			isEdit: true
 		}).when('/platforms/:platform', {
 			controller: 'platformDetailCtrl',
@@ -108,8 +110,7 @@
 			templateUrl: 'resources/html/404.html'
 		});
 		
-		$locationProvider.html5Mode({enabled: true});
-		
+		$locationProvider.html5Mode({enabled: true}); // form proper URLs not using # for in-app navigation
 	});
 
 })();

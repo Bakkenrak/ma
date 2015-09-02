@@ -12,27 +12,27 @@
 	 */
 	d2sApp.factory('authHttpInterceptor', function ($rootScope, $injector, $cookieStore) {
 		var authHttpInterceptor = {
-			request: function ($request) {
+			request: function ($request) { // on requests
 				if ($request.url.substr(0, 3) === "api") { // attach auth only to api calls
 					var authFactory = $injector.get('authFactory');
-					if (authFactory.isAuthenticated()) {
-						$request.headers['auth-id'] = authFactory.getAuthData().username;
-						$request.headers['auth-token'] = authFactory.getAuthData().authToken;
+					if (authFactory.isAuthenticated()) { // if auth data is present
+						$request.headers['auth-id'] = authFactory.getAuthData().username; // add user name
+						$request.headers['auth-token'] = authFactory.getAuthData().authToken; // and auth token to headers
 					}
 				}
 				return $request;
 			},
-			responseError: function (res) {
-				if (res.status === 401 && !angular.isUndefined(res.data.authCode)) {
+			responseError: function (res) { // on responses with an erroneous status
+				if (res.status === 401 && !angular.isUndefined(res.data.authCode)) { // unauthorized with auth code
 					var authCode = res.data.authCode;
-					if (authCode !== "-1") {
-						$cookieStore.remove("authData");
+					if (authCode !== "-1") { // auth code -1 meaning no valid auth data
+						var authFactory = $injector.get('authFactory');
+						authFactory.logout(); // remove auth data cookie
 					}
 				}
 				return res;
 			}
 		};
-
 		return authHttpInterceptor;
 	});
 	

@@ -3,16 +3,18 @@
 	
 	var d2sApp = angular.module('d2sApp');
 	
-	
+	/**
+	 * Provides methods to call perform API calls regarding platform data.
+	 */
 	d2sApp.factory('platformFactory', function ($http) {
 		var platformFactory = {};
 
 		platformFactory.getCountries = function () {
-			return $http.get('resources/js/countries.json');
+			return $http.get('resources/js/countries.json'); // retrieve JSON file
 		};
 		
 		platformFactory.getCities = function () {
-			return $http.get('api/ontology/cities');
+			return $http.get('api/ontology/cities'); // GET call to API
 		};
 		
 		platformFactory.getLanguages = function () {
@@ -76,14 +78,14 @@
 		};
 		
 		platformFactory.getGeoData = function (geoUrl) {
-			var geoId = geoUrl.replace("http://www.geonames.org/", "");
+			var geoId = geoUrl.replace("http://www.geonames.org/", ""); // remove base to get the ID only
 			return $http.jsonp('http://api.geonames.org/getJSON?username=discover2share&geonameId=' + geoId + "&callback=JSON_CALLBACK");
 		};
 		
-		platformFactory.findCity = function (cityName, country) {
+		platformFactory.findCity = function (cityName, countryCode) {
 			var query = "http://api.geonames.org/searchJSON?username=discover2share&maxRows=10&featureClass=P&q=" + encodeURIComponent(cityName);
-			if (country) {
-				query = query + "&country=" + country;
+			if (countryCode) { // if a country code is provided
+				query = query + "&country=" + countryCode; // add it to the query string
 			}
 			return $http.jsonp(query + "&callback=JSON_CALLBACK");
 		};
