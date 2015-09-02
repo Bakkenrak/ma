@@ -13,6 +13,9 @@ import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+/**
+ * Persistable entity class that holds information about a system user (e.g. moderator or administrator)
+ */
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class User implements java.io.Serializable {
@@ -28,48 +31,70 @@ public class User implements java.io.Serializable {
 	private String authToken;
 	private String authRole;
 	private Date authDate;
-	
+
 	@Transient
+	// do not persist
 	public final static String ROLE_ADMIN = "admin";
 	@Transient
 	public final static String ROLE_MODERATOR = "moderator";
 
 	public User() {
 	}
-	
-	public boolean hasValidAuth(){
-		if(!authToken.isEmpty() && !(authDate == null)){
-			//Add 1 Day to the authDate to determine the expiration date
+
+	/**
+	 * Determines whether the user's auth is still valid.
+	 * 
+	 * @return True if auth is valid, otherwise false
+	 */
+	public boolean hasValidAuth() {
+		if (!authToken.isEmpty() && !(authDate == null)) {
+			// Add 1 Day to the authDate to determine the expiration date
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(authDate);
 			cal.add(Calendar.DATE, 1);
 			Date expiryTime = cal.getTime();
-			if(expiryTime.after(new Date()))
-				return true;
+
+			if (expiryTime.after(new Date())) // if expiry time is in the future
+				return true; // user authentication is still valid
 		}
-		return false;
+		return false; // not authenticated
 	}
-	
-	public void hashOwnPassword(){
+
+	/**
+	 * Takes the user's current password and has it hashed.
+	 */
+	public void hashOwnPassword() {
 		password = hashPassword(password);
 	}
 
+	/**
+	 * Hashes the given password.
+	 * 
+	 * @param password
+	 *            Password to hash
+	 * @return Password hash or empty string on failure
+	 */
 	public String hashPassword(String password) {
 		MessageDigest messageDigest;
 		try {
-			messageDigest = MessageDigest.getInstance("SHA-256");
+			messageDigest = MessageDigest.getInstance("SHA-256"); // select algorithm
 			messageDigest.update(password.getBytes());
-			return new String(messageDigest.digest());
+			return new String(messageDigest.digest()); // return hashed representation of password
 		} catch (NoSuchAlgorithmException e) {
 			return "";
 		}
 	}
-	
+
+	/**
+	 * Compares the given password with the user's password.
+	 * 
+	 * @param pw
+	 *            Password to compare the user's password with
+	 * @return True, if passwords match, otherwise false
+	 */
 	public boolean comparePassword(String pw) {
-		String hashed = hashPassword(pw);
-		if(password.equals(hashed))
-			return true;
-		return false;
+		String hashed = hashPassword(pw); // hash given password
+		return password.equals(hashed); // compare the two hashed passwords and return whether they are equal or not
 	}
 
 	public int getId() {

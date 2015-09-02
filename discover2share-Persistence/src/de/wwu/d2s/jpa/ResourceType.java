@@ -4,20 +4,20 @@ import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+/**
+ * Persistable entity class that holds information about a resource type or an external concept describing a resource type
+ */
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ResourceType implements Serializable {
@@ -29,10 +29,10 @@ public class ResourceType implements Serializable {
 	
 	private String label;
 	
-	private String resource;
+	private String resource; // the URI used in the ontology
 	
 	@Lob
-	@Column(length = 10000) 
+	@Column(length = 10000) // allow for very long descriptions (as often found on DBpedia)
 	private String description;
 	
 	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)

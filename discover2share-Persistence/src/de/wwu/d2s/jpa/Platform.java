@@ -22,6 +22,9 @@ import javax.persistence.PrePersist;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+/**
+ * Serializable entity class that describes a P2P SCC Platform.
+ */
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Platform implements Serializable {
@@ -31,21 +34,22 @@ public class Platform implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 
-	private String externalId;
-	
-	private Date created;
-	
-	private String editFor;
+	private String externalId; // ID for lookup of suggestions that can be edited by non-users
 
-	private String resourceName;
+	private Date created;
+
+	private String editFor; // for edit suggestions: the ontology platform's URI
+
+	private String resourceName; // the resource URI used for this platform in the ontology
+
 	private String label;
 	private String url;
 	private String description;
 
-	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<ResourceType> resourceTypes = new HashSet<ResourceType>();
 
-	@ElementCollection(fetch=FetchType.EAGER)
+	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(joinColumns = @JoinColumn(name = "id"))
 	@Column(name = "consumerism")
 	private Set<String> consumerisms = new HashSet<String>();
@@ -53,7 +57,7 @@ public class Platform implements Serializable {
 	private String pattern;
 	private String temporality;
 
-	@ElementCollection(fetch=FetchType.EAGER)
+	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(joinColumns = @JoinColumn(name = "id"))
 	@Column(name = "marketMediation")
 	private Set<String> marketMediations = new HashSet<String>();
@@ -72,174 +76,181 @@ public class Platform implements Serializable {
 	private GeoUnit residenceCountry = new GeoUnit();
 	private GeoUnit residenceCity = new GeoUnit();
 
-	@ElementCollection(fetch=FetchType.EAGER)
+	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(joinColumns = @JoinColumn(name = "id"))
 	@Column(name = "app")
 	private Set<String> apps = new HashSet<String>();
-	
-	@ElementCollection(fetch=FetchType.EAGER)
+
+	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(joinColumns = @JoinColumn(name = "id"))
 	@Column(name = "language")
 	private Set<String> languages = new HashSet<String>();
-	
-	@ElementCollection(fetch=FetchType.EAGER)
+
+	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(joinColumns = @JoinColumn(name = "id"))
 	@Column(name = "trustContribution")
 	private Set<String> trustContributions = new HashSet<String>();
 
-	public Platform() { //hibernate constructor
-	}	
-	
-
-	public void set(String var, String val) {
-		switch (var){
-			case "resourceName":
-				setResourceName(val);
-				break;
-			case "label":
-				setLabel(val);
-				break;
-			case "url":
-				setUrl(val);
-				break;
-			case "description":
-				setDescription(val);
-				break;
-			case "resourceType":
-				addResourceType(val);
-				break;
-			case "consumerism":
-				addConsumerism(val);
-				break;
-			case "pattern":
-				setPattern(val);
-				break;
-			case "temporality":
-				setTemporality(val);
-				break;
-			case "marketMediation":
-				addMarketMediation(val);
-				break;
-			case "typeOfAccessedObject":
-				setTypeOfAccessedObject(val);
-				break;
-			case "resourceOwner":
-				setResourceOwner(val);
-				break;
-			case "serviceDurationMin":
-				setServiceDurationMin(val);
-				break;
-			case "serviceDurationMax":
-				setServiceDurationMax(val);
-				break;
-			case "consumerInvolvement":
-				setConsumerInvolvement(val);
-				break;
-			case "moneyFlow":
-				setMoneyFlow(val);
-				break;
-			case "offering":
-				setOffering(val);
-				break;
-			case "geographicScope":
-				setGeographicScope(val);
-				break;
-			case "yearLaunch":
-				setYearLaunch(val);
-				break;
-			case "launchCountry":
-				launchCountry.setResource(val);
-				break;
-			case "launchCountryGeonames":
-				launchCountry.setGeonames(val);
-				break;
-			case "launchCountryName":
-				launchCountry.setLabel(val);
-				break;
-			case "launchCountryCode":
-				launchCountry.setCountryCode(val);
-				launchCity.setCountryCode(val);
-				break;
-			case "launchCity":
-				launchCity.setResource(val);
-				break;
-			case "launchCityGeonames":
-				launchCity.setGeonames(val);
-				break;
-			case "launchCityName":
-				launchCity.setLabel(val);
-				break;
-			case "residenceCountry":
-				residenceCountry.setResource(val);
-				break;
-			case "residenceCountryGeonames":
-				residenceCountry.setGeonames(val);
-				break;
-			case "residenceCountryName":
-				residenceCountry.setLabel(val);
-				break;
-			case "residenceCountryCode":
-				residenceCountry.setCountryCode(val);
-				residenceCity.setCountryCode(val);
-				break;
-			case "residenceCity":
-				residenceCity.setResource(val);
-				break;
-			case "residenceCityGeonames":
-				residenceCity.setGeonames(val);
-				break;
-			case "residenceCityName":
-				residenceCity.setLabel(val);
-				break;
-			case "app":
-				addApp(val);
-				break;
-			case "language":
-				addLanguage(val);
-				break;
-			case "trustContribution":
-				addTrustContribution(val);
-				break;
-		}
+	public Platform() { // hibernate constructor
 	}
 
+	/**
+	 * Determines the repective setter for the given variable. This method can be used to transform SPARQL query results into a platform object.
+	 * 
+	 * @param var The SPARQL result variable to determine the setter by
+	 * @param val The variable's value to pass to the setter.
+	 */
+	public void set(String var, String val) {
+		switch (var) {
+		case "resourceName":
+			setResourceName(val);
+			break;
+		case "label":
+			setLabel(val);
+			break;
+		case "url":
+			setUrl(val);
+			break;
+		case "description":
+			setDescription(val);
+			break;
+		case "resourceType":
+			addResourceType(val);
+			break;
+		case "consumerism":
+			addConsumerism(val);
+			break;
+		case "pattern":
+			setPattern(val);
+			break;
+		case "temporality":
+			setTemporality(val);
+			break;
+		case "marketMediation":
+			addMarketMediation(val);
+			break;
+		case "typeOfAccessedObject":
+			setTypeOfAccessedObject(val);
+			break;
+		case "resourceOwner":
+			setResourceOwner(val);
+			break;
+		case "serviceDurationMin":
+			setServiceDurationMin(val);
+			break;
+		case "serviceDurationMax":
+			setServiceDurationMax(val);
+			break;
+		case "consumerInvolvement":
+			setConsumerInvolvement(val);
+			break;
+		case "moneyFlow":
+			setMoneyFlow(val);
+			break;
+		case "offering":
+			setOffering(val);
+			break;
+		case "geographicScope":
+			setGeographicScope(val);
+			break;
+		case "yearLaunch":
+			setYearLaunch(val);
+			break;
+		case "launchCountry":
+			launchCountry.setResource(val);
+			break;
+		case "launchCountryGeonames":
+			launchCountry.setGeonames(val);
+			break;
+		case "launchCountryName":
+			launchCountry.setLabel(val);
+			break;
+		case "launchCountryCode":
+			launchCountry.setCountryCode(val);
+			launchCity.setCountryCode(val);
+			break;
+		case "launchCity":
+			launchCity.setResource(val);
+			break;
+		case "launchCityGeonames":
+			launchCity.setGeonames(val);
+			break;
+		case "launchCityName":
+			launchCity.setLabel(val);
+			break;
+		case "residenceCountry":
+			residenceCountry.setResource(val);
+			break;
+		case "residenceCountryGeonames":
+			residenceCountry.setGeonames(val);
+			break;
+		case "residenceCountryName":
+			residenceCountry.setLabel(val);
+			break;
+		case "residenceCountryCode":
+			residenceCountry.setCountryCode(val);
+			residenceCity.setCountryCode(val);
+			break;
+		case "residenceCity":
+			residenceCity.setResource(val);
+			break;
+		case "residenceCityGeonames":
+			residenceCity.setGeonames(val);
+			break;
+		case "residenceCityName":
+			residenceCity.setLabel(val);
+			break;
+		case "app":
+			addApp(val);
+			break;
+		case "language":
+			addLanguage(val);
+			break;
+		case "trustContribution":
+			addTrustContribution(val);
+			break;
+		}
+	}
 
 	private void addResourceType(String val) {
 		ResourceType rt = new ResourceType();
 		rt.setLabel(val);
-		if(!resourceTypes.contains(rt))
+		if (!resourceTypes.contains(rt))
 			resourceTypes.add(rt);
 	}
 
 	private void addConsumerism(String val) {
-		if(!consumerisms.contains(val))
+		if (!consumerisms.contains(val))
 			consumerisms.add(val);
 	}
-	
+
 	private void addMarketMediation(String val) {
-		if(!marketMediations.contains(val))
+		if (!marketMediations.contains(val))
 			marketMediations.add(val);
 	}
-	
+
 	private void addApp(String val) {
-		if(!apps.contains(val))
+		if (!apps.contains(val))
 			apps.add(val);
 	}
-	
+
 	private void addLanguage(String val) {
-		if(!languages.contains(val))
+		if (!languages.contains(val))
 			languages.add(val);
 	}
-	
+
 	private void addTrustContribution(String val) {
-		if(!trustContributions.contains(val))
+		if (!trustContributions.contains(val))
 			trustContributions.add(val);
 	}
 
+	/**
+	 * Executed only when the platform object is first persisted in the database.
+	 */
 	@PrePersist
 	protected void onCreate() {
-		created = new Date();
-		
+		created = new Date(); // current timestamp
+
 		// generate a random string as an external ID
 		SecureRandom random = new SecureRandom();
 		externalId = new BigInteger(130, random).toString(32);
@@ -257,11 +268,9 @@ public class Platform implements Serializable {
 		return externalId;
 	}
 
-
 	public void setExternalId(String externalId) {
 		this.externalId = externalId;
 	}
-
 
 	public String getLabel() {
 		return label;
@@ -275,11 +284,9 @@ public class Platform implements Serializable {
 		return editFor;
 	}
 
-
 	public void setEditFor(String editFor) {
 		this.editFor = editFor;
 	}
-
 
 	public String getUrl() {
 		return url;
@@ -357,7 +364,8 @@ public class Platform implements Serializable {
 		return serviceDurationMin;
 	}
 
-	public void setServiceDurationMin(String serviceDurationMin) {		
+	public void setServiceDurationMin(String serviceDurationMin) {
+		// if service duration is full OWL Time URL, transform
 		if (serviceDurationMin.equals("http://www.w3.org/2006/time#unitMinute")) {
 			this.serviceDurationMin = "Minutes";
 		} else if (serviceDurationMin.equals("http://www.w3.org/2006/time#unitHour")) {
@@ -377,7 +385,7 @@ public class Platform implements Serializable {
 		return serviceDurationMax;
 	}
 
-	public void setServiceDurationMax(String serviceDurationMax) {		
+	public void setServiceDurationMax(String serviceDurationMax) {
 		if (serviceDurationMax.equals("http://www.w3.org/2006/time#unitMinute")) {
 			this.serviceDurationMax = "Minutes";
 		} else if (serviceDurationMax.equals("http://www.w3.org/2006/time#unitHour")) {
@@ -473,41 +481,33 @@ public class Platform implements Serializable {
 		this.apps = apps;
 	}
 
-
 	public Date getCreated() {
 		return created;
 	}
-
 
 	public void setCreated(Date created) {
 		this.created = created;
 	}
 
-
 	public Set<String> getLanguages() {
 		return languages;
 	}
-
 
 	public void setLanguages(Set<String> languages) {
 		this.languages = languages;
 	}
 
-
 	public String getResourceName() {
 		return resourceName;
 	}
-
 
 	public void setResourceName(String resourceName) {
 		this.resourceName = resourceName;
 	}
 
-
 	public Set<String> getTrustContributions() {
 		return trustContributions;
 	}
-
 
 	public void setTrustContributions(Set<String> trustContributions) {
 		this.trustContributions = trustContributions;
