@@ -4,42 +4,43 @@
 	var d2sApp = angular.module("d2sApp");
 	
 	/**
-	 * Controller for the query builder form.
+	 * Controller providing functionality for the query builder form.
 	 */
 	d2sApp.controller('queryCtrl', function ($scope, $rootScope, $http, $timeout, platformFactory, toaster) {
 		if (angular.isUndefined($rootScope.countries)) { // if countries weren't retrieved in this app before
-			platformFactory.getCountries().success(function (data, status) {
-				if (status >= 400) {
+			platformFactory.getCountries().success(function (data, status) { // do so
+				if (status >= 400) { // error
 					toaster.pop('error', 'Code ' + status, 'There was an error retrieving the list of countries.');
 				}
-				$rootScope.countries = data.countries;
+				$rootScope.countries = data.countries; // set in root scope
 			});
 		}
 		if (angular.isUndefined($rootScope.cities)) { // if cities weren't retrieved in this app before
-			platformFactory.getCities().success(function (data, status) {
-				if (status >= 400) {
+			platformFactory.getCities().success(function (data, status) { // do so
+				if (status >= 400) { // error
 					toaster.pop('error', 'Code ' + status, 'There was an error retrieving the list of cities from the ontology.');
 				}
-				$rootScope.cities = data;
+				$rootScope.cities = data; // set in root scope
 			});
 		}
 		if (angular.isUndefined($rootScope.languages)) { // if languages weren't retrieved in this app before
-			platformFactory.getLanguages().success(function (data, status) {
-				if (status >= 400) {
+			platformFactory.getLanguages().success(function (data, status) { // do so
+				if (status >= 400) { // error
 					toaster.pop('error', 'Code ' + status, 'There was an error retrieving the list of languages.');
 				}
-				$rootScope.languages = data.languages;
+				$rootScope.languages = data.languages; // set in root scope
 			});
 		}
 		if (angular.isUndefined($rootScope.resourceTypes)) { // if resource types weren't retrieved in this app before
-			platformFactory.getResourceTypes().success(function (data, status) {
-				if (status >= 400) {
+			platformFactory.getResourceTypes().success(function (data, status) { // do so
+				if (status >= 400) { // error
 					toaster.pop('error', 'Code ' + status, 'There was an error retrieving the list of resource types from the ontology.');
 				}
-				$rootScope.resourceTypes = data;
+				$rootScope.resourceTypes = data; // set in root scope
 			});
 		}
 		
+		// possible values for those dimensions represented by checkboxes. Resource names and labels.
 		$scope.marketMediations = [ 
 		    { resource: "Profit_from_peer_consumers", label: "Profit from peer consumers" }, 
 		    { resource: "Profit_from_peer_providers", label: "Profit from peer providers" },
@@ -65,8 +66,11 @@
 		    { resource: "Value-added_services", label: "Value-added services" }
 		];
 		
-		$scope.getYears = function () { // generate a list of all years between today and 1990
-			var currentYear = new Date().getFullYear();
+		/**
+		 * @return A list of all years between the current one and 1990
+		 */
+		$scope.getYears = function () {
+			var currentYear = new Date().getFullYear(); // get the current year
 			var output = [];
 			for (var i = currentYear; i > 1989; i--) {
 				output.push(i);
@@ -74,7 +78,14 @@
 			return output;
 		};
 		
-		// maintains the given 'selected' array containing all options in a multi-selection dimension that are currently selected
+		/**
+		 * Adds or removes the given current option from the array of selected options depending on whether it was already in that array.
+		 * 
+		 * @param current
+		 *			The currently clicked option to add to/remove from the array of selected options
+		 * @param selected
+		 *			The array of selected options
+		 */
 		$scope.toggleSelection = function (current, selected) {
 			var idx = selected.indexOf(current);
 			if (~idx) { // is currently selected
@@ -93,10 +104,10 @@
 		
 		$scope.yasqeConfig = { // config options for the YASQE query editor
 				// standard query to show when no previous user input is cached
-				value: "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX dbpp: <http://dbpedia.org/property/>\nPREFIX dbpr: <http://dbpedia.org/resource/>\nPREFIX dbpo: <http://dbpedia.org/ontology/>\nPREFIX d2s: <http://www.discover2share.net/d2s-ont/>\n\nSELECT * WHERE {\n    ?platform rdf:type d2s:P2P_SCC_Platform.\n}",
+				value: "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX d2s: <http://www.discover2share.net/d2s-ont/>\nPREFIX dbpp: <http://dbpedia.org/property/>\n\nSelect * WHERE {\n    ?platform rdf:type d2s:P2P_SCC_Platform.\n  	?platform rdfs:label ?platformLabel.\n} ORDER BY ?platformLabel",
 				sparql: {
 					showQueryButton: true,
-					endpoint: "api/ontology/query"
+					endpoint: "api/ontology/query" // the API route to query against
 				}
 			};
 		
@@ -108,7 +119,7 @@
 				}
 			};
 		
-		$scope.queryParts = { // contains predicates for the different dimension and commonly used RegExps
+		$scope.queryParts = { // contains predicates for the different dimensions and commonly used RegExps
 				bases: {
 					d2s: {
 						prefix: "d2s",
@@ -158,7 +169,16 @@
 			$scope.doFilter(newValue, oldValue);
 		}, true);
 		
-		$scope.doFilter = function (newValue, oldValue) { // executed when a user changes any form input, applies change to the query
+		/**
+		 * Applies changes in the form input in the form of SPARQL statements to the query.
+		 * Executed when a user changes any form input.
+		 * 
+		 * @param newValue
+		 *			The object holding all form values
+		 * @param oldValue
+		 *			The previous state of the object holding all form values
+		 */
+		$scope.doFilter = function (newValue, oldValue) {
 			if (newValue === oldValue || $scope.userChange) { // if no actual change happened or it was triggered by the setFilterFromQuery method
 				$scope.userChange = false; // reset flag attribute
 				return;
@@ -244,7 +264,16 @@
 			$scope.computedQuery = $scope.query; // save query state so the setFilterFromQuery method can determine if it was triggered from here
 		};
 		
-		// apply input changes on a dimension's form elements to the query
+		/**
+		 * Applies input changes on form elements for dimensions that can have multiple values (e.g. consumerism) to the query.
+		 * 
+		 * @param newValue
+		 *			The current array holding all selected values of the dimension
+		 * @param oldValue
+		 *			The former state of that array
+		 * @param queryPart
+		 *			The predicate to use to connect the platform variable and the value
+		 */
 		$scope.arrayFilter = function (newValue, oldValue, queryPart) {
 			if (angular.equals(newValue, oldValue)) { // abort if no changes were made in this dimension
 				return;
@@ -267,7 +296,14 @@
 			});
 		};
 		
-		// takes care of input changes to the P2P SCC Pattern dimension form elements
+		/**
+		 * Takes care of input changes to the P2P SCC Pattern dimension form elements.
+		 * 
+		 * @param newValue
+		 *			The new value of this dimension
+		 * @param oldValue
+		 *			The former value of this dimension
+		 */
 		$scope.p2pSccPatternFilter = function (newValue, oldValue) {
 			// P2P SCC pattern
 			$scope.intermediatePattern(newValue.p2pSccPattern, oldValue.p2pSccPattern, $scope.queryParts.p2pSccPattern, "rdf:type", "?pattern");
@@ -280,7 +316,14 @@
 			}
 		};
 		
-		// takes care of input changes to the Integration dimension form elements
+		/**
+		 * Takes care of input changes to the Integration dimension form elements
+		 * 
+		 * @param newValue
+		 *			The new value of this dimension
+		 * @param oldValue
+		 *			The former value of this dimension
+		 */
 		$scope.integrationFilter = function (newValue, oldValue) {
 			// market offering
 			$scope.intermediatePattern(newValue.marketOffering, oldValue.marketOffering, $scope.queryParts.integration, $scope.queryParts.marketOffering, "?integration");
@@ -293,7 +336,14 @@
 			}
 		};
 		
-		// takes care of input changes to the user distribution dimension form elements
+		/**
+		 * Takes care of input changes to the user distribution dimension form elements
+		 * 
+		 * @param newValue
+		 *			The new value of this dimension
+		 * @param oldValue
+		 *			The former value of this dimension
+		 */
 		$scope.userDistributionFilter = function (newValue, oldValue) {
 			// market offering
 			$scope.intermediatePattern(newValue.usedIn, oldValue.usedIn, $scope.queryParts.userDistribution, $scope.queryParts.country, "?userDistribution");
@@ -303,7 +353,14 @@
 			}
 		};
 		
-		// takes care of input changes to the location dimensions form elements
+		/**
+		 * Takes care of input changes to the location dimensions form elements
+		 * 
+		 * @param newValue
+		 *			The new value of this dimension
+		 * @param oldValue
+		 *			The former value of this dimension
+		 */
 		$scope.locationFilter = function (newValue, oldValue) {	
 			// launch country
 			$scope.intermediatePattern(newValue.countryLaunch, oldValue.countryLaunch, $scope.queryParts.launch, $scope.queryParts.country, "?launchLocation");
@@ -326,11 +383,16 @@
 			}
 		};
 		
-		// removes any statement that describes the platform variable using the given predicate
-		$scope.removeIntermediateNode = function (queryPartLocation) {
+		/**
+		 * Removes any statement that describes the platform variable using the given predicate.
+		 * 
+		 * @param queryPart
+		 *			The predicate by which to identify removable statements
+		 */
+		$scope.removeIntermediateNode = function (queryPart) {
 			var platformVar = $scope.platformVar || $scope.getPlatformVar();
 			// regexp to find relevant statements
-			var regexp = new RegExp("([ ]{0,4}\\" + platformVar.name + "[ ]+" + queryPartLocation + "[ ]+\\?[\\w]+" + $scope.queryParts.trailingRemovableChars + ")", "g");
+			var regexp = new RegExp("([ ]{0,4}\\" + platformVar.name + "[ ]+" + queryPart + "[ ]+\\?[\\w]+" + $scope.queryParts.trailingRemovableChars + ")", "g");
 			// Cut out the query part in which the platform variable resides. All operations will be done in this section.
 			var section = $scope.query.substr(platformVar.openingBracket, platformVar.closingBracket - platformVar.openingBracket);
 			var queryLength = $scope.query.length;
@@ -339,7 +401,18 @@
 			$scope.platformVar.closingBracket -= queryLength - $scope.query.length; // adjust the closing bracket pointer
 		};
 		
-		// creates or replaces a statement in the query
+		/**
+		 * Creates or replaces a single statement in the query (e.g to account for changes in a dimension's input form element).
+		 * 
+		 * @param newVal
+		 *			The new value of that dimension
+		 * @param oldVal
+		 *			The former value of that dimension
+		 * @param queryPart
+		 *			The predicate to use when identifying replacable statements and adding a new one
+		 * @param isCustomUrl
+		 *			A boolean flag to determine whether the value is in the D2S namespace or not
+		 */
 		$scope.simplePattern = function (newVal, oldVal, queryPart, firstVar, isCustomUrl) {
 			if (newVal === oldVal) { // when the attribute's value hasn't changed
 				return; // abort
@@ -390,7 +463,20 @@
 			}
 		};
 		
-		// For dimensions like Market Integration that require an intermediate node. Creates this then calls the simplePattern method for the actual value
+		/**
+		 * For dimensions like Market Integration that require an intermediate node. Creates this then calls the simplePattern method for the actual value
+		 * 
+		 * @param newVal
+		 *			The new value of that dimension
+		 * @param oldVal
+		 *			The former value of that dimension
+		 * @param queryPartIntermediate
+		 *			The predicate to use when identifying replacable statements and adding a new one for the intermediate node
+		 * @param queryPartDetail
+		 *			The predicate to use when identifying replacable statements and adding a new one to the intermediate node
+		 * @param intermediateVar
+		 *			The name for the variable representing the intermediate node
+		 */
 		$scope.intermediatePattern = function (newVal, oldVal, queryPartIntermediate, queryPartDetail, intermediateVar) {
 			if (newVal === oldVal) { // if no change was made in this dimension
 				return;
@@ -408,7 +494,14 @@
 			$scope.simplePattern(newVal, oldVal, queryPartDetail, intermediateVar);
 		};
 		
-		// finds the (first) object variable in the query describing the given platform variable using the given predicate
+		/**
+		 * Finds the (first) object variable in the query describing the given platform variable using the given predicate.
+		 * 
+		 * @param platformVar
+		 *			The variable to search for as a statement's subject
+		 * @param queryPart
+		 *			The predicate of the statement
+		 */
 		$scope.getIntermediateVar = function (platformVar, queryPart) {
 			// Cut out the query part in which the platform variable resides. All operations will be done in this section.
 			var section = $scope.query.substr(platformVar.openingBracket, platformVar.closingBracket - platformVar.openingBracket);
@@ -418,7 +511,10 @@
 			return match ? match[1] : null; // if a variable was found return it, otherwise null
 		};
 		
-		// finds the (first) platform variable (... rdf:type d2s:P2P_SCC_Platform) in the query
+		/**
+		 * Finds the (first) platform variable in the query (i.e. any variable that is the subject in a statement of the form:
+		 * ?... rdf:type d2s:P2P_SCC_Platform.
+		 */
 		$scope.getPlatformVar = function () {
 			//determine the position of the platform variable
 			var pos = $scope.query.search("[?][\\w]+ rdf:type d2s:P2P_SCC_Platform");
@@ -435,7 +531,12 @@
 			return $scope.platformVar;
 		};
 		
-		// finds the first 'unopened' closing bracket in the given string
+		/**
+		 * Finds the first 'unopened' closing bracket in the given string.
+		 * 
+		 * @param str
+		 *			The string in which to find the bracket
+		 */
 		$scope.findClosingBracket = function (str) {
 			var substr = str;
 			var openings = 0;
@@ -471,7 +572,9 @@
 			$scope.setFilterFromQuery();
 		});
 		
-		// sets the filter form elements according to the information found in the query string
+		/**
+		 * Sets the filter form elements according to the information found in the query string
+		 */
 		$scope.setFilterFromQuery = function () {
 			var platformVar = $scope.getPlatformVar(); // find platform variable
 			if (platformVar) { // if a platform variable was detected in the query
@@ -566,7 +669,16 @@
 			$scope.filter.trigger = !$scope.filter.trigger; 
 		};
 		
-		// finds a statement with the given predicate (queryPart) and subject (firstVar) and returns its object resource
+		/**
+		 * Finds a statement with the given predicate and subject and returns its object resource.
+		 * 
+		 * @param queryPart
+		 *			The predicate to look for
+		 * @param firstVar
+		 *			The subject to look for
+		 * @param isCustomUrl
+		 *			Boolean flag that determines whether to look for a D2S-Uri or something else (<...>)
+		 */
 		$scope.findPattern = function (queryPart, firstVar, isCustomUrl) {
 			var platformVar = $scope.platformVar || $scope.getPlatformVar(); // find platform variable
 			// copy query section in which the platform variable resides
@@ -582,7 +694,14 @@
 			return match ? match[1] || match[2] : ""; // if a match was found return either the first or the second value (d2s:... or <...> vs <http://www.discover2share.net/d2s/ont/...)
 		};
 		
-		// finds statements with the given predicate (queryPart) for dimensions with multiple values
+		/**
+		 * Finds (multiple) statements with the given predicate that descripe the platform variable for dimensions with multiple values.
+		 * 
+		 * @param queryPart
+		 *			The predicate to look for
+		 * @param array
+		 *			The array to put the found results into
+		 */
 		$scope.findPatternArray = function (queryPart, array) {
 			var platformVar = $scope.platformVar || $scope.getPlatformVar(); // find platform variable
 			// copy query section in which the platform variable resides
@@ -596,7 +715,9 @@
 			}
 		};
 		
-		// finds all variables used in the query between the first opening bracket and the last closing bracket
+		/**
+		 * Finds all variables used in the query between the first opening bracket and the last closing bracket.
+		 */
 		$scope.getAllVars = function () {
 			$scope.allVars = [];
 			var firstBracket = $scope.query.indexOf("{");
@@ -614,17 +735,24 @@
 			}
 		};
 		
-		// replace the current SPARQL query by a basic one only querying for all platforms and their labels
+		/**
+		 * Replace the current SPARQL query by a basic one only querying for all platforms and their labels.
+		 */
 		$scope.setBasicQuery = function () {
 			$scope.query = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX d2s: <http://www.discover2share.net/d2s-ont/>\nPREFIX dbpp: <http://dbpedia.org/property/>\n\nSelect * WHERE {\n    ?platform rdf:type d2s:P2P_SCC_Platform.\n  	?platform rdfs:label ?platformLabel.\n} ORDER BY ?platformLabel";
 		};
 		
-		// replace the SPARQL query by one that retrieves all dimension information for all platforms
+		/**
+		 * Replace the SPARQL query by one that retrieves all dimension information for all platforms.
+		 */
 		$scope.setAllDetailsQuery = function () {
 			$scope.query = "PREFIX d2s: <http://www.discover2share.net/d2s-ont/> \nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \nPREFIX dbpp: <http://dbpedia.org/property/> \nPREFIX dbpo: <http://dbpedia.org/ontology/> \nPREFIX owl: <http://www.w3.org/2002/07/owl#> \nPREFIX dct: <http://purl.org/dc/terms/> \n\nSelect ?platform ?label ?url ?description ?resourceType ?consumerInvolvement ?launchCityName ?launchCountryName ?yearLaunch ?residenceCityName ?residenceCountryName ?marketMediation ?offering ?geographicScope ?moneyFlow ?pattern ?temporality ?consumerism ?resourceOwner ?serviceDurationMin ?serviceDurationMax ?app ?trustContribution ?typeOfAccessedObject ?language WHERE { \n  ?platform rdf:type d2s:P2P_SCC_Platform .\n  ?platform rdfs:label ?label .\n  ?platform dbpp:url ?url .\n  OPTIONAL { ?platform rdfs:comment ?description. }.\n  OPTIONAL {  \n    ?platform d2s:has_resource_type ?rt .\n    ?rt rdfs:label ?resourceType .\n  } .\n  OPTIONAL {  \n    ?platform d2s:has_consumer_involvement ?ci .\n    ?ci rdfs:label ?consumerInvolvement .\n  } .\n  OPTIONAL {  \n    ?platform d2s:launched_in ?launch .\n    OPTIONAL {  \n      ?launch dbpp:locationCity ?launchCity.\n      ?launchCity rdfs:label ?launchCityName.\n      { ?launchCity owl:sameAs ?launchCityGeonames.\n        FILTER(STRSTARTS(STR(?launchCityGeonames), 'http://www.geonames.org/'))\n      } \n    } .\n    OPTIONAL {  \n      ?launch dbpp:locationCountry ?launchCountry.\n      ?launchCountry rdfs:label ?launchCountryName.\n      ?launchCountry dbpp:countryCode ?launchCountryCode.\n      { ?launchCountry owl:sameAs ?launchCountryGeonames.\n        FILTER(STRSTARTS(STR(?launchCountryGeonames), 'http://www.geonames.org/'))\n      } \n    } .\n  } .\n  OPTIONAL { ?platform dbpp:launchYear ?yearLaunch } .\n  OPTIONAL { \n    ?platform d2s:operator_resides_in ?residence .\n    OPTIONAL {  \n      ?residence dbpp:locationCity ?residenceCity.\n      ?residenceCity rdfs:label ?residenceCityName.\n      { ?residenceCity owl:sameAs ?residenceCityGeonames.\n        FILTER(STRSTARTS(STR(?residenceCityGeonames), 'http://www.geonames.org/'))\n      } \n    } .\n    OPTIONAL {  \n      ?residence dbpp:locationCountry ?residenceCountry.\n      ?residenceCountry rdfs:label ?residenceCountryName.\n      ?residenceCountry dbpp:countryCode ?residenceCountryCode.\n      { ?residenceCountry owl:sameAs ?residenceCountryGeonames.\n        FILTER(STRSTARTS(STR(?residenceCountryGeonames), 'http://www.geonames.org/'))\n      } \n    } .\n  } .\n  OPTIONAL {  \n    ?platform d2s:has_market_mediation ?me .\n    ?me rdfs:label ?marketMediation .\n  } .\n  OPTIONAL {  \n    ?platform d2s:has_market_integration ?integration  .\n    OPTIONAL {  \n      ?integration d2s:markets_are ?of .\n      ?of rdfs:label ?offering .\n    } .\n    OPTIONAL {  \n      ?integration d2s:has_scope ?sc .\n      ?sc rdfs:label ?geographicScope .\n    } .\n  }.\n  OPTIONAL {  \n    ?platform d2s:has_money_flow ?mf .\n    ?mf rdfs:label ?moneyFlow .\n  } .\n  OPTIONAL {  \n    ?platform d2s:has_p2p_scc_pattern ?patternNode .\n    ?patternNode rdf:type ?pa .\n    ?pa rdfs:label ?pattern  .\n    OPTIONAL {  \n      ?patternNode d2s:has_temporality ?te .\n      ?te rdfs:label ?temporality .\n    } .\n  } .\n  OPTIONAL {  \n    ?platform d2s:promotes ?co .\n    ?co rdfs:label ?consumerism .\n  } .\n  OPTIONAL {  \n    ?platform d2s:has_resource_owner ?ro .\n    ?ro rdfs:label ?resourceOwner .\n  } .\n  OPTIONAL {  \n    ?platform d2s:min_service_duration ?serviceDurationMin .\n  } .\n  OPTIONAL {  \n    ?platform d2s:max_service_duration ?serviceDurationMax .\n  } .\n  OPTIONAL {  \n    ?platform d2s:has_app ?ap .\n    ?ap rdfs:label ?app .\n  } .\n  OPTIONAL { \n    ?platform d2s:has_trust_contribution ?tc .\n    ?tc rdfs:label ?trustContribution .\n  } .\n  OPTIONAL {  \n    ?platform d2s:accessed_object_has_type ?ot .\n    ?ot rdfs:label ?typeOfAccessedObject .\n  }.\n  OPTIONAL { \n    ?platform dbpp:language ?lang .\n    ?lang rdfs:label ?language .\n  }.\n  OPTIONAL { \n    ?platform d2s:used_in ?userDistribution .\n    ?userDistribution dbpp:locationCountry ?userCountry .\n    ?userDistribution d2s:user_percentage ?userPercentage .\n    ?userDistribution dct:date ?distributionDate .\n  }.\n} ORDER BY ?platform";
 		};
 		
-		// inserts a platform variable as used in most other methods of this controller (?platform rdf:type d2s:P2P_SCC_Platform.) after the first opening bracket
+		/**
+		 * Inserts a platform variable as used in most other methods of this controller (?platform rdf:type d2s:P2P_SCC_Platform.) 
+		 * after the first opening bracket.
+		 */
 		$scope.insertPlatformVar = function () {
 			var firstBracket = $scope.query.indexOf("{");
 			if (~firstBracket) { // if an opening bracket was found
