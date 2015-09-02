@@ -2,6 +2,7 @@ package de.wwu.d2s.util;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -23,6 +24,7 @@ import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
 
+import de.wwu.d2s.ejb.OntologyServiceBean;
 import de.wwu.d2s.jpa.GeoUnit;
 import de.wwu.d2s.jpa.Platform;
 import de.wwu.d2s.jpa.ResourceType;
@@ -96,41 +98,6 @@ public class OntologyWriter {
 	private Resource yearClass;
 	private Resource cityClass;
 	private Resource resourceTypeClass;
-	private Resource threeDPrinters;
-	private Resource accommodations;
-	private Resource accommodationsFlatmate;
-	private Resource adventureAndOutdoorRelatedResources;
-	private Resource boats;
-	private Resource books;
-	private Resource cameras;
-	private Resource campingVehicles;
-	private Resource cargoBicycles;
-	private Resource carsRide;
-	private Resource carsTaxi;
-	private Resource carsRent;
-	private Resource carsTaxiBussesRide;
-	private Resource clothing;
-	private Resource dogs;
-	private Resource foodDining;
-	private Resource foodSelfGrown;
-	private Resource jets;
-	private Resource land;
-	private Resource laundryMachines;
-	private Resource media;
-	private Resource miscellaneous;
-	private Resource miscellaneousCombined;
-	private Resource motorizedVehicles;
-	private Resource nonMotorizedSportGear;
-	private Resource parkingSpaces;
-	private Resource retailSpaces;
-	private Resource spaces;
-	private Resource sportFacilities;
-	private Resource storageSpaces;
-	private Resource tools;
-	private Resource transporters;
-	private Resource venues;
-	private Resource WiFiRouters;
-	private Resource workSpaces;
 	private Resource p2pSccPlatformClass;
 	private Resource once;
 	private Resource often;
@@ -192,10 +159,8 @@ public class OntologyWriter {
 	public OntologyWriter() {
 		log = Logger.getLogger(this.getClass().getName()); // instantiate logger
 
-		log.info("Build country index");
 		buildCountryIndex(); // transform json array into map with country codes as keys
 
-		log.info("Creating ontology model and setting namespace prefixes.");
 		ontologyModel = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM);
 		// define namespace prefixes to be used in output
 		ontologyModel.setNsPrefix("dbpp", DBPP);
@@ -207,7 +172,6 @@ public class OntologyWriter {
 		ontologyModel.setNsPrefix("time", TIME);
 		ontologyModel.setNsPrefix("wordnet", WORDNET);
 
-		log.info("Defining D2S properties.");
 		// create properties once in the beginning to use for every platform
 		rdfType = ontologyModel.createProperty(RDF + "type");
 		rdfsLabel = ontologyModel.createProperty(RDFS + "label");
@@ -239,47 +203,11 @@ public class OntologyWriter {
 		rdfsSubClassOf = ontologyModel.createProperty(RDFS + "subClassOf");
 		rdfsSeeAlso = ontologyModel.createProperty(RDFS + "seeAlso");
 
-		log.info("Defining D2S classes/instances.");
 		// create resources once in the beginning to use for every platform
 		yearClass = ontologyModel.createResource(D2S + "Year");
 		cityClass = ontologyModel.createResource(D2S + "City");
 
 		resourceTypeClass = ontologyModel.createResource(D2S + "Resource_Type");
-		threeDPrinters = ontologyModel.createResource(D2S + "3d_printers");
-		accommodations = ontologyModel.createResource(D2S + "Accommodations");
-		accommodationsFlatmate = ontologyModel.createResource(D2S + "Accommodations_flatmate");
-		adventureAndOutdoorRelatedResources = ontologyModel.createResource(D2S + "Adventure-_and_outdoor-related_resources");
-		boats = ontologyModel.createResource(D2S + "Boats");
-		books = ontologyModel.createResource(D2S + "Books");
-		cameras = ontologyModel.createResource(D2S + "Cameras");
-		campingVehicles = ontologyModel.createResource(D2S + "Camping_vehicles");
-		cargoBicycles = ontologyModel.createResource(D2S + "Cargo_bicycles");
-		carsRide = ontologyModel.createResource(D2S + "Cars_ride");
-		carsTaxi = ontologyModel.createResource(D2S + "Cars_taxi");
-		carsRent = ontologyModel.createResource(D2S + "Cars_rent");
-		carsTaxiBussesRide = ontologyModel.createResource(D2S + "Cars_taxi_busses_ride");
-		clothing = ontologyModel.createResource(D2S + "Clothing");
-		dogs = ontologyModel.createResource(D2S + "Dogs");
-		foodDining = ontologyModel.createResource(D2S + "Food_dining");
-		foodSelfGrown = ontologyModel.createResource(D2S + "Food_self-grown");
-		jets = ontologyModel.createResource(D2S + "Jets");
-		land = ontologyModel.createResource(D2S + "Land");
-		laundryMachines = ontologyModel.createResource(D2S + "Laundry_machines");
-		media = ontologyModel.createResource(D2S + "Media");
-		miscellaneous = ontologyModel.createResource(D2S + "Miscellaneous");
-		miscellaneousCombined = ontologyModel.createResource(D2S + "Miscellaneous_(combined)");
-		motorizedVehicles = ontologyModel.createResource(D2S + "Motorized_vehicles");
-		nonMotorizedSportGear = ontologyModel.createResource(D2S + "Non-motorized_(sport)_gear");
-		parkingSpaces = ontologyModel.createResource(D2S + "Parking_spaces");
-		retailSpaces = ontologyModel.createResource(D2S + "Retail_spaces");
-		spaces = ontologyModel.createResource(D2S + "Spaces");
-		sportFacilities = ontologyModel.createResource(D2S + "Sport_facilities");
-		storageSpaces = ontologyModel.createResource(D2S + "Storage_spaces");
-		tools = ontologyModel.createResource(D2S + "Tools");
-		transporters = ontologyModel.createResource(D2S + "Transporters");
-		venues = ontologyModel.createResource(D2S + "Venues");
-		WiFiRouters = ontologyModel.createResource(D2S + "Wi-Fi_routers");
-		workSpaces = ontologyModel.createResource(D2S + "Work_spaces");
 
 		p2pSccPlatformClass = ontologyModel.createResource(D2S + "P2P_SCC_Platform");
 		once = ontologyModel.createResource(D2S + "Once");
@@ -379,8 +307,9 @@ public class OntologyWriter {
 	public OntModel constructPlatform(Platform platform, String uri) {
 		this.platform = platform;
 
-		initializePlatform(uri);
+		initializePlatform(uri); // create platform resource with basic properties
 
+		// add all properties defining the dimension values
 		resourceTypeDimension(platform.getResourceTypes());
 		sustainableConsumerismDimension(platform.getConsumerisms());
 		patternDimension(platform.getPattern(), platform.getTemporality());
@@ -396,7 +325,6 @@ public class OntologyWriter {
 		locationDimension(platform.getLaunchCity(), platform.getLaunchCountry(), launchedIn);
 		locationDimension(platform.getResidenceCity(), platform.getResidenceCountry(), operatorResidesIn);
 		smartphoneAppDimension(platform.getApps());
-		userDistributionDimension();
 		trustContributionDimension(platform.getTrustContributions());
 		languageDimension(platform.getLanguages());
 
@@ -404,14 +332,14 @@ public class OntologyWriter {
 	}
 
 	/**
-	 * Creates the ontology Resource of type d2s:P2P_SCC_Platform representing the platform. Label and URL are added as properties.
+	 * Creates the ontology Resource of type d2s:P2P_SCC_Platform representing the platform with basic properties
 	 */
-	private void initializePlatform(String id) {
+	private void initializePlatform(String uri) {
 		// Create new platform instance
-		if (id == null) {
-			platformResource = ontologyModel.createResource(D2S + "platform_" + getPlatformId());
+		if (uri == null) { // if no specific uri is provided to use
+			platformResource = ontologyModel.createResource(D2S + "platform_" + getNewPlatformURI()); // get a new unused one
 		} else {
-			platformResource = ontologyModel.createResource(D2S + id);
+			platformResource = ontologyModel.createResource(D2S + uri); // use the given uri
 		}
 		// Set type
 		platformResource.addProperty(rdfType, p2pSccPlatformClass);
@@ -424,12 +352,8 @@ public class OntologyWriter {
 			platformResource.addProperty(rdfsComment, platform.getDescription());
 	}
 
-	// Array containing all resource types used in by the platforms to transform
-	private String[] resourceTypes = { "3d printers", "accommodations", "accommodations / flatmate", "adventure- and outdoor-related resources", "boats",
-			"books", "cameras", "camping vehicles", "cargo bicycles", "cars / ride", "cars / taxi", "cars / rent", "cars, taxi, busses / ride", "clothing",
-			"dogs", "food / dining", "food / self-grown", "jets", "land", "laundry machines", "media", "miscellaneous", "miscellaneous (combined)",
-			"motorized vehicles", "non-motorized (sport) gear", "parking spaces", "retail spaces", "spaces", "sport facilities", "storage spaces", "tools",
-			"tranporters", "venues", "Wi-Fi routers", "work spaces" };
+	// retrieve all resource types currently used in the ontology
+	private List<Map<String, String>> resourceTypeIndex = new OntologyServiceBean().getAllResourceTypes();
 
 	/**
 	 * Creates a link between the platform resource an its value for the resource type dimension.
@@ -441,96 +365,34 @@ public class OntologyWriter {
 		if (set == null || set.isEmpty())
 			return;
 
-		for (ResourceType resourceType : set) {
+		for (ResourceType resourceType : set) { // for each of the platform's resource types
 			String resourceTypeLabel = resourceType.getLabel().toLowerCase();
-			if (resourceTypeLabel.isEmpty())
+			if (resourceTypeLabel.isEmpty()) // don't process resource types without labels
 				continue;
 
-			if (resourceTypeLabel.equals(resourceTypes[0])) {
-				platformResource.addProperty(hasResourceType, threeDPrinters);
-			} else if (resourceTypeLabel.equals(resourceTypes[1])) {
-				platformResource.addProperty(hasResourceType, accommodations);
-			} else if (resourceTypeLabel.equals(resourceTypes[2])) {
-				platformResource.addProperty(hasResourceType, accommodationsFlatmate);
-			} else if (resourceTypeLabel.equals(resourceTypes[3])) {
-				platformResource.addProperty(hasResourceType, adventureAndOutdoorRelatedResources);
-			} else if (resourceTypeLabel.equals(resourceTypes[4])) {
-				platformResource.addProperty(hasResourceType, boats);
-			} else if (resourceTypeLabel.equals(resourceTypes[5])) {
-				platformResource.addProperty(hasResourceType, books);
-			} else if (resourceTypeLabel.equals(resourceTypes[6])) {
-				platformResource.addProperty(hasResourceType, cameras);
-			} else if (resourceTypeLabel.equals(resourceTypes[7])) {
-				platformResource.addProperty(hasResourceType, campingVehicles);
-			} else if (resourceTypeLabel.equals(resourceTypes[8])) {
-				platformResource.addProperty(hasResourceType, cargoBicycles);
-			} else if (resourceTypeLabel.equals(resourceTypes[9])) {
-				platformResource.addProperty(hasResourceType, carsRide);
-			} else if (resourceTypeLabel.equals(resourceTypes[10])) {
-				platformResource.addProperty(hasResourceType, carsTaxi);
-			} else if (resourceTypeLabel.equals(resourceTypes[11])) {
-				platformResource.addProperty(hasResourceType, carsRent);
-			} else if (resourceTypeLabel.equals(resourceTypes[12])) {
-				platformResource.addProperty(hasResourceType, carsTaxiBussesRide);
-			} else if (resourceTypeLabel.equals(resourceTypes[13])) {
-				platformResource.addProperty(hasResourceType, clothing);
-			} else if (resourceTypeLabel.equals(resourceTypes[14])) {
-				platformResource.addProperty(hasResourceType, dogs);
-			} else if (resourceTypeLabel.equals(resourceTypes[15])) {
-				platformResource.addProperty(hasResourceType, foodDining);
-			} else if (resourceTypeLabel.equals(resourceTypes[16])) {
-				platformResource.addProperty(hasResourceType, foodSelfGrown);
-			} else if (resourceTypeLabel.equals(resourceTypes[17])) {
-				platformResource.addProperty(hasResourceType, jets);
-			} else if (resourceTypeLabel.equals(resourceTypes[18])) {
-				platformResource.addProperty(hasResourceType, land);
-			} else if (resourceTypeLabel.equals(resourceTypes[19])) {
-				platformResource.addProperty(hasResourceType, laundryMachines);
-			} else if (resourceTypeLabel.equals(resourceTypes[20])) {
-				platformResource.addProperty(hasResourceType, media);
-			} else if (resourceTypeLabel.equals(resourceTypes[21])) {
-				platformResource.addProperty(hasResourceType, miscellaneous);
-			} else if (resourceTypeLabel.equals(resourceTypes[22])) {
-				platformResource.addProperty(hasResourceType, miscellaneousCombined);
-			} else if (resourceTypeLabel.equals(resourceTypes[23])) {
-				platformResource.addProperty(hasResourceType, motorizedVehicles);
-			} else if (resourceTypeLabel.equals(resourceTypes[24])) {
-				platformResource.addProperty(hasResourceType, nonMotorizedSportGear);
-			} else if (resourceTypeLabel.equals(resourceTypes[25])) {
-				platformResource.addProperty(hasResourceType, parkingSpaces);
-			} else if (resourceTypeLabel.equals(resourceTypes[26])) {
-				platformResource.addProperty(hasResourceType, retailSpaces);
-			} else if (resourceTypeLabel.equals(resourceTypes[27])) {
-				platformResource.addProperty(hasResourceType, spaces);
-			} else if (resourceTypeLabel.equals(resourceTypes[28])) {
-				platformResource.addProperty(hasResourceType, sportFacilities);
-			} else if (resourceTypeLabel.equals(resourceTypes[29])) {
-				platformResource.addProperty(hasResourceType, storageSpaces);
-			} else if (resourceTypeLabel.equals(resourceTypes[30])) {
-				platformResource.addProperty(hasResourceType, tools);
-			} else if (resourceTypeLabel.equals(resourceTypes[31])) {
-				platformResource.addProperty(hasResourceType, transporters);
-			} else if (resourceTypeLabel.equals(resourceTypes[32])) {
-				platformResource.addProperty(hasResourceType, venues);
-			} else if (resourceTypeLabel.equals(resourceTypes[33])) {
-				platformResource.addProperty(hasResourceType, WiFiRouters);
-			} else if (resourceTypeLabel.equals(resourceTypes[34])) {
-				platformResource.addProperty(hasResourceType, workSpaces);
-			} else { // if it's a new Resource Type
+			Resource match = null;
+			for (Map<String, String> rt : resourceTypeIndex){ // compare with each resource type already in the ontology
+				if (rt.get("name").toLowerCase().equals(resourceTypeLabel)) { // if names are equal
+					match = platformResource.addProperty(hasResourceType, ontologyModel.createResource(D2S + rt.get("resourceName"))); // add that resource type
+					break;
+				}
+			}
+			
+			if (match == null) { // if it's a new Resource Type
 				Resource newResourceType = ontologyModel.createResource(D2S
 						+ resourceType.getLabel().replace(" ", "_").replace("[", "%5B").replace("]", "%5D").replace("/", "_").replace(",", "_")
-								.replace("\"", ""));
-				newResourceType.addProperty(rdfsSubClassOf, resourceTypeClass);
-				newResourceType.addProperty(rdfsLabel, resourceType.getLabel());
-				if (resourceType.getExternals() != null) {
-					for (ResourceType external : resourceType.getExternals()) {
+								.replace("\"", "")); // create resource, replace invalid characters
+				newResourceType.addProperty(rdfsSubClassOf, resourceTypeClass); // is of type d2s:Resource_Type
+				newResourceType.addProperty(rdfsLabel, resourceType.getLabel()); // add label
+				if (resourceType.getExternals() != null) { // if external concepts are provided
+					for (ResourceType external : resourceType.getExternals()) { // for each of them
 						if (external.getResource() != null && !external.getResource().isEmpty()) {
-							Resource newExternal = ontologyModel.createResource(external.getResource());
-							newResourceType.addProperty(rdfsSeeAlso, newExternal);
+							Resource newExternal = ontologyModel.createResource(external.getResource()); // create a resource
+							newResourceType.addProperty(rdfsSeeAlso, newExternal); // connect via rdfs:seeAlso
 						}
 					}
 				}
-				platformResource.addProperty(hasResourceType, newResourceType);
+				platformResource.addProperty(hasResourceType, newResourceType); // add that new resource type
 			}
 		}
 	}
@@ -546,10 +408,10 @@ public class OntologyWriter {
 		if (set == null || set.isEmpty())
 			return;
 
-		for (String consumerism : set) {
+		for (String consumerism : set) { // compare with all possible values
 			consumerism = consumerism.toLowerCase();
 			if (consumerism.equals(consumerisms[0]))
-				platformResource.addProperty(promotes, noConsumerism); // add link to type "none"
+				platformResource.addProperty(promotes, noConsumerism); // add property link if matched
 			else if (consumerism.equals(consumerisms[1]))
 				platformResource.addProperty(promotes, economicConsumerism);
 			else if (consumerism.equals(consumerisms[2]))
@@ -577,8 +439,8 @@ public class OntologyWriter {
 		if (pattern.equals(patternValues[0])) { // when matching
 			// create a new anonymous instance of type deferred to be able to add temporality to it later on
 			patternResource = ontologyModel.createResource();
-			patternResource.addProperty(rdfType, deferredPattern);
-			platformResource.addProperty(hasPattern, patternResource);
+			patternResource.addProperty(rdfType, deferredPattern); // of type d2s:Deferred
+			platformResource.addProperty(hasPattern, patternResource); // add that new resource as a property to the platform resource
 		} else if (pattern.equals(patternValues[1])) {
 			patternResource = ontologyModel.createResource();
 			patternResource.addProperty(rdfType, immediatePattern);
@@ -589,10 +451,10 @@ public class OntologyWriter {
 			platformResource.addProperty(hasPattern, patternResource);
 		}
 
-		if (temporality != null) {
+		if (temporality != null) { // if temporality value is provided
 			temporality = temporality.toLowerCase();
-			if (temporality.equals(temporalityValues[0]))
-				patternResource.addProperty(hasTemporality, once);
+			if (temporality.equals(temporalityValues[0])) // match against possible values
+				patternResource.addProperty(hasTemporality, once); // add property link if match
 			else if (temporality.equals(temporalityValues[1]))
 				patternResource.addProperty(hasTemporality, often);
 		}
@@ -777,13 +639,12 @@ public class OntologyWriter {
 		if ((offering == null || offering.isEmpty()) && (geographicScope == null || geographicScope.isEmpty()))
 			return;
 
-		Resource marketIntegration = ontologyModel.createResource(); // anonymous instance
-		marketIntegration.addProperty(rdfType, marketIntegrationClass);
-		platformResource.addProperty(hasMarketIntegration, marketIntegration);
+		Resource marketIntegration = ontologyModel.createResource(); // create anonymous instance
+		marketIntegration.addProperty(rdfType, marketIntegrationClass); // of type d2s:Market_Integration
+		platformResource.addProperty(hasMarketIntegration, marketIntegration); // add that instance as a property to the platform resource
 
-		marketOffering(marketIntegration, offering);
-
-		geographicScope(marketIntegration, geographicScope);
+		marketOffering(marketIntegration, offering); // add market offering resource
+		geographicScope(marketIntegration, geographicScope); // and market integration resource as properties to the anonymous instance 
 	}
 
 	private String[] marketOfferingValues = { "integrated", "separated" };
@@ -843,13 +704,13 @@ public class OntologyWriter {
 		if (platform.getYearLaunch() == null || platform.getYearLaunch().isEmpty())
 			return;
 
-		String yearString = platform.getYearLaunch().replace("http://www.discover2share.net/d2s-ont/", "");
+		String yearString = platform.getYearLaunch().replace("http://www.discover2share.net/d2s-ont/", ""); // remove URI base
 		try {
-			String sparqlQuery = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " + "PREFIX d2s: <http://www.discover2share.net/d2s-ont/> "
-					+ "ask  {d2s:" + yearString + " rdf:type d2s:Year}";
-
+			String sparqlQuery = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " 
+									+ "PREFIX d2s: <http://www.discover2share.net/d2s-ont/> "
+									+ "ask  {d2s:" + yearString + " rdf:type d2s:Year}"; // query to ask if this year already exists in the ontology
 			Query query = QueryFactory.create(sparqlQuery);
-			QueryExecution qexec = QueryExecutionFactory.sparqlService(ENDPOINT, query);
+			QueryExecution qexec = QueryExecutionFactory.sparqlService(ENDPOINT, query); // ask endpoint
 
 			int year = Integer.parseInt(yearString);
 			Resource launchYearResource;
@@ -867,7 +728,7 @@ public class OntologyWriter {
 		} catch (NumberFormatException e) {
 			log.warn("Year launch is not a proper number. Is: '" + yearString + "'");
 		} catch (Exception e) {
-			log.warn("Error querying the Ontology for an existing Resource with the URI d2s:" + yearString);
+			log.warn("Error querying the Ontology for an existing resource with the URI d2s:" + yearString);
 		}
 	}
 
@@ -889,28 +750,33 @@ public class OntologyWriter {
 		Resource countryResource = null;
 		Resource cityResource = null;
 
-		if (city != null && city.getLabel() != null) {
-			String sparqlQuery = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " + "PREFIX d2s: <http://www.discover2share.net/d2s-ont/> "
-					+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " + "PREFIX dbpp: <http://dbpedia.org/property/> " + "SELECT ?city ?country {"
-					+ " ?city rdf:type d2s:City." + " ?city rdfs:label \"" + city.getLabel() + "\"." + " ?city dbpp:locationCountry ?country." + "}";
+		if (city != null && city.getLabel() != null) { // if a city was chosen
+			// query to find the given city in the ontology with its respective country
+			String sparqlQuery = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " 
+									+ "PREFIX d2s: <http://www.discover2share.net/d2s-ont/> "
+									+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " 
+									+ "PREFIX dbpp: <http://dbpedia.org/property/> " 
+									+ "SELECT ?city ?country {"
+									+ " ?city rdf:type d2s:City." + " ?city rdfs:label \"" + city.getLabel() + "\"." 
+									+ " ?city dbpp:locationCountry ?country." + "}";
 
 			Query query = QueryFactory.create(sparqlQuery);
 			QueryExecution qexec = QueryExecutionFactory.sparqlService(ENDPOINT, query);
 			ResultSet result = qexec.execSelect();
 
-			if (result.hasNext()) {
+			if (result.hasNext()) { // if the city was found in the ontology
 				QuerySolution first = result.next();
-				cityResource = first.getResource("city");
+				cityResource = first.getResource("city"); // extract resources from the result
 				countryResource = first.getResource("country");
-			} else {
-				// Create proxy instance of d2s:City. Remove illegal characters for resource name.
+			} else { // not found in ontology
 				try {
+					// Create proxy instance of d2s:City. Remove illegal characters for resource name.
 					cityResource = ontologyModel.createResource(D2S
 							+ city.getLabel().replace(" ", "_").replace("[", "%5B").replace("]", "%5D").replace("/", "_").replace(",", "_").replace("\"", ""));
-					cityResource.addProperty(rdfType, cityClass);
+					cityResource.addProperty(rdfType, cityClass); // of type d2s:City
 					cityResource.addProperty(rdfsLabel, city.getLabel()); // Add city name as label
-					// Create resource for the found geonames concept
-					if (city.getGeonames() != null) {
+					if (city.getGeonames() != null) { // if the geonames equivalent is provided
+						// Create resource for the found geonames concept
 						Resource cityGeonames = ontologyModel.createResource(city.getGeonames());
 						cityResource.addProperty(owlSameAs, cityGeonames); // link the two equivalents
 
@@ -931,14 +797,18 @@ public class OntologyWriter {
 					e1.printStackTrace();
 				}
 
-				if (country != null && country.getGeonames() != null) {
+				if (country != null && country.getGeonames() != null) { // if the country and its geonames equivalent are provided
+					// retrieve its proper resource name from the index
 					String countryResourceName = countryIndex.get(country.getGeonames().replace("http://www.geonames.org/", ""));
+					// create a resource for it as well
 					countryResource = ontologyModel.createResource(D2S + countryResourceName);
-					cityResource.addProperty(locationCountry, countryResource);
+					cityResource.addProperty(locationCountry, countryResource); // link the two
 				}
 			}
-		} else if (country != null && country.getGeonames() != null) {
+		} else if (country != null && country.getGeonames() != null) { // if no city but a country was chosen
+			// retrieve its proper resource name from the index
 			String countryResourceName = countryIndex.get(country.getGeonames().replace("http://www.geonames.org/", ""));
+			// create a resource object for it
 			countryResource = ontologyModel.createResource(D2S + countryResourceName);
 		}
 
@@ -952,14 +822,6 @@ public class OntologyWriter {
 				// connect anonymous resource and city resource
 				locationResource.addProperty(locationCity, cityResource);
 		}
-	}
-
-	/**
-	 * Connects the platform with the countries it is used in as a representation of the user distribution dimension.
-	 */
-	private void userDistributionDimension() {
-		// parse the countries the platform is used in from its Alexa page
-		// ontologyModel = new AlexaParser(ontologyModel).alterOntologyModel(false, platform); TODO
 	}
 
 	private String[] smartphoneApps = { "android app", "ios app", "windows phone app" };
@@ -984,6 +846,11 @@ public class OntologyWriter {
 
 	private String[] trustContributions = { "provider ratings", "provider and consumer ratings", "referral", "vouching", "value-added services" };
 
+	/**
+	 * Connects the platform to its values from the trust contribution dimension
+	 * @param set 
+	 * 			Set of trust contribution values
+	 */
 	private void trustContributionDimension(Set<String> set) {
 		if (set == null || set.isEmpty())
 			return;
@@ -1003,24 +870,41 @@ public class OntologyWriter {
 		}
 	}
 
+	/**
+	 * Connects the platform to its values from the language dimension
+	 * @param set 
+	 * 			Set of trust language URIs
+	 */
 	private void languageDimension(Set<String> set) {
 		if (set == null || set.isEmpty())
 			return;
 
-		for (String language : set) {
+		for (String language : set) { // for each of the platforms languages
+			// connect platform resource to the language's resource as property
+			// languages in the set need to be the full URI's!
 			platformResource.addProperty(dbppLanguage, ontologyModel.createResource(language));
 		}
 	}
 
-	private String getPlatformId() {
-		String sparqlQuery = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " + "PREFIX d2s: <http://www.discover2share.net/d2s-ont/> "
-				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> " + "SELECT (?nr + 1 as ?new) {" + "  ?platform rdf:type d2s:P2P_SCC_Platform."
-				+ "  BIND(xsd:integer(substr(xsd:string(?platform),48)) as ?nr)" + "} order by desc (?nr) limit 1";
+	/**
+	 * Determines an unused platform number in the ontology by adding 1 to the highest in use.
+	 * 
+	 * @return A new, unused platform number
+	 */
+	private String getNewPlatformURI() {
+		// query that determines the highest platform number used in the ontology + 1
+		String sparqlQuery = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " 
+								+ "PREFIX d2s: <http://www.discover2share.net/d2s-ont/> "
+								+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> " 
+								+ "SELECT (?nr + 1 as ?new) {" 
+								+ "  ?platform rdf:type d2s:P2P_SCC_Platform."
+								+ "  BIND(xsd:integer(substr(xsd:string(?platform),48)) as ?nr)" 
+								+ "} order by desc (?nr) limit 1";
 		Query query = QueryFactory.create(sparqlQuery);
 		QueryExecution qexec = QueryExecutionFactory.sparqlService(ENDPOINT, query);
 		ResultSet result = qexec.execSelect();
-		if (result.hasNext()) {
-			return result.next().getLiteral("new").getLexicalForm();
+		if (result.hasNext()) { // if a new number could be determined
+			return result.next().getLiteral("new").getLexicalForm(); // return it as string
 		}
 		return null;
 	}
