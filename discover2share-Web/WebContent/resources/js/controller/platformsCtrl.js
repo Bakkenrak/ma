@@ -3,10 +3,13 @@
 
 	var d2sApp = angular.module('d2sApp');
 
-	d2sApp.controller('platformsCtrl', function ($scope, $location, $filter, toaster, platforms) {
+	d2sApp.controller('platformsCtrl', function ($scope, $location, $filter, authFactory, toaster, platforms) {
 		if (platforms.status === 401) {
 			toaster.pop("error", "Unauthorized!", "You need to be logged in to access the information on that page.");
+			authFactory.logout();
 			$location.path("login/");
+		} else if (!platforms.data || platforms.data.length === 0) {
+			toaster.pop("error", (platforms.status >= 400) ? "Code " + platforms.status : "Error!", "There was an error retrieving the platforms from the server.");
 		}
 		
 		if (platforms.data) {
