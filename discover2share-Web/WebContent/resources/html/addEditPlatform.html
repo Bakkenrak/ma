@@ -68,8 +68,9 @@
 									<tab heading="Custom"><br />
 										<form name="customForm">
 											<label>Enter a concept URI:</label> <em>http(s)://...</em>
-											<div class="form-group" ng-class="{'has-error' : customForm.customUrl.$invalid && !customForm.customUrl.$pristine }"
-											<input type="url" name="customUrl" class="form-control row-margin-5" ng-model="customUri" pattern="http[s]?:\/\/(?:www.)?[\w-]+\.[\w]{2,3}.*" />
+											<div class="form-group" ng-class="{'has-error' : customForm.customUrl.$invalid && !customForm.customUrl.$pristine }">
+												<input type="url" name="customUrl" class="form-control row-margin-5" ng-model="customUri" pattern="http[s]?:\/\/(?:www.)?[\w-]+\.[\w]{2,3}.*" />
+											</div>
 											<button type="button" class="btn btn-sm btn-primary" ng-click="addCustomConcept(customUri)" ng-disabled="!customUri || !customForm.customUrl.$valid">Add</button>
 										</form>
 									</tab>
