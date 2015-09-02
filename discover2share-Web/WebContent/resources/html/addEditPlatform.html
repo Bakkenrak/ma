@@ -161,10 +161,11 @@
 		</tr>
 		<tr>
 			<td><strong>Year of launch:</strong></td>
-			<td><select ng-model="platform.yearLaunch" class="form-control">
-					<option ng-repeat="year in getYears()"
-						value="http://www.discover2share.net/d2s-ont/{{year}}">{{year}}</option>
-			</select></td>
+			<td>
+				<select ng-model="platform.yearLaunch" class="form-control" ng-options="('http://www.discover2share.net/d2s-ont/' + year) as year for year in getYears()">
+					<option value=""></option>
+				</select>
+			</td>
 			<td></td>
 		</tr>
 		<tr>
@@ -211,9 +212,8 @@
 			<td><strong>Languages:</strong></td>
 			<td>
 				<p ng-repeat="language in platform.languageObjects" ng-class="{'input-group' : platform.languageObjects.length>1}">
-					<select class="form-control" ng-model="language.resourceName"
+					<select class="form-control" ng-model="language.resourceName" ng-options="('http://www.discover2share.net/d2s-ont/' + l.resourceName) as l.name for l in languages"
 						name="lang{{$index}}" cu-enter="addOption(platform.languageObjects)" cu-focuslast>
-						<option ng-repeat="l in languages" value="http://www.discover2share.net/d2s-ont/{{l.resourceName}}">{{l.name}}</option>
 					</select> <span class="input-group-btn" ng-if="platform.languageObjects.length>1">
 						<button type="button" class="btn btn-default" data-type="plus"
 							data-field="lang{{$index}}"

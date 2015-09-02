@@ -58,19 +58,11 @@
 		
 		if (platform) { //if edit view, transform data for use in the form
 			platform = platform.data;
-			platform.yearLaunch = " " + platform.yearLaunch;
 			platform.languageObjects = [];
 			platform.languages.forEach(function (language) {
 				platform.languageObjects.push({
-					resourceName: " " + language // add a space that can be later removed to deal with a weird model binding bug
+					resourceName: language // add a space that can be later removed to deal with a weird model binding bug
 				});
-			});
-			$timeout(function () { // after the page is loaded
-				$scope.platform.languageObjects.forEach(function (item) { // from each language object
-					item.resourceName = item.resourceName.substr(1); // remove previously added space to produce a change Angular registers
-				});
-				$scope.platform.yearLaunch = $scope.platform.yearLaunch.substr(1);
-				$scope.$apply(); // apply the change - only now will the language select boxes be set correctly...
 			});
 		}
 
@@ -192,6 +184,7 @@
 					});
 		};
 
+		// generates a list of all years
 		$scope.getYears = function () {
 			var currentYear = new Date().getFullYear();
 			var output = [];
