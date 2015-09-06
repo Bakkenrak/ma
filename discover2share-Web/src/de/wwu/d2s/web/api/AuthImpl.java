@@ -26,49 +26,45 @@ public class AuthImpl implements AuthApi {
 	@Context HttpServletRequest request;
 	@Context HttpServletResponse response;
 	
-	/**
-	 * API method for user login. Checks the given credentials and in case
-	 * of a successful login the username and authentication token will be added
-	 * to the request's header. Otherwise a 401 HTTP error will be given.
-	 * Derived from: http://www.aschua.de/blog/pairing-angularjs-and-javaee-for-authentication/ (02/07/2015)
-	 * 
-	 * @return Object with authentication information
-	 */
+	
 	public AuthAccessElement login(AuthLoginElement loginElement) {
-        AuthAccessElement accessElement = authService.login(loginElement);
-        if (accessElement != null) {
+        AuthAccessElement accessElement = authService.login(loginElement); // try login with given credentials
+        if (accessElement != null) { // if authentication details were returned from login attempt
+        	// set them in the requests session
             request.getSession().setAttribute(AuthAccessElement.PARAM_AUTH_ID, accessElement.getUsername());
             request.getSession().setAttribute(AuthAccessElement.PARAM_AUTH_TOKEN, accessElement.getAuthToken());
         }else{
         	response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); //return 401 on failed login
         	try{
-        		response.flushBuffer();
+        		response.flushBuffer(); // apply
         	}catch(IOException e){}
         }
-        return accessElement;
+        return accessElement; // return authentication details
     }
 
+	
 	@Override
 	public Response registerUser(User user) {
-		if (userService.saveNew(user) == null)
+		if (userService.saveNew(user) == null) // if the attempt to save the new user failed
+			// set error status and message to response
 			return Response.status(Response.Status.CONFLICT).entity("{\"error\":\"A user with the name '" + user.getUsername() + "' already exists.\"}").build();
-		return Response.status(Response.Status.OK).build();
+		return Response.status(Response.Status.OK).build(); // status 200 response
 	}
 
 	@Override
 	public Response changePassword(User user) {
-		if(userService.changePassword(user))
-			return Response.status(Response.Status.NO_CONTENT).build();
+		if(userService.changePassword(user)) // if password change succeeded
+			return Response.status(Response.Status.NO_CONTENT).build(); // status 204 response
 		else 
-			return Response.status(Response.Status.UNAUTHORIZED).build();
+			return Response.status(Response.Status.UNAUTHORIZED).build(); // error status unauthorized
 	}
 
 	@Override
 	public Response deleteOwnAccount(AuthLoginElement user) {
-		if(userService.deleteOwnAccount(user))
-			return Response.status(Response.Status.NO_CONTENT).build();
+		if(userService.deleteOwnAccount(user)) // if deletion of the account succeeded
+			return Response.status(Response.Status.NO_CONTENT).build(); // success status 204 response
 		else 
-			return Response.status(Response.Status.UNAUTHORIZED).build();
+			return Response.status(Response.Status.UNAUTHORIZED).build(); // error status unauthorized
 	}
 
 	@Override
@@ -78,9 +74,9 @@ public class AuthImpl implements AuthApi {
 
 	@Override
 	public Response deleteAccount(User user) {
-		if (userService.deleteAccount(user))
-			return Response.status(Response.Status.NO_CONTENT).build();
+		if (userService.deleteAccount(user)) // if deletion of the account succeeded
+			return Response.status(Response.Status.NO_CONTENT).build(); // success status 204 response
 		else 
-			return Response.status(Response.Status.UNAUTHORIZED).build();
+			return Response.status(Response.Status.UNAUTHORIZED).build(); // error status unauthorized
 	}
 }

@@ -5,7 +5,6 @@ import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.Response;
 
 import de.wwu.d2s.ejb.OntologyService;
@@ -34,13 +33,13 @@ public class OntologyImpl implements OntologyApi {
 
 	@Override
 	public Response addSuggestion(Platform platform) {
-		Map<String, String> result = ontologyService.addSuggestion(platform);
-		if (result.containsKey("success"))
-			return Response.status(Response.Status.OK).entity(result).build();
-		else if (result.containsKey("error"))
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(result).build();
-		else
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+		Map<String, String> result = ontologyService.addSuggestion(platform); // try adding the suggestion and retrieve the status information
+		if (result.containsKey("success")) // adding succeeded
+			return Response.status(Response.Status.OK).entity(result).build(); // status 200 response containing the success message
+		else if (result.containsKey("error")) // error adding the suggestion
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(result).build(); // status 500 response containing the error message
+		else // no status message provided
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build(); // status 500 response
 	}
 	
 	@Override
@@ -60,13 +59,13 @@ public class OntologyImpl implements OntologyApi {
 
 	@Override
 	public Response doQuery(String query) {
-		Map<String, String> result = ontologyService.doQuery(query);
-		if (result.containsKey("success"))
-			return Response.status(Response.Status.OK).entity(result.get("success")).build();
-		else if (result.containsKey("error"))
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(result).build();
-		else
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+		Map<String, String> result = ontologyService.doQuery(query); // try doing the query and retrieve the status information
+		if (result.containsKey("success")) // querying succeeded
+			return Response.status(Response.Status.OK).entity(result.get("success")).build(); // status 200 response containing the query results
+		else if (result.containsKey("error")) // error while querying
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(result).build(); // status 500 response containing the error message
+		else // no status message provided
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build(); // status 500 response
 	}
 
 	@Override
@@ -106,10 +105,10 @@ public class OntologyImpl implements OntologyApi {
 
 	@Override
 	public Response editSuggestionExternal(String id, Platform platform) {
-		if (ontologyService.editSuggestionExternal(id, platform))
-			return Response.status(Response.Status.NO_CONTENT).build();
-		else
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+		if (ontologyService.editSuggestionExternal(id, platform)) // if the external edit succeeded
+			return Response.status(Response.Status.NO_CONTENT).build(); // status 204 success response
+		else // error editing
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build(); // status 500 error response
 	}
 
 }
