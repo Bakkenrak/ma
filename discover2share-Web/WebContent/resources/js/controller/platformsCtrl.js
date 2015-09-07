@@ -24,7 +24,7 @@
 		}
 		
 		$scope.pagination = { // pagination configuration
-			itemsPerPage : 25 // show 25 platforms per page
+			itemsPerPage : 15 // show 25 platforms per page
 		};
 		$scope.searchTerm = "";
 		
