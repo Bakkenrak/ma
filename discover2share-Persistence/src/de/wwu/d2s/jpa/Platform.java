@@ -365,6 +365,10 @@ public class Platform implements Serializable {
 	}
 
 	public void setServiceDurationMin(String serviceDurationMin) {
+		if (serviceDurationMin == null) {
+			this.serviceDurationMin = null;
+			return;
+		}
 		// if service duration is full OWL Time URL, transform
 		if (serviceDurationMin.equals("http://www.w3.org/2006/time#unitMinute")) {
 			this.serviceDurationMin = "Minutes";
@@ -386,6 +390,11 @@ public class Platform implements Serializable {
 	}
 
 	public void setServiceDurationMax(String serviceDurationMax) {
+		if (serviceDurationMax == null) {
+			this.serviceDurationMax = null;
+			return;
+		}
+		
 		if (serviceDurationMax.equals("http://www.w3.org/2006/time#unitMinute")) {
 			this.serviceDurationMax = "Minutes";
 		} else if (serviceDurationMax.equals("http://www.w3.org/2006/time#unitHour")) {
