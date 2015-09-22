@@ -168,7 +168,7 @@
 					countryCode: item.countryCode
 				};
 			// if a launch city is selected and its country code does not match this country's country code
-			if ($scope.platform.launchCity && $scope.platform.launchCity.countryCode !== $scope.platform.launchCountry.countryCode) {
+			if ($scope.platform.launchCity.countryCode && $scope.platform.launchCity.countryCode !== $scope.platform.launchCountry.countryCode) {
 				toaster.pop("warning", "Warning!", "Selected launch city is not situated in the selected country.");
 			}
 		};
@@ -187,7 +187,7 @@
 					label: item.countryName,
 					countryCode: item.countryCode
 				};
-			if ($scope.platform.residenceCity && $scope.platform.residenceCity.countryCode !== $scope.platform.residenceCountry.countryCode) {
+			if ($scope.platform.residenceCity.countryCode && $scope.platform.residenceCity.countryCode !== $scope.platform.residenceCountry.countryCode) {
 				toaster.pop("warning", "Warning!", "Selected residence city is not situated in the selected country.");
 			}
 		};
@@ -250,7 +250,7 @@
 		};
 
 		// dimension values those dimensions edited using checkboxes
-		$scope.marketMediations = [	"Profit from peer consumers", "Profit from peer providers",	"Profit from both", "Indirect profit",
+		$scope.marketMediations = [ "Not-for-profit", "Profit from peer consumers", "Profit from peer providers", "Profit from both", "Indirect profit",
 				"Profit from advertisement", "Profit from user data", "Per transaction", "Per listing", "Membership fee" ];
 		$scope.consumerisms = [ "None", "Social", "Environmental", "Economic" ];
 		$scope.smartphoneApps = [ "Android app", "iOS app",	"Windows Phone app" ];
@@ -273,15 +273,19 @@
 					selected.push("None"); 
 				}
 			} else { // is newly selected
-				if (current === "None") { // if current is None
-					selected.length = 0; //empty array first
+				if (current === "None" || current === "Not-for-profit") { // if current is None or Not-for-profit
+					selected.length = 0; // empty array first
 				} else {
-					idx = selected.indexOf("None"); //check if None was previously selected
+					idx = selected.indexOf("None"); // check if None was previously selected
 					if (~idx) {
-						selected.splice(idx, 1); //remove None
+						selected.splice(idx, 1); // remove None
+					}
+					idx = selected.indexOf("Not-for-profit"); // check if Not-for-profit was previously selected
+					if (~idx) {
+						selected.splice(idx, 1); // remove Not-for-profit
 					}
 				}
-				selected.push(current); //add current selection to array
+				selected.push(current); // add current selection to array
 			}
 		};
 		

@@ -42,6 +42,7 @@
 		
 		// possible values for those dimensions represented by checkboxes. Resource names and labels.
 		$scope.marketMediations = [ 
+		    { resource: "Not-for-profit", label: "Not-for-profit" }, 
 		    { resource: "Profit_from_peer_consumers", label: "Profit from peer consumers" }, 
 		    { resource: "Profit_from_peer_providers", label: "Profit from peer providers" },
 		    { resource: "Profit_from_both", label: "Profit from both" },

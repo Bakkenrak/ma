@@ -108,6 +108,7 @@ public class OntologyWriter {
 	private Resource deferredPattern;
 	private Resource immediatePattern;
 	private Resource recurrentPattern;
+	private Resource notForProfit;
 	private Resource indirectProfit;
 	private Resource profitFromUserData;
 	private Resource profitFromAdvertisement;
@@ -222,6 +223,7 @@ public class OntologyWriter {
 		immediatePattern = ontologyModel.createResource(D2S + "Immediate");
 		recurrentPattern = ontologyModel.createResource(D2S + "Recurrent");
 
+		notForProfit = ontologyModel.createResource(D2S + "Not-for-profit");
 		indirectProfit = ontologyModel.createResource(D2S + "Indirect_Profit");
 		profitFromUserData = ontologyModel.createResource(D2S + "Profit_from_user_data");
 		profitFromAdvertisement = ontologyModel.createResource(D2S + "Profit_from_advertisement");
@@ -460,7 +462,7 @@ public class OntologyWriter {
 		}
 	}
 
-	private String[] mediationValues = { "profit from both", "profit from both peer consumers and peer providers", "indirect profit",
+	private String[] mediationValues = { "not-for-profit", "profit from both", "profit from both peer consumers and peer providers", "indirect profit",
 			"profit from peer consumers", "profit from peer providers", "profit from user data", "profit from advertisement", "per transaction", "per listing",
 			"membership fee" };
 
@@ -476,7 +478,9 @@ public class OntologyWriter {
 
 		for (String mediation : set) {
 			mediation = mediation.toLowerCase();
-			if (mediation.equals(mediationValues[0]) || mediation.equals(mediationValues[1]))
+			if (mediation.equals(mediationValues[0]))
+				platformResource.addProperty(hasMarketMediation, notForProfit);
+			else if (mediation.equals(mediationValues[1]) || mediation.equals(mediationValues[2]))
 				platformResource.addProperty(hasMarketMediation, profitFromBoth);
 			else if (mediation.equals(mediationValues[2]))
 				platformResource.addProperty(hasMarketMediation, indirectProfit);
@@ -781,9 +785,17 @@ public class OntologyWriter {
 						cityResource.addProperty(owlSameAs, cityGeonames); // link the two equivalents
 
 						// make another request to geonames to retrieve extended info on the city concept
-						JSONObject cityInfo;
-						cityInfo = JsonReader.readJsonFromUrl("http://api.geonames.org/getJSON?username=discover2share&geonameId="
-								+ city.getGeonames().replace("http://www.geonames.org/", ""));
+						JSONObject cityInfo = null;
+						int tryCounter = 0; // counter to keep track of query attempts to geonames
+						while(cityInfo == null && tryCounter < 3) { // attempt geonames at least twice if it fails
+							try { // GeoNames API query often fails on the first attempt
+								cityInfo = JsonReader.readJsonFromUrl("http://api.geonames.org/getJSON?username=discover2share&geonameId="
+										+ city.getGeonames().replace("http://www.geonames.org/", ""));
+							} catch (Exception e) {
+								log.warn("Querying GeoNames API failed: " + e.getMessage());
+								tryCounter++;
+							}
+						}
 						// if the extended info contains a proper link to the respective wikipedia article
 						if (cityInfo.has("wikipediaURL")) {
 							// Create resource for DBpedia concept belonging to the wikipedia article
@@ -793,7 +805,7 @@ public class OntologyWriter {
 							cityResource.addProperty(owlSameAs, dbpedia);
 						}
 					}
-				} catch (IOException | JSONException e1) {
+				} catch (JSONException e1) {
 					e1.printStackTrace();
 				}
 
