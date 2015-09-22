@@ -797,7 +797,7 @@ public class OntologyWriter {
 							}
 						}
 						// if the extended info contains a proper link to the respective wikipedia article
-						if (cityInfo.has("wikipediaURL")) {
+						if (cityInfo != null && cityInfo.has("wikipediaURL")) {
 							// Create resource for DBpedia concept belonging to the wikipedia article
 							String dbpediaId = cityInfo.getString("wikipediaURL").replace("en.wikipedia.org/wiki", "");
 							Resource dbpedia = ontologyModel.createResource("http://dbpedia.org/resource" + dbpediaId);
