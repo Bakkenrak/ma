@@ -193,12 +193,14 @@ public interface OntologyApi {
 	 * 
 	 * @param query
 	 * 			SPARQL query to execute
+	 * @param inference
+	 * 			Denotes whether or not to activate inferencing before querying
 	 * @return HTTP response containing the error/success status and query results or error message
 	 */
-	@Path("query/")
+	@Path("query/{inference}")
 	@POST
 	@Consumes("application/x-www-form-urlencoded")
-	public Response doQuery(String query);
+	public Response doQuery(String query, @PathParam("inference") String inference);
 	
 	/**
 	 * Finds all triples in which the resource with the given name takes on the role of subject or object.

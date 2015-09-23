@@ -216,9 +216,17 @@
 	</div>
 </div>
 
+<div class="row">
+	<div class="col-md-4">
+		<h4><strong><a href="http://www.cambridgesemantics.com/semantic-university/sparql-by-example">SPARQL</a> query:</strong></h4>
+	</div>
+	<div class="col-md-4 col-md-offset-4"> <br/>
+		<label class="checkbox-inline pull-right" title="The reasoner will involve implicitly stated knowledge from the ontology in the answering of the query."> <input type="checkbox" ng-click="toggleInference()" /> Activate inference reasoner (slower)
+		</label>
+	</div>
+</div>
 <div class="row row-margin-15">
 	<div class="col-md-12">
-		<h4><strong><a href="http://www.cambridgesemantics.com/semantic-university/sparql-by-example">SPARQL</a> query:</strong></h4>
 		<div cu-yasqe="yasqeConfig" ng-model="query"></div>
 	</div>
 </div>

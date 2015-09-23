@@ -103,12 +103,21 @@
 				trustContributions: []
 			};
 		
+		$scope.inference = false; // determines whether inferencing is to be used when querying or not
+		/**
+		 * Switches the endpoint address of the YASQE instance to query either using inferencing or not
+		 */
+		$scope.toggleInference = function () {
+			$scope.inference = !$scope.inference;
+			$scope.yasqe.options.sparql.endpoint = $scope.inference ? "api/ontology/query/inference" : "api/ontology/query/noInference";
+		};
+		
 		$scope.yasqeConfig = { // config options for the YASQE query editor
 				// standard query to show when no previous user input is cached
 				value: "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX d2s: <http://www.discover2share.net/d2s-ont/>\nPREFIX dbpp: <http://dbpedia.org/property/>\n\nSelect * WHERE {\n    ?platform rdf:type d2s:P2P_SCC_Platform.\n  	?platform rdfs:label ?platformLabel.\n} ORDER BY ?platformLabel",
 				sparql: {
 					showQueryButton: true,
-					endpoint: "api/ontology/query" // the API route to query against
+					endpoint: "api/ontology/query/noInference" // the API route to query against
 				}
 			};
 		

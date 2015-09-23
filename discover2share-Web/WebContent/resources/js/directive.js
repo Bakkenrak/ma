@@ -64,10 +64,10 @@
 				return value;
 			});
 			// Override the ngModelController $render method, which is what gets called when the model is updated.
-			// This takes care of the synchronizing the YASQE element with the underlying model, in the case that it is changed by something else.
+			// This takes care of synchronizing the YASQE element with the underlying model, in the case that it is changed by something else.
 			ngModel.$render = function () {
 				// YASQE expects a string so make sure it gets one
-				// Although the formatter have already done this, it can be possible that another formatter returns undefined (for example the required directive)
+				// Although the formatters have already done this, it can be possible that another formatter returns undefined (for example the required directive)
 				var safeViewValue = ngModel.$viewValue || '';
 				scope.yasqe.setValue(safeViewValue);
 			};

@@ -61,9 +61,11 @@ public interface OntologyService {
 	 * 
 	 * @param query
 	 *            SPARQL query
+	 * @param inference 
+	 * 			  Denotes whether to activate inferencing before querying
 	 * @return Query Results in case of success, otherwise error message
 	 */
-	public Map<String, String> doQuery(String query);
+	public Map<String, String> doQuery(String query, String inference);
 
 	/**
 	 * @return All cities found in the ontology

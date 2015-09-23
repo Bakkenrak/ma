@@ -59,8 +59,8 @@ public class OntologyImpl implements OntologyApi {
 	}
 
 	@Override
-	public Response doQuery(String query) {
-		Map<String, String> result = ontologyService.doQuery(query); // try doing the query and retrieve the status information
+	public Response doQuery(String query, String inference) {
+		Map<String, String> result = ontologyService.doQuery(query, inference); // try doing the query and retrieve the status information
 		if (result.containsKey("success")) // querying succeeded
 			return Response.status(Response.Status.OK).entity(result.get("success")).build(); // status 200 response containing the query results
 		else if (result.containsKey("error")) // error while querying

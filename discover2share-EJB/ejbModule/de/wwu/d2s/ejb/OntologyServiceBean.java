@@ -135,11 +135,11 @@ public class OntologyServiceBean implements OntologyService {
 	@Override
 	public Map<String, Map<String, String>> getDescriptions() {
 		// create a model using inference reasoner
-		OntModel model1 = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_MICRO_RULE_INF);
+		OntModel model = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_MICRO_RULE_INF);
 		
 		java.util.logging.Logger.getLogger("org.apache.jena.riot").setLevel(Level.SEVERE); // disable unnecessary warnings
 		// read the ontology, transform into model
-		model1.read(ONTOLOGYURL, "Turtle");
+		model.read(ONTOLOGYURL, "Turtle");
 		java.util.logging.Logger.getLogger("org.apache.jena.riot").setLevel(Level.ALL); // reset to normal logging
 
 		// Create a new query to find all (transitive) subclasses of P2P_SCC_Dimension
@@ -152,7 +152,7 @@ public class OntologyServiceBean implements OntologyService {
 				+ "  ?c rdfs:comment ?comment." 
 				+ "}";
 		Query query = QueryFactory.create(queryString);
-		QueryExecution qe = QueryExecutionFactory.create(query, model1); // query model
+		QueryExecution qe = QueryExecutionFactory.create(query, model); // query model
 		ResultSet results = qe.execSelect();
 		
 		Map<String, Map<String, String>> output = new HashMap<String, Map<String, String>>();
@@ -211,7 +211,7 @@ public class OntologyServiceBean implements OntologyService {
 	}
 
 	@Override
-	public Map<String, String> doQuery(String query) {
+	public Map<String, String> doQuery(String query, String inference) {
 		if(query.substring(0, 6).equals("query=")) // cut off possible leading 'query=' marker
 			query = query.substring(6);
 		try { // query will be in application/x-www-form-urlencoded format
@@ -222,9 +222,23 @@ public class OntologyServiceBean implements OntologyService {
 		
 		Map<String, String> output = new HashMap<String, String>();
 		try {
+			QueryExecution qexec;
 			Query sparqlQuery = QueryFactory.create(query);
-			QueryExecution qexec = QueryExecutionFactory.sparqlService(ENDPOINT, sparqlQuery); // query endpoint
+			if (inference.equals("inference")) { // use inferencing
+				// create a model using inference reasoner
+				OntModel model = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_MICRO_RULE_INF);
+				
+				java.util.logging.Logger.getLogger("org.apache.jena.riot").setLevel(Level.SEVERE); // disable unnecessary warnings
+				// read the ontology, transform into model
+				model.read(ONTOLOGYURL, "Turtle");
+				java.util.logging.Logger.getLogger("org.apache.jena.riot").setLevel(Level.ALL); // reset to normal logging
+				
+				qexec = QueryExecutionFactory.create(sparqlQuery, model); // query model
+			} else { // no inferencing
+				qexec = QueryExecutionFactory.sparqlService(ENDPOINT, sparqlQuery); // query endpoint
+			}
 			ResultSet results = qexec.execSelect();
+			
 			ByteArrayOutputStream b = new ByteArrayOutputStream();
 			ResultSetFormatter.outputAsJSON(b, results); // format result set as JSON in byte stream
 			String json = b.toString(); // create string from JSON byte stream
