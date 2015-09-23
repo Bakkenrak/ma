@@ -21,6 +21,7 @@ import com.gargoylesoftware.htmlunit.html.DomNodeList;
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlTable;
+import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.ontology.OntModelSpec;
 import com.hp.hpl.jena.rdf.model.Literal;
@@ -62,6 +63,7 @@ public class AlexaParser {
 	private Property date;
 	private Property percentage;
 	private Property locationCountry;
+	private Property alexaPage;
 
 	public static void main(String[] args) {
 		log = Logger.getLogger(AlexaParser.class.getName()); // instantiate logger
@@ -92,6 +94,7 @@ public class AlexaParser {
 		date = ontologyModel.createProperty(DCT + "date");
 		percentage = ontologyModel.createProperty(D2S + "user_percentage");
 		locationCountry = ontologyModel.createProperty(DBPP + "locationCountry");
+		alexaPage = ontologyModel.createProperty(D2S + "alexa_page");
 
 		JSONArray countries;
 		try { // retrieve list of countries from JSON file
@@ -136,6 +139,7 @@ public class AlexaParser {
 			} else {
 				// create platform resource in ontology model
 				Resource platformResource = ontologyModel.createResource(D2S + platform.getResourceName());
+				platformResource.addProperty(alexaPage, "http://www.alexa.com/siteinfo/" + platform.getUrl(), XSDDatatype.XSDanyURI); //add link to alexa page
 				for (String countryCode : userData.keySet()) { // for each country in the user distribution data
 					Resource country = countryIndex.get(countryCode); // retrieve country resource from index
 					if (country != null) {
