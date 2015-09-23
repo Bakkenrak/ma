@@ -24,6 +24,7 @@
 		<url-pattern>/register</url-pattern>
 		<url-pattern>/account</url-pattern>
 		<url-pattern>/external/*</url-pattern>
+		<url-pattern>/ontology/*</url-pattern>
 	</servlet-mapping>
 
 	<!-- API route config -->

@@ -95,6 +95,10 @@
 			return $http.get(query);
 		};
 		
+		platformFactory.getResourceDetails = function (name) {
+			return $http.get('api/ontology/resource/' + name);
+		};
+		
 		return platformFactory;
 	});
 	

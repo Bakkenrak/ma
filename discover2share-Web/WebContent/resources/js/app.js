@@ -95,6 +95,9 @@
 		}).when('/query', {
 			controller: 'queryCtrl',
 			templateUrl: 'resources/html/query.html'
+		}).when('/ontology/resource/:name', {
+			controller: 'resourceCtrl',
+			templateUrl: 'resources/html/resource.html'
 		}).when('/register', {
 			controller: 'registrationCtrl',
 			templateUrl: 'resources/html/register.html'

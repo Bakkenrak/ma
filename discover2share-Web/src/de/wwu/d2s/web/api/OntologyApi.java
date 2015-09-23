@@ -13,6 +13,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
+import de.wwu.d2s.dto.ResourceDetails;
 import de.wwu.d2s.jpa.Platform;
 
 /**
@@ -198,4 +199,16 @@ public interface OntologyApi {
 	@POST
 	@Consumes("application/x-www-form-urlencoded")
 	public Response doQuery(String query);
+	
+	/**
+	 * Finds all triples in which the resource with the given name takes on the role of subject or object.
+	 * 
+	 * @param name
+	 * 			Name of the resource to look for
+	 * @return List of all properties and the respective values that the resource is connected to
+	 */
+	@Path("resource/{name}")
+	@GET
+	@Produces("application/json")
+	public List<ResourceDetails> getResourceDetails(@PathParam("name") String name);
 }

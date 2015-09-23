@@ -1,0 +1,23 @@
+<h2>Details - d2s:<a ng-if="name.substr(0, 8) === 'platform'" href="platforms/{{name}}">{{name}}</a><span ng-if="name.substr(0, 8) !== 'platform'">{{name}}</span></h2>
+
+<div class="row">
+	<table class="table table-bordered table-striped">
+		<thead>
+			<tr>
+				<td><strong>Property</strong></td>
+				<td><strong>Value</strong></td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="property in details | detailFilter">
+				<td><span ng-if="property.property">is </span><a href="{{property.name | linkFilter}}">{{property.name | nameFilter}}</a><span ng-if="property.property"> of</span></td>
+				<td>
+					<div ng-repeat="value in property.values">
+						<a ng-if="value.type==='uri'" href="{{value.name | linkFilter}}">{{value.name | nameFilter}}</a>
+						<span ng-if="value.type==='literal'">{{value.name | nameFilter}}</span>
+					</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

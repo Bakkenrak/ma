@@ -28,6 +28,7 @@ import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.update.UpdateExecutionFactory;
 import com.hp.hpl.jena.update.UpdateFactory;
 
+import de.wwu.d2s.dto.ResourceDetails;
 import de.wwu.d2s.jpa.Platform;
 import de.wwu.d2s.util.OntologyWriter;
 
@@ -525,5 +526,64 @@ public class OntologyServiceBean implements OntologyService {
 			return true; // success
 		}
 		return false; // no success
+	}
+
+	@Override
+	public List<ResourceDetails> getResourceDetails(String name) {
+		String sparqlQuery = "PREFIX d2s: <http://www.discover2share.net/d2s-ont/>"
+				+ "Select * {{"
+				+ "  d2s:" + name + " ?property ?object."
+				+ "} UNION {"
+				+ "	 ?subject ?isProperty d2s:" + name
+				+ "}}";
+		
+		Query query = QueryFactory.create(sparqlQuery);
+		QueryExecution qexec = QueryExecutionFactory.sparqlService(ENDPOINT, query);
+		ResultSet results = qexec.execSelect();
+
+		List<ResourceDetails> output = new ArrayList<ResourceDetails>();
+		while (results.hasNext()) { // for each row in the result set
+			QuerySolution result = results.next();
+			RDFNode nodeProperty = result.get("property"); // check property variable
+			if (nodeProperty != null) { // if the variable has a value
+				if (nodeProperty.isResource()) { // if node is resource
+					String uri = nodeProperty.asResource().getURI(); // get its URI
+					boolean exists = false;
+					for (ResourceDetails rd : output) { // check every property found before
+						if (rd.getName().equals(uri) && !rd.isProperty()) { // if current property already exists
+							rd.addValue(result.get("object")); // add object value to values Map
+							exists = true;
+							break;
+						}
+					}
+					if (!exists) { // property was not found before
+						ResourceDetails rd = new ResourceDetails(false, uri); // create new object for this property
+						rd.addValue(result.get("object")); // add value to values Map
+						output.add(rd); // add object to output list
+					}
+				}
+			}
+			nodeProperty = result.get("isProperty"); // check isProperty variable
+			if (nodeProperty != null) { // if the variable has a value
+				if (nodeProperty.isResource()) { // if node is resource
+					String uri = nodeProperty.asResource().getURI(); // get its URI
+					boolean exists = false;
+					for (ResourceDetails rd : output) { // check every property found before
+						if (rd.getName().equals(uri) && rd.isProperty()) { // if current property already exists
+							rd.addValue(result.get("subject")); // add object value to values Map
+							exists = true;
+							break;
+						}
+					}
+					if (!exists) { // property was not found before
+						ResourceDetails rd = new ResourceDetails(true, uri); // create new object for this property
+						rd.addValue(result.get("subject")); // add value to values Map
+						output.add(rd); // add object to output list
+					}
+				}
+			}
+		}
+		qexec.close();
+		return output;
 	}
 }

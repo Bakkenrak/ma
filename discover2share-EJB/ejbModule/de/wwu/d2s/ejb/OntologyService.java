@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.ejb.Remote;
 
+import de.wwu.d2s.dto.ResourceDetails;
 import de.wwu.d2s.jpa.Platform;
 
 /**
@@ -118,5 +119,14 @@ public interface OntologyService {
 	 * @return true, if update successful, otherwise false
 	 */
 	public boolean editSuggestionExternal(String id, Platform platform);
+
+	/**
+	 * Finds all triples in which the resource with the given name takes on the role of subject or object.
+	 * 
+	 * @param name
+	 * 			Name of the resource to look for
+	 * @return List of all properties and the respective values that the resource is connected to
+	 */
+	public List<ResourceDetails> getResourceDetails(String name);
 
 }
