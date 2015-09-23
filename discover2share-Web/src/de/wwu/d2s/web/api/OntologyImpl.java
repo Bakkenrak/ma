@@ -7,7 +7,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ws.rs.core.Response;
 
-import de.wwu.d2s.dto.ResourceDetails;
+import de.wwu.d2s.dto.PropertyInfo;
 import de.wwu.d2s.ejb.OntologyService;
 import de.wwu.d2s.jpa.Platform;
 
@@ -113,7 +113,7 @@ public class OntologyImpl implements OntologyApi {
 	}
 
 	@Override
-	public List<ResourceDetails> getResourceDetails(String name) {
+	public List<PropertyInfo> getResourceDetails(String name) {
 		return ontologyService.getResourceDetails(name);
 	}
 

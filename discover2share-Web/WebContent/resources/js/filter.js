@@ -40,23 +40,6 @@
 	});
 	
 	/**
-	 * Filters out of the given array of elements those whose values object contains no entries, i.e. own properties.
-	 * Is used to not display empty values in the resource detail forms. This happens otherwise due to anonymous nodes.
-	 */
-	d2sApp.filter('detailFilter', function () {
-		return function (items) {			
-			return items.filter(function (item) {
-				for (var key in item.values) { // iterate through all properties of item.values
-					if (item.values.hasOwnProperty(key)) { // is own property (not inherited)
-						return true; // keep item in array
-					}
-			    }
-				return false; // no own keys -> do not keep item
-			});
-		};
-	});
-	
-	/**
 	 * Replaces common namespace strings by their prefix representation in the given string.
 	 */
 	d2sApp.filter('nameFilter', function () {

@@ -28,7 +28,7 @@ import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.update.UpdateExecutionFactory;
 import com.hp.hpl.jena.update.UpdateFactory;
 
-import de.wwu.d2s.dto.ResourceDetails;
+import de.wwu.d2s.dto.PropertyInfo;
 import de.wwu.d2s.jpa.Platform;
 import de.wwu.d2s.util.OntologyWriter;
 
@@ -529,7 +529,7 @@ public class OntologyServiceBean implements OntologyService {
 	}
 
 	@Override
-	public List<ResourceDetails> getResourceDetails(String name) {
+	public List<PropertyInfo> getResourceDetails(String name) {
 		String sparqlQuery = "PREFIX d2s: <http://www.discover2share.net/d2s-ont/>"
 				+ "Select * {{"
 				+ "  d2s:" + name + " ?property ?object."
@@ -541,7 +541,7 @@ public class OntologyServiceBean implements OntologyService {
 		QueryExecution qexec = QueryExecutionFactory.sparqlService(ENDPOINT, query);
 		ResultSet results = qexec.execSelect();
 
-		List<ResourceDetails> output = new ArrayList<ResourceDetails>();
+		List<PropertyInfo> output = new ArrayList<PropertyInfo>();
 		while (results.hasNext()) { // for each row in the result set
 			QuerySolution result = results.next();
 			RDFNode nodeProperty = result.get("property"); // check property variable
@@ -549,7 +549,7 @@ public class OntologyServiceBean implements OntologyService {
 				if (nodeProperty.isResource()) { // if node is resource
 					String uri = nodeProperty.asResource().getURI(); // get its URI
 					boolean exists = false;
-					for (ResourceDetails rd : output) { // check every property found before
+					for (PropertyInfo rd : output) { // check every property found before
 						if (rd.getName().equals(uri) && !rd.isProperty()) { // if current property already exists
 							rd.addValue(result.get("object")); // add object value to values Map
 							exists = true;
@@ -557,7 +557,7 @@ public class OntologyServiceBean implements OntologyService {
 						}
 					}
 					if (!exists) { // property was not found before
-						ResourceDetails rd = new ResourceDetails(false, uri); // create new object for this property
+						PropertyInfo rd = new PropertyInfo(false, uri); // create new object for this property
 						rd.addValue(result.get("object")); // add value to values Map
 						output.add(rd); // add object to output list
 					}
@@ -568,7 +568,7 @@ public class OntologyServiceBean implements OntologyService {
 				if (nodeProperty.isResource()) { // if node is resource
 					String uri = nodeProperty.asResource().getURI(); // get its URI
 					boolean exists = false;
-					for (ResourceDetails rd : output) { // check every property found before
+					for (PropertyInfo rd : output) { // check every property found before
 						if (rd.getName().equals(uri) && rd.isProperty()) { // if current property already exists
 							rd.addValue(result.get("subject")); // add object value to values Map
 							exists = true;
@@ -576,7 +576,7 @@ public class OntologyServiceBean implements OntologyService {
 						}
 					}
 					if (!exists) { // property was not found before
-						ResourceDetails rd = new ResourceDetails(true, uri); // create new object for this property
+						PropertyInfo rd = new PropertyInfo(true, uri); // create new object for this property
 						rd.addValue(result.get("subject")); // add value to values Map
 						output.add(rd); // add object to output list
 					}
@@ -584,6 +584,34 @@ public class OntologyServiceBean implements OntologyService {
 			}
 		}
 		qexec.close();
+		
+		for (PropertyInfo rd : output) { // iterate through all found properties
+			if (rd.getValues().size() == 0) { // if they don't have normal values, they should reference blank nodes
+				if (rd.isProperty()) { // current resource is object
+					sparqlQuery = "PREFIX d2s: <http://www.discover2share.net/d2s-ont/>"
+							+ "Select * {"
+							+ "  ?blank <" + rd.getName() + ">  d2s:" + name + " ."
+							+ "  ?blank ?property ?object."
+							+ "} ORDER BY ?blank";
+				} else { // current resource is subject
+					sparqlQuery = "PREFIX d2s: <http://www.discover2share.net/d2s-ont/>"
+							+ "Select * {"
+							+ "  d2s:" + name + " <" + rd.getName() + "> ?blank."
+							+ "  ?blank ?property ?object."
+							+ "} ORDER BY ?blank";
+				}
+				query = QueryFactory.create(sparqlQuery);
+				qexec = QueryExecutionFactory.sparqlService(ENDPOINT, query);
+				results = qexec.execSelect(); // retrieve blank node info
+
+				while (results.hasNext()) { // for each row in the result set
+					QuerySolution result = results.next();
+					// if result contains blank node, property and object
+					if (result.get("blank") != null && result.get("property") != null && result.get("object") != null)
+						rd.addAnonymousValue(result.get("blank"), result.get("property"), result.get("object")); // add
+				}
+			}
+		}
 		return output;
 	}
 }

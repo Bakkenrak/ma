@@ -5,7 +5,7 @@ import java.util.Map;
 
 import javax.ejb.Remote;
 
-import de.wwu.d2s.dto.ResourceDetails;
+import de.wwu.d2s.dto.PropertyInfo;
 import de.wwu.d2s.jpa.Platform;
 
 /**
@@ -127,6 +127,6 @@ public interface OntologyService {
 	 * 			Name of the resource to look for
 	 * @return List of all properties and the respective values that the resource is connected to
 	 */
-	public List<ResourceDetails> getResourceDetails(String name);
+	public List<PropertyInfo> getResourceDetails(String name);
 
 }

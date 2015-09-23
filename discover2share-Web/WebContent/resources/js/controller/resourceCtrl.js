@@ -16,6 +16,18 @@
 				$scope.details = data;
 			}
 		});
+		
+		/**
+		 * Checks whether the object has any own properties (i.e. not inherited ones)
+		 */
+		$scope.checkEmpty = function (obj) {
+			for (var key in obj) {
+				if (obj.hasOwnProperty(key)) {
+					return false;
+				}
+			}
+			return true;
+		};
 	});
 	
 })();

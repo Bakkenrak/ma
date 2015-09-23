@@ -9,12 +9,25 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="property in details | detailFilter">
+			<tr ng-repeat="property in details">
 				<td><span ng-if="property.property">is </span><a href="{{property.name | linkFilter}}">{{property.name | nameFilter}}</a><span ng-if="property.property"> of</span></td>
 				<td>
 					<div ng-repeat="value in property.values">
-						<a ng-if="value.type==='uri'" href="{{value.name | linkFilter}}">{{value.name | nameFilter}}</a>
-						<span ng-if="value.type==='literal'">{{value.name | nameFilter}}</span>
+						<a ng-if="value.type === 'uri'" href="{{value.name | linkFilter}}">{{value.name | nameFilter}}</a>
+						<span ng-if="value.type === 'literal'">"{{value.name | nameFilter}}"</span><span ng-if="!$last">,</span>
+					</div>
+					<div ng-repeat="value in property.anonymousValues">
+						[
+							<span ng-repeat="property in value">
+								<a href="{{property.name | linkFilter}}">{{property.name | nameFilter}}</a> 
+								<span ng-repeat="pvalue in property.values">
+									<a ng-if="pvalue.type === 'uri'" href="{{pvalue.name | linkFilter}}">{{pvalue.name | nameFilter}}</a>
+									<span ng-if="pvalue.type === 'literal'">"{{pvalue.name | nameFilter}}"</span><span ng-if="!$last">, </span>
+								</span>
+								<span ng-if="checkEmpty(property.values)"><em title="Nesting is too deep to display properly.">_:blank</em></span>
+								<span ng-if="!$last">;<br/>&nbsp;</span>
+							</span>
+						]<span ng-if="!$last">,</span>
 					</div>
 				</td>
 			</tr>

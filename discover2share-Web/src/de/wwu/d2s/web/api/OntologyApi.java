@@ -13,7 +13,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
-import de.wwu.d2s.dto.ResourceDetails;
+import de.wwu.d2s.dto.PropertyInfo;
 import de.wwu.d2s.jpa.Platform;
 
 /**
@@ -210,5 +210,5 @@ public interface OntologyApi {
 	@Path("resource/{name}")
 	@GET
 	@Produces("application/json")
-	public List<ResourceDetails> getResourceDetails(@PathParam("name") String name);
+	public List<PropertyInfo> getResourceDetails(@PathParam("name") String name);
 }
