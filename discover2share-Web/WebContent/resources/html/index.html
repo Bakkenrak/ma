@@ -1,3 +1,11 @@
-<h1>Discover2Share Web Directory</h1>
+<h1>Welcome<span ng-show="loggedIn()">, {{loggedIn()}}</span>!</h1>
 
-<p>Welcome<span ng-show="loggedIn()">, {{loggedIn()}}</span>!</p>
+<p>The Discover2Share Web Directory was developed to enable you to find just the Peer-to-peer Sharing and Collaborative Consumption (P2P SCC) Platform for physical resources you are looking for!
+Simply <a href="platforms/">browse through the platforms</a> or <a href="query/">select your own criteria to find specific entries</a>.</p>
+
+<p>The data foundation of this application is the Discover2Share ontology. A general overview of it is provided below. It might give you an idea of the scheme used to classify platforms in this directory.</p>
+<p>If you are missing a platform here, <a href="add/">suggest its addition</a>!</p>
+
+<p ng-if="loggedIn()">Since you are logged in, you could <a href="suggestions/">monitor possible platform addition or change suggestions</a> that other users handed in.</p>
+
+<img src="resources/img/ontologyOverview.svg" />

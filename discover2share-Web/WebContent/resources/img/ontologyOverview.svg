@@ -1,0 +1,1661 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generiert durch Microsoft Visio, SVG Export Ontology overview.svg Page-1 -->
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events"
+		xmlns:v="http://schemas.microsoft.com/visio/2003/SVGExtensions/" width="11.8142in" height="9.73417in"
+		viewBox="0 0 850.624 700.86" xml:space="preserve" color-interpolation-filters="sRGB" class="st15">
+	<v:documentProperties v:langID="1031" v:metric="true" v:viewMarkup="false">
+		<v:userDefs>
+			<v:ud v:nameU="msvSubprocessMaster" v:prompt="" v:val="VT4(Rectangle)"/>
+			<v:ud v:nameU="msvNoAutoConnect" v:val="VT0(1):26"/>
+		</v:userDefs>
+	</v:documentProperties>
+
+	<style type="text/css">
+	<![CDATA[
+		.st1 {visibility:visible}
+		.st2 {fill:#5b9bd5;fill-opacity:0.22;filter:url(#filter_2);stroke:#5b9bd5;stroke-dasharray:1.75,1.25;stroke-opacity:0.22}
+		.st3 {fill:#5b9bd5;stroke:#c7c8c8;stroke-dasharray:1.75,1.25;stroke-width:0.25}
+		.st4 {fill:#feffff;font-family:Calibri;font-size:0.833336em}
+		.st5 {font-size:1em}
+		.st6 {marker-end:url(#mrkr4-200);stroke:#5b9bd5;stroke-linecap:round;stroke-linejoin:round;stroke-width:1}
+		.st7 {fill:#5b9bd5;fill-opacity:1;stroke:#5b9bd5;stroke-opacity:1;stroke-width:0.28409090909091}
+		.st8 {fill:#ffffff;stroke:none;stroke-linecap:butt;stroke-width:7.2}
+		.st9 {fill:#4f87bb;font-family:Calibri;font-size:0.666664em}
+		.st10 {marker-end:url(#mrkr4-200);stroke:#5b9bd5;stroke-dasharray:7,5;stroke-linecap:round;stroke-linejoin:round;stroke-width:1}
+		.st11 {fill:#ffffff;stroke:none;stroke-linecap:butt}
+		.st12 {fill:#4f87bb;font-family:Calibri;font-size:0.833336em}
+		.st13 {fill:#ffffff;stroke:#e9eff7;stroke-width:0.75}
+		.st14 {fill:#5b9bd5;font-family:Calibri;font-size:0.833336em}
+		.st15 {fill:none;fill-rule:evenodd;font-size:12px;overflow:visible;stroke-linecap:square;stroke-miterlimit:3}
+	]]>
+	</style>
+
+	<defs id="Markers">
+		<g id="lend4">
+			<path d="M 2 1 L 0 0 L 2 -1 L 2 1 " style="stroke:none"/>
+		</g>
+		<marker id="mrkr4-200" class="st7" v:arrowType="4" v:arrowSize="2" v:setback="7.04" refX="-7.04" orient="auto"
+				markerUnits="strokeWidth" overflow="visible">
+			<use xlink:href="#lend4" transform="scale(-3.52,-3.52) "/>
+		</marker>
+	</defs>
+	<defs id="Filters">
+		<filter id="filter_2">
+			<feGaussianBlur stdDeviation="2"/>
+		</filter>
+	</defs>
+	<g v:mID="0" v:index="1" v:groupContext="foregroundPage">
+		<v:userDefs>
+			<v:ud v:nameU="msvThemeOrder" v:val="VT0(0):26"/>
+		</v:userDefs>
+		<title>Zeichenblatt-1</title>
+		<v:pageProperties v:drawingScale="0.0393701" v:pageScale="0.0393701" v:drawingUnits="24" v:shadowOffsetX="8.50394"
+				v:shadowOffsetY="-8.50394"/>
+		<v:layer v:name="Verbinder" v:index="0"/>
+		<g id="shape1-1" v:mID="1" v:groupContext="shape" transform="translate(369.691,-314.844)">
+			<title>Ellipse</title>
+			<desc>P2P SCC Platform</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="40.3937" cy="673.931" width="70.69" height="47.126"/>
+			<g id="shadow1-2" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 673.93 A40.3937 26.9291 0 0 1 80.79 673.93 A40.3937 26.9291 0 0 1 0 673.93 Z" class="st2"/>
+			</g>
+			<path d="M0 673.93 A40.3937 26.9291 0 0 1 80.79 673.93 A40.3937 26.9291 0 0 1 0 673.93 Z" class="st3"/>
+			<text x="23.93" y="670.93" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>P2P SCC <tspan
+						x="22.69" dy="1.2em" class="st5">Platform</tspan></text>		</g>
+		<g id="shape2-8" v:mID="2" v:groupContext="shape" transform="translate(467.486,-448.545)">
+			<title>Ellipse.2</title>
+			<desc>Cosumer Involvement</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow2-9" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="17.32" y="677.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Cosumer <tspan
+						x="9.97" dy="1.2em" class="st5">Involvement</tspan></text>		</g>
+		<g id="shape3-15" v:mID="3" v:groupContext="shape" transform="translate(502.919,-507.127)">
+			<title>Ellipse.3</title>
+			<desc>Full-service</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow3-16" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="12.49" y="683.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Full-service</text>		</g>
+		<g id="shape4-21" v:mID="4" v:groupContext="shape" transform="translate(566.699,-462.718)">
+			<title>Ellipse.4</title>
+			<desc>Self-service</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow4-22" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="12.25" y="683.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Self-service</text>		</g>
+		<g id="shape5-27" v:mID="5" v:groupContext="shape" transform="translate(587.959,-527.442)">
+			<title>Ellipse.5</title>
+			<desc>In-Between</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow5-28" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="11.96" y="683.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>In-Between</text>		</g>
+		<g id="shape6-33" v:mID="6" v:groupContext="shape" transform="translate(559.612,-363.505)">
+			<title>Ellipse.6</title>
+			<desc>Market Integration</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow6-34" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="20.58" y="677.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Market <tspan
+						x="12.81" dy="1.2em" class="st5">Integration</tspan></text>		</g>
+		<g id="shape7-40" v:mID="7" v:groupContext="shape" transform="translate(644.651,-454.214)">
+			<title>Ellipse.7</title>
+			<desc>Geographic Scope</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow7-41" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="12.15" y="677.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Geographic <tspan
+						x="23.27" dy="1.2em" class="st5">Scope</tspan></text>		</g>
+		<g id="shape8-47" v:mID="8" v:groupContext="shape" transform="translate(750.951,-535.474)">
+			<title>Ellipse.8</title>
+			<desc>City-wide</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow8-48" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="16.31" y="683.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>City-wide</text>		</g>
+		<g id="shape9-53" v:mID="9" v:groupContext="shape" transform="translate(663.077,-535.474)">
+			<title>Ellipse.9</title>
+			<desc>Neighborhood-wide</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="40.3937" cy="680.545" width="70.69" height="35.5512"/>
+			<g id="shadow9-54" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A40.3937 20.315 0 1 1 80.79 680.55 A40.3937 20.315 0 0 1 0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A40.3937 20.315 0 1 1 80.79 680.55 A40.3937 20.315 0 0 1 0 680.55 Z" class="st3"/>
+			<text x="9.49" y="677.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Neighborhood-<tspan
+						x="30.56" dy="1.2em" class="st5">wide</tspan></text>		</g>
+		<g id="shape10-60" v:mID="10" v:groupContext="shape" transform="translate(750.951,-484.923)">
+			<title>Ellipse.10</title>
+			<desc>State-wide</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow10-61" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="13.54" y="683.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>State-wide</text>		</g>
+		<g id="shape21-66" v:mID="21" v:groupContext="shape" transform="translate(750.951,-442.403)">
+			<title>Ellipse.21</title>
+			<desc>Country-wide</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow21-67" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="17.66" y="677.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Country-<tspan
+						x="25.6" dy="1.2em" class="st5">wide</tspan></text>		</g>
+		<g id="shape22-73" v:mID="22" v:groupContext="shape" transform="translate(743.864,-399.883)">
+			<title>Ellipse.22</title>
+			<desc>Region-wide</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow22-74" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="10.1" y="683.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Region-wide</text>		</g>
+		<g id="shape23-79" v:mID="23" v:groupContext="shape" transform="translate(665.911,-393.742)">
+			<title>Ellipse.23</title>
+			<desc>Global</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow23-80" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="22.33" y="683.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Global</text>		</g>
+		<g id="shape24-85" v:mID="24" v:groupContext="shape" transform="translate(672.998,-337.049)">
+			<title>Ellipse.24</title>
+			<desc>Market Offering</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow24-86" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="20.58" y="677.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Market <tspan
+						x="18.71" dy="1.2em" class="st5">Offering</tspan></text>		</g>
+		<g id="shape25-92" v:mID="25" v:groupContext="shape" transform="translate(758.037,-357.364)">
+			<title>Ellipse.25</title>
+			<desc>Integrated</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow25-93" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="14.1" y="683.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Integrated</text>		</g>
+		<g id="shape26-98" v:mID="26" v:groupContext="shape" transform="translate(758.037,-312.482)">
+			<title>Ellipse.26</title>
+			<desc>Separated</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow26-99" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="14.7" y="683.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Separated</text>		</g>
+		<g id="shape27-104" v:mID="27" v:groupContext="shape" transform="translate(595.045,-264.293)">
+			<title>Ellipse.27</title>
+			<desc>Market Mediation</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow27-105" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="20.58" y="677.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Market <tspan
+						x="14.41" dy="1.2em" class="st5">Mediation</tspan></text>		</g>
+		<g id="shape28-111" v:mID="28" v:groupContext="shape" transform="translate(623.392,-201.458)">
+			<title>Ellipse.28</title>
+			<desc>For profit</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow28-112" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="16.27" y="683.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>For profit</text>		</g>
+		<g id="shape29-117" v:mID="29" v:groupContext="shape" transform="translate(680.085,-286.497)">
+			<title>Ellipse.29</title>
+			<desc>Not for profit</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow29-118" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="20.86" y="677.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Not for <tspan
+						x="24.08" dy="1.2em" class="st5">profit</tspan></text>		</g>
+		<g id="shape30-124" v:mID="30" v:groupContext="shape" transform="translate(630.478,-138.623)">
+			<title>Ellipse.30</title>
+			<desc>Profit from Users</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow30-125" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="13.09" y="677.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Profit from <tspan
+						x="24.08" dy="1.2em" class="st5">Users</tspan></text>		</g>
+		<g id="shape31-131" v:mID="31" v:groupContext="shape" transform="translate(715.518,-209.49)">
+			<title>Ellipse.31</title>
+			<desc>Indirect profit</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow31-132" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="19.75" y="677.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Indirect <tspan
+						x="24.08" dy="1.2em" class="st5">profit</tspan></text>		</g>
+		<g id="shape32-138" v:mID="32" v:groupContext="shape" transform="translate(748.116,-264.293)">
+			<title>Ellipse.32</title>
+			<desc>Profit from advertisement</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="40.3937" cy="680.545" width="70.69" height="35.5512"/>
+			<g id="shadow32-139" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A40.3937 20.315 0 1 1 80.79 680.55 A40.3937 20.315 0 0 1 0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A40.3937 20.315 0 1 1 80.79 680.55 A40.3937 20.315 0 0 1 0 680.55 Z" class="st3"/>
+			<text x="18.05" y="677.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Profit from <tspan
+						x="10.83" dy="1.2em" class="st5">advertisement</tspan></text>		</g>
+		<g id="shape56-145" v:mID="56" v:groupContext="shape" transform="translate(758.037,-158.938)">
+			<title>Ellipse.56</title>
+			<desc>Profit from user data</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow56-146" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="13.09" y="677.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Profit from <tspan
+						x="16.4" dy="1.2em" class="st5">user data</tspan></text>		</g>
+		<g id="shape57-152" v:mID="57" v:groupContext="shape" transform="translate(750.951,-110.277)">
+			<title>Ellipse.57</title>
+			<desc>Membership fee</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow57-153" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="9.46" y="677.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Membership <tspan
+						x="28.93" dy="1.2em" class="st5">fee</tspan></text>		</g>
+		<g id="shape58-159" v:mID="58" v:groupContext="shape" transform="translate(750.951,-67.7572)">
+			<title>Ellipse.58</title>
+			<desc>Per transaction</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow58-160" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="28.62" y="677.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Per <tspan x="12.44"
+						dy="1.2em" class="st5">transaction</tspan></text>		</g>
+		<g id="shape59-166" v:mID="59" v:groupContext="shape" transform="translate(665.911,-80.0407)">
+			<title>Ellipse.59</title>
+			<desc>Profit from peer consumers</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow59-167" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="13.09" y="671.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Profit from <tspan
+						x="26.09" dy="1.2em" class="st5">peer </tspan><tspan x="13.29" dy="1.2em" class="st5">consumers</tspan></text>		</g>
+		<g id="shape60-174" v:mID="60" v:groupContext="shape" transform="translate(587.959,-88.0722)">
+			<title>Ellipse.60</title>
+			<desc>Profit from peer providers</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow60-175" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="13.09" y="671.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Profit from <tspan
+						x="26.09" dy="1.2em" class="st5">peer </tspan><tspan x="16.21" dy="1.2em" class="st5">providers</tspan></text>		</g>
+		<g id="shape61-182" v:mID="61" v:groupContext="shape" transform="translate(559.612,-31.3793)">
+			<title>Ellipse.61</title>
+			<desc>Per listing</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow61-183" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="15.44" y="683.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Per listing</text>		</g>
+		<g id="shape62-188" v:mID="62" v:groupContext="shape" transform="translate(637.565,-25.2376)">
+			<title>Ellipse.62</title>
+			<desc>Profit from both</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow62-189" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="13.09" y="677.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Profit from <tspan
+						x="25.87" dy="1.2em" class="st5">both</tspan></text>		</g>
+		<g id="shape63-195" v:mID="63" v:groupContext="shape" v:layerMember="0" transform="translate(427.77,-365.984)">
+			<title>Dynamischer Verbinder</title>
+			<desc>has_consumer_involvement</desc>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="46.8026" cy="643.811" width="101.8" height="17.6036"/>
+			<path d="M0 700.86 L57.31 622.41" class="st6"/>
+			<rect v:rectContext="textBkgnd" x="0.810895" y="639.011" width="91.9836" height="9.59985" class="st8"/>
+			<text x="0.81" y="646.21" class="st9" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>has_consumer_involvement</text>		</g>
+		<g id="shape67-203" v:mID="67" v:groupContext="shape" v:layerMember="0" transform="translate(447.303,-352.239)">
+			<title>Dynamischer Verbinder.67</title>
+			<desc>has_market_integration</desc>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="56.1546" cy="685.069" width="88.28" height="17.6036"/>
+			<path d="M0 700.86 L105.53 671.18" class="st6"/>
+			<rect v:rectContext="textBkgnd" x="16.9227" y="680.27" width="78.4641" height="9.59985" class="st8"/>
+			<text x="16.92" y="687.47" class="st9" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>has_market_integration</text>		</g>
+		<g id="shape68-210" v:mID="68" v:groupContext="shape" v:layerMember="0" transform="translate(611.821,-401.714)">
+			<title>Dynamischer Verbinder.68</title>
+			<desc>has_scope</desc>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="25.7441" cy="673.4" width="43.88" height="17.6036"/>
+			<path d="M0 700.86 L46.67 651.08" class="st6"/>
+			<rect v:rectContext="textBkgnd" x="8.71311" y="668.6" width="34.0623" height="9.59985" class="st8"/>
+			<text x="8.71" y="675.8" class="st9" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>has_scope</text>		</g>
+		<g id="shape75-217" v:mID="75" v:groupContext="shape" v:layerMember="0" transform="translate(627.864,-377.679)">
+			<title>Dynamischer Verbinder.75</title>
+			<desc>markets_are</desc>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="23.8737" cy="703.695" width="50.84" height="17.6036"/>
+			<path d="M0 702.38 L40.89 711.92" class="st6"/>
+			<rect v:rectContext="textBkgnd" x="3.36218" y="698.895" width="41.0232" height="9.59985" class="st8"/>
+			<text x="3.36" y="706.09" class="st9" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>markets_are</text>		</g>
+		<g id="shape78-224" v:mID="78" v:groupContext="shape" v:layerMember="0" transform="translate(447.729,-332.009)">
+			<title>Dynamischer Verbinder.78</title>
+			<desc>has_market_mediation</desc>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="75.2329" cy="720.374" width="85.44" height="17.6036"/>
+			<path d="M0 700.86 L143.65 738.12" class="st6"/>
+			<rect v:rectContext="textBkgnd" x="37.4229" y="715.574" width="75.6203" height="9.59985" class="st8"/>
+			<text x="37.42" y="722.77" class="st9" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>has_market_mediation</text>		</g>
+		<g id="shape93-231" v:mID="93" v:groupContext="shape" transform="translate(467.486,-201.458)">
+			<title>Ellipse.93</title>
+			<desc>Money Flow</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow93-232" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="10.36" y="683.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Money Flow</text>		</g>
+		<g id="shape94-237" v:mID="94" v:groupContext="shape" transform="translate(524.179,-130.592)">
+			<title>Ellipse.94</title>
+			<desc>C2C</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow94-238" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="27.57" y="683.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>C2C</text>		</g>
+		<g id="shape95-243" v:mID="95" v:groupContext="shape" transform="translate(552.525,-173.112)">
+			<title>Ellipse.95</title>
+			<desc>C2B2C</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow95-244" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="22.31" y="683.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>C2B2C</text>		</g>
+		<g id="shape96-249" v:mID="96" v:groupContext="shape" transform="translate(552.525,-221.773)">
+			<title>Ellipse.96</title>
+			<desc>Free</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow96-250" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="26.42" y="683.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Free</text>		</g>
+		<g id="shape97-255" v:mID="97" v:groupContext="shape" v:layerMember="0" transform="translate(428.6,-317.839)">
+			<title>Dynamischer Verbinder.97</title>
+			<desc>has_money_flow</desc>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="38.8861" cy="740.234" width="65.58" height="17.6036"/>
+			<path d="M0 700.86 L55.65 772.79" class="st6"/>
+			<rect v:rectContext="textBkgnd" x="11.0055" y="735.434" width="55.7614" height="9.59985" class="st8"/>
+			<text x="11.01" y="742.63" class="st9" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>has_money_flow</text>		</g>
+		<g id="shape101-262" v:mID="101" v:groupContext="shape" transform="translate(148.588,-261.93)">
+			<title>Ellipse.101</title>
+			<desc>P2P SCC Pattern</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow101-263" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="18.97" y="677.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>P2P SCC <tspan
+						x="20.25" dy="1.2em" class="st5">Pattern</tspan></text>		</g>
+		<g id="shape102-269" v:mID="102" v:groupContext="shape" transform="translate(24.8562,-280.356)">
+			<title>Ellipse.102</title>
+			<desc>Deferred</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow102-270" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="17.25" y="683.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Deferred</text>		</g>
+		<g id="shape103-275" v:mID="103" v:groupContext="shape" transform="translate(24.8562,-237.836)">
+			<title>Ellipse.103</title>
+			<desc>Immediate</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow103-276" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="13.36" y="683.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Immediate</text>		</g>
+		<g id="shape104-281" v:mID="104" v:groupContext="shape" transform="translate(24.8562,-195.316)">
+			<title>Ellipse.104</title>
+			<desc>Recurrent</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow104-282" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="15.21" y="683.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Recurrent</text>		</g>
+		<g id="shape105-287" v:mID="105" v:groupContext="shape" transform="translate(162.762,-448.545)">
+			<title>Ellipse.105</title>
+			<desc>Resource Owner</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow105-288" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="16.67" y="677.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Resource <tspan
+						x="21.69" dy="1.2em" class="st5">Owner</tspan></text>		</g>
+		<g id="shape106-294" v:mID="106" v:groupContext="shape" transform="translate(79.2142,-428.23)">
+			<title>Ellipse.106</title>
+			<desc>Private</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow106-295" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="21.14" y="683.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Private</text>		</g>
+		<g id="shape107-300" v:mID="107" v:groupContext="shape" transform="translate(91.8955,-505.238)">
+			<title>Ellipse.107</title>
+			<desc>Business</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow107-301" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="17.96" y="683.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Business</text>		</g>
+		<g id="shape108-306" v:mID="108" v:groupContext="shape" transform="translate(21.0294,-470.749)">
+			<title>Ellipse.108</title>
+			<desc>Private and business</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow108-307" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="12.36" y="677.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Private and <tspan
+						x="18.05" dy="1.2em" class="st5">business</tspan></text>		</g>
+		<g id="shape109-313" v:mID="109" v:groupContext="shape" v:layerMember="0" transform="translate(372.515,-331.88)">
+			<title>Dynamischer Verbinder.109</title>
+			<desc>has_p2p_scc_pattern</desc>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="-78.1472" cy="721.438" width="79.66" height="17.6036"/>
+			<path d="M0 700.86 L-149.49 740.22" class="st6"/>
+			<rect v:rectContext="textBkgnd" x="-113.067" y="716.638" width="69.8395" height="9.59985" class="st8"/>
+			<text x="-113.07" y="723.84" class="st9" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>has_p2p_scc_pattern</text>		</g>
+		<g id="shape113-320" v:mID="113" v:groupContext="shape" v:layerMember="0" transform="translate(382.645,-361.535)">
+			<title>Dynamischer Verbinder.113</title>
+			<desc>has_resource_owner</desc>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="-100.828" cy="639.363" width="78.33" height="17.6036"/>
+			<path d="M0 700.86 L-143.3 597.65" class="st6"/>
+			<rect v:rectContext="textBkgnd" x="-135.086" y="634.563" width="68.5154" height="9.59985" class="st8"/>
+			<text x="-135.09" y="641.76" class="st9" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>has_resource_owner</text>		</g>
+		<g id="shape118-327" v:mID="118" v:groupContext="shape" v:layerMember="0" transform="translate(83.4758,-501.222)">
+			<title>Dynamischer Verbinder.118</title>
+			<path d="M0 697.87 L10.51 692.76" class="st10"/>
+		</g>
+		<g id="shape119-332" v:mID="119" v:groupContext="shape" v:layerMember="0" transform="translate(78.3339,-476.891)">
+			<title>Dynamischer Verbinder.119</title>
+			<path d="M0 702.67 L8.76 709.07" class="st10"/>
+		</g>
+		<g id="shape120-337" v:mID="120" v:groupContext="shape" v:layerMember="0" transform="translate(147.969,-509.04)">
+			<title>Dynamischer Verbinder.120</title>
+			<path d="M0 700.86 L24.09 720.13" class="st10"/>
+		</g>
+		<g id="shape121-342" v:mID="121" v:groupContext="shape" v:layerMember="0" transform="translate(147.268,-451.616)">
+			<title>Dynamischer Verbinder.121</title>
+			<path d="M0 696 L11.47 693.21" class="st10"/>
+		</g>
+		<g id="shape122-347" v:mID="122" v:groupContext="shape" v:layerMember="0" transform="translate(94.5844,-298.545)">
+			<title>Dynamischer Verbinder.122</title>
+			<path d="M0 703.84 L48.18 711.02" class="st10"/>
+		</g>
+		<g id="shape123-352" v:mID="123" v:groupContext="shape" v:layerMember="0" transform="translate(93.8399,-263.112)">
+			<title>Dynamischer Verbinder.123</title>
+			<path d="M0 699.29 L49.72 689.61" class="st10"/>
+		</g>
+		<g id="shape124-357" v:mID="124" v:groupContext="shape" v:layerMember="0" transform="translate(86.1193,-229.538)">
+			<title>Dynamischer Verbinder.124</title>
+			<path d="M0 700.86 L65.87 665.4" class="st10"/>
+		</g>
+		<g id="shape125-362" v:mID="125" v:groupContext="shape" v:layerMember="0" transform="translate(544.84,-169.372)">
+			<title>Dynamischer Verbinder.125</title>
+			<path d="M0 700.86 L-22.75 672.42" class="st10"/>
+		</g>
+		<g id="shape126-367" v:mID="126" v:groupContext="shape" v:layerMember="0" transform="translate(557.326,-200.513)">
+			<title>Dynamischer Verbinder.126</title>
+			<path d="M0 697.74 L-17.1 692.04" class="st10"/>
+		</g>
+		<g id="shape127-372" v:mID="127" v:groupContext="shape" v:layerMember="0" transform="translate(555.251,-239.017)">
+			<title>Dynamischer Verbinder.127</title>
+			<path d="M0 705.6 L-12.78 708.66" class="st10"/>
+		</g>
+		<g id="shape128-377" v:mID="128" v:groupContext="shape" v:layerMember="0" transform="translate(651.738,-241.441)">
+			<title>Dynamischer Verbinder.128</title>
+			<path d="M-1.79 700.86 L-9.49 683.78" class="st10"/>
+		</g>
+		<g id="shape129-382" v:mID="129" v:groupContext="shape" v:layerMember="0" transform="translate(687.588,-296.546)">
+			<title>Dynamischer Verbinder.129</title>
+			<path d="M0 703.1 L-15.25 709.92" class="st10"/>
+		</g>
+		<g id="shape130-387" v:mID="130" v:groupContext="shape" v:layerMember="0" transform="translate(715.92,-232.875)">
+			<title>Dynamischer Verbinder.130</title>
+			<path d="M0 706.98 L-15.05 708.3" class="st10"/>
+		</g>
+		<g id="shape131-392" v:mID="131" v:groupContext="shape" v:layerMember="0" transform="translate(669.455,-179.253)">
+			<title>Dynamischer Verbinder.131</title>
+			<path d="M-3.54 700.86 L-8.49 685.36" class="st10"/>
+		</g>
+		<g id="shape132-397" v:mID="132" v:groupContext="shape" v:layerMember="0" transform="translate(637.565,-126.576)">
+			<title>Dynamischer Verbinder.132</title>
+			<path d="M1.22 700.75 L8.42 692.18" class="st10"/>
+		</g>
+		<g id="shape133-402" v:mID="133" v:groupContext="shape" v:layerMember="0" transform="translate(602.132,-71.2227)">
+			<title>Dynamischer Verbinder.133</title>
+			<path d="M2.68 700.86 L8.35 689.52" class="st10"/>
+		</g>
+		<g id="shape134-407" v:mID="134" v:groupContext="shape" v:layerMember="0" transform="translate(658.387,-64.0599)">
+			<title>Dynamischer Verbinder.134</title>
+			<path d="M0 700.86 L-16.02 680.57" class="st10"/>
+		</g>
+		<g id="shape135-412" v:mID="135" v:groupContext="shape" v:layerMember="0" transform="translate(680.085,-65.0291)">
+			<title>Dynamischer Verbinder.135</title>
+			<path d="M2.99 700.86 L7.95 691.26" class="st10"/>
+		</g>
+		<g id="shape136-417" v:mID="136" v:groupContext="shape" v:layerMember="0" transform="translate(690.714,-119.549)">
+			<title>Dynamischer Verbinder.136</title>
+			<path d="M-0.98 700.86 L-9.55 686.69" class="st10"/>
+		</g>
+		<g id="shape137-422" v:mID="137" v:groupContext="shape" v:layerMember="0" transform="translate(753.604,-137.679)">
+			<title>Dynamischer Verbinder.137</title>
+			<path d="M0 700.23 L-48.06 688.93" class="st10"/>
+		</g>
+		<g id="shape138-427" v:mID="138" v:groupContext="shape" v:layerMember="0" transform="translate(761.652,-102.62)">
+			<title>Dynamischer Verbinder.138</title>
+			<path d="M0 700.86 L-64.94 662.66" class="st10"/>
+		</g>
+		<g id="shape139-432" v:mID="139" v:groupContext="shape" v:layerMember="0" transform="translate(779.297,-197.442)">
+			<title>Dynamischer Verbinder.139</title>
+			<path d="M-1.22 700.75 L-8.42 692.18" class="st10"/>
+		</g>
+		<g id="shape140-437" v:mID="140" v:groupContext="shape" v:layerMember="0" transform="translate(776.715,-265.402)">
+			<title>Dynamischer Verbinder.140</title>
+			<path d="M-1.37 700.86 L-8.83 711.74" class="st10"/>
+		</g>
+		<g id="shape141-442" v:mID="141" v:groupContext="shape" v:layerMember="0" transform="translate(761.827,-337.993)">
+			<title>Dynamischer Verbinder.141</title>
+			<path d="M0 696.92 L-14.99 692.59" class="st10"/>
+		</g>
+		<g id="shape142-447" v:mID="142" v:groupContext="shape" v:layerMember="0" transform="translate(760.763,-374.608)">
+			<title>Dynamischer Verbinder.142</title>
+			<path d="M0 705.6 L-12.78 708.66" class="st10"/>
+		</g>
+		<g id="shape144-452" v:mID="144" v:groupContext="shape" v:layerMember="0" transform="translate(697.801,-433.971)">
+			<title>Dynamischer Verbinder.144</title>
+			<path d="M-3.46 700.86 L-8.38 686.86" class="st10"/>
+		</g>
+		<g id="shape145-457" v:mID="145" v:groupContext="shape" v:layerMember="0" transform="translate(753.674,-434.23)">
+			<title>Dynamischer Verbinder.145</title>
+			<path d="M0 700.86 L-41.79 677.97" class="st10"/>
+		</g>
+		<g id="shape146-462" v:mID="146" v:groupContext="shape" v:layerMember="0" transform="translate(751.598,-461.537)">
+			<title>Dynamischer Verbinder.146</title>
+			<path d="M0 695.81 L-29.73 692.51" class="st10"/>
+		</g>
+		<g id="shape147-467" v:mID="147" v:groupContext="shape" v:layerMember="0" transform="translate(754.741,-496.97)">
+			<title>Dynamischer Verbinder.147</title>
+			<path d="M0 701.73 L-36.25 712.21" class="st10"/>
+		</g>
+		<g id="shape148-472" v:mID="148" v:groupContext="shape" v:layerMember="0" transform="translate(765.124,-539.537)">
+			<title>Dynamischer Verbinder.148</title>
+			<path d="M0 700.86 L-58.19 745.34" class="st10"/>
+		</g>
+		<g id="shape149-477" v:mID="149" v:groupContext="shape" v:layerMember="0" transform="translate(698.855,-535.683)">
+			<title>Dynamischer Verbinder.149</title>
+			<path d="M-1.17 700.86 L-11.06 735.21" class="st10"/>
+		</g>
+		<g id="shape151-482" v:mID="151" v:groupContext="shape" v:layerMember="0" transform="translate(567.75,-483.033)">
+			<title>Dynamischer Verbinder.151</title>
+			<path d="M0 705.77 L-23.48 709.13" class="st10"/>
+		</g>
+		<g id="shape152-487" v:mID="152" v:groupContext="shape" v:layerMember="0" transform="translate(527.722,-508.249)">
+			<title>Dynamischer Verbinder.152</title>
+			<path d="M-0.98 700.86 L-9.55 715.03" class="st10"/>
+		</g>
+		<g id="shape153-492" v:mID="153" v:groupContext="shape" transform="translate(172.683,-391.852)">
+			<title>Ellipse.153</title>
+			<desc>Resource Type</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow153-493" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="16.67" y="677.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Resource <tspan
+						x="25.62" dy="1.2em" class="st5">Type</tspan></text>		</g>
+		<g id="shape154-499" v:mID="154" v:groupContext="shape" transform="translate(127.329,-549.647)">
+			<title>Ellipse.154</title>
+			<desc>Smartphone App</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow154-500" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="10.32" y="677.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Smartphone <tspan
+						x="27.29" dy="1.2em" class="st5">App</tspan></text>		</g>
+		<g id="shape155-506" v:mID="155" v:groupContext="shape" transform="translate(35.2026,-535.474)">
+			<title>Ellipse.155</title>
+			<desc>Android app</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow155-507" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="10.35" y="683.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Android app</text>		</g>
+		<g id="shape156-512" v:mID="156" v:groupContext="shape" transform="translate(28.116,-577.993)">
+			<title>Ellipse.156</title>
+			<desc>iOS app</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow156-513" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="19.9" y="683.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>iOS app</text>		</g>
+		<g id="shape157-518" v:mID="157" v:groupContext="shape" transform="translate(91.8955,-606.34)">
+			<title>Ellipse.157</title>
+			<desc>Windows Phone app</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow157-519" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="16.42" y="677.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Windows <tspan
+						x="13.69" dy="1.2em" class="st5">Phone app</tspan></text>		</g>
+		<g id="shape158-525" v:mID="158" v:groupContext="shape" v:layerMember="0" transform="translate(386.427,-363.6)">
+			<title>Dynamischer Verbinder.158</title>
+			<desc>has_app</desc>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="-102.482" cy="606.307" width="40" height="17.6036"/>
+			<path d="M0 700.86 L-199.79 516.53" class="st6"/>
+			<rect v:rectContext="textBkgnd" x="-116.175" y="601.507" width="27.3867" height="9.59985" class="st8"/>
+			<text x="-116.18" y="608.71" class="st9" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>has_app</text>		</g>
+		<g id="shape159-532" v:mID="159" v:groupContext="shape" v:layerMember="0" transform="translate(137.959,-607.531)">
+			<title>Dynamischer Verbinder.159</title>
+			<path d="M1.32 700.86 L9.12 713.33" class="st10"/>
+		</g>
+		<g id="shape160-537" v:mID="160" v:groupContext="shape" v:layerMember="0" transform="translate(95.2624,-591.222)">
+			<title>Dynamischer Verbinder.160</title>
+			<path d="M0 702.83 L29.02 711.13" class="st10"/>
+		</g>
+		<g id="shape161-542" v:mID="161" v:groupContext="shape" v:layerMember="0" transform="translate(106.069,-551.729)">
+			<title>Dynamischer Verbinder.161</title>
+			<path d="M0 696.8 L17.38 692.45" class="st10"/>
+		</g>
+		<g id="shape163-547" v:mID="163" v:groupContext="shape" transform="translate(280.399,-521.301)">
+			<title>Ellipse.163</title>
+			<desc>Sustainable Consumerism</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="40.3937" cy="680.545" width="70.69" height="35.5512"/>
+			<g id="shadow163-548" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A40.3937 20.315 0 1 1 80.79 680.55 A40.3937 20.315 0 1 1 0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A40.3937 20.315 0 1 1 80.79 680.55 A40.3937 20.315 0 1 1 0 680.55 Z" class="st3"/>
+			<text x="17.01" y="677.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Sustainable <tspan
+						x="12.56" dy="1.2em" class="st5">Consumerism</tspan></text>		</g>
+		<g id="shape164-554" v:mID="164" v:groupContext="shape" transform="translate(198.195,-566.058)">
+			<title>Ellipse.164</title>
+			<desc>None</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow164-555" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="24.45" y="683.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>None</text>		</g>
+		<g id="shape165-560" v:mID="165" v:groupContext="shape" transform="translate(205.281,-608.752)">
+			<title>Ellipse.165</title>
+			<desc>Environmental</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="40.3937" cy="680.545" width="70.69" height="35.5512"/>
+			<g id="shadow165-561" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A40.3937 20.315 0 0 1 80.79 680.55 A40.3937 20.315 0 0 1 0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A40.3937 20.315 0 0 1 80.79 680.55 A40.3937 20.315 0 0 1 0 680.55 Z" class="st3"/>
+			<text x="10.59" y="683.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Environmental</text>		</g>
+		<g id="shape166-566" v:mID="166" v:groupContext="shape" transform="translate(261.974,-640.828)">
+			<title>Ellipse.166</title>
+			<desc>Economic</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow166-567" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="15.72" y="683.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Economic</text>		</g>
+		<g id="shape167-572" v:mID="167" v:groupContext="shape" transform="translate(306.732,-597.562)">
+			<title>Ellipse.167</title>
+			<desc>Social</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow167-573" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="23.69" y="683.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Social</text>		</g>
+		<g id="shape168-578" v:mID="168" v:groupContext="shape" v:layerMember="0" transform="translate(261.694,-610.418)">
+			<title>Dynamischer Verbinder.168</title>
+			<path d="M0 700.86 L38.49 745.67" class="st10"/>
+		</g>
+		<g id="shape169-583" v:mID="169" v:groupContext="shape" v:layerMember="0" transform="translate(260.023,-572.82)">
+			<title>Dynamischer Verbinder.169</title>
+			<path d="M0 700.86 L26.24 714.34" class="st10"/>
+		</g>
+		<g id="shape170-588" v:mID="170" v:groupContext="shape" v:layerMember="0" transform="translate(297.407,-640.828)">
+			<title>Dynamischer Verbinder.170</title>
+			<path d="M0 700.86 L17.02 773.05" class="st10"/>
+		</g>
+		<g id="shape171-593" v:mID="171" v:groupContext="shape" v:layerMember="0" transform="translate(338.574,-597.82)">
+			<title>Dynamischer Verbinder.171</title>
+			<path d="M-2.03 700.86 L-10.24 730.17" class="st10"/>
+		</g>
+		<g id="shape172-598" v:mID="172" v:groupContext="shape" v:layerMember="0" transform="translate(397.371,-367.334)">
+			<title>Dynamischer Verbinder.172</title>
+			<desc>promotes</desc>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="-38.2891" cy="623.877" width="41.43" height="17.6036"/>
+			<path d="M0 700.86 L-73.44 553.2" class="st6"/>
+			<rect v:rectContext="textBkgnd" x="-54.0936" y="619.077" width="31.609" height="9.59985" class="st11"/>
+			<text x="-54.09" y="626.28" class="st9" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>promotes</text>		</g>
+		<g id="shape173-605" v:mID="173" v:groupContext="shape" transform="translate(148.588,-195.316)">
+			<title>Ellipse.173</title>
+			<desc>Temporality</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow173-606" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="10.88" y="683.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Temporality</text>		</g>
+		<g id="shape174-611" v:mID="174" v:groupContext="shape" transform="translate(35.2026,-150.907)">
+			<title>Ellipse.174</title>
+			<desc>Once</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow174-612" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="24.89" y="683.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Once</text>		</g>
+		<g id="shape175-617" v:mID="175" v:groupContext="shape" transform="translate(106.069,-136.734)">
+			<title>Ellipse.175</title>
+			<desc>Often</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow175-618" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="23.81" y="683.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Often</text>		</g>
+		<g id="shape177-623" v:mID="177" v:groupContext="shape" v:layerMember="0" transform="translate(176.935,-261.93)">
+			<title>Dynamischer Verbinder.177</title>
+			<desc>has_temporality</desc>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="7.08661" cy="711.254" width="63.03" height="17.6036"/>
+			<path d="M7.09 700.86 L7.09 719.8" class="st6"/>
+			<rect v:rectContext="textBkgnd" x="-19.5204" y="706.454" width="53.2142" height="9.59985" class="st8"/>
+			<text x="-19.52" y="713.65" class="st9" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>has_temporality</text>		</g>
+		<g id="shape178-630" v:mID="178" v:groupContext="shape" v:layerMember="0" transform="translate(99.8935,-182.681)">
+			<title>Dynamischer Verbinder.178</title>
+			<path d="M0 700.86 L48.32 681.94" class="st10"/>
+		</g>
+		<g id="shape179-635" v:mID="179" v:groupContext="shape" v:layerMember="0" transform="translate(155.115,-175.804)">
+			<title>Dynamischer Verbinder.179</title>
+			<path d="M0 700.86 L11.16 685.49" class="st10"/>
+		</g>
+		<g id="shape181-640" v:mID="181" v:groupContext="shape" transform="translate(389.533,-448.545)">
+			<title>Ellipse.181</title>
+			<desc>Trust Contribution</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow181-641" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="25" y="677.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Trust <tspan x="9.6"
+						dy="1.2em" class="st5">Contribution</tspan></text>		</g>
+		<g id="shape182-647" v:mID="182" v:groupContext="shape" transform="translate(375.36,-507.127)">
+			<title>Ellipse.182</title>
+			<desc>Ratings</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow182-648" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="20.56" y="683.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Ratings</text>		</g>
+		<g id="shape183-653" v:mID="183" v:groupContext="shape" transform="translate(432.053,-604.45)">
+			<title>Ellipse.183</title>
+			<desc>Referral</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow183-654" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="19.19" y="683.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Referral</text>		</g>
+		<g id="shape184-659" v:mID="184" v:groupContext="shape" transform="translate(446.226,-555.789)">
+			<title>Ellipse.184</title>
+			<desc>Value-added services</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow184-660" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="9.64" y="677.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Value-added <tspan
+						x="19.28" dy="1.2em" class="st5">services</tspan></text>		</g>
+		<g id="shape185-666" v:mID="185" v:groupContext="shape" transform="translate(517.092,-569.962)">
+			<title>Ellipse.185</title>
+			<desc>Vouching</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow185-667" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="16.46" y="683.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Vouching</text>		</g>
+		<g id="shape186-672" v:mID="186" v:groupContext="shape" transform="translate(361.187,-563.82)">
+			<title>Ellipse.186</title>
+			<desc>Provider ratings</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow186-673" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="18.21" y="677.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Provider <tspan
+						x="21.54" dy="1.2em" class="st5">ratings</tspan></text>		</g>
+		<g id="shape187-679" v:mID="187" v:groupContext="shape" transform="translate(368.273,-621.458)">
+			<title>Ellipse.187</title>
+			<desc>Provider and consumer ratings</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="673.931" width="62.01" height="47.126"/>
+			<g id="shadow187-680" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 673.93 A35.4331 26.9291 0 0 1 70.87 673.93 A35.4331 26.9291 0 0 1 0 673.93 Z" class="st2"/>
+			</g>
+			<path d="M0 673.93 A35.4331 26.9291 0 0 1 70.87 673.93 A35.4331 26.9291 0 0 1 0 673.93 Z" class="st3"/>
+			<text x="9.43" y="664.93" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Provider and <tspan
+						x="15.25" dy="1.2em" class="st5">consumer </tspan><tspan x="21.54" dy="1.2em" class="st5">ratings</tspan></text>		</g>
+		<g id="shape188-687" v:mID="188" v:groupContext="shape" v:layerMember="0" transform="translate(406.888,-621.552)">
+			<title>Dynamischer Verbinder.188</title>
+			<path d="M-6.14 700.86 L-7.26 711.01" class="st10"/>
+		</g>
+		<g id="shape189-692" v:mID="189" v:groupContext="shape" v:layerMember="0" transform="translate(396.62,-564.026)">
+			<title>Dynamischer Verbinder.189</title>
+			<path d="M5.03 700.86 L7.44 710.5" class="st10"/>
+		</g>
+		<g id="shape190-697" v:mID="190" v:groupContext="shape" v:layerMember="0" transform="translate(410.793,-507.32)">
+			<title>Dynamischer Verbinder.190</title>
+			<path d="M4.87 700.86 L7.65 712.36" class="st10"/>
+		</g>
+		<g id="shape191-702" v:mID="191" v:groupContext="shape" v:layerMember="0" transform="translate(456.262,-605.496)">
+			<title>Dynamischer Verbinder.191</title>
+			<path d="M0 700.86 L-30.7 753.56" class="st10"/>
+		</g>
+		<g id="shape192-707" v:mID="192" v:groupContext="shape" v:layerMember="0" transform="translate(471.382,-556.662)">
+			<title>Dynamischer Verbinder.192</title>
+			<path d="M0 700.86 L-32.85 763" class="st10"/>
+		</g>
+		<g id="shape193-712" v:mID="193" v:groupContext="shape" v:layerMember="0" transform="translate(534.243,-572.875)">
+			<title>Dynamischer Verbinder.193</title>
+			<path d="M0 700.86 L-85.9 782.62" class="st10"/>
+		</g>
+		<g id="shape194-717" v:mID="194" v:groupContext="shape" v:layerMember="0" transform="translate(410.824,-368.62)">
+			<title>Dynamischer Verbinder.194</title>
+			<desc>has_trust_contribution</desc>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="7.05579" cy="656.369" width="84.88" height="17.6036"/>
+			<path d="M2.4 700.86 L10.95 627.88" class="st6"/>
+			<rect v:rectContext="textBkgnd" x="-30.477" y="651.569" width="75.0657" height="9.59985" class="st8"/>
+			<text x="-30.48" y="658.77" class="st9" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>has_trust_contribution</text>		</g>
+		<g id="shape195-724" v:mID="195" v:groupContext="shape" transform="translate(155.675,-343.19)">
+			<title>Ellipse.195</title>
+			<desc>Type of Accessed Object</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow195-725" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="20.33" y="671.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Type of <tspan
+						x="16.8" dy="1.2em" class="st5">Accessed </tspan><tspan x="22.02" dy="1.2em" class="st5">Object</tspan></text>		</g>
+		<g id="shape196-732" v:mID="196" v:groupContext="shape" transform="translate(79.2142,-385.71)">
+			<title>Ellipse.196</title>
+			<desc>Experiential</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow196-733" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="11.34" y="683.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Experiential</text>		</g>
+		<g id="shape197-738" v:mID="197" v:groupContext="shape" transform="translate(91.1496,-306.812)">
+			<title>Ellipse.197</title>
+			<desc>Functional</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow197-739" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="14.14" y="683.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Functional</text>		</g>
+		<g id="shape198-744" v:mID="198" v:groupContext="shape" transform="translate(21.0294,-343.19)">
+			<title>Ellipse.198</title>
+			<desc>Mixed</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow198-745" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="22.73" y="683.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Mixed</text>		</g>
+		<g id="shape199-750" v:mID="199" v:groupContext="shape" v:layerMember="0" transform="translate(78.3339,-377.679)">
+			<title>Dynamischer Verbinder.199</title>
+			<path d="M0 699.05 L8.76 692.65" class="st10"/>
+		</g>
+		<g id="shape200-755" v:mID="200" v:groupContext="shape" v:layerMember="0" transform="translate(82.7359,-352.403)">
+			<title>Dynamischer Verbinder.200</title>
+			<path d="M0 703.39 L11.32 709.26" class="st10"/>
+		</g>
+		<g id="shape201-760" v:mID="201" v:groupContext="shape" v:layerMember="0" transform="translate(151.759,-338.23)">
+			<title>Dynamischer Verbinder.201</title>
+			<path d="M0.09 697.72 L7.95 693.29" class="st10"/>
+		</g>
+		<g id="shape202-765" v:mID="202" v:groupContext="shape" v:layerMember="0" transform="translate(140.082,-391.881)">
+			<title>Dynamischer Verbinder.202</title>
+			<path d="M0 700.86 L19.44 711.67" class="st10"/>
+		</g>
+		<g id="shape203-770" v:mID="203" v:groupContext="shape" v:layerMember="0" transform="translate(370.131,-345.738)">
+			<title>Dynamischer Verbinder.203</title>
+			<desc>accessed_object_has_type</desc>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="-72.0546" cy="693.709" width="96.82" height="17.6036"/>
+			<path d="M0 700.86 L-137.1 687.25" class="st6"/>
+			<rect v:rectContext="textBkgnd" x="-115.554" y="688.909" width="86.9991" height="9.59985" class="st8"/>
+			<text x="-115.55" y="696.11" class="st9" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>accessed_object_has_type</text>		</g>
+		<g id="shape204-777" v:mID="204" v:groupContext="shape" transform="translate(240.714,-173.112)">
+			<title>Ellipse.204</title>
+			<desc>User Distribution</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow204-778" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="26.04" y="677.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>User <tspan x="11.35"
+						dy="1.2em" class="st5">Distribution</tspan></text>		</g>
+		<g id="shape206-784" v:mID="206" v:groupContext="shape" transform="translate(290.321,-25.2376)">
+			<title>Ellipse.206</title>
+			<desc>Country</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow206-785" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="19.2" y="683.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Country</text>		</g>
+		<g id="shape208-790" v:mID="208" v:groupContext="shape" transform="translate(120.242,-88.0722)">
+			<title>Ellipse.208</title>
+			<desc>xsd:double</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow208-791" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="13.19" y="683.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>xsd:double</text>		</g>
+		<g id="shape209-796" v:mID="209" v:groupContext="shape" transform="translate(191.108,-73.899)">
+			<title>Ellipse.209</title>
+			<desc>xsd:dateTime</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="40.3937" cy="680.545" width="70.69" height="35.5512"/>
+			<g id="shadow209-797" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A40.3937 20.315 0 0 1 80.79 680.55 A40.3937 20.315 0 1 1 0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A40.3937 20.315 0 0 1 80.79 680.55 A40.3937 20.315 0 1 1 0 680.55 Z" class="st3"/>
+			<text x="13.06" y="683.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>xsd:dateTime</text>		</g>
+		<g id="shape210-802" v:mID="210" v:groupContext="shape" v:layerMember="0" transform="translate(386.978,-319.685)">
+			<title>Dynamischer Verbinder.210</title>
+			<desc>used_in</desc>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="-55.4151" cy="753.832" width="40" height="17.6036"/>
+			<path d="M0 700.86 L-105.74 801.94" class="st6"/>
+			<rect v:rectContext="textBkgnd" x="-68.1845" y="749.032" width="25.5388" height="9.59985" class="st8"/>
+			<text x="-68.18" y="756.23" class="st9" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>used_in</text>		</g>
+		<g id="shape211-809" v:mID="211" v:groupContext="shape" v:layerMember="0" transform="translate(253.808,-177.658)">
+			<title>Dynamischer Verbinder.211</title>
+			<desc>user_percentage</desc>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="-37.897" cy="727.611" width="64.7" height="17.6036"/>
+			<path d="M0 700.86 L-70.04 750.3" class="st6"/>
+			<rect v:rectContext="textBkgnd" x="-65.338" y="722.811" width="54.8822" height="9.59985" class="st8"/>
+			<text x="-65.34" y="730.01" class="st9" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>user_percentage</text>		</g>
+		<g id="shape212-816" v:mID="212" v:groupContext="shape" v:layerMember="0" transform="translate(267.296,-173.756)">
+			<title>Dynamischer Verbinder.212</title>
+			<desc>dct:date</desc>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="-16.6599" cy="737.882" width="40" height="17.6036"/>
+			<path d="M0 700.86 L-23.99 754.17" class="st6"/>
+			<rect v:rectContext="textBkgnd" x="-30.2104" y="733.083" width="27.1011" height="9.59985" class="st8"/>
+			<text x="-30.21" y="740.28" class="st9" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>dct:date</text>		</g>
+		<g id="shape213-823" v:mID="213" v:groupContext="shape" v:layerMember="0" transform="translate(282.84,-173.477)">
+			<title>Dynamischer Verbinder.213</title>
+			<desc>dbpp:locationCountry</desc>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="17.4022" cy="762.549" width="80.96" height="17.6036"/>
+			<path d="M0 700.86 L33.98 802.16" class="st6"/>
+			<rect v:rectContext="textBkgnd" x="-18.1677" y="757.749" width="71.14" height="9.59985" class="st8"/>
+			<text x="-18.17" y="764.95" class="st9" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>dbpp:locationCountry</text>		</g>
+		<g id="shape214-830" v:mID="214" v:groupContext="shape" transform="translate(332.84,-143.82)">
+			<title>Ellipse.214</title>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<g id="shadow214-831" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 691.41 A14.1732 9.44882 0 0 1 28.35 691.41 A14.1732 9.44882 0 0 1 0 691.41 Z" class="st2"/>
+			</g>
+			<path d="M0 691.41 A14.1732 9.44882 0 0 1 28.35 691.41 A14.1732 9.44882 0 0 1 0 691.41 Z" class="st3"/>
+		</g>
+		<g id="shape216-835" v:mID="216" v:groupContext="shape" transform="translate(439.14,-150.907)">
+			<title>Ellipse.216</title>
+			<desc>Year</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow216-836" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="26.37" y="683.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Year</text>		</g>
+		<g id="shape217-841" v:mID="217" v:groupContext="shape" transform="translate(481.659,-73.899)">
+			<title>Ellipse.217</title>
+			<desc>City</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow217-842" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="27.68" y="683.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>City</text>		</g>
+		<g id="shape218-847" v:mID="218" v:groupContext="shape" transform="translate(403.707,-150.907)">
+			<title>Ellipse.218</title>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<g id="shadow218-848" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 691.41 A14.1732 9.44882 0 0 1 28.35 691.41 A14.1732 9.44882 0 0 1 0 691.41 Z" class="st2"/>
+			</g>
+			<path d="M0 691.41 A14.1732 9.44882 0 0 1 28.35 691.41 A14.1732 9.44882 0 0 1 0 691.41 Z" class="st3"/>
+		</g>
+		<g id="shape219-852" v:mID="219" v:groupContext="shape" v:layerMember="0" transform="translate(345.165,-143.901)">
+			<title>Dynamischer Verbinder.219</title>
+			<desc>dbpp:locationCountry</desc>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="-2.0552" cy="713.412" width="80.96" height="17.6036"/>
+			<path d="M0 700.86 L-14.06 772.12" class="st6"/>
+			<rect v:rectContext="textBkgnd" x="-37.6251" y="708.612" width="71.14" height="9.59985" class="st8"/>
+			<text x="-37.63" y="715.81" class="st9" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>dbpp:locationCountry</text>		</g>
+		<g id="shape220-859" v:mID="220" v:groupContext="shape" v:layerMember="0" transform="translate(427.902,-153.674)">
+			<title>Dynamischer Verbinder.220</title>
+			<desc>dbpp:locationCity</desc>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="32.4977" cy="717.801" width="67.38" height="17.6036"/>
+			<path d="M0 700.86 L60.23 741.01" class="st6"/>
+			<rect v:rectContext="textBkgnd" x="3.71692" y="713.001" width="57.5618" height="9.59985" class="st8"/>
+			<text x="3.72" y="720.2" class="st9" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>dbpp:locationCity</text>		</g>
+		<g id="shape221-866" v:mID="221" v:groupContext="shape" v:layerMember="0" transform="translate(359.584,-148.904)">
+			<title>Dynamischer Verbinder.221</title>
+			<desc>dbpp:locationCity</desc>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="76.7209" cy="729.472" width="67.38" height="17.6036"/>
+			<path d="M0 700.86 L36.17 713.42 A2.3622 2.3622 0 0 1 40.64 714.97 L120.55 742.72" class="st6"/>
+			<rect v:rectContext="textBkgnd" x="47.9401" y="724.672" width="57.5618" height="9.59985" class="st8"/>
+			<text x="47.94" y="731.87" class="st9" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>dbpp:locationCity</text>		</g>
+		<g id="shape222-873" v:mID="222" v:groupContext="shape" v:layerMember="0" transform="translate(411.194,-152.024)">
+			<title>Dynamischer Verbinder.222</title>
+			<desc>dbpp:locationCountry</desc>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="-28.7473" cy="748.749" width="80.96" height="17.6036"/>
+			<path d="M0 700.86 L-66.22 783.39" class="st6"/>
+			<rect v:rectContext="textBkgnd" x="-64.3172" y="743.949" width="71.14" height="9.59985" class="st8"/>
+			<text x="-64.32" y="751.15" class="st9" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>dbpp:locationCountry</text>		</g>
+		<g id="shape223-880" v:mID="223" v:groupContext="shape" v:layerMember="0" transform="translate(407.271,-314.855)">
+			<title>Dynamischer Verbinder.223</title>
+			<desc>operator_resides_in</desc>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="8.34114" cy="808.115" width="75.58" height="17.6036"/>
+			<path d="M3.97 700.86 L9.9 838.88" class="st6"/>
+			<rect v:rectContext="textBkgnd" x="-24.5414" y="803.316" width="65.7653" height="9.59985" class="st8"/>
+			<text x="-24.54" y="810.52" class="st9" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>operator_resides_in</text>		</g>
+		<g id="shape224-887" v:mID="224" v:groupContext="shape" v:layerMember="0" transform="translate(401.291,-315.49)">
+			<title>Dynamischer Verbinder.224</title>
+			<desc>launched_in</desc>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="-25.5956" cy="777.359" width="49.68" height="17.6036"/>
+			<path d="M0 700.86 L-48.96 847.18" class="st6"/>
+			<rect v:rectContext="textBkgnd" x="-45.5288" y="772.56" width="39.8666" height="9.59985" class="st8"/>
+			<text x="-45.53" y="779.76" class="st9" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>launched_in</text>		</g>
+		<g id="shape225-894" v:mID="225" v:groupContext="shape" v:layerMember="0" transform="translate(419.958,-315.661)">
+			<title>Dynamischer Verbinder.225</title>
+			<desc>dbpp:launchYear</desc>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="26.2683" cy="763.567" width="64.93" height="17.6036"/>
+			<path d="M0 700.86 L44.62 818.86" class="st6"/>
+			<rect v:rectContext="textBkgnd" x="-1.2881" y="758.767" width="55.1129" height="9.59985" class="st8"/>
+			<text x="-1.29" y="765.97" class="st9" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>dbpp:launchYear</text>		</g>
+		<g id="shape226-901" v:mID="226" v:groupContext="shape" transform="translate(205.281,-521.301)">
+			<title>Ellipse.226</title>
+			<desc>Language</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow226-902" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="16.09" y="683.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Language</text>		</g>
+		<g id="shape227-907" v:mID="227" v:groupContext="shape" v:layerMember="0" transform="translate(390.214,-365.219)">
+			<title>Dynamischer Verbinder.227</title>
+			<desc>dbpp:language</desc>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="-88.5547" cy="589.188" width="58.19" height="17.6036"/>
+			<path d="M0 700.86 L-129.46 548.11" class="st6"/>
+			<rect v:rectContext="textBkgnd" x="-112.74" y="584.388" width="48.3706" height="9.59985" class="st8"/>
+			<text x="-112.74" y="591.59" class="st9" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>dbpp:language</text>		</g>
+		<g id="shape228-914" v:mID="228" v:groupContext="shape" v:layerMember="0" transform="translate(665.454,-604.45)">
+			<title>Dynamischer Verbinder.228</title>
+			<desc>rdfs:subClassOf</desc>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="68.0315" cy="693.774" width="72.98" height="20.0036"/>
+			<path d="M0 693.77 L26.98 693.77" class="st10"/>
+			<rect v:rectContext="textBkgnd" x="36.6766" y="687.774" width="62.71" height="12.0001" class="st8"/>
+			<text x="36.68" y="696.77" class="st12" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>rdfs:subClassOf</text>		</g>
+		<g id="shape229-921" v:mID="229" v:groupContext="shape" transform="translate(481.659,-23.3478)">
+			<title>Ellipse.229</title>
+			<desc>Continent</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow229-922" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="15.26" y="683.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Continent</text>		</g>
+		<g id="shape230-927" v:mID="230" v:groupContext="shape" v:layerMember="0" transform="translate(484.703,-85.9766)">
+			<title>Dynamischer Verbinder.230</title>
+			<desc>dbpp:locationCountry</desc>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="-63.2798" cy="716.954" width="80.96" height="17.6036"/>
+			<path d="M0 700.86 L-119.74 731.31" class="st6"/>
+			<rect v:rectContext="textBkgnd" x="-98.8497" y="712.154" width="71.14" height="9.59985" class="st8"/>
+			<text x="-98.85" y="719.35" class="st9" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>dbpp:locationCountry</text>		</g>
+		<g id="shape231-934" v:mID="231" v:groupContext="shape" v:layerMember="0" transform="translate(361.182,-51.6943)">
+			<title>Dynamischer Verbinder.231</title>
+			<desc>dbpp:continent</desc>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="60.2415" cy="707.947" width="60.16" height="17.6036"/>
+			<path d="M0 707.35 L113.44 708.47" class="st6"/>
+			<rect v:rectContext="textBkgnd" x="35.072" y="703.147" width="50.3391" height="9.59985" class="st8"/>
+			<text x="35.07" y="710.35" class="st9" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>dbpp:continent</text>		</g>
+		<g id="shape232-941" v:mID="232" v:groupContext="shape" v:layerMember="0" transform="translate(374.288,-354.25)">
+			<title>Dynamischer Verbinder.232</title>
+			<desc>has_resource_type</desc>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="-72.6521" cy="678.45" width="71.91" height="17.6036"/>
+			<path d="M0 700.86 L-129.25 655.81" class="st6"/>
+			<rect v:rectContext="textBkgnd" x="-103.697" y="673.651" width="62.0895" height="9.59985" class="st8"/>
+			<text x="-103.7" y="680.85" class="st9" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>has_resource_type</text>		</g>
+		<g id="shape233-948" v:mID="233" v:groupContext="shape" transform="translate(226.541,-235.946)">
+			<title>Ellipse.233</title>
+			<desc>xsd:anyURI</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow233-949" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="12.88" y="683.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>xsd:anyURI</text>		</g>
+		<g id="shape234-954" v:mID="234" v:groupContext="shape" v:layerMember="0" transform="translate(379.55,-324.144)">
+			<title>Dynamischer Verbinder.234</title>
+			<desc>alexa_page</desc>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="-46.3041" cy="727.594" width="46.53" height="17.6036"/>
+			<path d="M0 700.86 L-86.51 750.81" class="st6"/>
+			<rect v:rectContext="textBkgnd" x="-64.6593" y="722.794" width="36.7105" height="9.59985" class="st8"/>
+			<text x="-64.66" y="729.99" class="st9" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>alexa_page</text>		</g>
+		<g id="shape235-961" v:mID="235" v:groupContext="shape" transform="translate(524.179,-412.167)">
+			<title>Ellipse.235</title>
+			<desc>xsd:anyURI</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow235-962" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="12.88" y="683.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>xsd:anyURI</text>		</g>
+		<g id="shape236-967" v:mID="236" v:groupContext="shape" v:layerMember="0" transform="translate(439.961,-359.897)">
+			<title>Dynamischer Verbinder.236</title>
+			<desc>dbpp:url</desc>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="47.6566" cy="671.95" width="40" height="17.6036"/>
+			<path d="M0 700.86 L89.29 646.69" class="st6"/>
+			<rect v:rectContext="textBkgnd" x="33.7661" y="667.15" width="27.7811" height="9.59985" class="st8"/>
+			<text x="33.77" y="674.35" class="st9" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>dbpp:url</text>		</g>
+		<g id="shape239-974" v:mID="239" v:groupContext="shape" transform="translate(559.612,-308.702)">
+			<title>Ellipse.239</title>
+			<desc>xsd:string</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="680.545" width="62.01" height="35.5512"/>
+			<g id="shadow239-975" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st2"/>
+			</g>
+			<path d="M0 680.55 A35.4331 20.315 0 0 1 70.87 680.55 A35.4331 20.315 0 1 1 -0 680.55 Z" class="st3"/>
+			<text x="15.85" y="683.55" class="st4" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>xsd:string</text>		</g>
+		<g id="shape240-980" v:mID="240" v:groupContext="shape" v:layerMember="0" transform="translate(450.152,-340.773)">
+			<title>Dynamischer Verbinder.240</title>
+			<desc>rdfs:label</desc>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="54.7303" cy="707.947" width="40.21" height="17.6036"/>
+			<path d="M0 703.28 L102.45 712.02" class="st6"/>
+			<rect v:rectContext="textBkgnd" x="39.5352" y="703.147" width="30.3904" height="9.59985" class="st8"/>
+			<text x="39.54" y="710.35" class="st9" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>rdfs:label</text>		</g>
+		<g id="shape242-987" v:mID="242" v:groupContext="shape" v:layerMember="0" transform="translate(410.793,-507.32)">
+			<title>Dynamischer Verbinder.242</title>
+			<path d="M4.87 700.86 L7.65 712.36" class="st10"/>
+		</g>
+		<g id="shape243-992" v:mID="243" v:groupContext="shape" v:layerMember="0" transform="translate(590.684,-544.686)">
+			<title>Dynamischer Verbinder.243</title>
+			<path d="M0 705.6 L-12.78 708.66" class="st10"/>
+		</g>
+		<g id="shape244-997" v:mID="244" v:groupContext="shape" v:layerMember="0" transform="translate(619.848,-527.793)">
+			<title>Dynamischer Verbinder.244</title>
+			<path d="M-3.01 700.86 L-8.96 718.97" class="st10"/>
+		</g>
+		<g id="shape245-1002" v:mID="245" v:groupContext="shape" transform="translate(663.077,-627.6)">
+			<title>Rechteck</title>
+			<desc>If no other prefix is stated, the Discover2Share namespace (d...</desc>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(15):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="79.3701" cy="680.545" width="158.75" height="40.6299"/>
+			<rect x="0" y="660.23" width="158.74" height="40.6299" class="st13"/>
+			<text x="4" y="671.55" class="st14" v:langID="1031"><v:paragraph/><v:tabList/>If no other prefix is stated, the <tspan
+						x="4" dy="1.2em" class="st5">Discover</tspan>2Share namespace (d2s) is <tspan x="4" dy="1.2em" class="st5">to be assumed</tspan>.</text>		</g>
+	</g>
+</svg>
