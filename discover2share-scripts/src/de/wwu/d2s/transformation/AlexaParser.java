@@ -1,6 +1,7 @@
 package de.wwu.d2s.transformation;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -24,17 +25,22 @@ import com.gargoylesoftware.htmlunit.html.HtmlTable;
 import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.ontology.OntModelSpec;
+import com.hp.hpl.jena.query.Query;
+import com.hp.hpl.jena.query.QueryExecution;
+import com.hp.hpl.jena.query.QueryExecutionFactory;
+import com.hp.hpl.jena.query.QueryFactory;
+import com.hp.hpl.jena.query.QuerySolution;
+import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.Property;
+import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.update.UpdateExecutionFactory;
 import com.hp.hpl.jena.update.UpdateFactory;
 
-import de.wwu.d2s.ejb.OntologyService;
-import de.wwu.d2s.ejb.OntologyServiceBean;
-import de.wwu.d2s.jpa.Platform;
 import de.wwu.d2s.util.JsonReader;
+import de.wwu.d2s.util.Platform;
 
 /**
  * Provides a class to parse information about user countries from an Alexa.com page. If executed directly, it will insert the asserted data using the defined
@@ -46,9 +52,10 @@ public class AlexaParser {
 
 	private Map<String, Resource> countryIndex = new HashMap<String, Resource>();
 
-	private final static String ENDPOINT = "http://localhost:3030/d2s-ont/update"; // SPARQL Update Endpoint to insert triples into
+	private static String QUERYENDPOINT = "http://localhost:3030/d2s-ont/query"; // SPARQL Query Endpoint to retrieve platforms from
+	private static String UPDATEENDPOINT = "http://localhost:3030/d2s-ont/update"; // SPARQL Update Endpoint to insert triples into
 	// JSON file containing all countries of the ontology
-	private final static String COUNTRIESJSON = "http://localhost:8080/discover2share-Web/resources/js/countries.json";
+	private static String COUNTRIESJSON = "http://localhost:8080/discover2share-Web/resources/js/countries.json";
 
 	// ontology namespaces
 	private final static String D2S = "http://www.discover2share.net/d2s-ont/";
@@ -65,17 +72,50 @@ public class AlexaParser {
 	private Property locationCountry;
 	private Property alexaPage;
 
-	public static void main(String[] args) {
+	public static void main(String[] args) {		
 		log = Logger.getLogger(AlexaParser.class.getName()); // instantiate logger
 
+		// handle commandline arguments
+		if (args.length > 0)
+			QUERYENDPOINT = args[0];
+		if (args.length > 1)
+			UPDATEENDPOINT = args[1];
+		if (args.length > 2)
+			COUNTRIESJSON = args[2];
+		String fileOutput = null;
+		for (int i = 0; i < args.length; i++) {
+			System.out.println(args[i]);
+			if (args[i].equals("fileOutput")) {
+				if (i+1 >= args.length) {
+					log.error("You chose file output but didn't provide a filename in the next argument.");
+					System.exit(1);
+				}
+				fileOutput = args[i+1];
+				log.info("Output to file " + fileOutput + " selected.");
+			}
+		}
+		
+		log.info("Expecting the SPARQL Endpoint for data retrieval at " + QUERYENDPOINT);
+		log.info("Expecting the SPARQL Endpoint for data insertion at " + UPDATEENDPOINT);
+		log.info("Expecting the Countries JSON at " + COUNTRIESJSON);
 		AlexaParser ax = new AlexaParser(null);
 		OntModel ontModel = ax.alterOntologyModel(true, null); // have a new ontology model created and info from alexa added to it
 
-		log.info("Inserting new triples into Triplestore");
-		OutputStream baos = new ByteArrayOutputStream();
-		ontModel.write(baos, "N-TRIPLE"); // transform data in ontology model into triples
-		String query = "INSERT DATA { " + baos.toString() + "}"; // build insert query
-		UpdateExecutionFactory.createRemote(UpdateFactory.create(query), ENDPOINT).execute(); // execute update to endpoint
+		if (fileOutput == null) { // write directly to triplestore
+			log.info("Inserting new triples into Triplestore");
+			OutputStream baos = new ByteArrayOutputStream();
+			ontModel.write(baos, "N-TRIPLE"); // transform data in ontology model into triples
+			String query = "INSERT DATA { " + baos.toString() + "}"; // build insert query
+			UpdateExecutionFactory.createRemote(UpdateFactory.create(query), UPDATEENDPOINT).execute(); // execute update to endpoint
+		} else { // write to file
+			log.info("Writing triples to " + fileOutput);
+			try (OutputStream out = new FileOutputStream(fileOutput)) {
+				ontModel.write(out, "RDF/XML"); // Output format RDF/XML. Could also be e.g. Turtle
+				out.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 		log.info("Done");
 	}
 
@@ -124,8 +164,7 @@ public class AlexaParser {
 		int success = 0;
 		List<Platform> platforms;
 		if (allPlatforms) { // if all platforms in the ontology are to be parsed
-			OntologyService ontologyService = new OntologyServiceBean();
-			platforms = ontologyService.getAllPlatforms(); // retrieve all platforms from the ontology
+			platforms = getAllPlatforms(); // retrieve all platforms from the ontology
 		} else if (p != null) { // if a specific platform is given to parse
 			platforms = new ArrayList<Platform>(); // new empty list
 			platforms.add(p); // with only this one platform
@@ -205,6 +244,51 @@ public class AlexaParser {
 			System.out.println("Error parsing Alexa page for website " + website);
 		}
 		return null;
+	}
+	
+	private List<Platform> getAllPlatforms() {
+		String sparqlQuery = "PREFIX d2s: <http://www.discover2share.net/d2s-ont/> "
+				+ "PREFIX dbpp: <http://dbpedia.org/property/> "
+				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
+				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" + "Select * {"
+				+ "	?resourceName rdf:type d2s:P2P_SCC_Platform ." 
+				+ " OPTIONAL{ ?resourceName rdfs:label ?label }." 
+				+ " ?resourceName dbpp:url ?url."
+				+ "}"
+				+ "ORDER BY ?resourceName"; // ordered by the platforms' resource names
+
+		Query query = QueryFactory.create(sparqlQuery); // construct query
+		QueryExecution qexec = QueryExecutionFactory.sparqlService(QUERYENDPOINT, query); // query endpoint
+		ResultSet results = qexec.execSelect(); // execute
+
+		List<Platform> platforms = new ArrayList<Platform>();
+		Platform currentPlatform = new Platform();
+		while (results.hasNext()) { // for each result row
+			QuerySolution result = results.next();
+			
+			// if current row describes a different platform than before
+			if(result.get("resourceName").asResource().getURI() != currentPlatform.getResourceName()){
+				currentPlatform = new Platform(); // create new platform object
+				platforms.add(currentPlatform); // add to output list
+			}
+			
+			for (String var : results.getResultVars()) { // for every variable in the result set
+				RDFNode node = result.get(var); // receive RDF node for the current variable
+				if (node == null)
+					continue; // skip if node is null
+
+				if (node.isLiteral()) { // if node is literal
+					String literal = node.asLiteral().getString(); // extract string representation
+					currentPlatform.set(var, literal); // set in platform object
+				} else if (node.isResource()) { // if node is resource
+					String uri = node.asResource().getURI(); // get its URI
+					if (uri != null)
+						currentPlatform.set(var, uri); // set in platform object
+				}
+			}
+		}
+		qexec.close();
+		return platforms;
 	}
 
 }
