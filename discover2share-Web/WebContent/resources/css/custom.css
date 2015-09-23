@@ -3,6 +3,10 @@
   display: none !important;
 }
 
+.row-margin-60 {
+	margin-bottom: 60px;
+}
+
 .row-margin-15 {
 	margin-bottom: 15px;
 }

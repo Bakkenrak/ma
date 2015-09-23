@@ -14,7 +14,7 @@
 
 </head>
 <body>
-	<div id="header" class="row" ng-controller="headerCtrl">
+	<div id="header" ng-controller="headerCtrl">
 		<nav class="navbar navbar-default">
 		<div class="container">
 			<div class="navbar-header">
@@ -46,9 +46,7 @@
 	
 	<toaster-container></toaster-container>
 	
-	<div class="row">
-		<div class="container" ng-view="true"></div>
-	</div>
+	<div class="container row-margin-60" ng-view="true"></div>
 
 	<script src='http://cdn.jsdelivr.net/yasqe/2.6.1/yasqe.bundled.min.js'></script>
 	<script src='http://cdn.jsdelivr.net/yasr/2.6.0/yasr.bundled.min.js'></script>
