@@ -25,7 +25,7 @@
 				<span ng-repeat="resourceType in originalPlatform.resourceTypes" title="former value"><em><s>{{resourceType.label}}<span ng-if="!$last">, </span></s></em></span>
 			</div>
 		</td>
-		<td><strong>{{descriptions["Resource_Type"]["label"]}}:</strong>
+		<td><strong><a href="ontology/resource/Resource_Type" target="_blank">{{descriptions["Resource_Type"]["label"]}}</a>:</strong>
 			{{descriptions["Resource_Type"]["comment"]}}</td>
 	</tr>
 	<tr>
@@ -37,14 +37,14 @@
 				<em><s title="former value">{{originalPlatform.consumerInvolvement}}<span ng-hide="originalPlatform.consumerInvolvement">undefined</span></s></em>
 			</div>
 		</td>
-		<td><strong>{{descriptions["Consumer_Involvement"]["label"]}}:</strong>
+		<td><strong><a href="ontology/resource/Consumer_Involvement" target="_blank">{{descriptions["Consumer_Involvement"]["label"]}}</a>:</strong>
 			{{descriptions["Consumer_Involvement"]["comment"]}}
 			<ul>
-				<li><strong>{{descriptions["Full-service"]["label"]}}:</strong>
+				<li><strong><a href="ontology/resource/Full-service" target="_blank">{{descriptions["Full-service"]["label"]}}</a>:</strong>
 					{{descriptions["Full-service"]["comment"]}}</li>
-				<li><strong>{{descriptions["Self-service"]["label"]}}:</strong>
+				<li><strong><a href="ontology/resource/Self-service" target="_blank">{{descriptions["Self-service"]["label"]}}</a>:</strong>
 					{{descriptions["Self-service"]["comment"]}}</li>
-				<li><strong>{{descriptions["In-Between"]["label"]}}:</strong>
+				<li><strong><a href="ontology/resource/In-Between" target="_blank">{{descriptions["In-Between"]["label"]}}</a>:</strong>
 					{{descriptions["In-Between"]["comment"]}}</li>
 			</ul></td>
 	</tr>
@@ -116,39 +116,39 @@
 				<span ng-if="originalPlatform.marketMediations.length === 0"><em><s>undefined</s></em></span>
 			</div>
 		</td>
-		<td><strong>{{descriptions["Market_Mediation"]["label"]}}:</strong>
+		<td><strong><a href="ontology/resource/Market_Mediation" target="_blank">{{descriptions["Market_Mediation"]["label"]}}</a>:</strong>
 			{{descriptions["Market_Mediation"]["comment"]}}
 			<ul>
-				<li><strong>{{descriptions["Not-for-profit"]["label"]}}:</strong>
+				<li><strong><a href="ontology/resource/Not-for-profit" target="_blank">{{descriptions["Not-for-profit"]["label"]}}</a>:</strong>
 					{{descriptions["Not-for-profit"]["comment"]}}</li>
-				<li><strong>{{descriptions["Profit_from_peer_consumers"]["label"]}}:</strong>
+				<li><strong><a href="ontology/resource/Profit_from_peer_consumers" target="_blank">{{descriptions["Profit_from_peer_consumers"]["label"]}}</a>:</strong>
 					{{descriptions["Profit_from_peer_consumers"]["comment"]}}</li>
-				<li><strong>{{descriptions["Profit_from_peer_providers"]["label"]}}:</strong>
+				<li><strong><a href="ontology/resource/Profit_from_peer_providers" target="_blank">{{descriptions["Profit_from_peer_providers"]["label"]}}</a>:</strong>
 					{{descriptions["Profit_from_peer_providers"]["comment"]}}</li>
-				<li><strong>{{descriptions["Profit_from_both"]["label"]}}:</strong>
+				<li><strong><a href="ontology/resource/Profit_from_both" target="_blank">{{descriptions["Profit_from_both"]["label"]}}</a>:</strong>
 					{{descriptions["Profit_from_both"]["comment"]}}</li>
-				<li><strong>{{descriptions["Indirect_profit"]["label"]}}:</strong>
+				<li><strong><a href="ontology/resource/Indirect_profit" target="_blank">{{descriptions["Indirect_profit"]["label"]}}</a>:</strong>
 					{{descriptions["Indirect_profit"]["comment"]}}
 					<ul>
-						<li><strong>{{descriptions["Profit_from_advertisement"]["label"]}}:</strong>
+						<li><strong><a href="ontology/resource/Profit_from_advertisement" target="_blank">{{descriptions["Profit_from_advertisement"]["label"]}}</a>:</strong>
 							{{descriptions["Profit_from_advertisement"]["comment"]}}</li>
-						<li><strong>{{descriptions["Profit_from_user_data"]["label"]}}:</strong>
+						<li><strong><a href="ontology/resource/Profit_from_user_data" target="_blank">{{descriptions["Profit_from_user_data"]["label"]}}</a>:</strong>
 							{{descriptions["Profit_from_user_data"]["comment"]}}</li>
 					</ul></li>
 				<li>Additional attributes
 						<ul>
-							<li><strong>{{descriptions["Per_transaction"]["label"]}}:</strong>
+							<li><strong><a href="ontology/resource/Per_transaction" target="_blank">{{descriptions["Per_transaction"]["label"]}}</a>:</strong>
 								{{descriptions["Per_transaction"]["comment"]}}</li>
-							<li><strong>{{descriptions["Per_listing"]["label"]}}:</strong>
+							<li><strong><a href="ontology/resource/Per_listing" target="_blank">{{descriptions["Per_listing"]["label"]}}</a>:</strong>
 								{{descriptions["Per_listing"]["comment"]}}</li>
-							<li><strong>{{descriptions["Membership_fee"]["label"]}}:</strong>
+							<li><strong><a href="ontology/resource/Membership_fee" target="_blank">{{descriptions["Membership_fee"]["label"]}}</a>:</strong>
 								{{descriptions["Membership_fee"]["comment"]}}</li>
 						</ul>
 				</li>
 			</ul></td>
 	</tr>
 	<tr>
-		<td><strong>Integration:</strong></td>
+		<td><strong>Market Integration:</strong></td>
 		<td>{{platform.offering}}<span
 			ng-if="platform.offering!==null && platform.geographicScope!==null">,
 			</span> {{platform.geographicScope}}
@@ -165,23 +165,23 @@
 		</td>
 		<td>
 			<p>
-				<strong>{{descriptions["Market_Integration"]["label"]}}:</strong>
+				<strong><a href="ontology/resource/Market_Integration" target="_blank">{{descriptions["Market_Integration"]["label"]}}</a>:</strong>
 				{{descriptions["Market_Integration"]["comment"]}}
-			</p> <strong>{{descriptions["Market_Offering"]["label"]}}:</strong>
+			</p> <strong><a href="ontology/resource/Market_Offering" target="_blank">{{descriptions["Market_Offering"]["label"]}}</a>:</strong>
 			{{descriptions["Market_Offering"]["comment"]}}
 			<ul>
-				<li><strong>{{descriptions["Integrated"]["label"]}}:</strong>
+				<li><strong><a href="ontology/resource/Integrated" target="_blank">{{descriptions["Integrated"]["label"]}}</a>:</strong>
 					{{descriptions["Integrated"]["comment"]}}</li>
-				<li><strong>{{descriptions["Separated"]["label"]}}:</strong>
+				<li><strong><a href="ontology/resource/Separated" target="_blank">{{descriptions["Separated"]["label"]}}</a>:</strong>
 					{{descriptions["Separated"]["comment"]}}</li>
-			</ul> <strong>{{descriptions["Geographic_Scope"]["label"]}}:</strong>
+			</ul> <strong><a href="ontology/resource/Geographic_Scope" target="_blank">{{descriptions["Geographic_Scope"]["label"]}}</a>:</strong>
 			{{descriptions["Geographic_Scope"]["comment"]}}
 			<ul>
-				<li><strong>{{descriptions["Neighbourhood-wide"]["label"]}}</strong></li>
-				<li><strong>{{descriptions["City-wide"]["label"]}}</strong></li>
-				<li><strong>{{descriptions["State-wide"]["label"]}}</strong></li>
-				<li><strong>{{descriptions["Country-wide"]["label"]}}</strong></li>
-				<li><strong>{{descriptions["Global"]["label"]}}</strong></li>
+				<li><strong><a href="ontology/resource/Neighbourhood-wide" target="_blank">{{descriptions["Neighbourhood-wide"]["label"]}}</a></strong></li>
+				<li><strong><a href="ontology/resource/City-wide" target="_blank">{{descriptions["City-wide"]["label"]}}</a></strong></li>
+				<li><strong><a href="ontology/resource/State-wide" target="_blank">{{descriptions["State-wide"]["label"]}}</a></strong></li>
+				<li><strong><a href="ontology/resource/Country-wide" target="_blank">{{descriptions["Country-wide"]["label"]}}</a></strong></li>
+				<li><strong><a href="ontology/resource/Global" target="_blank">{{descriptions["Global"]["label"]}}</a></strong></li>
 			</ul>
 		</td>
 	</tr>
@@ -193,12 +193,12 @@
 				<em><s title="former value">{{originalPlatform.moneyFlow}}<span ng-hide="originalPlatform.moneyFlow">undefined</span></s></em>
 			</div>
 		</td>
-		<td><strong>{{descriptions["Money_Flow"]["label"]}}:</strong>
+		<td><strong><a href="ontology/resource/Money_Flow" target="_blank">{{descriptions["Money_Flow"]["label"]}}</a>:</strong>
 			{{descriptions["Money_Flow"]["comment"]}}
 			<ul>
-				<li><strong>{{descriptions["C2C"]["label"]}}:</strong>
+				<li><strong><a href="ontology/resource/C2C" target="_blank">{{descriptions["C2C"]["label"]}}</a>:</strong>
 					{{descriptions["C2C"]["comment"]}}</li>
-				<li><strong>{{descriptions["C2B2C"]["label"]}}:</strong>
+				<li><strong><a href="ontology/resource/C2B2C" target="_blank">{{descriptions["C2B2C"]["label"]}}</a>:</strong>
 					{{descriptions["C2B2C"]["comment"]}}</li>
 			</ul></td>
 	</tr>
@@ -217,21 +217,21 @@
 				</s></em>
 			</div>
 		</td>
-		<td><strong>{{descriptions["P2P_SCC_Pattern"]["label"]}}:</strong>
+		<td><strong><a href="ontology/resource/P2P_SCC_Pattern" target="_blank">{{descriptions["P2P_SCC_Pattern"]["label"]}}</a>:</strong>
 			{{descriptions["P2P_SCC_Pattern"]["comment"]}}
 			<ul>
-				<li><strong>{{descriptions["Deferred"]["label"]}}:</strong>
+				<li><strong><a href="ontology/resource/Deferred" target="_blank">{{descriptions["Deferred"]["label"]}}</a>:</strong>
 					{{descriptions["Deferred"]["comment"]}}</li>
-				<li><strong>{{descriptions["Immediate"]["label"]}}:</strong>
+				<li><strong><a href="ontology/resource/Immediate" target="_blank">{{descriptions["Immediate"]["label"]}}</a>:</strong>
 					{{descriptions["Immediate"]["comment"]}}</li>
-				<li><strong>{{descriptions["Recurrent"]["label"]}}:</strong>
+				<li><strong><a href="ontology/resource/Recurrent" target="_blank">{{descriptions["Recurrent"]["label"]}}</a>:</strong>
 					{{descriptions["Recurrent"]["comment"]}}</li>
-			</ul> <strong>{{descriptions["Temporality"]["label"]}}:</strong>
+			</ul> <strong><a href="ontology/resource/Temporality" target="_blank">{{descriptions["Temporality"]["label"]}}</a>:</strong>
 			{{descriptions["Temporality"]["comment"]}}
 			<ul>
-				<li><strong>{{descriptions["Once"]["label"]}}:</strong>
+				<li><strong><a href="ontology/resource/Once" target="_blank">{{descriptions["Once"]["label"]}}</a>:</strong>
 					{{descriptions["Once"]["comment"]}}</li>
-				<li><strong>{{descriptions["Often"]["label"]}}:</strong>
+				<li><strong><a href="ontology/resource/Often" target="_blank">{{descriptions["Often"]["label"]}}</a>:</strong>
 					{{descriptions["Often"]["comment"]}}</li>
 			</ul></td>
 	</tr>
@@ -245,16 +245,16 @@
 				<span ng-if="originalPlatform.consumerisms.length === 0"><em><s>undefined</s></em></span>
 			</div>
 		</td>
-		<td><strong>{{descriptions["Sustainable_Consumerism"]["label"]}}:</strong>
+		<td><strong><a href="ontology/resource/Sustainable_Consumerism" target="_blank">{{descriptions["Sustainable_Consumerism"]["label"]}}</a>:</strong>
 			{{descriptions["Sustainable_Consumerism"]["comment"]}}
 			<ul>
-				<li><strong>{{descriptions["Social"]["label"]}}:</strong>
+				<li><strong><a href="ontology/resource/Social" target="_blank">{{descriptions["Social"]["label"]}}</a>:</strong>
 					{{descriptions["Social"]["comment"]}}</li>
-				<li><strong>{{descriptions["Environmental"]["label"]}}:</strong>
+				<li><strong><a href="ontology/resource/Environmental" target="_blank">{{descriptions["Environmental"]["label"]}}</a>:</strong>
 					{{descriptions["Environmental"]["comment"]}}</li>
-				<li><strong>{{descriptions["Economic"]["label"]}}:</strong>
+				<li><strong><a href="ontology/resource/Economic" target="_blank">{{descriptions["Economic"]["label"]}}</a>:</strong>
 					{{descriptions["Economic"]["comment"]}}</li>
-				<li><strong>{{descriptions["None"]["label"]}}:</strong>
+				<li><strong><a href="ontology/resource/None" target="_blank">{{descriptions["None"]["label"]}}</a>:</strong>
 					{{descriptions["None"]["comment"]}}</li>
 			</ul></td>
 	</tr>
@@ -266,14 +266,14 @@
 				<em><s title="former value">{{originalPlatform.resourceOwner}}<span ng-hide="originalPlatform.resourceOwner">undefined</span></s></em>
 			</div>
 		</td>
-		<td><strong>{{descriptions["Resource_Owner"]["label"]}}:</strong>
+		<td><strong><a href="ontology/resource/Resource_Owner" target="_blank">{{descriptions["Resource_Owner"]["label"]}}</a>:</strong>
 			{{descriptions["Resource_Owner"]["comment"]}}
 			<ul>
-				<li><strong>{{descriptions["Private"]["label"]}}:</strong>
+				<li><strong><a href="ontology/resource/Private" target="_blank">{{descriptions["Private"]["label"]}}</a>:</strong>
 					{{descriptions["Private"]["comment"]}}</li>
-				<li><strong>{{descriptions["Business"]["label"]}}:</strong>
+				<li><strong><a href="ontology/resource/Business" target="_blank">{{descriptions["Business"]["label"]}}</a>:</strong>
 					{{descriptions["Business"]["comment"]}}</li>
-				<li><strong>{{descriptions["Private_and_business"]["label"]}}:</strong>
+				<li><strong><a href="ontology/resource/Private_and_business" target="_blank">{{descriptions["Private_and_business"]["label"]}}</a>:</strong>
 					{{descriptions["Private_and_business"]["comment"]}}</li>
 			</ul></td>
 	</tr>
@@ -292,6 +292,7 @@
 				</s></em>
 			</div>
 		</td>
+		<td></td>
 	</tr>
 	<tr>
 		<td><strong>Smartphone Apps:</strong></td>
@@ -302,14 +303,14 @@
 				<span ng-if="originalPlatform.apps.length === 0"><em><s>undefined</s></em></span>
 			</div>
 		</td>
-		<td><strong>{{descriptions["Smartphone_App"]["label"]}}:</strong>
+		<td><strong><a href="ontology/resource/Smartphone_App" target="_blank">{{descriptions["Smartphone_App"]["label"]}}</a>:</strong>
 			{{descriptions["Smartphone_App"]["comment"]}}
 			<ul>
-				<li><strong>{{descriptions["Android_app"]["label"]}}:</strong>
+				<li><strong><a href="ontology/resource/Android_app" target="_blank">{{descriptions["Android_app"]["label"]}}</a>:</strong>
 					{{descriptions["Android_app"]["comment"]}}</li>
-				<li><strong>{{descriptions["iOS_app"]["label"]}}:</strong>
+				<li><strong><a href="ontology/resource/iOS_app" target="_blank">{{descriptions["iOS_app"]["label"]}}</a>:</strong>
 					{{descriptions["iOS_app"]["comment"]}}</li>
-				<li><strong>{{descriptions["Windows_Phone_app"]["label"]}}:</strong>
+				<li><strong><a href="ontology/resource/Windows_Phone_app" target="_blank">{{descriptions["Windows_Phone_app"]["label"]}}</a>:</strong>
 					{{descriptions["Windows_Phone_app"]["comment"]}}</li>
 			</ul></td>
 	</tr>
@@ -322,18 +323,18 @@
 				<span ng-if="originalPlatform.trustContributions.length === 0"><em><s>undefined</s></em></span>
 			</div>
 		</td>
-		<td><strong>{{descriptions["Trust_Contribution"]["label"]}}:</strong>
+		<td><strong><a href="ontology/resource/Trust_Contribution" target="_blank">{{descriptions["Trust_Contribution"]["label"]}}</a>:</strong>
 			{{descriptions["Trust_Contribution"]["comment"]}}
 			<ul>
-				<li><strong>{{descriptions["Provider_ratings"]["label"]}}:</strong>
+				<li><strong><a href="ontology/resource/Provider_ratings" target="_blank">{{descriptions["Provider_ratings"]["label"]}}</a>:</strong>
 					{{descriptions["Provider_ratings"]["comment"]}}</li>
-				<li><strong>{{descriptions["Provider_and_consumer_ratings"]["label"]}}:</strong>
+				<li><strong><a href="ontology/resource/Provider_and_consumer_ratings" target="_blank">{{descriptions["Provider_and_consumer_ratings"]["label"]}}</a>:</strong>
 					{{descriptions["Provider_and_consumer_ratings"]["comment"]}}</li>
-				<li><strong>{{descriptions["Referral"]["label"]}}:</strong>
+				<li><strong><a href="ontology/resource/Referral" target="_blank">{{descriptions["Referral"]["label"]}}</a>:</strong>
 					{{descriptions["Referral"]["comment"]}}</li>
-				<li><strong>{{descriptions["Vouching"]["label"]}}:</strong>
+				<li><strong><a href="ontology/resource/Vouching" target="_blank">{{descriptions["Vouching"]["label"]}}</a>:</strong>
 					{{descriptions["Vouching"]["comment"]}}</li>
-				<li><strong>{{descriptions["Value-added_services"]["label"]}}:</strong>
+				<li><strong><a href="ontology/resource/Value-added_services" target="_blank">{{descriptions["Value-added_services"]["label"]}}</a>:</strong>
 					{{descriptions["Value-added_services"]["comment"]}}</li>
 			</ul></td>
 	</tr>
@@ -345,14 +346,14 @@
 				<em><s title="former value">{{originalPlatform.typeOfAccessedObject}}<span ng-hide="originalPlatform.typeOfAccessedObject">undefined</span></s></em>
 			</div>
 		</td>
-		<td><strong>{{descriptions["Type_of_Accessed_Object"]["label"]}}:</strong>
+		<td><strong><a href="ontology/resource/Type_of_Accessed_Object" target="_blank">{{descriptions["Type_of_Accessed_Object"]["label"]}}</a>:</strong>
 			{{descriptions["Type_of_Accessed_Object"]["comment"]}}
 			<ul>
-				<li><strong>{{descriptions["Functional"]["label"]}}:</strong>
+				<li><strong><a href="ontology/resource/Functional" target="_blank">{{descriptions["Functional"]["label"]}}</a>:</strong>
 					{{descriptions["Functional"]["comment"]}}</li>
-				<li><strong>{{descriptions["Experiential"]["label"]}}:</strong>
+				<li><strong><a href="ontology/resource/Experiential" target="_blank">{{descriptions["Experiential"]["label"]}}</a>:</strong>
 					{{descriptions["Experiential"]["comment"]}}</li>
-				<li><strong>{{descriptions["Mixed"]["label"]}}:</strong>
+				<li><strong><a href="ontology/resource/Mixed" target="_blank">{{descriptions["Mixed"]["label"]}}</a>:</strong>
 					{{descriptions["Mixed"]["comment"]}}</li>
 			</ul></td>
 	</tr>
