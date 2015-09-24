@@ -145,6 +145,7 @@ public class AlexaParser {
 		} catch (JSONException | IOException e) {
 			e.printStackTrace();
 			log.error("Error retrieving countries from JSON. Aborting...");
+			System.exit(1);
 			return;
 		}
 	}
@@ -170,7 +171,9 @@ public class AlexaParser {
 		} else {
 			return null;
 		}
+		int i = 1;
 		for (Platform platform : platforms) { // for each platform
+			log.info("Processing " + i++ + " of " + platforms.size());
 			Map<String, Double> userData = parseAlexa(platform.getUrl()); // parse user distribution data from Alexa
 			if (userData == null) { // if no user distribution was found on the platform's respective Alexa page
 				log.info("No user distribution information found on Alexa for " + platform.getLabel());
