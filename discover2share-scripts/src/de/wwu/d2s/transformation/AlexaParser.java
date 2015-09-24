@@ -221,26 +221,28 @@ public class AlexaParser {
 
 			// find the country table
 			HtmlTable countryTable = currentPage.getHtmlElementById("demographics_div_country_table");
-			String cssClass = countryTable.getAttribute("class"); // read the table's css classes
-
-			// if "data-table-nodata" is not among the table's classes, data is available
-			if (!cssClass.contains("data-table-nodata")) {
-				// parse table rows
-				DomNodeList<HtmlElement> countryTableRows = countryTable.getHtmlElementsByTagName("tbody").get(0).getElementsByTagName("tr");
-
-				Map<String, Double> tableData = new HashMap<String, Double>(); // map to output
-
-				for (HtmlElement line : countryTableRows) { // for each row
-					DomNodeList<HtmlElement> cells = line.getElementsByTagName("td"); // parse row cells
-					// remove the % sign from the second cell's content and convert to double
-					Double percentage = Double.parseDouble(cells.get(1).asText().replace("%", "").trim());
-					// retrieve country code from link's href
-					String code = cells.get(0).getElementsByTagName("a").get(0).getAttribute("href").replace("/topsites/countries/", "");
-					tableData.put(code, percentage); // add to output map
+			if (countryTable != null) {
+				String cssClass = countryTable.getAttribute("class"); // read the table's css classes
+	
+				// if "data-table-nodata" is not among the table's classes, data is available
+				if (!cssClass.contains("data-table-nodata")) {
+					// parse table rows
+					DomNodeList<HtmlElement> countryTableRows = countryTable.getHtmlElementsByTagName("tbody").get(0).getElementsByTagName("tr");
+	
+					Map<String, Double> tableData = new HashMap<String, Double>(); // map to output
+	
+					for (HtmlElement line : countryTableRows) { // for each row
+						DomNodeList<HtmlElement> cells = line.getElementsByTagName("td"); // parse row cells
+						// remove the % sign from the second cell's content and convert to double
+						Double percentage = Double.parseDouble(cells.get(1).asText().replace("%", "").trim());
+						// retrieve country code from link's href
+						String code = cells.get(0).getElementsByTagName("a").get(0).getAttribute("href").replace("/topsites/countries/", "");
+						tableData.put(code, percentage); // add to output map
+					}
+					return tableData;
 				}
-				return tableData;
 			}
-		} catch (FailingHttpStatusCodeException | IOException e) {
+		} catch (Exception e) {
 			System.out.println("Error parsing Alexa page for website " + website);
 		}
 		return null;
