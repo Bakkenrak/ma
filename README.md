@@ -28,12 +28,11 @@ discover2share-scripts contains additional scripts, e.g. the Excel to RDF transf
 
 #### Optional: Setting up the web directory in eclipse
 * [Download Eclipse](http://www.eclipse.org/downloads/) (tested with Eclipse Java EE IDE for Web Developers, [Luna Service Release 2 (4.4.2)](http://www.eclipse.org/downloads/packages/eclipse-ide-java-ee-developers/lunasr2)) and extract it to a folder on your hard drive and run it.
-  * Select “Help” > “Install new Software…” and select Luna from the dropdown menu as the site to work with. After the list of software is loaded, select “Eclipse Java EE Developer Tools” and “Eclipse Java Web Developer Tools”. Click “Next” twice, “Accept” and “Finish”. When prompted to restart eclipse, confirm.
   * Select “Help” > “Eclipse Marketplace…” and choose “Eclipse Marketplace” as the marketplace catalogue. Search for “JBoss Tools” and install “JBoss Tools 4.2.x". After all requirements have been checked, select all features and confirm. Accept the license agreements and click “Finish”. Warnings regarding unsigned content can be closed via “OK”. Afterwards, confirm the restart of eclipse.
   * Choose the “Java EE” perspective from the upper right corner of eclipse. If it’s not visible, add it via “Window” > “Open Perspective” > “Other…”.
-  * Choose the “Servers” view tab in the lower part of the eclipse window. Right-click the empty area and select “New” > “Server”. Select “WildFly 8” from the “JBoss Community” category and click “Next”. Set the “Home directory” to the installation directory of WildFly (e.g. <tt>C:\wildfly</tt>) and click “Finish”.
+  * Choose the “Servers” view tab in the lower part of the eclipse window. Right-click the empty area and select “New” > “Server”. Select “WildFly 8.x” from the “JBoss Community” category and click “Next” twice. Set the “Home directory” to the installation directory of WildFly (e.g. <tt>C:\wildfly</tt>) and click “Finish”.
   * If the <tt>discover2share.ear</tt> was added as explained above. The server can now be run by selecting it and clicking the green start button.
-* Import all projects from the repository via “File” > “Import” > “Existing Projects into Workspace”. They should then appear in the projects explorer.
+* Import all projects from the repository via “File” > “Import” > “Existing Projects into Workspace”. They should then appear in the projects explorer. It might be necessary to exchange the JRE System Library in the build paths of the projects to match the installed Java version.
 * Right-click the previously created WildFly server entry and select “Add and Remove…”. Select the “discover2share” project  and click “Add >”, then “Finish”.
 * The project will now be automatically deployed when starting the server in eclipse. It is then available at [http://localhost:8080/discover2share-Web/](http://localhost:8080/discover2share-Web/).
 
