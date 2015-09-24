@@ -25,7 +25,7 @@ discover2share-scripts contains additional scripts, e.g. the Excel to RDF transf
   * Afterwards, go to “existing datasets” and select the “upload data” button for the new dataset. Using the “select files…” button select the required .owl files from the <tt>ontology</tt> directory in this repository. Then click “upload all”.
   * The Fuseki server needs to be running in the future in order to have the web directory function properly.
 
-#### Setting up the web directory in eclipse
+#### Optional: Setting up the web directory in eclipse
 * [Download Eclipse](http://www.eclipse.org/downloads/) (tested with Eclipse Java EE IDE for Web Developers, [Luna Service Release 2 (4.4.2)](http://www.eclipse.org/downloads/packages/eclipse-ide-java-ee-developers/lunasr2)) and extract it to a folder on your hard drive and run it.
   * Select “Help” > “Install new Software…” and select Luna from the dropdown menu as the site to work with. After the list of software is loaded, select “Eclipse Java EE Developer Tools” and “Eclipse Java Web Developer Tools”. Click “Next” twice, “Accept” and “Finish”. When prompted to restart eclipse, confirm.
   * Select “Help” > “Eclipse Marketplace…” and choose “Eclipse Marketplace” as the marketplace catalogue. Search for “JBoss Tools” and install “JBoss Tools (Luna)”, version 4.2.x. After all requirements have been checked, select all features and confirm. Accept the license agreements and click “Finish”. Warnings regarding unsigned content can be closed via “OK”. Afterwards, confirm the restart of eclipse.
@@ -37,7 +37,7 @@ discover2share-scripts contains additional scripts, e.g. the Excel to RDF transf
 * The project will now be automatically deployed when starting the server in eclipse. It is then available at [http://localhost:8080/discover2share-Web/](http://localhost:8080/discover2share-Web/).
 
 #### Running the Alexa Parser script
-* From within exlipse the script can be run by executing the <tt>de.wwu.d2s.transformation.AlexaParser.java</tt> file.
+* From within exlipse the script can be run by executing the <tt>de.wwu.d2s.transformation.AlexaParser.java</tt> file in the discover2share-scripts project.
 * Alternatively, the script can be run using the <tt>bin/AlexaParser.jar</tt> using the command <tt>java -jar AlexaParser.jar</tt>
   * By default the following variables are used:
     * Query endpoint to retrieve all platforms: <tt>http://localhost:3030/d2s-ont/query</tt>
