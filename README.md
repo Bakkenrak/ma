@@ -37,11 +37,17 @@ discover2share-scripts contains additional scripts, e.g. the Excel to RDF transf
 * The project will now be automatically deployed when starting the server in eclipse. It is then available at [http://localhost:8080/discover2share-Web/](http://localhost:8080/discover2share-Web/).
 
 #### Running the Alexa Parser script
-* From within exlipse the script can be run by executing the <tt>de.wwu.d2s.transformation.AlexaParser.java</tt> file in the discover2share-scripts project.
-* Alternatively, the script can be run using the <tt>bin/AlexaParser.jar</tt> using the command <tt>java -jar AlexaParser.jar</tt>
+This script retrieves all platforms from the ontology and tries to find user distribution data for them on Alexa.com. If found, it is added to the ontology or written to a file.
+* From within eclipse the script can be run by executing the <tt>de.wwu.d2s.transformation.AlexaParser.java</tt> file in the discover2share-scripts project.
+* Alternatively, the script can be run using the <tt>bin/AlexaParser.jar</tt> using the command <tt>java -jar AlexaParser.jar</tt>.
   * By default the following variables are used:
     * Query endpoint to retrieve all platforms: <tt>http://localhost:3030/d2s-ont/query</tt>
     * Update endpoint to add Alexa data: <tt>http://localhost:3030/d2s-ont/update</tt>
     * JSON file containing all countries: <tt>http://localhost:8080/discover2share-Web/resources/js/countries.json</tt>
   * To use different values, command line variables may be used in the same order as above, i.e. <tt>java -jar AlexaParser.com http://localhost:3030/d2s-ont/query http://localhost:3030/d2s-ont/update http://localhost:8080/discover2share-Web/resources/js/countries.json</tt>
   * Additionally, it can be defined that the output should not be written to the update endpoint but into a text file. To achieve this, the parameter <tt>fileOutput</tt> and the desired output file must be attached to any of the end of the command. E.g.: <tt>java -jar AlexaParser.jar fileOutput C:\AlexaInfo.owl</tt>
+
+#### Running the Excel Table Transformation script
+This script converts the P2P SCC descriptions in the provided Excel table to RDF data according to the D2S ontology's structure.
+* From within eclipse the script can be run by executing the <tt>de.wwu.d2s.transformation.Start.java</tt> file in the discover2share-scripts project.
+* Alternatively, the script can be run using the <tt>bin/ExcelTransformation.jar</tt> using the command <tt>java -jar ExcelTransformation.jar</tt>. It then prompts for the full paths and filenames of the Excel table and the desired output file.
