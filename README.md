@@ -1,5 +1,6 @@
 # D2S Web Directory
 discover2share, discover2share-EJB, discover2share-Persistence and discover2share-Web are the projects representing the Java EE application.
+The initial D2S web directory user that is created at database setup has the username "sa" and the password "admin".
 
 discover2share-scripts contains additional scripts, e.g. the Excel to RDF transformation and an Alexa user distribution parser.
 
@@ -28,7 +29,7 @@ discover2share-scripts contains additional scripts, e.g. the Excel to RDF transf
 #### Optional: Setting up the web directory in eclipse
 * [Download Eclipse](http://www.eclipse.org/downloads/) (tested with Eclipse Java EE IDE for Web Developers, [Luna Service Release 2 (4.4.2)](http://www.eclipse.org/downloads/packages/eclipse-ide-java-ee-developers/lunasr2)) and extract it to a folder on your hard drive and run it.
   * Select “Help” > “Install new Software…” and select Luna from the dropdown menu as the site to work with. After the list of software is loaded, select “Eclipse Java EE Developer Tools” and “Eclipse Java Web Developer Tools”. Click “Next” twice, “Accept” and “Finish”. When prompted to restart eclipse, confirm.
-  * Select “Help” > “Eclipse Marketplace…” and choose “Eclipse Marketplace” as the marketplace catalogue. Search for “JBoss Tools” and install “JBoss Tools (Luna)”, version 4.2.x. After all requirements have been checked, select all features and confirm. Accept the license agreements and click “Finish”. Warnings regarding unsigned content can be closed via “OK”. Afterwards, confirm the restart of eclipse.
+  * Select “Help” > “Eclipse Marketplace…” and choose “Eclipse Marketplace” as the marketplace catalogue. Search for “JBoss Tools” and install “JBoss Tools 4.2.x". After all requirements have been checked, select all features and confirm. Accept the license agreements and click “Finish”. Warnings regarding unsigned content can be closed via “OK”. Afterwards, confirm the restart of eclipse.
   * Choose the “Java EE” perspective from the upper right corner of eclipse. If it’s not visible, add it via “Window” > “Open Perspective” > “Other…”.
   * Choose the “Servers” view tab in the lower part of the eclipse window. Right-click the empty area and select “New” > “Server”. Select “WildFly 8” from the “JBoss Community” category and click “Next”. Set the “Home directory” to the installation directory of WildFly (e.g. <tt>C:\wildfly</tt>) and click “Finish”.
   * If the <tt>discover2share.ear</tt> was added as explained above. The server can now be run by selecting it and clicking the green start button.
