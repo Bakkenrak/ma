@@ -35,3 +35,13 @@ discover2share-scripts contains additional scripts, e.g. the Excel to RDF transf
 * Import all projects from the repository via “File” > “Import” > “Existing Projects into Workspace”. They should then appear in the projects explorer.
 * Right-click the previously created WildFly server entry and select “Add and Remove…”. Select the “discover2share” project  and click “Add >”, then “Finish”.
 * The project will now be automatically deployed when starting the server in eclipse. It is then available at [http://localhost:8080/discover2share-Web/](http://localhost:8080/discover2share-Web/).
+
+#### Running the Alexa Parser script
+* From within exlipse the script can be run by executing the <tt>de.wwu.d2s.transformation.AlexaParser.java</tt> file.
+* Alternatively, the script can be run using the <tt>bin/AlexaParser.jar</tt> using the command <tt>java -jar AlexaParser.jar</tt>
+  * By default the following variables are used:
+    * Query endpoint to retrieve all platforms: <tt>http://localhost:3030/d2s-ont/query</tt>
+    * Update endpoint to add Alexa data: <tt>http://localhost:3030/d2s-ont/update</tt>
+    * JSON file containing all countries: <tt>http://localhost:8080/discover2share-Web/resources/js/countries.json</tt>
+  * To use different values, command line variables may be used in the same order as above, i.e. <tt>java -jar AlexaParser.com http://localhost:3030/d2s-ont/query http://localhost:3030/d2s-ont/update http://localhost:8080/discover2share-Web/resources/js/countries.json</tt>
+  * Additionally, it can be defined that the output should not be written to the update endpoint but into a text file. To achieve this, the parameter <tt>fileOutput</tt> and the desired output file must be attached to any of the end of the command. E.g.: <tt>java -jar AlexaParser.jar fileOutput C:\AlexaInfo.owl</tt>
