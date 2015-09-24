@@ -12,8 +12,8 @@ discover2share-scripts contains additional scripts, e.g. the Excel to RDF transf
   * Click the “Administration Console” link and follow the instructions to create a management user. 
   * Afterwards, revisit the Administration Console and go to “Deployments”. Add the <tt>hsqldb.jar</tt> which can be found in the repository’s lib directory via “Add Content”. Copying it to <tt>`<WildFly directory>`\standalone\deployments</tt> beforehand might be beneficial to prevent certain errors in the future.
   * Go to “Configuration” > “Connector” > “Datasources” > “Add” to create a new data source with the following information. Enable it afterwards.
-    * Name: D2SDS
-    * JNDI Name: java:/D2SDS
+    * Name: DefaultDS
+    * JNDI Name: java:/DefaultDS
     * Choose hsqldb.jar as the driver
     * Connection URL: jdbc:hsqldb:${jboss.server.data.dir}${/}hypersonic${/}localDB;shutdown=true
     * Username: sa
