@@ -604,6 +604,9 @@
 					$scope.filter.cityLaunch = $scope.findPattern($scope.queryParts.city, locationVar); // find city statement with location variable as subject
 					// country
 					$scope.filter.countryLaunch = $scope.findPattern($scope.queryParts.country, locationVar);
+				} else { // no intermediate variable found, so values cannot be connected to the platform variable
+					$scope.filter.cityLaunch = ""; // empty values
+					$scope.filter.countryLaunch = "";
 				}
 				// residence
 				locationVar = $scope.getIntermediateVar(platformVar, $scope.queryParts.residence); // find intermediate residence variable
@@ -612,7 +615,10 @@
 					$scope.filter.cityResidence = $scope.findPattern($scope.queryParts.city, locationVar); // find city statement with residence variable as subject
 					// country
 					$scope.filter.countryResidence = $scope.findPattern($scope.queryParts.country, locationVar);
-				}				
+				} else { // no intermediate variable found, so values cannot be connected to the platform variable
+					$scope.filter.cityResidence = ""; // empty values
+					$scope.filter.countryResidence = "";
+				}		
 				// year
 				$scope.filter.yearLaunch = $scope.findPattern($scope.queryParts.yearLaunch);				
 				// language
@@ -626,6 +632,9 @@
 					$scope.filter.marketOffering = $scope.findPattern($scope.queryParts.marketOffering, integrationVar);
 					// geographic scope
 					$scope.filter.geographicScope = $scope.findPattern($scope.queryParts.geographicScope, integrationVar);
+				} else { // no intermediate variable found, so values cannot be connected to the platform variable
+					$scope.filter.marketOffering = ""; // empty values
+					$scope.filter.geographicScope = "";
 				}				
 				// money flow
 				$scope.filter.moneyFlow = $scope.findPattern($scope.queryParts.moneyFlow);				
@@ -636,7 +645,10 @@
 					$scope.filter.p2pSccPattern = $scope.findPattern("rdf:type", patternVar);
 					// geographic scope
 					$scope.filter.temporality = $scope.findPattern($scope.queryParts.temporality, patternVar);
-				}				
+				} else { // no intermediate variable found, so values cannot be connected to the platform variable
+					$scope.filter.p2pSccPattern = ""; // empty values
+					$scope.filter.temporality = "";
+				}		
 				// consumerism
 				$scope.findPatternArray($scope.queryParts.consumerism, $scope.filter.consumerisms);				
 				// resource owner
@@ -657,6 +669,8 @@
 				var userDistributionVar = $scope.getIntermediateVar(platformVar, $scope.queryParts.userDistribution);
 				if (userDistributionVar) {
 					$scope.filter.usedIn = $scope.findPattern($scope.queryParts.country, userDistributionVar);
+				} else { // no intermediate variable found, so value cannot be connected to the platform variable
+					$scope.filter.usedIn = ""; // empty value
 				}
 			}
 			
