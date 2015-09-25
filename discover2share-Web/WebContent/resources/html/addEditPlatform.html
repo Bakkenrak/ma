@@ -1,3 +1,6 @@
+<button type="button" class="btn btn-xs btn-primary row-margin-5 pull-right" ng-model="cssState.all" btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">
+			 <span class="glyphicon glyphicon-collapse-up" aria-hidden="true"></span> Collapse descriptions
+</button>
 <form name="addEditForm" ng-submit="addEditForm.$valid && submit()">
 	<table id="detailTable" class="table table-bordered">
 		<tr>
@@ -97,9 +100,14 @@
 					Add another type
 				</button>
 			</td>
-			<td><strong><a href="ontology/resource/Resource_Type" target="_blank">{{descriptions["Resource_Type"]["label"]}}</a>:</strong>
-				{{descriptions["Resource_Type"]["comment"]}}
-				<div><em>Help adding more meaning to a resource type if you don't choose a proposed one: Add external ontological concepts that describe the type!</em></div>
+			<td>
+				<div ng-show="!descriptions"><em>Loading descriptions...</em></div>
+				<div ng-show="descriptions" ng-click="cssState.rt = !cssState.rt" ng-class="{'ontologyDescription': !cssState.rt && cssState.all}" title="Click to fix/unfix display">
+					<strong><a href="ontology/resource/Resource_Type" target="_blank">{{descriptions["Resource_Type"]["label"]}}</a>:</strong>
+					{{descriptions["Resource_Type"]["comment"]}}
+					<div><em>Help adding more meaning to a resource type if you don't choose a proposed one: Add external ontological concepts that describe the type!</em></div>
+					<p class="descriptionGradient">&nbsp;</p>
+				</div>
 			</td>
 		</tr>
 		<tr>
@@ -110,16 +118,21 @@
 					<option value="Self-service">Self-service</option>
 					<option value="In-Between">In-Between</option>
 			</select></td>
-			<td><strong><a href="ontology/resource/Consumer_Involvement" target="_blank">{{descriptions["Consumer_Involvement"]["label"]}}</a>:</strong>
-			{{descriptions["Consumer_Involvement"]["comment"]}}
-			<ul>
-				<li><strong><a href="ontology/resource/Full-service" target="_blank">{{descriptions["Full-service"]["label"]}}</a>:</strong>
-					{{descriptions["Full-service"]["comment"]}}</li>
-				<li><strong><a href="ontology/resource/Self-service" target="_blank">{{descriptions["Self-service"]["label"]}}</a>:</strong>
-					{{descriptions["Self-service"]["comment"]}}</li>
-				<li><strong><a href="ontology/resource/In-Between" target="_blank">{{descriptions["In-Between"]["label"]}}</a>:</strong>
-					{{descriptions["In-Between"]["comment"]}}</li>
-			</ul></td>
+			<td>
+				<div ng-show="descriptions" ng-click="cssState.ci = !cssState.ci" ng-class="{'ontologyDescription': !cssState.ci && cssState.all}" title="Click to fix/unfix display">
+					<strong><a href="ontology/resource/Consumer_Involvement" target="_blank">{{descriptions["Consumer_Involvement"]["label"]}}</a>:</strong>
+					{{descriptions["Consumer_Involvement"]["comment"]}}
+					<ul>
+						<li><strong><a href="ontology/resource/Full-service" target="_blank">{{descriptions["Full-service"]["label"]}}</a>:</strong>
+							{{descriptions["Full-service"]["comment"]}}</li>
+						<li><strong><a href="ontology/resource/Self-service" target="_blank">{{descriptions["Self-service"]["label"]}}</a>:</strong>
+							{{descriptions["Self-service"]["comment"]}}</li>
+						<li><strong><a href="ontology/resource/In-Between" target="_blank">{{descriptions["In-Between"]["label"]}}</a>:</strong>
+							{{descriptions["In-Between"]["comment"]}}</li>
+					</ul>
+					<p class="descriptionGradient">&nbsp;</p>
+				</div>
+			</td>
 		</tr>
 		<tr>
 			<td><strong>Country of launch:</strong></td>
@@ -241,36 +254,41 @@
 						{{mediation}}
 					</label>
 				</div></td>
-			<td><strong><a href="ontology/resource/Market_Mediation" target="_blank">{{descriptions["Market_Mediation"]["label"]}}</a>:</strong>
-			{{descriptions["Market_Mediation"]["comment"]}}
-			<ul>
-				<li><strong><a href="ontology/resource/Not-for-profit" target="_blank">{{descriptions["Not-for-profit"]["label"]}}</a>:</strong>
-					{{descriptions["Not-for-profit"]["comment"]}}</li>
-				<li><strong><a href="ontology/resource/Profit_from_peer_consumers" target="_blank">{{descriptions["Profit_from_peer_consumers"]["label"]}}</a>:</strong>
-					{{descriptions["Profit_from_peer_consumers"]["comment"]}}</li>
-				<li><strong><a href="ontology/resource/Profit_from_peer_providers" target="_blank">{{descriptions["Profit_from_peer_providers"]["label"]}}</a>:</strong>
-					{{descriptions["Profit_from_peer_providers"]["comment"]}}</li>
-				<li><strong><a href="ontology/resource/Profit_from_both" target="_blank">{{descriptions["Profit_from_both"]["label"]}}</a>:</strong>
-					{{descriptions["Profit_from_both"]["comment"]}}</li>
-				<li><strong><a href="ontology/resource/Indirect_profit" target="_blank">{{descriptions["Indirect_profit"]["label"]}}</a>:</strong>
-					{{descriptions["Indirect_profit"]["comment"]}}
+			<td>
+				<div ng-show="descriptions" ng-click="cssState.mm = !cssState.mm" ng-class="{'ontologyDescription': !cssState.mm && cssState.all}" title="Click to fix/unfix display">
+					<strong><a href="ontology/resource/Market_Mediation" target="_blank">{{descriptions["Market_Mediation"]["label"]}}</a>:</strong>
+					{{descriptions["Market_Mediation"]["comment"]}}
 					<ul>
-						<li><strong><a href="ontology/resource/Profit_from_advertisement" target="_blank">{{descriptions["Profit_from_advertisement"]["label"]}}</a>:</strong>
-							{{descriptions["Profit_from_advertisement"]["comment"]}}</li>
-						<li><strong><a href="ontology/resource/Profit_from_user_data" target="_blank">{{descriptions["Profit_from_user_data"]["label"]}}</a>:</strong>
-							{{descriptions["Profit_from_user_data"]["comment"]}}</li>
-					</ul></li>
-				<li>Additional attributes
-						<ul>
-							<li><strong><a href="ontology/resource/Per_transaction" target="_blank">{{descriptions["Per_transaction"]["label"]}}</a>:</strong>
-								{{descriptions["Per_transaction"]["comment"]}}</li>
-							<li><strong><a href="ontology/resource/Per_listing" target="_blank">{{descriptions["Per_listing"]["label"]}}</a>:</strong>
-								{{descriptions["Per_listing"]["comment"]}}</li>
-							<li><strong><a href="ontology/resource/Membership_fee" target="_blank">{{descriptions["Membership_fee"]["label"]}}</a>:</strong>
-								{{descriptions["Membership_fee"]["comment"]}}</li>
-						</ul>
-				</li>
-			</ul></td>
+						<li><strong><a href="ontology/resource/Not-for-profit" target="_blank">{{descriptions["Not-for-profit"]["label"]}}</a>:</strong>
+							{{descriptions["Not-for-profit"]["comment"]}}</li>
+						<li><strong><a href="ontology/resource/Profit_from_peer_consumers" target="_blank">{{descriptions["Profit_from_peer_consumers"]["label"]}}</a>:</strong>
+							{{descriptions["Profit_from_peer_consumers"]["comment"]}}</li>
+						<li><strong><a href="ontology/resource/Profit_from_peer_providers" target="_blank">{{descriptions["Profit_from_peer_providers"]["label"]}}</a>:</strong>
+							{{descriptions["Profit_from_peer_providers"]["comment"]}}</li>
+						<li><strong><a href="ontology/resource/Profit_from_both" target="_blank">{{descriptions["Profit_from_both"]["label"]}}</a>:</strong>
+							{{descriptions["Profit_from_both"]["comment"]}}</li>
+						<li><strong><a href="ontology/resource/Indirect_profit" target="_blank">{{descriptions["Indirect_profit"]["label"]}}</a>:</strong>
+							{{descriptions["Indirect_profit"]["comment"]}}
+							<ul>
+								<li><strong><a href="ontology/resource/Profit_from_advertisement" target="_blank">{{descriptions["Profit_from_advertisement"]["label"]}}</a>:</strong>
+									{{descriptions["Profit_from_advertisement"]["comment"]}}</li>
+								<li><strong><a href="ontology/resource/Profit_from_user_data" target="_blank">{{descriptions["Profit_from_user_data"]["label"]}}</a>:</strong>
+									{{descriptions["Profit_from_user_data"]["comment"]}}</li>
+							</ul></li>
+						<li>Additional attributes
+								<ul>
+									<li><strong><a href="ontology/resource/Per_transaction" target="_blank">{{descriptions["Per_transaction"]["label"]}}</a>:</strong>
+										{{descriptions["Per_transaction"]["comment"]}}</li>
+									<li><strong><a href="ontology/resource/Per_listing" target="_blank">{{descriptions["Per_listing"]["label"]}}</a>:</strong>
+										{{descriptions["Per_listing"]["comment"]}}</li>
+									<li><strong><a href="ontology/resource/Membership_fee" target="_blank">{{descriptions["Membership_fee"]["label"]}}</a>:</strong>
+										{{descriptions["Membership_fee"]["comment"]}}</li>
+								</ul>
+						</li>
+					</ul>
+					<p class="descriptionGradient">&nbsp;</p>
+				</div>
+			</td>
 		</tr>
 		<tr>
 			<td><strong>Market Integration:</strong></td>
@@ -291,25 +309,28 @@
 					</select>
 				</p></td>
 			<td>
-				<p>
-					<strong><a href="ontology/resource/Market_Integration" target="_blank">{{descriptions["Market_Integration"]["label"]}}</a>:</strong>
-					{{descriptions["Market_Integration"]["comment"]}}
-				</p> <strong><a href="ontology/resource/Market_Offering" target="_blank">{{descriptions["Market_Offering"]["label"]}}</a>:</strong>
-				{{descriptions["Market_Offering"]["comment"]}}
-				<ul>
-					<li><strong><a href="ontology/resource/Integrated" target="_blank">{{descriptions["Integrated"]["label"]}}</a>:</strong>
-						{{descriptions["Integrated"]["comment"]}}</li>
-					<li><strong><a href="ontology/resource/Separated" target="_blank">{{descriptions["Separated"]["label"]}}</a>:</strong>
-						{{descriptions["Separated"]["comment"]}}</li>
-				</ul> <strong><a href="ontology/resource/Geographic_Scope" target="_blank">{{descriptions["Geographic_Scope"]["label"]}}</a>:</strong>
-				{{descriptions["Geographic_Scope"]["comment"]}}
-				<ul>
-					<li><strong><a href="ontology/resource/Neighbourhood-wide" target="_blank">{{descriptions["Neighbourhood-wide"]["label"]}}</a></strong></li>
-					<li><strong><a href="ontology/resource/City-wide" target="_blank">{{descriptions["City-wide"]["label"]}}</a></strong></li>
-					<li><strong><a href="ontology/resource/State-wide" target="_blank">{{descriptions["State-wide"]["label"]}}</a></strong></li>
-					<li><strong><a href="ontology/resource/Country-wide" target="_blank">{{descriptions["Country-wide"]["label"]}}</a></strong></li>
-					<li><strong><a href="ontology/resource/Global" target="_blank">{{descriptions["Global"]["label"]}}</a></strong></li>
-				</ul>
+				<div ng-show="descriptions" ng-click="cssState.mi = !cssState.mi" ng-class="{'ontologyDescription': !cssState.mi && cssState.all}" title="Click to fix/unfix display">
+					<p>
+						<strong><a href="ontology/resource/Market_Integration" target="_blank">{{descriptions["Market_Integration"]["label"]}}</a>:</strong>
+						{{descriptions["Market_Integration"]["comment"]}}
+					</p> <strong><a href="ontology/resource/Market_Offering" target="_blank">{{descriptions["Market_Offering"]["label"]}}</a>:</strong>
+					{{descriptions["Market_Offering"]["comment"]}}
+					<ul>
+						<li><strong><a href="ontology/resource/Integrated" target="_blank">{{descriptions["Integrated"]["label"]}}</a>:</strong>
+							{{descriptions["Integrated"]["comment"]}}</li>
+						<li><strong><a href="ontology/resource/Separated" target="_blank">{{descriptions["Separated"]["label"]}}</a>:</strong>
+							{{descriptions["Separated"]["comment"]}}</li>
+					</ul> <strong><a href="ontology/resource/Geographic_Scope" target="_blank">{{descriptions["Geographic_Scope"]["label"]}}</a>:</strong>
+					{{descriptions["Geographic_Scope"]["comment"]}}
+					<ul>
+						<li><strong><a href="ontology/resource/Neighbourhood-wide" target="_blank">{{descriptions["Neighbourhood-wide"]["label"]}}</a></strong></li>
+						<li><strong><a href="ontology/resource/City-wide" target="_blank">{{descriptions["City-wide"]["label"]}}</a></strong></li>
+						<li><strong><a href="ontology/resource/State-wide" target="_blank">{{descriptions["State-wide"]["label"]}}</a></strong></li>
+						<li><strong><a href="ontology/resource/Country-wide" target="_blank">{{descriptions["Country-wide"]["label"]}}</a></strong></li>
+						<li><strong><a href="ontology/resource/Global" target="_blank">{{descriptions["Global"]["label"]}}</a></strong></li>
+					</ul>
+					<p class="descriptionGradient">&nbsp;</p>
+				</div>
 			</td>
 		</tr>
 		<tr>
@@ -318,14 +339,19 @@
 					<option value="Consumer to consumer">Consumer to consumer</option>
 					<option value="Consumer to business to consumer">Consumer to business to consumer</option>
 			</select></td>
-			<td><strong><a href="ontology/resource/Money_Flow" target="_blank">{{descriptions["Money_Flow"]["label"]}}</a>:</strong>
-			{{descriptions["Money_Flow"]["comment"]}}
-			<ul>
-				<li><strong><a href="ontology/resource/C2C" target="_blank">{{descriptions["C2C"]["label"]}}</a>:</strong>
-					{{descriptions["C2C"]["comment"]}}</li>
-				<li><strong><a href="ontology/resource/C2B2C" target="_blank">{{descriptions["C2B2C"]["label"]}}</a>:</strong>
-					{{descriptions["C2B2C"]["comment"]}}</li>
-			</ul></td>
+			<td>
+				<div ng-show="descriptions" ng-click="cssState.mf = !cssState.mf" ng-class="{'ontologyDescription': !cssState.mf && cssState.all}" title="Click to fix/unfix display">
+					<strong><a href="ontology/resource/Money_Flow" target="_blank">{{descriptions["Money_Flow"]["label"]}}</a>:</strong>
+					{{descriptions["Money_Flow"]["comment"]}}
+					<ul>
+						<li><strong><a href="ontology/resource/C2C" target="_blank">{{descriptions["C2C"]["label"]}}</a>:</strong>
+							{{descriptions["C2C"]["comment"]}}</li>
+						<li><strong><a href="ontology/resource/C2B2C" target="_blank">{{descriptions["C2B2C"]["label"]}}</a>:</strong>
+							{{descriptions["C2B2C"]["comment"]}}</li>
+					</ul>
+					<p class="descriptionGradient">&nbsp;</p>
+				</div>
+			</td>
 		</tr>
 		<tr>
 			<td><strong>P2P SCC Pattern:</strong></td>
@@ -342,23 +368,28 @@
 						<option value="Often">Often</option>
 					</select>
 				</p></td>
-			<td><strong><a href="ontology/resource/P2P_SCC_Pattern" target="_blank">{{descriptions["P2P_SCC_Pattern"]["label"]}}</a>:</strong>
-			{{descriptions["P2P_SCC_Pattern"]["comment"]}}
-			<ul>
-				<li><strong><a href="ontology/resource/Deferred" target="_blank">{{descriptions["Deferred"]["label"]}}</a>:</strong>
-					{{descriptions["Deferred"]["comment"]}}</li>
-				<li><strong><a href="ontology/resource/Immediate" target="_blank">{{descriptions["Immediate"]["label"]}}</a>:</strong>
-					{{descriptions["Immediate"]["comment"]}}</li>
-				<li><strong><a href="ontology/resource/Recurrent" target="_blank">{{descriptions["Recurrent"]["label"]}}</a>:</strong>
-					{{descriptions["Recurrent"]["comment"]}}</li>
-			</ul> <strong><a href="ontology/resource/Temporality" target="_blank">{{descriptions["Temporality"]["label"]}}</a>:</strong>
-			{{descriptions["Temporality"]["comment"]}}
-			<ul>
-				<li><strong><a href="ontology/resource/Once" target="_blank">{{descriptions["Once"]["label"]}}</a>:</strong>
-					{{descriptions["Once"]["comment"]}}</li>
-				<li><strong><a href="ontology/resource/Often" target="_blank">{{descriptions["Often"]["label"]}}</a>:</strong>
-					{{descriptions["Often"]["comment"]}}</li>
-			</ul></td>
+			<td>
+				<div ng-show="descriptions" ng-click="cssState.psp = !cssState.psp" ng-class="{'ontologyDescription': !cssState.psp && cssState.all}" title="Click to fix/unfix display">
+					<strong><a href="ontology/resource/P2P_SCC_Pattern" target="_blank">{{descriptions["P2P_SCC_Pattern"]["label"]}}</a>:</strong>
+					{{descriptions["P2P_SCC_Pattern"]["comment"]}}
+					<ul>
+						<li><strong><a href="ontology/resource/Deferred" target="_blank">{{descriptions["Deferred"]["label"]}}</a>:</strong>
+							{{descriptions["Deferred"]["comment"]}}</li>
+						<li><strong><a href="ontology/resource/Immediate" target="_blank">{{descriptions["Immediate"]["label"]}}</a>:</strong>
+							{{descriptions["Immediate"]["comment"]}}</li>
+						<li><strong><a href="ontology/resource/Recurrent" target="_blank">{{descriptions["Recurrent"]["label"]}}</a>:</strong>
+							{{descriptions["Recurrent"]["comment"]}}</li>
+					</ul> <strong><a href="ontology/resource/Temporality" target="_blank">{{descriptions["Temporality"]["label"]}}</a>:</strong>
+					{{descriptions["Temporality"]["comment"]}}
+					<ul>
+						<li><strong><a href="ontology/resource/Once" target="_blank">{{descriptions["Once"]["label"]}}</a>:</strong>
+							{{descriptions["Once"]["comment"]}}</li>
+						<li><strong><a href="ontology/resource/Often" target="_blank">{{descriptions["Often"]["label"]}}</a>:</strong>
+							{{descriptions["Often"]["comment"]}}</li>
+					</ul>
+					<p class="descriptionGradient">&nbsp;</p>
+				</div>
+			</td>
 		</tr>
 		<tr>
 			<td><strong>Promoted Consumerism:</strong></td>
@@ -372,18 +403,23 @@
 					</label>
 				</div>
 			</td>
-			<td><strong><a href="ontology/resource/Sustainable_Consumerism" target="_blank">{{descriptions["Sustainable_Consumerism"]["label"]}}</a>:</strong>
-			{{descriptions["Sustainable_Consumerism"]["comment"]}}
-			<ul>
-				<li><strong><a href="ontology/resource/Social" target="_blank">{{descriptions["Social"]["label"]}}</a>:</strong>
-					{{descriptions["Social"]["comment"]}}</li>
-				<li><strong><a href="ontology/resource/Environmental" target="_blank">{{descriptions["Environmental"]["label"]}}</a>:</strong>
-					{{descriptions["Environmental"]["comment"]}}</li>
-				<li><strong><a href="ontology/resource/Economic" target="_blank">{{descriptions["Economic"]["label"]}}</a>:</strong>
-					{{descriptions["Economic"]["comment"]}}</li>
-				<li><strong><a href="ontology/resource/None" target="_blank">{{descriptions["None"]["label"]}}</a>:</strong>
-					{{descriptions["None"]["comment"]}}</li>
-			</ul></td>
+			<td>
+				<div ng-show="descriptions" ng-click="cssState.sc = !cssState.sc" ng-class="{'ontologyDescription': !cssState.sc && cssState.all}" title="Click to fix/unfix display">
+					<strong><a href="ontology/resource/Sustainable_Consumerism" target="_blank">{{descriptions["Sustainable_Consumerism"]["label"]}}</a>:</strong>
+					{{descriptions["Sustainable_Consumerism"]["comment"]}}
+					<ul>
+						<li><strong><a href="ontology/resource/Social" target="_blank">{{descriptions["Social"]["label"]}}</a>:</strong>
+							{{descriptions["Social"]["comment"]}}</li>
+						<li><strong><a href="ontology/resource/Environmental" target="_blank">{{descriptions["Environmental"]["label"]}}</a>:</strong>
+							{{descriptions["Environmental"]["comment"]}}</li>
+						<li><strong><a href="ontology/resource/Economic" target="_blank">{{descriptions["Economic"]["label"]}}</a>:</strong>
+							{{descriptions["Economic"]["comment"]}}</li>
+						<li><strong><a href="ontology/resource/None" target="_blank">{{descriptions["None"]["label"]}}</a>:</strong>
+							{{descriptions["None"]["comment"]}}</li>
+					</ul>
+					<p class="descriptionGradient">&nbsp;</p>
+				</div>
+			</td>
 		</tr>
 		<tr>
 			<td><strong>Resource Owner:</strong></td>
@@ -393,16 +429,21 @@
 					<option value="Business">Business</option>
 					<option value="Private and business">Private and business</option>
 			</select></td>
-			<td><strong><a href="ontology/resource/Resource_Owner" target="_blank">{{descriptions["Resource_Owner"]["label"]}}</a>:</strong>
-			{{descriptions["Resource_Owner"]["comment"]}}
-			<ul>
-				<li><strong><a href="ontology/resource/Private" target="_blank">{{descriptions["Private"]["label"]}}</a>:</strong>
-					{{descriptions["Private"]["comment"]}}</li>
-				<li><strong><a href="ontology/resource/Business" target="_blank">{{descriptions["Business"]["label"]}}</a>:</strong>
-					{{descriptions["Business"]["comment"]}}</li>
-				<li><strong><a href="ontology/resource/Private_and_business" target="_blank">{{descriptions["Private_and_business"]["label"]}}</a>:</strong>
-					{{descriptions["Private_and_business"]["comment"]}}</li>
-			</ul></td>
+			<td>
+				<div ng-show="descriptions" ng-click="cssState.ro = !cssState.ro" ng-class="{'ontologyDescription': !cssState.ro && cssState.all}" title="Click to fix/unfix display">
+					<strong><a href="ontology/resource/Resource_Owner" target="_blank">{{descriptions["Resource_Owner"]["label"]}}</a>:</strong>
+					{{descriptions["Resource_Owner"]["comment"]}}
+					<ul>
+						<li><strong><a href="ontology/resource/Private" target="_blank">{{descriptions["Private"]["label"]}}</a>:</strong>
+							{{descriptions["Private"]["comment"]}}</li>
+						<li><strong><a href="ontology/resource/Business" target="_blank">{{descriptions["Business"]["label"]}}</a>:</strong>
+							{{descriptions["Business"]["comment"]}}</li>
+						<li><strong><a href="ontology/resource/Private_and_business" target="_blank">{{descriptions["Private_and_business"]["label"]}}</a>:</strong>
+							{{descriptions["Private_and_business"]["comment"]}}</li>
+					</ul>
+					<p class="descriptionGradient">&nbsp;</p>
+				</div>
+			</td>
 		</tr>
 		<tr>
 			<td><strong>Service Duration Minimum:</strong></td>
@@ -436,16 +477,21 @@
 						ng-click="toggleSelection(app,platform.apps)"> {{app}}
 					</label>
 				</div></td>
-			<td><strong><a href="ontology/resource/Smartphone_App" target="_blank">{{descriptions["Smartphone_App"]["label"]}}</a>:</strong>
-			{{descriptions["Smartphone_App"]["comment"]}}
-			<ul>
-				<li><strong><a href="ontology/resource/Android_app" target="_blank">{{descriptions["Android_app"]["label"]}}</a>:</strong>
-					{{descriptions["Android_app"]["comment"]}}</li>
-				<li><strong><a href="ontology/resource/iOS_app" target="_blank">{{descriptions["iOS_app"]["label"]}}</a>:</strong>
-					{{descriptions["iOS_app"]["comment"]}}</li>
-				<li><strong><a href="ontology/resource/Windows_Phone_app" target="_blank">{{descriptions["Windows_Phone_app"]["label"]}}</a>:</strong>
-					{{descriptions["Windows_Phone_app"]["comment"]}}</li>
-			</ul></td>
+			<td>
+				<div ng-show="descriptions" ng-click="cssState.sa = !cssState.sa" ng-class="{'ontologyDescription': !cssState.sa && cssState.all}" title="Click to fix/unfix display">
+					<strong><a href="ontology/resource/Smartphone_App" target="_blank">{{descriptions["Smartphone_App"]["label"]}}</a>:</strong>
+					{{descriptions["Smartphone_App"]["comment"]}}
+					<ul>
+						<li><strong><a href="ontology/resource/Android_app" target="_blank">{{descriptions["Android_app"]["label"]}}</a>:</strong>
+							{{descriptions["Android_app"]["comment"]}}</li>
+						<li><strong><a href="ontology/resource/iOS_app" target="_blank">{{descriptions["iOS_app"]["label"]}}</a>:</strong>
+							{{descriptions["iOS_app"]["comment"]}}</li>
+						<li><strong><a href="ontology/resource/Windows_Phone_app" target="_blank">{{descriptions["Windows_Phone_app"]["label"]}}</a>:</strong>
+							{{descriptions["Windows_Phone_app"]["comment"]}}</li>
+					</ul>
+					<p class="descriptionGradient">&nbsp;</p>
+				</div>
+			</td>
 		</tr>
 		<tr>
 			<td><strong>Trust Contribution:</strong></td>
@@ -458,20 +504,25 @@
 						{{contribution}}
 					</label>
 				</div></td>
-			<td><strong><a href="ontology/resource/Trust_Contribution" target="_blank">{{descriptions["Trust_Contribution"]["label"]}}</a>:</strong>
-			{{descriptions["Trust_Contribution"]["comment"]}}
-			<ul>
-				<li><strong><a href="ontology/resource/Provider_ratings" target="_blank">{{descriptions["Provider_ratings"]["label"]}}</a>:</strong>
-					{{descriptions["Provider_ratings"]["comment"]}}</li>
-				<li><strong><a href="ontology/resource/Provider_and_consumer_ratings" target="_blank">{{descriptions["Provider_and_consumer_ratings"]["label"]}}</a>:</strong>
-					{{descriptions["Provider_and_consumer_ratings"]["comment"]}}</li>
-				<li><strong><a href="ontology/resource/Referral" target="_blank">{{descriptions["Referral"]["label"]}}</a>:</strong>
-					{{descriptions["Referral"]["comment"]}}</li>
-				<li><strong><a href="ontology/resource/Vouching" target="_blank">{{descriptions["Vouching"]["label"]}}</a>:</strong>
-					{{descriptions["Vouching"]["comment"]}}</li>
-				<li><strong><a href="ontology/resource/Value-added_services" target="_blank">{{descriptions["Value-added_services"]["label"]}}</a>:</strong>
-					{{descriptions["Value-added_services"]["comment"]}}</li>
-			</ul></td>
+			<td>
+				<div ng-show="descriptions" ng-click="cssState.tc = !cssState.tc" ng-class="{'ontologyDescription': !cssState.tc && cssState.all}" title="Click to fix/unfix display">
+					<strong><a href="ontology/resource/Trust_Contribution" target="_blank">{{descriptions["Trust_Contribution"]["label"]}}</a>:</strong>
+					{{descriptions["Trust_Contribution"]["comment"]}}
+					<ul>
+						<li><strong><a href="ontology/resource/Provider_ratings" target="_blank">{{descriptions["Provider_ratings"]["label"]}}</a>:</strong>
+							{{descriptions["Provider_ratings"]["comment"]}}</li>
+						<li><strong><a href="ontology/resource/Provider_and_consumer_ratings" target="_blank">{{descriptions["Provider_and_consumer_ratings"]["label"]}}</a>:</strong>
+							{{descriptions["Provider_and_consumer_ratings"]["comment"]}}</li>
+						<li><strong><a href="ontology/resource/Referral" target="_blank">{{descriptions["Referral"]["label"]}}</a>:</strong>
+							{{descriptions["Referral"]["comment"]}}</li>
+						<li><strong><a href="ontology/resource/Vouching" target="_blank">{{descriptions["Vouching"]["label"]}}</a>:</strong>
+							{{descriptions["Vouching"]["comment"]}}</li>
+						<li><strong><a href="ontology/resource/Value-added_services" target="_blank">{{descriptions["Value-added_services"]["label"]}}</a>:</strong>
+							{{descriptions["Value-added_services"]["comment"]}}</li>
+					</ul>
+					<p class="descriptionGradient">&nbsp;</p>
+				</div>
+			</td>
 		</tr>
 		<tr>
 			<td><strong>Type of Accessed Object:</strong></td>
@@ -481,16 +532,21 @@
 					<option value="Experiential">Experiential</option>
 					<option value="Mixed">Mixed</option>
 			</select></td>
-			<td><strong><a href="ontology/resource/Type_of_Accessed_Object" target="_blank">{{descriptions["Type_of_Accessed_Object"]["label"]}}</a>:</strong>
-			{{descriptions["Type_of_Accessed_Object"]["comment"]}}
-			<ul>
-				<li><strong><a href="ontology/resource/Functional" target="_blank">{{descriptions["Functional"]["label"]}}</a>:</strong>
-					{{descriptions["Functional"]["comment"]}}</li>
-				<li><strong><a href="ontology/resource/Experiential" target="_blank">{{descriptions["Experiential"]["label"]}}</a>:</strong>
-					{{descriptions["Experiential"]["comment"]}}</li>
-				<li><strong><a href="ontology/resource/Mixed" target="_blank">{{descriptions["Mixed"]["label"]}}</a>:</strong>
-					{{descriptions["Mixed"]["comment"]}}</li>
-			</ul></td>
+			<td>
+				<div ng-show="descriptions" ng-click="cssState.toa = !cssState.toa" ng-class="{'ontologyDescription': !cssState.toa && cssState.all}" title="Click to fix/unfix display">
+					<strong><a href="ontology/resource/Type_of_Accessed_Object" target="_blank">{{descriptions["Type_of_Accessed_Object"]["label"]}}</a>:</strong>
+					{{descriptions["Type_of_Accessed_Object"]["comment"]}}
+					<ul>
+						<li><strong><a href="ontology/resource/Functional" target="_blank">{{descriptions["Functional"]["label"]}}</a>:</strong>
+							{{descriptions["Functional"]["comment"]}}</li>
+						<li><strong><a href="ontology/resource/Experiential" target="_blank">{{descriptions["Experiential"]["label"]}}</a>:</strong>
+							{{descriptions["Experiential"]["comment"]}}</li>
+						<li><strong><a href="ontology/resource/Mixed" target="_blank">{{descriptions["Mixed"]["label"]}}</a>:</strong>
+							{{descriptions["Mixed"]["comment"]}}</li>
+					</ul>
+					<p class="descriptionGradient">&nbsp;</p>
+				</div>
+			</td>
 		</tr>
 	</table>
 	<div class="col-md-10">
