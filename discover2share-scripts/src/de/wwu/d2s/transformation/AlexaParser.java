@@ -83,7 +83,6 @@ public class AlexaParser {
 			COUNTRIESJSON = args[2];
 		String fileOutput = null;
 		for (int i = 0; i < args.length; i++) {
-			System.out.println(args[i]);
 			if (args[i].equals("fileOutput")) {
 				if (i+1 >= args.length) {
 					log.error("You chose file output but didn't provide a filename in the next argument.");
