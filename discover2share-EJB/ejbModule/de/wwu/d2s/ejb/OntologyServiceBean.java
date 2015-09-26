@@ -405,8 +405,8 @@ public class OntologyServiceBean implements OntologyService {
 					+ "} WHERE { "; // construct where clause
 		
 		if (removeCompletely) {
-			query += "d2s:" + id + " ?a ?b. " // find all triples with the platform as subject
-					+ "?c ?d d2s:" + id + ". "; // or object
+			query += "OPTIONAL { d2s:" + id + " ?a ?b. }. " // find all triples with the platform as subject
+					+ "OPTIONAL { ?c ?d d2s:" + id + ". }. "; // or object
 		}
 		
 		query += getPlatformQuery(id) // append 'all details' query for the current platform
