@@ -1,4 +1,4 @@
-# D2S Web Directory
+﻿# D2S Web Directory
 discover2share, discover2share-EJB, discover2share-Persistence and discover2share-Web are the projects representing the Java EE application.
 The initial D2S web directory user that is created at database setup has the username "sa" and the password "admin".
 
@@ -50,4 +50,4 @@ This script retrieves all platforms from the ontology and tries to find user dis
 #### Running the Excel Table Transformation script
 This script converts the P2P SCC descriptions in the provided Excel table to RDF data according to the D2S ontology's structure.
 * From within eclipse the script can be run by executing the <tt>de.wwu.d2s.transformation.Start.java</tt> file in the discover2share-scripts project.
-* Alternatively, the script can be run using the <tt>bin/ExcelTransformation.jar</tt> using the command <tt>java -jar ExcelTransformation.jar</tt>. It then prompts for the full paths and filenames of the Excel table and the desired output file.
+* Alternatively, the script can be run using the <tt>bin/ExcelTransformation.jar</tt> using the command <tt>java -jar ExcelTransformation.jar</tt>. It then prompts for the full paths and filenames of the Excel table and the desired output file. Optionally, the path to <tt>countries.json</tt> on the D2S server, which is required, can be provided as a command line variable. E.g. <tt>java -jar ExcelTransformation.jar http://www.example.org/countries.json</tt>. By default <tt>http://localhost:8080/discover2share-Web/resources/js/countries.json</tt> is assumed.
