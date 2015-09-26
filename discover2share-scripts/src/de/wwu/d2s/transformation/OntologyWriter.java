@@ -31,6 +31,8 @@ import de.wwu.d2s.util.Pair;
  * Transforms P2P SCC platform objects into instances of the Discover2Share ontology.
  */
 public class OntologyWriter {
+	
+	private String COUNTRIESJSON = "http://localhost:8080/discover2share-Web/resources/js/countries.json";
 
 	private Logger log;
 	private Levenshtein levenshtein = new Levenshtein(); // Levenshtein similarity
@@ -181,8 +183,13 @@ public class OntologyWriter {
 	/**
 	 * Instantiates the new ontology model and most resources and properties
 	 */
-	public OntologyWriter() {
+	public OntologyWriter(String countriesJson) {
 		log = Logger.getLogger(this.getClass().getName()); // instantiate logger
+		
+		if(countriesJson != null) {
+			COUNTRIESJSON = countriesJson;
+		}
+		log.info("Expecting countries JSON file at " + COUNTRIESJSON);
 
 		log.info("Build country index");
 		buildCountryIndex(); // transform json array into map with country codes as keys
@@ -338,7 +345,7 @@ public class OntologyWriter {
 		try {
 			// read JSON from discover2share server
 			JSONObject json = JsonReader
-					.readJsonFromUrl("http://localhost:8080/discover2share-Web/resources/js/countries.json");
+					.readJsonFromUrl(COUNTRIESJSON);
 			JSONArray a = json.getJSONArray("countries"); // retrieved object contains an array at the key "countries"
 			for (int i = 0; i < a.length(); i++) { // for each country
 				JSONObject o = a.getJSONObject(i);
@@ -349,8 +356,10 @@ public class OntologyWriter {
 				map.put("resourceName",o.getString("resourceName"));
 				countryIndex.put(o.getString("countryCode"), map);
 			}
-		} catch (IOException | JSONException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
+			log.error("Error retrieving the countries JSON from the D2S server or building an index out of it. Aborting...");
+			System.exit(1);
 		}
 	}
 

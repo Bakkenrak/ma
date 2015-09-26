@@ -26,7 +26,12 @@ public class Start {
 
 		List<ExcelPlatform> platforms = ExcelParser.parsePlatforms(xlsx); // parse platform objects from excel file.
 
-		OntologyWriter ontWriter = new OntologyWriter();
+		OntologyWriter ontWriter;
+		if (args.length > 0) { // if a specific path to the countries JSON is provided as a command line argument
+			ontWriter = new OntologyWriter(args[0]); // pass it to the constructor
+		} else {
+			ontWriter = new OntologyWriter(null);
+		}
 		ontWriter.writeAll(platforms, owl); // transform platform objects into RDF
 	}
 }
