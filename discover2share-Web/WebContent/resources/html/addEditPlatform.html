@@ -112,12 +112,14 @@
 		</tr>
 		<tr>
 			<td><strong>Consumer Involvement:</strong></td>
-			<td><select class="form-control"
-				ng-model="platform.consumerInvolvement">
+			<td>
+				<select class="form-control" ng-model="platform.consumerInvolvement">
+					<option value=""></option>
 					<option value="Full-service">Full-service</option>
 					<option value="Self-service">Self-service</option>
 					<option value="In-Between">In-Between</option>
-			</select></td>
+				</select>
+			</td>
 			<td>
 				<div ng-show="descriptions" ng-click="cssState.ci = !cssState.ci" ng-class="{'ontologyDescription': !cssState.ci && cssState.all}" title="Click to fix/unfix display">
 					<strong><a href="ontology/resource/Consumer_Involvement" target="_blank">{{descriptions["Consumer_Involvement"]["label"]}}</a>:</strong>
@@ -228,6 +230,7 @@
 				<p ng-repeat="language in platform.languageObjects" ng-class="{'input-group' : platform.languageObjects.length>1}">
 					<select class="form-control" ng-model="language.resourceName" ng-options="('http://www.discover2share.net/d2s-ont/' + l.resourceName) as l.name for l in languages"
 						name="lang{{$index}}" cu-enter="addOption(platform.languageObjects)" cu-focuslast>
+						<option value=""></option>
 					</select> <span class="input-group-btn" ng-if="platform.languageObjects.length>1">
 						<button type="button" class="btn btn-default" data-type="plus"
 							data-field="lang{{$index}}"
@@ -242,7 +245,11 @@
 					Add another language
 				</button>
 			</td>
-			<td></td>
+			<td>
+				<div ng-show="descriptions">
+					<strong><a href="ontology/resource/Language">Language</a>s:</strong> The languages in which the platform's offerings are penned.
+				</div>
+			</td>
 		</tr>
 		<tr>
 			<td><strong>Market Mediation:</strong></td>
@@ -294,12 +301,14 @@
 			<td><strong>Market Integration:</strong></td>
 			<td><p>
 					<select class="form-control" ng-model="platform.offering">
+						<option value=""></option>
 						<option value="Integrated">Integrated</option>
 						<option value="Separated">Separated</option>
 					</select>
 				</p>
 				<p>
 					<select class="form-control" ng-model="platform.geographicScope">
+						<option value=""></option>
 						<option value="Neighbourhood-wide">Neighbourhood-wide</option>
 						<option value="City-wide">City-wide</option>
 						<option value="State-wide">State-wide</option>
@@ -336,6 +345,7 @@
 		<tr>
 			<td><strong>Money Flow:</strong></td>
 			<td><select class="form-control" ng-model="platform.moneyFlow">
+					<option value=""></option>
 					<option value="Consumer to consumer">Consumer to consumer</option>
 					<option value="Consumer to business to consumer">Consumer to business to consumer</option>
 			</select></td>
@@ -357,6 +367,7 @@
 			<td><strong>P2P SCC Pattern:</strong></td>
 			<td><p>
 					<select class="form-control" ng-model="platform.pattern">
+						<option value=""></option>
 						<option value="Deferred">Deferred</option>
 						<option value="Immediate">Immediate</option>
 						<option value="Recurrent">Recurrent</option>
@@ -364,6 +375,7 @@
 				</p>
 				<p>
 					<select class="form-control" ng-model="platform.temporality">
+						<option value=""></option>
 						<option value="Once">Once</option>
 						<option value="Often">Often</option>
 					</select>
@@ -425,6 +437,7 @@
 			<td><strong>Resource Owner:</strong></td>
 			<td><select class="form-control"
 				ng-model="platform.resourceOwner">
+					<option value=""></option>
 					<option value="Private">Private</option>
 					<option value="Business">Business</option>
 					<option value="Private and business">Private and business</option>
@@ -449,25 +462,38 @@
 			<td><strong>Service Duration Minimum:</strong></td>
 			<td><select class="form-control"
 				ng-model="platform.serviceDurationMin">
+					<option value=""></option>
 					<option value="Minutes">Minutes</option>
 					<option value="Hours">Hours</option>
 					<option value="Days">Days</option>
 					<option value="Weeks">Weeks</option>
 					<option value="Months">Months</option>
 			</select></td>
-			<td></td>
+			<td rowspan="2">
+				<div ng-show="descriptions" ng-click="cssState.sd = !cssState.sd" ng-class="{'ontologyDescription': !cssState.sd && !cssState.all}" title="Click to fix/unfix display">
+					<strong>Service Duration:</strong> The amount of time the physical object is accessed during a service instance.
+					<ul>
+						<li><strong>Minutes</strong></li>
+						<li><strong>Hours</strong></li>
+						<li><strong>Days</strong></li>
+						<li><strong>Weeks</strong></li>
+						<li><strong>Months</strong></li>
+					</ul>
+					<p class="descriptionGradient">&nbsp;</p>
+				</div>
+			</td>
 		</tr>
 		<tr>
 			<td><strong>Service Duration Maximum:</strong></td>
 			<td><select class="form-control"
 				ng-model="platform.serviceDurationMax">
+					<option value=""></option>
 					<option value="Minutes">Minutes</option>
 					<option value="Hours">Hours</option>
 					<option value="Days">Days</option>
 					<option value="Weeks">Weeks</option>
 					<option value="Months">Months</option>
 			</select></td>
-			<td></td>
 		</tr>
 		<tr>
 			<td><strong>Smartphone Apps:</strong></td>
@@ -528,6 +554,7 @@
 			<td><strong>Type of Accessed Object:</strong></td>
 			<td><select class="form-control"
 				ng-model="platform.typeOfAccessedObject">
+					<option value=""></option>
 					<option value="Functional">Functional</option>
 					<option value="Experiential">Experiential</option>
 					<option value="Mixed">Mixed</option>

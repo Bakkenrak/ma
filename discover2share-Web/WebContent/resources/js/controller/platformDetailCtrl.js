@@ -7,6 +7,9 @@
 	 * Controller that provides functionality for the platform or suggestion detail views.
 	 */
 	d2sApp.controller('platformDetailCtrl', function ($scope, $route, platformFactory, authFactory, $rootScope, $location, toaster, platform, languages) {
+		if ($route.current.params.platform) {
+			$scope.platformUri = $route.current.params.platform;
+		}
 		$scope.isSuggestion = $route.current.$$route.isSuggestion; // copy parameter passed in from route provider to scope 
 				
 		if (platform.status === 204) { // if the platform data was not resolved by the route provider
