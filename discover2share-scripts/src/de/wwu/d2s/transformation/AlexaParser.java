@@ -104,7 +104,13 @@ public class AlexaParser {
 			OutputStream baos = new ByteArrayOutputStream();
 			ontModel.write(baos, "N-TRIPLE"); // transform data in ontology model into triples
 			String query = "INSERT DATA { " + baos.toString() + "}"; // build insert query
-			UpdateExecutionFactory.createRemote(UpdateFactory.create(query), UPDATEENDPOINT).execute(); // execute update to endpoint
+			try {
+				UpdateExecutionFactory.createRemote(UpdateFactory.create(query), UPDATEENDPOINT).execute(); // execute update to endpoint
+			} catch (Exception e) {
+				e.printStackTrace();
+				log.error("Error connecting to the update endpoint or inserting data through it. Aborting...");
+				System.exit(1);
+			}
 		} else { // write to file
 			log.info("Writing triples to " + fileOutput);
 			try (OutputStream out = new FileOutputStream(fileOutput)) {
@@ -261,8 +267,16 @@ public class AlexaParser {
 				+ "ORDER BY ?resourceName"; // ordered by the platforms' resource names
 
 		Query query = QueryFactory.create(sparqlQuery); // construct query
-		QueryExecution qexec = QueryExecutionFactory.sparqlService(QUERYENDPOINT, query); // query endpoint
-		ResultSet results = qexec.execSelect(); // execute
+		QueryExecution qexec = null;
+		ResultSet results = null;
+		try {
+			qexec = QueryExecutionFactory.sparqlService(QUERYENDPOINT, query); // query endpoint
+			results = qexec.execSelect(); // execute
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.error("Error connecting to endpoint or retrieving all platforms from it. Aborting...");
+			System.exit(1);
+		}
 
 		List<Platform> platforms = new ArrayList<Platform>();
 		Platform currentPlatform = new Platform();
