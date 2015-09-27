@@ -165,6 +165,7 @@
 						typeahead-wait-ms="750"
 						typeahead-on-select="launchCitySelected($item)" />
 				</p>
+				<i class="fa fa-spinner fa-pulse" ng-show="findingLaunchCity"></i>
 				<div ng-show="platform.launchCity.geonames">
 					<a href="{{platform.launchCity.geonames}}" target="_blank">{{platform.launchCity.label}}<span ng-show="platform.launchCity.adminName1">, {{platform.launchCity.adminName1}}</span>
 							({{platform.launchCity.countryCode}})</a>
@@ -214,6 +215,7 @@
 						typeahead-wait-ms="750"
 						typeahead-on-select="residenceCitySelected($item)" />
 				</p> 
+				<i class="fa fa-spinner fa-pulse" ng-show="findingResidenceCity"></i>
 				<div ng-show="platform.residenceCity.geonames">
 					<a href="{{platform.residenceCity.geonames}}" target="_blank">{{platform.residenceCity.label}}<span ng-show="platform.residenceCity.adminName1">, {{platform.residenceCity.adminName1}}</span>
 							({{platform.residenceCity.countryCode}})</a>

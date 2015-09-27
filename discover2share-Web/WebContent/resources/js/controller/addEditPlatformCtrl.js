@@ -201,6 +201,7 @@
 			if (!$scope.platform.launchCity || $scope.platform.launchCity.search === "") { // if no launch city object is set or the search string is empty
 				return;
 			}
+			$scope.findingLaunchCity = true;
 			// return the list of geoname data items representing cities that match the search term
 			return platformFactory.findCity($scope.platform.launchCity.search, $scope.platform.launchCountry ? $scope.platform.launchCountry.countryCode : null)
 					.then(function (response) {
@@ -211,6 +212,7 @@
 							message += ($scope.platform.launchCountry && $scope.platform.launchCountry.label) ?  'in ' + $scope.platform.launchCountry.label + '.' : '.';
 							toaster.pop('warning', 'City not found!', message);
 						}
+						$scope.findingLaunchCity = false;
 						return response.data.geonames;
 					});
 		};
@@ -223,6 +225,7 @@
 			if (!$scope.platform.residenceCity || $scope.platform.residenceCity.search === "") {
 				return;
 			}
+			$scope.findingResidenceCity = true;
 			return platformFactory.findCity($scope.platform.residenceCity.search, $scope.platform.residenceCountry ? $scope.platform.residenceCountry.countryCode : null)
 					.then(function (response) {
 						if (response.status !== 200) {
@@ -232,6 +235,7 @@
 							message += ($scope.platform.residenceCountry && $scope.platform.residenceCountry.label) ?  'in ' + $scope.platform.residenceCountry.label + '.' : '.';
 							toaster.pop('warning', 'City not found!', message);
 						}
+						$scope.findingResidenceCity = false;
 						return response.data.geonames;
 					});
 		};
