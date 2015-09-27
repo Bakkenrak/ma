@@ -311,7 +311,7 @@
 			
 			$scope.platform.languages = $scope.platform.languageObjects
 					.filter(function (i) { // filter out all languages that have no name
-						return !angular.isUndefined(i.resourceName);
+						return i.resourceName;
 					}).map(function (i) { // transform the array of objects into an array of plain strings
 						return i.resourceName;
 					});
