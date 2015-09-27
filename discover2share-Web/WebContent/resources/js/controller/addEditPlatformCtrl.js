@@ -202,6 +202,9 @@
 				return;
 			}
 			$scope.findingLaunchCity = true;
+			var timeout = $timeout(function() { // set a 5 second timer to show a message when the query takes a long time
+				$scope.longLaunchGeoNamesQuery = true;
+			}, 5000);
 			// return the list of geoname data items representing cities that match the search term
 			return platformFactory.findCity($scope.platform.launchCity.search, $scope.platform.launchCountry ? $scope.platform.launchCountry.countryCode : null)
 					.then(function (response) {
@@ -213,6 +216,8 @@
 							toaster.pop('warning', 'City not found!', message);
 						}
 						$scope.findingLaunchCity = false;
+						$timeout.cancel(timeout); // stop timeout to display message for slow queries
+						$scope.longLaunchGeoNamesQuery = false;
 						return response.data.geonames;
 					});
 		};
@@ -226,6 +231,9 @@
 				return;
 			}
 			$scope.findingResidenceCity = true;
+			var timeout = $timeout(function() { // set a 5 second timer to show a message when the query takes a long time
+				$scope.longResidenceGeoNamesQuery = true;
+			}, 5000);
 			return platformFactory.findCity($scope.platform.residenceCity.search, $scope.platform.residenceCountry ? $scope.platform.residenceCountry.countryCode : null)
 					.then(function (response) {
 						if (response.status !== 200) {
@@ -236,6 +244,8 @@
 							toaster.pop('warning', 'City not found!', message);
 						}
 						$scope.findingResidenceCity = false;
+						$timeout.cancel(timeout); // stop timeout to display message for slow queries
+						$scope.longResidenceGeoNamesQuery = false;
 						return response.data.geonames;
 					});
 		};

@@ -174,7 +174,9 @@
 					</button>
 				</div>
 			</td>
-			<td></td>
+			<td>
+				<em ng-show="longLaunchGeoNamesQuery">Sometimes the GeoNames API takes a lot of time to respond to queries. Please try again by changing or retyping your search term.</em>
+			</td>
 		</tr>
 		<tr>
 			<td><strong>Year of launch:</strong></td>
@@ -224,7 +226,9 @@
 					</button>
 				</div>
 			</td>
-			<td></td>
+			<td>
+				<em ng-show="longResidenceGeoNamesQuery">Sometimes the GeoNames API takes a lot of time to respond to queries. Please try again by changing or retyping your search term.</em>
+			</td>
 		</tr>
 		<tr>
 			<td><strong>Languages:</strong></td>
