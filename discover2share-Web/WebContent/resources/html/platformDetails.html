@@ -444,11 +444,14 @@
 	</tr>
 </table>
 <div class="col-md-12" ng-if="loggedIn() && isSuggestion">
-	<button type="button" ng-click="saveSuggestion()" class="btn btn-primary">Add to ontology</button>&nbsp;
-	<button type="button" ng-click="editSuggestion()" class="btn btn-success">Edit Suggestion</button>&nbsp;
-	<button type="button" ng-click="removeSuggestion()" class="btn btn-danger">Delete Suggestion</button>
+	<i class="fa fa-spinner fa-pulse" ng-show="saving"></i>&nbsp;
+	<button type="button" ng-click="saveSuggestion()" class="btn btn-primary" ng-disabled="saving || removing">Add to ontology</button>&nbsp;
+	<button type="button" ng-click="editSuggestion()" class="btn btn-success" ng-disabled="saving || removing">Edit Suggestion</button>&nbsp;
+	<i class="fa fa-spinner fa-pulse" ng-show="removing"></i>&nbsp;
+	<button type="button" ng-click="removeSuggestion()" class="btn btn-danger" ng-disabled="saving || removing">Delete Suggestion</button>
 </div>
 <div class="col-md-12" ng-if="!isSuggestion">
-	<button type="button" ng-click="editPlatform()" class="btn btn-success">Edit Platform</button>&nbsp;
-	<button type="button" ng-if="loggedIn()" ng-click="removePlatform()" class="btn btn-danger">Delete Platform</button>
+	<button type="button" ng-click="editPlatform()" class="btn btn-success" ng-disabled="saving || removing">Edit Platform</button>&nbsp;
+	<i class="fa fa-spinner fa-pulse" ng-show="removing"></i>&nbsp;
+	<button type="button" ng-if="loggedIn()" ng-click="removePlatform()" class="btn btn-danger" ng-disabled="saving || removing">Delete Platform</button>
 </div>

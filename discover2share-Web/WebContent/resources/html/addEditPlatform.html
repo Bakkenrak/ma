@@ -577,7 +577,8 @@
 		</tr>
 	</table>
 	<div class="col-md-10">
-		<input type="submit" value="{{submitBtnText}}" class="btn btn-primary" />&nbsp;
+		<i class="fa fa-spinner fa-pulse" ng-show="submitting"></i>&nbsp;
+		<input type="submit" value="{{submitBtnText}}" class="btn btn-primary" ng-disabled="submitting" />&nbsp;
 		<label class="checkbox-inline" ng-if="!isSuggestion && loggedIn()"><input type="checkbox" ng-model="$parent.directSave" />Skip review and add to ontology right away</label>
 	</div>
 	

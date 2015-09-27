@@ -303,6 +303,8 @@
 		 * Submits the platform object to the server using factory methods to persist the new data or changes.
 		 */
 		$scope.submit = function () {
+			$scope.submitting = true;
+			
 			// prepare platform object for submission
 			$scope.platform.resourceTypes = $scope.platform.resourceTypes
 					.filter(function (i) { // filter out all resource types that have no label
@@ -326,6 +328,7 @@
 						} else if (status >= 400) { // error
 							toaster.pop('error', 'Code ' + status, 'There was an error saving this suggestion.');
 						}
+						$scope.submitting = false;
 					});
 				} else { // no direct addition to ontology -> save suggestion for review
 					platformFactory.addPlatformSuggestion($scope.platform).success(function (data, status) {
@@ -348,6 +351,7 @@
 						} else if (status >= 400) { // error
 							toaster.pop('error', 'Code ' + status, 'There was an error adding this suggestion: ' + data.error);
 						}
+						$scope.submitting = false;
 					});
 				}
 			} else { // editing
@@ -362,6 +366,7 @@
 							} else if (status >= 400) { // error
 								toaster.pop('error', 'Code ' + status, 'There was an error adding this change suggestion.');
 							}
+							$scope.submitting = false;
 						});
 					} else { // no direct application to ontology -> save suggestion for review
 						platformFactory.addPlatformSuggestion($scope.platform).success(function (data, status) {
@@ -384,6 +389,7 @@
 							} else if (status >= 400) { // error
 								toaster.pop('error', 'Code ' + status, 'There was an error adding this change suggestion: ' + data.error);
 							}
+							$scope.submitting = false;
 						});
 					}
 				} else { //editing a suggestion
@@ -395,6 +401,7 @@
 							} else if (status >= 400) { // error
 								toaster.pop('error', 'Code ' + status, 'There was an error editing this suggestion.');
 							}
+							$scope.submitting = false;
 						});
 					} else { // mod or admin editing a suggestion
 						platformFactory.editPlatformSuggestion($scope.platform).success(function (data, status) {
@@ -404,6 +411,7 @@
 							} else if (status >= 400) { // error
 								toaster.pop('error', 'Code ' + status, 'There was an error editing this suggestion.');
 							}
+							$scope.submitting = false;
 						});
 					}
 				}

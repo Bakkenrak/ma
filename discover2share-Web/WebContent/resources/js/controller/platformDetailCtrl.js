@@ -191,6 +191,7 @@
 		 * Calls the platform factory's method to save the current suggestion in the ontology.
 		 */
 		$scope.saveSuggestion = function () {
+			$scope.saving = true;
 			platformFactory.savePlatformSuggestion($scope.platform.id).success(function (data, status) {
 				if (status === 200 || status === 204) { // success
 					$location.path("suggestions/"); // redirect to suggestions overview
@@ -198,6 +199,7 @@
 				} else {
 					toaster.pop('error', 'Code ' + status, 'Sorry, there was an error adding the suggestion for platform ' + $scope.platform.label + ' to the ontology.');
 				}
+				$scope.saving = false;
 			});
 		};
 		
@@ -205,6 +207,7 @@
 		 * Calls the platform factory's method to remove the current suggestion.
 		 */
 		$scope.removeSuggestion = function () {
+			$scope.removing = true;
 			platformFactory.removeSuggestion($scope.platform.id).success(function (data, status) {
 				if (status === 200 || status === 204) { // success
 					$location.path("suggestions/"); // redirect to the suggestions overview
@@ -212,6 +215,7 @@
 				} else { // error
 					toaster.pop('error', 'Code ' + status, 'Sorry, there was an error removing the suggestion for platform ' + $scope.platform.label + '.');
 				}
+				$scope.removing = false;
 			});
 		};
 		
@@ -219,6 +223,7 @@
 		 * Calls the platform factory method to remove the current platform from the ontology.
 		 */
 		$scope.removePlatform = function () {
+			$scope.removing = true;
 			platformFactory.removePlatform($route.current.params.platform).success(function (data, status) {
 				if (status === 200 || status === 204) {
 					$location.path("platforms/");
@@ -226,6 +231,7 @@
 				} else {
 					toaster.pop('error', 'Code ' + status, 'Sorry, there was an error removing the platform ' + $scope.platform.label + ' from the ontology.');
 				}
+				$scope.removing = false;
 			});
 		};
 	});
