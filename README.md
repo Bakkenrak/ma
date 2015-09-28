@@ -6,7 +6,7 @@ discover2share-scripts contains additional scripts, e.g. the Excel to RDF transf
 
 ## Setup
 #### Setting up the web directory under Windows
-* As a preliminary, a current version of Java needs to be installed. The development was undertaken with [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html).
+* As a preliminary, [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) needs to be installed.
 * [Download WildFly](http://wildfly.org/downloads/) (tested with version 8.2.0 Final) and extract the archive’s contents to a path which must not contain spaces (e.g. <tt>C:\wildfly</tt>)
 * Run the server using the <tt>`<WildFly directory>`\bin\standalone.bat</tt> script. It should then be accessible via [http://localhost:8080](http://localhost:8080). 
   * Click the “Administration Console” link and follow the instructions to create a management user. 
