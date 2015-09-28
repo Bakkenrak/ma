@@ -26,6 +26,18 @@ discover2share-scripts contains additional scripts, e.g. the Excel to RDF transf
   * Afterwards, go to “existing datasets” and select the “upload data” button for the new dataset. Using the “select files…” button select the required .owl files from the <tt>ontology</tt> directory in this repository. Then click “upload all”.
   * The Fuseki server needs to be running in the future in order to have the web directory function properly.
 
+#### Setting up the web directory under Ubuntu
+* Again, [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) is required.
+* To install wildfly and register it as a service and then run it, follow [these instructions](https://gesker.wordpress.com/2015/02/17/quick-install-wildfly-8-2-0-on-ubuntu-14-04/).
+  * It is not necessary to use the <tt>standalone-full.xml</tt> instead of the <tt>standalone.xml</tt> in the config.
+  * The step to replace <tt>127.0.0.1</tt> by <tt>0.0.0.0</tt> is also unnecessary to generally run the server.
+* Create an administration user and configure the deployments and data source in the same way as explained above.
+
+#### Setting up the triplestore server under Ubuntu
+* [Download Apache Jena Fuseki](http://jena.apache.org/download/index.cgi#apache-jena-fuseki) (tested with [version 2.0.0](http://archive.apache.org/dist/jena/binaries/)) and extract the archive’s content to a folder on your hard drive.
+* Run the server using the <tt>./fuseki-server</tt> command from the extracted folder. It should then be accessible via [http://localhost:3030/](http://localhost:3030/).
+* Create the dataset and import the ontology data in the same way as explained above.
+
 #### Optional: Setting up the web directory in eclipse
 * [Download Eclipse](http://www.eclipse.org/downloads/) (tested with Eclipse Java EE IDE for Web Developers, [Luna Service Release 2 (4.4.2)](http://www.eclipse.org/downloads/packages/eclipse-ide-java-ee-developers/lunasr2)) and extract it to a folder on your hard drive and run it.
   * Select “Help” > “Eclipse Marketplace…” and choose “Eclipse Marketplace” as the marketplace catalogue. Search for “JBoss Tools” and install “JBoss Tools 4.2.x". After all requirements have been checked, select all features and confirm. Accept the license agreements and click “Finish”. Warnings regarding unsigned content can be closed via “OK”. Afterwards, confirm the restart of eclipse.
