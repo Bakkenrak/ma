@@ -111,8 +111,7 @@
 					var newCell = originalGetCell(yasr, plugin, bindings, sparqlVar, context); // run original method
 					var urlStart;
 					if (scope.queryPlatformVar && "?" + sparqlVar === scope.queryPlatformVar.name) { // if current cell contains a value for the platform var
-						urlStart = newCell.indexOf("href") + 6;
-						newCell = newCell.substr(0, urlStart) + "platforms" + newCell.substr(urlStart + 37); // adjust link to platform's detail page
+						newCell = newCell.replace("href='http://www.discover2share.net/d2s-ont/", "href='platforms/"); // adjust link to platform's detail page
 					} else {
 						newCell = newCell.replace("href='http://www.discover2share.net/d2s-ont/", "href='ontology/resource/");
 					}
